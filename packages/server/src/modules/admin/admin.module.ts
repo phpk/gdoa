@@ -5,6 +5,7 @@ import { ADMIN_PREFIX } from './admin.constants';
 import { AuthGuard } from './core/guards/auth.guard';
 import { LoginModule } from './login/login.module';
 import { SystemModule } from './system/system.module';
+import { ProjectModule } from './project/project.module';
 
 /**
  * Admin模块，所有API都需要加入/admin前缀
@@ -18,6 +19,7 @@ import { SystemModule } from './system/system.module';
         children: [
           { path: 'account', module: AccountModule },
           { path: 'sys', module: SystemModule },
+          { path: 'pro', module: ProjectModule },
         ],
       },
       // like this url /admin/captcha/img
@@ -30,6 +32,7 @@ import { SystemModule } from './system/system.module';
     LoginModule,
     SystemModule,
     AccountModule,
+    ProjectModule,
   ],
   providers: [
     {

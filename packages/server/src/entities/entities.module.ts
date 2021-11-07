@@ -17,6 +17,7 @@ import SysStore from './admin/sys-store.entity';
 import SysArea from './admin/sys-area.entity';
 import SysRoleDepartment from './admin/sys-role-department.entity';
 import SysLoginLog from './admin/sys-login-log.entity';
+import SysProjects from './admin/sys-projects.entity';
 
 const entityList = [
   SysUser,
@@ -36,7 +37,8 @@ const entityList = [
   SysGroup,
   SysCompany,
   SysStore,
-  SysArea
+  SysArea,
+  SysProjects
 ];
 
 @Module({

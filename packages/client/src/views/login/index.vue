@@ -108,8 +108,8 @@ export default {
     return {
       title: defaultSettings.title,
       loginForm: {
-        username: '',
-        password: '',
+        username: 'admin',
+        password: '123456',
         verifyCode: '',
         captchaId: ''
       },

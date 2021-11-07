@@ -1,4 +1,5 @@
 <template>
+
   <div class="navbar">
     <hamburger :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
 
@@ -126,6 +127,9 @@ export default {
     .avatar-container {
       margin-left: 10px;
       margin-right: 30px;
+      width : 1.5em;
+      height: 1.5em;
+      top : -13px;
 
       .avatar-wrapper {
         margin-top: 5px;
@@ -133,16 +137,15 @@ export default {
 
         .user-avatar {
           cursor: pointer;
-          width: 40px;
-          height: 40px;
-          border-radius: 10px;
+          width: 1.2em;
+          height: 1.2em;
         }
 
         .el-icon-caret-bottom {
           cursor: pointer;
           position: absolute;
-          right: -20px;
-          top: 25px;
+          right: -10px;
+          top: 18px;
           font-size: 12px;
         }
       }

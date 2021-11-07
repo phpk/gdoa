@@ -1,6 +1,6 @@
 module.exports = {
 
-  title: 'SF管理后台',
+  title: 'GodoCms',
 
   dashboardName: '工作台',
 
