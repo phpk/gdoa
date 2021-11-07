@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+    <title><%= webpackConfig.name %></title>
+    <style>.gp-loading-box{position:absolute;top:50%;left:40%;margin-left:10%;transform:translate3d(-50%,-50%,0)}.gp-loading-dot{width:24px;height:24px;background:#3ac;border-radius:100%;display:inline-block;animation:gp-loading-slide 1s infinite}.gp-loading-dot:nth-child(1){animation-delay:.1s;background:#32aacc}.gp-loading-dot:nth-child(2){animation-delay:.2s;background:#64aacc}.gp-loading-dot:nth-child(3){animation-delay:.3s;background:#96aacc}.gp-loading-dot:nth-child(4){animation-delay:.4s;background:#c8aacc}.gp-loading-dot:nth-child(5){animation-delay:.5s;background:#faaacc}@-moz-keyframes gp-loading-slide{0%{transform:scale(1)}50%{opacity:.3;transform:scale(2)}100%{transform:scale(1)}}@-webkit-keyframes gp-loading-slide{0%{transform:scale(1)}50%{opacity:.3;transform:scale(2)}100%{transform:scale(1)}}@-o-keyframes gp-loading-slide{0%{transform:scale(1)}50%{opacity:.3;transform:scale(2)}100%{transform:scale(1)}}@keyframes gp-loading-slide{0%{transform:scale(1)}50%{opacity:.3;transform:scale(2)}100%{transform:scale(1)}}</style>
+  </head>
+  <body>
+    <noscript>
+      <strong>抱歉, 但是 <%= webpackConfig.name %> 无法工作，可能是因为JavaScript功能被禁用，请启用后再尝试。</strong>
+    </noscript>
+    <div id="app">
+      <!-- pre loading -->
+      <div class="gp-loading-box">
+        <div class="gp-loading-dot"></div>
+        <div class="gp-loading-dot"></div>
+        <div class="gp-loading-dot"></div>
+        <div class="gp-loading-dot"></div>
+        <div class="gp-loading-dot"></div>
+      </div>
+    </div>
+    <!-- built files will be auto injected -->
+  </body>
+</html>

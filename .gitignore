@@ -1,0 +1,14 @@
+# Build and Release Folders
+node_modules/
+packages/server/node_modules/
+packages/client/node_modules/
+packages/server/dist/
+packages/client/dist/
+packages/server/logs/
+packages/server/docs/
+
+
+# Other files and folders
+.settings/
+.history/
+
