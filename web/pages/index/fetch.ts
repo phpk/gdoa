@@ -5,7 +5,6 @@ import { IndexData } from '@/interface'
 interface IApiService {
   index: () => Promise<IndexData>
 }
-
 interface Params {
   store: Store<any>
   router: Route
