@@ -1,52 +1,48 @@
 {
-  "name": "midway-vue-ssr",
+  "name": "godocms",
+  "description": "godocms",
   "version": "1.0.0",
-  "private": true,
+  "author": "ruitao",
+  "scripts": {
+    "start": "node development.js",
+    "compile": "npm run lint && tsc",
+    "lint": "tslint \"src/**/*.ts\""
+  },
   "dependencies": {
-    "@midwayjs/decorator": "^2.3.0",
-    "@midwayjs/web": "^2.3.0",
-    "egg": "^2.0.0",
-    "egg-scripts": "^2.10.0",
-    "ssr-types": "^5.0.0",
-    "ssr-core-vue": "^5.0.0",
-    "swiper": "^5.0.0",
-    "vue": "^2.0.0",
-    "vue-awesome-swiper": "^4.1.1",
-    "vue-router": "^2.0.0",
-    "vuex": "^3.6.2"
+    "think-cache": "^1.1.1",
+    "think-cache-file": "^1.1.1",
+    "think-session": "^1.1.5",
+    "think-session-file": "^1.1.2",
+    "think-view": "^1.0.12",
+    "think-view-nunjucks": "^1.0.10",
+    "thinkjs": "^3.2.11",
+    "thinkjs3-ts": "^1.0.1"
   },
   "devDependencies": {
-    "@midwayjs/egg-ts-helper": "^1.0.5",
-    "@vitejs/plugin-vue": "^1.9.4",
-    "cross-env": "^7.0.3",
-    "eslint-config-standard-vue-ts": "^1.0.5",
-    "ssr": "^5.0.0",
-    "ssr-plugin-midway": "^5.0.0",
-    "ssr-plugin-vue": "^5.0.0",
-    "typescript": "^3.9.7",
-    "vite": "^2.6.13",
-    "vite-plugin-vue2": "^1.9.0"
+    "typescript": "^2.5.3",
+    "@types/koa": "*",
+    "node-notifier": "^5.0.2",
+    "think-watcher": "^3.0.0",
+    "think-inspect": "0.0.2",
+    "think-typescript": "^1.0.4",
+    "tslint": "^5.8.0"
   },
-  "scripts": {
-    "prod": "ssr build && egg-scripts start --daemon --port=3000 --title=midway-server-my_midway_project --framework=@midwayjs/web",
-    "stop": "egg-scripts stop --title=midway-server-my_midway_project",
-    "start": "ssr start",
-    "start:vite": "ssr start --vite",
-    "build": "ssr build",
-    "deploy": "ssr build && ssr deploy",
-    "deploy:tencent": "ssr build && ssr deploy --tencent",
-    "lint": "eslint . --ext .js,.tsx,.ts,.vue --cache",
-    "lint:fix": "eslint . --ext .js,.tsx,.ts,.vue --cache --fix"
+  "repository": "",
+  "license": "MIT",
+  "engines": {
+    "node": ">=6.0.0"
   },
-  "midway-integration": {
-    "tsCodeRoot": "src"
-  },
-  "midway-luckyeye": {
-    "packages": [
-      "midway_v2"
-    ]
-  },
-  "egg": {
-    "framework": "@midwayjs/web"
+  "readmeFilename": "README.md",
+  "thinkjs": {
+    "metadata": {
+      "name": "godocms",
+      "description": "godocms",
+      "author": "ruitao",
+      "defaultModule": "home"
+    },
+    "projectName": "godocms",
+    "template": "typescript",
+    "clone": false,
+    "isMultiModule": true
   }
 }

@@ -1,8 +1,8 @@
 # Build and Release Folders
 node_modules/
 dist/
-docs/
-build/
+runtime/
+app/
 logs/
 
 
