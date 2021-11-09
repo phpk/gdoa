@@ -1,12 +1,3 @@
-# Build and Release Folders
 node_modules/
-dist/
 runtime/
-app/
 logs/
-
-
-# Other files and folders
-.settings/
-.history/
-

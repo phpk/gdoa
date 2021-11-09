@@ -1,19 +1,18 @@
 
-## Install dependencies
+## 下载源码进入根目录
 
 ```
 npm install
 ```
 
-## Start server
+## 开发启动
 
 ```
 npm start
 ```
 
-## Deploy with pm2
+## 正式环境启动
 
-Use pm2 to deploy app on production enviroment.
 
 ```
 pm2 start pm2.json
