@@ -36,3 +36,9 @@ mysql: {
 ```bash
 npm start
 ```
+
+## 正式环境
+
+```bash
+pm2 start pm2.json
+```

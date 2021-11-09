@@ -1,7 +1,7 @@
 # 编写必读
 
 ### 项目源码
-[https://gitee.com/ruitao/air](https://gitee.com/ruitao/air)
+[https://gitee.com/ruitao_admin/godocms](https://gitee.com/ruitao_admin/godocms)
 
 ### 框架参考文档 
 [https://thinkjs.org/zh-cn/doc/3.0/index.html](https://thinkjs.org/zh-cn/doc/3.0/index.html)
