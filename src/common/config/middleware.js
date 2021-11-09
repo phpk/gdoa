@@ -21,7 +21,15 @@ module.exports = [
     handle: 'trace',
     enable: !think.isCli,
     options: {
-      debug: isDev
+      debug: isDev,
+      //customed set as object
+      templates: {
+        404: path.join(think.ROOT_PATH, 'www/static/error/404.html'),
+        500: path.join(think.ROOT_PATH, 'www/static/error/500.html')
+      },
+      error(err, ctx) {
+        return console.error(err);
+      }
     }
   },
   {

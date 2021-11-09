@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>Login Page</title>
+		<title>后台管理-登陆</title>
 		<!-- 样 式 文 件 -->
 		<link rel="stylesheet" href="component/pear/css/pear.css" />
 		<link rel="stylesheet" href="admin/css/other/login.css" />
@@ -11,7 +11,7 @@
 	<body background="admin/images/background.svg" style="background-size: cover;">
 		<form class="layui-form" action="javascript:void(0);">
 			<div class="layui-form-item">
-				<img class="logo" src="admin/images/logo.png" />
+				<img class="logo" src="/static/logo.png" />
 				<div class="title">Godo Cms</div>
 				<div class="desc">
 					打造最实用的低代码平台
@@ -44,6 +44,7 @@
 				var form = layui.form;
 				var button = layui.button;
 				var popup = layui.popup;
+				var $ = layui.$;
 				
                 // 登 录 提 交
 				form.on('submit(login)', function(data) {
