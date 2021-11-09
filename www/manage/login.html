@@ -25,7 +25,7 @@
 			</div>
 			<div class="layui-form-item">
 				<input placeholder="验证码"  hover  lay-verify="required" class="code layui-input layui-input-inline"  />
-				<img src="/admin/login/captcha" id="codeImage" class="codeImage" />
+				<img src="" id="codeImage" class="codeImage" />
 			</div>
 			<div class="layui-form-item">
 				<input type="checkbox" name="" title="记住密码" lay-skin="primary" checked>
@@ -39,12 +39,19 @@
 		<!-- 资 源 引 入 -->
 		<script src="component/layui/layui.js"></script>
 		<script src="component/pear/pear.js"></script>
+		<script src="config/config.js"></script>
 		<script>
 			layui.use(['form', 'button', 'popup'], function() {
-				var form = layui.form;
-				var button = layui.button;
-				var popup = layui.popup;
-				var $ = layui.$;
+				let form = layui.form,
+					button = layui.button,
+					popup = layui.popup,
+					$ = layui.$,
+					codeImage = $('#codeImage'),
+					captchaUrl = apiUrl + 'login/captcha';
+				codeImage.attr('src',captchaUrl);
+				codeImage.click(() => {
+					$('#codeImage').attr('src', captchaUrl + '?t=' + Math.random());
+				});
 				
                 // 登 录 提 交
 				form.on('submit(login)', function(data) {

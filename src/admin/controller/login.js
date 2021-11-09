@@ -13,4 +13,5 @@ module.exports = class extends think.Controller {
         this.header('Content-Type', 'image/svg+xml');
         this.ctx.body = captcha.data;
     }
+
 };
