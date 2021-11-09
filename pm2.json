@@ -1,8 +1,8 @@
 {
   "apps": [{
-    "name": "godocms",
+    "name": "demo",
     "script": "production.js",
-    "cwd": "/Users/sujia/www/godocms/new/godocms",
+    "cwd": "/Users/sujia/www/easy/demo",
     "exec_mode": "fork",
     "max_memory_restart": "1G",
     "autorestart": true,
