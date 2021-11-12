@@ -1,0 +1,1 @@
+const apiUrl = '/server/';

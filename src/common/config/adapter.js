@@ -1,11 +1,11 @@
 const fileCache = require('think-cache-file');
-const nunjucks = require('think-view-nunjucks');
+//const nunjucks = require('think-view-nunjucks');
 const fileSession = require('think-session-file');
 const mysql = require('think-model-mysql');
 const { Console, File, DateFile } = require('think-logger3');
 const path = require('path');
 const isDev = think.env === 'development';
-
+const redisSession = require('think-session-redis');
 /**
  * cache adapter config
  * @type {Object}
@@ -51,20 +51,44 @@ exports.model = {
  * session adapter config
  * @type {Object}
  */
+/*
 exports.session = {
   type: 'file',
   common: {
     cookie: {
-      name: 'thinkjs'
-      // keys: ['werwer', 'werwer'],
-      // signed: true
+      name: 'thinkjs',
+      keys: ['werwer', 'werwer'],
+      signed: true
     }
   },
   file: {
     handle: fileSession,
     sessionPath: path.join(think.ROOT_PATH, 'runtime/session')
   }
-};
+};*/
+exports.session = {
+  type: 'redis',
+  common: {
+    cookie: {
+      name: 'godocms',
+      maxAge: 1 * 3600 * 1000,
+      //expires: '',
+      path: '/',  //a string indicating the path of the cookie
+      //domain: '',
+      //secure: false,
+      //keys: [],
+      httpOnly: true,
+      sameSite: false,
+      signed: false,
+      overwrite: false
+    }
+  },
+  redis: {
+    handle: redisSession,
+    maxAge: 3600 * 1000, //session timeout, if not set, session will be persistent.
+    autoUpdate: true, //update expired time when get session, default is false
+  }
+}
 
 /**
  * logger adapter config
