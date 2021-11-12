@@ -18,13 +18,13 @@
 				</div>
 			</div>
 			<div class="layui-form-item">
-				<input placeholder="账 户" value="admin" lay-verify="required" hover class="layui-input"  />
+				<input placeholder="账 户" value="admin" name="username" lay-verify="required" hover class="layui-input"  />
 			</div>
 			<div class="layui-form-item">
-				<input placeholder="密 码" value="admin" lay-verify="required" hover class="layui-input"  />
+				<input placeholder="密 码" name="password" value="admin" lay-verify="required" hover class="layui-input" type="password" />
 			</div>
 			<div class="layui-form-item">
-				<input placeholder="验证码"  hover  lay-verify="required" class="code layui-input layui-input-inline"  />
+				<input placeholder="验证码" name="captcha"  hover  lay-verify="required" class="code layui-input layui-input-inline"  />
 				<img src="" id="codeImage" class="codeImage" />
 			</div>
 			<div class="layui-form-item">
@@ -46,9 +46,10 @@
 					button = layui.button,
 					popup = layui.popup,
 					$ = layui.$,
+					layer = layui.layer,
 					codeImage = $('#codeImage'),
 					captchaUrl = apiUrl + 'login/captcha';
-				codeImage.attr('src',captchaUrl);
+				codeImage.attr('src',captchaUrl + '?t=' + Math.random());
 				codeImage.click(() => {
 					$('#codeImage').attr('src', captchaUrl + '?t=' + Math.random());
 				});
@@ -57,19 +58,61 @@
 				form.on('submit(login)', function(data) {
 					
 					/// 验证
-					
+					data = data.field;
+					console.log(data);
+					if (data.username == '') {
+						layer.msg('用户名不能为空');
+						return false;
+					}
+					if (data.password == '') {
+						layer.msg('密码不能为空');
+						return false;
+					}
+					if (data.captcha == '') {
+						layer.msg('验证码不能为空');
+						return false;
+					}
 					/// 登录
-					
-					/// 动画
-					button.load({
-						elem: '.login',
-						time: 1500,
-						done: function() {
-							popup.success("登录成功", function() {
-								location.href = "index.html"
-							});
+					const index = layer.load(0, {
+						time: 5 * 1000
+					}); //显示加载中动画，最多5秒自动关闭
+					$.ajax({
+						type: "post",
+						url: `${apiUrl}login/do`,
+						data: {
+							password: data.password,
+							username: data.username,
+							captcha: data.captcha
+						},
+						success: function(res) {
+							layer.close(index); //关闭加载动画
+
+							//console.log(res)
+							
+							if (res.code === 200) {
+								setToken(res.data.token);
+								location.href = 'index.html';
+							} else {
+								$('#err').html(res.message);
+								layer.msg(res.message, {
+									icon: 2
+								});
+							}
+						},
+						error: function(xhr) {
+							layer.close(index); //关闭加载动画
+							if (xhr.status === 401) {
+								layer.msg('未授权访问接口！', {
+									icon: 2
+								});
+							} else {
+								layer.msg('通讯失败！请重试！', {
+									icon: 2
+								});
+							}
 						}
-					})
+					});
+					
 					return false;
 				});
 			})

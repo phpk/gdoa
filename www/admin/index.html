@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-		<title> Pear Admin Layui </title>
+		<title> 后台管理 </title>
 		<!-- 依 赖 样 式 -->
 		<link rel="stylesheet" href="component/pear/css/pear.css" />
 		<!-- 加 载 样 式 -->
@@ -34,7 +34,7 @@
 				<!-- 顶 部 右 侧 菜 单 -->
 				<ul class="layui-nav layui-layout-right">
 					<li class="layui-nav-item layui-hide-xs"><a href="#" class="fullScreen layui-icon layui-icon-screen-full"></a></li>
-					<li class="layui-nav-item layui-hide-xs"><a href="http://www.pearadmin.com" class="layui-icon layui-icon-website"></a></li>
+					<li class="layui-nav-item layui-hide-xs"><a href="http://godo.im" class="layui-icon layui-icon-website"></a></li>
 					<li class="layui-nav-item layui-hide-xs message"></li>
 					<li class="layui-nav-item user">
 						<!-- 头 像 -->
@@ -83,6 +83,7 @@
 		<!-- 依 赖 脚 本 -->
 		<script src="component/layui/layui.js"></script>
 		<script src="component/pear/pear.js"></script>
+		<script src="config/config.js"></script>
 		<!-- 框 架 初 始 化 -->
 		<script>
 			layui.use(['admin','jquery','popup'], function() {
@@ -106,7 +107,18 @@
 				
 				// 初始化消息回调
 				admin.message();
-				
+				let h = getHeader();
+				console.log(h)
+				$.ajax({
+					url : '/server/index',
+					headers : h,
+					success : (res) => {
+						console.log(res)
+					},
+					error : (err) => {
+						console.log(err)
+					}
+				})
 				// admin.message(function(id, title, context, form) {});
 			})
 		</script>		

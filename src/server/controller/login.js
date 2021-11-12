@@ -1,5 +1,6 @@
 const svgCaptcha = require("svg-captcha");
 const jwt = require('jsonwebtoken');
+const ADMINDIR = 'server';
 /**
 # 用户登录
 */
@@ -25,39 +26,64 @@ module.exports = class extends think.Controller {
     async doAction() {
         let post = this.post()
         if (!await this.chkCapcha(post.captcha)) {
-            return this.fail(101, '验证码错误')
+            return this.err('验证码错误')
         }
         //杜绝用户反复查表
         let loginNum = await this.session('loginNum');
         loginNum = loginNum ? loginNum : 0;
         if (loginNum > 10) {
-            return this.fail(1003, '登录错误次数太多，大侠请留步，请一小时后再试!');
+            return this.err('登录错误次数太多，大侠请留步，请一小时后再试!');
         }
         let admin = await this.model('admin').where({
-            username: username
+            username: post.username
         }).find();
         
         if (think.isEmpty(admin)) {
             await this.session('loginNum', loginNum + 1);
-            return this.fail(1002, '用户不存在');
+            return this.err('用户不存在');
         }
         if (admin.status < 1) {
             await this.session('loginNum', loginNum + 1);
-            return this.fail(1005, '用户被禁用');
+            return this.err('用户被禁用');
         }
-        let pwd = this.service('login', 'admin').createPassword(post.password, admin.salt, 1);
+        let pwd = this.service('login').createPassword(post.password, admin.salt);
+        //console.log(pwd)
         if (pwd != admin.password) {
             await this.session('loginNum', loginNum + 1);
-            return this.fail(1004, '密码错误');
+            return this.err('密码错误');
         }
         //生成一个16位的随机数
-        let salt = this.service('login', 'admin').randomString();
+        let salt = this.service('login').randomString(),
+            md5Salt = think.md5(salt);
         let token = jwt.sign({
             adminId: admin.admin_id
-        }, salt, {
+        }, md5Salt, {
             expiresIn: 60 * 60 * 1 //1小时过期
         });
-        return this.success(token);
+
+        let password = this.service('login').createPassword(post.password, salt);
+        //更新用户密码和登录状态
+        await this.model('admin')
+            .where({ admin_id: admin.admin_id })
+            .update({
+                password,
+                salt,
+                login_num: admin.login_num + 1,
+                login_time : this.now()
+            })
+        //添加缓存
+        await this.session('adminId', admin.admin_id);
+        //只允许一个帐号在一个端下登录
+        let cacheId = 'admin_' + admin.admin_id;
+        await this.cache(cacheId, md5Salt);
+        //jwt校验用
+        await this.session('salt', md5Salt);
+        //设定保活
+        await this.session('statusTime', this.now());
+        //添加登录日志
+        this.adminId = admin.admin_id;
+        this.adminLog(admin.username + '登录');
+        return this.ok({token});
     }
 /**
 
@@ -91,6 +117,8 @@ base64位图片
         if (verify != code.toLowerCase()) {
             return false;
         }
+        //验证成功清空
+        await this.session('verifyCaptcha', null);
         return true;
     }
 

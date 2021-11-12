@@ -15,6 +15,7 @@
     "svg-captcha": "^1.4.0",
     "think-cache": "^1.0.0",
     "think-cache-file": "^1.0.8",
+    "think-cache-redis": "^1.2.6",
     "think-jsdoc": "^0.1.1",
     "think-logger3": "^1.0.0",
     "think-model": "^1.0.0",

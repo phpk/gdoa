@@ -1,19 +1,13 @@
 module.exports = class extends think.Service {
     //创建密码
-    createPassword(password, random = 9999, type = 1) {
-        if (type == 1) {
-            return think.md5(think.md5(password) + random);
-        } else {
-            return think.md5(random + think.md5(password));
-        }
+    createPassword(password, salt = '') {
+        if(!salt) salt = this.randomString()
+        return think.md5(think.md5(password) + salt);
     }
     //校验密码
-    checkPassword(uInfo, password, type = 1) {
-        let xpassword = this.createPassword(password, uInfo['random'], type);
-        if (type == 1 && xpassword == uInfo['password']) {
-            return true;
-        }
-        if (type == 2 && xpassword == uInfo['password_account']) {
+    checkPassword(ckpwd, password, salt) {
+        let xpassword = this.createPassword(ckpwd, salt);
+        if (xpassword == password) {
             return true;
         }
         return false;
@@ -22,8 +16,9 @@ module.exports = class extends think.Service {
     randomString(len = 16) {
         let $chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678',
             maxPos = $chars.length,
-            pwd = '';
-        for (i = 0; i < len; i++) {
+            pwd = '',
+            i = 0;
+        for (; i < len; i++) {
             pwd += $chars.charAt(Math.floor(Math.random() * maxPos));
         }
         return pwd;
