@@ -1,59 +1,55 @@
 module.exports = class extends think.Model {
-
-    async list(authId) {
-        let list = await think.model('menu').select();
-        let rulesId;
-        if (authId > 1) {
-            rulesId = await think.model('auth').where({
-                id: authId
-            }).getField('rules', true);
+    async list(adminId) {
+        //先从角色映射表里取出管理员对应的角色
+        let authIds = await think.model('admin_map').where({
+            admin_id: adminId
+        }).getField('auth_id');
+        //再从角色表里取出对应的菜单权限id
+        let rulesId = await this.model('admin_auth')
+            .where({ id: ['IN', authIds]})
+            .getField('rules');
+        let data = [];
+        if (rulesId.indexOf('-1') > -1) {
+            data = await this.model('menu')
+                .order('order_num asc')
+                .select();
         } else {
-            rulesId = list.map(item => {
-                return item.id;
-            })
+            data = await think.model('menu')
+                .order('order_num asc')
+                .where({ id: ['IN', rulesId] })
+                .select();
         }
-        //console.log(rulesId)
-        let top = [];
-        list.forEach(item => {
-            if (item.pid == 0 && item.ismenu == 0 && rulesId.includes(item.id)) {
-                top.push({
-                    id: item.id,
-                    title: item.name,
-                    href: "",
-                    icon: "fa " + item.icon,
-                    target: item.target
+        //获取路由权限
+        let perms = [];
+        data.forEach(el => {
+            el.route && perms.push(el.route);
+        });
+        //根据 id取出某一个分类的子集
+        const findById = (id) => {
+            let child = [];
+            data.forEach((value) => {
+                if (value.pid == id) {
+                    child.push(value);
+                }
+            });
+            return child;
+        };
+        // 递归查询到数据并将数据存储到数组 
+        const deeploop = function (id) {
+            let dataArr = findById(id);
+            if (dataArr.length <= 0) {
+                return null;
+            } else {
+                dataArr.forEach((value) => {
+                    if (deeploop(value.id) != null) {
+                        value["children"] = deeploop(value.id);
+                    }
                 });
             }
-        });
-        //console.log(top)
-        top.forEach((item, i) => {
-            let id = item.id;
-            list.forEach(e => {
-                if (e.pid == id && rulesId.includes(e.id)) {
-                    if (!think.isArray(top[i]['child'])) top[i]['child'] = [];
-                    top[i]['child'].push({
-                        id: e.id,
-                        title: e.name,
-                        href: e.url,
-                        icon: "fa " + e.icon,
-                        target: e.target
-                    });
-                }
-            })
-        })
-        //console.log(JSON.stringify(top))
-        let rt = {
-            "homeInfo": {
-                "title": "首页",
-                "href": "index/welcome"
-            },
-            "logoInfo": {
-                "title": "ADMIN",
-                "image": "/static/admin/images/logo.png",
-                "href": ""
-            },
+            return dataArr;
         };
-        rt['menuInfo'] = top;
-        return rt;
+        let menus = deeploop(0);
+        return { perms, menus };
     }
+    
 }

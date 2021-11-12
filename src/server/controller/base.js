@@ -10,7 +10,7 @@ module.exports = class extends think.Controller {
     //console.log(headers)
     if (!headers.rttoken) {
       this.status = 403;
-      this.body = {
+      this.ctx.body = {
         code: 403,
         message : 'token none!'
       };
@@ -20,13 +20,13 @@ module.exports = class extends think.Controller {
     let jwtChk = await this.chkJwt(headers.rttoken);
     if (jwtChk.code != 200) {
       this.status = 401;
-      this.body = jwtChk;
+      this.ctx.body = jwtChk;
       return;
     }
     //判断保活
     if (!await this.checkStatusTime()) {
       this.status = 403;
-      this.body = {
+      this.ctx.body = {
         code: 403,
         message: '超过保活时间!'
       };

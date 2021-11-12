@@ -5,13 +5,13 @@
  Source Server Type    : MySQL
  Source Server Version : 50732
  Source Host           : localhost:8889
- Source Schema         : siwo
+ Source Schema         : gdcms
 
  Target Server Type    : MySQL
  Target Server Version : 50732
  File Encoding         : 65001
 
- Date: 10/11/2021 18:05:59
+ Date: 12/11/2021 18:00:00
 */
 
 SET NAMES utf8mb4;
@@ -49,8 +49,7 @@ CREATE TABLE `rt_admin` (
   `admin_id` int(10) NOT NULL DEFAULT '0' COMMENT '唯一标志',
   `username` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '用户名',
   `password` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '密码',
-  `salt` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '密码钥匙',
-  `role_id` int(10) NOT NULL DEFAULT '0' COMMENT '角色id',
+  `salt` varchar(16) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '密码钥匙',
   `add_time` int(10) NOT NULL DEFAULT '0' COMMENT '添加时间',
   `name` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '真实姓名',
   `mobile` int(10) DEFAULT NULL COMMENT '手机号',
@@ -67,6 +66,7 @@ CREATE TABLE `rt_admin` (
 -- Records of rt_admin
 -- ----------------------------
 BEGIN;
+INSERT INTO `rt_admin` VALUES (1, 'admin', '620f4af5744fc128f76ebfba5c7a4f01', 'zfZbkH2mG6rS5HSj', 0, NULL, NULL, 1, 1636711037, 33, 0);
 COMMIT;
 
 -- ----------------------------
@@ -102,12 +102,50 @@ CREATE TABLE `rt_admin_log` (
   `method` varchar(100) CHARACTER SET utf8 DEFAULT NULL COMMENT '方法',
   `addtime` int(10) unsigned DEFAULT '0' COMMENT '添加时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='管理操作日志';
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='管理操作日志';
 
 -- ----------------------------
 -- Records of rt_admin_log
 -- ----------------------------
 BEGIN;
+INSERT INTO `rt_admin_log` VALUES (1, 1, 'admin登录', '{\"password\":\"admin\",\"username\":\"admin\",\"captcha\":\"angt\"}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:94.0) Gecko/20100101 Firefox/94.0', '/server/login/do', 'POST', 1636683208);
+INSERT INTO `rt_admin_log` VALUES (2, 1, 'admin登录', '{\"username\":\"admin\",\"captcha\":\"wueq\"}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:94.0) Gecko/20100101 Firefox/94.0', '/server/login/do', 'POST', 1636683396);
+INSERT INTO `rt_admin_log` VALUES (3, 1, 'admin登录', '{\"username\":\"admin\",\"captcha\":\"8mau\"}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:94.0) Gecko/20100101 Firefox/94.0', '/server/login/do', 'POST', 1636684074);
+INSERT INTO `rt_admin_log` VALUES (4, 1, 'admin登录', '{\"username\":\"admin\",\"captcha\":\"za72\"}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:94.0) Gecko/20100101 Firefox/94.0', '/server/login/do', 'POST', 1636687935);
+INSERT INTO `rt_admin_log` VALUES (5, 1, 'admin登录', '{\"username\":\"admin\",\"captcha\":\"cxdq\"}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:94.0) Gecko/20100101 Firefox/94.0', '/server/login/do', 'POST', 1636688572);
+INSERT INTO `rt_admin_log` VALUES (6, 1, 'admin登录', '{\"username\":\"admin\",\"captcha\":\"l3nr\"}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:94.0) Gecko/20100101 Firefox/94.0', '/server/login/do', 'POST', 1636689117);
+INSERT INTO `rt_admin_log` VALUES (7, 1, 'admin登录', '{\"username\":\"admin\",\"captcha\":\"ra5w\"}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:94.0) Gecko/20100101 Firefox/94.0', '/server/login/do', 'POST', 1636689550);
+INSERT INTO `rt_admin_log` VALUES (8, 1, 'admin登录', '{\"username\":\"admin\",\"captcha\":\"2xem\"}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.82 Safari/537.36', '/server/login/do', 'POST', 1636689633);
+INSERT INTO `rt_admin_log` VALUES (9, 1, 'admin登录', '{\"username\":\"admin\",\"captcha\":\"2esr\"}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.82 Safari/537.36', '/server/login/do', 'POST', 1636690261);
+INSERT INTO `rt_admin_log` VALUES (10, 1, 'admin登录', '{\"username\":\"admin\",\"captcha\":\"tqxc\"}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.82 Safari/537.36', '/server/login/do', 'POST', 1636691944);
+INSERT INTO `rt_admin_log` VALUES (11, 1, 'admin登录', '{\"username\":\"admin\",\"captcha\":\"g3kj\"}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.82 Safari/537.36', '/server/login/do', 'POST', 1636707053);
+INSERT INTO `rt_admin_log` VALUES (12, 1, 'admin登录', '{\"username\":\"admin\",\"captcha\":\"quyg\"}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.82 Safari/537.36', '/server/login/do', 'POST', 1636708393);
+INSERT INTO `rt_admin_log` VALUES (13, 1, 'admin登录', '{\"username\":\"admin\",\"captcha\":\"spkv\"}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.82 Safari/537.36', '/server/login/do', 'POST', 1636708927);
+INSERT INTO `rt_admin_log` VALUES (14, 1, 'admin登录', '{\"username\":\"admin\",\"captcha\":\"q7hv\"}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.82 Safari/537.36', '/server/login/do', 'POST', 1636708992);
+INSERT INTO `rt_admin_log` VALUES (15, 1, 'admin登录', '{\"username\":\"admin\",\"captcha\":\"kvm9\"}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.82 Safari/537.36', '/server/login/do', 'POST', 1636709026);
+INSERT INTO `rt_admin_log` VALUES (16, 1, 'admin登录', '{\"username\":\"admin\",\"captcha\":\"4tdv\"}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.82 Safari/537.36', '/server/login/do', 'POST', 1636709593);
+INSERT INTO `rt_admin_log` VALUES (17, 1, 'admin登录', '{\"username\":\"admin\",\"captcha\":\"rnxn\"}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.82 Safari/537.36', '/server/login/do', 'POST', 1636710000);
+INSERT INTO `rt_admin_log` VALUES (18, 1, 'admin登录', '{\"username\":\"admin\",\"captcha\":\"zwgk\"}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.82 Safari/537.36', '/server/login/do', 'POST', 1636711037);
+COMMIT;
+
+-- ----------------------------
+-- Table structure for rt_admin_map
+-- ----------------------------
+DROP TABLE IF EXISTS `rt_admin_map`;
+CREATE TABLE `rt_admin_map` (
+  `map_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `admin_id` int(10) unsigned NOT NULL,
+  `auth_id` int(10) unsigned NOT NULL,
+  `type` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '0角色1集团2公司3门店4部门5区域',
+  PRIMARY KEY (`map_id`),
+  UNIQUE KEY `admin_id` (`admin_id`,`auth_id`,`type`) USING HASH
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='管理员权限映射表';
+
+-- ----------------------------
+-- Records of rt_admin_map
+-- ----------------------------
+BEGIN;
+INSERT INTO `rt_admin_map` VALUES (1, 1, 1, 0);
 COMMIT;
 
 -- ----------------------------
@@ -491,49 +529,52 @@ COMMIT;
 DROP TABLE IF EXISTS `rt_menu`;
 CREATE TABLE `rt_menu` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
-  `url` varchar(255) CHARACTER SET utf8 DEFAULT NULL COMMENT '权限标志',
-  `ismenu` tinyint(2) DEFAULT '0' COMMENT '0目录1菜单2按钮',
-  `order` int(5) DEFAULT '0',
+  `title` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `route` varchar(255) CHARACTER SET utf8 DEFAULT NULL COMMENT '权限标志',
+  `href` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '前端地址',
+  `type` tinyint(2) DEFAULT '0' COMMENT '0目录1菜单2按钮3权限',
+  `order_num` int(10) DEFAULT '0' COMMENT '排序',
   `icon` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
-  `target` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `open_type` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
   `pid` int(10) DEFAULT '0',
   `lid` tinyint(3) DEFAULT '1',
-  PRIMARY KEY (`id`) USING BTREE
+  PRIMARY KEY (`id`) USING BTREE,
+  KEY `url` (`route`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='系统菜单';
 
 -- ----------------------------
 -- Records of rt_menu
 -- ----------------------------
 BEGIN;
-INSERT INTO `rt_menu` VALUES (1, '内容管理', 'content', 0, 1, 'fa-address-book', '_self', 0, 0);
-INSERT INTO `rt_menu` VALUES (2, '系统管理', 'system', 0, 2, 'fa-lemon-o', '_self', 0, 0);
-INSERT INTO `rt_menu` VALUES (3, '财务管理', 'account', 0, 3, 'fa-slideshare', '_self', 0, 0);
-INSERT INTO `rt_menu` VALUES (4, '用户管理', 'user/index', 1, 4, 'fa-stumbleupon-circle', '_self', 1, 1);
-INSERT INTO `rt_menu` VALUES (5, '用户账户', 'user/account', 1, 5, 'fa-viacoin', '_self', 1, 1);
-INSERT INTO `rt_menu` VALUES (7, '文章管理', 'art/index', 1, 7, 'fa-file-text', '_self', 1, 1);
-INSERT INTO `rt_menu` VALUES (9, '菜单管理', 'auth/menus', 1, 9, 'fa-dot-circle-o', '_self', 2, 1);
-INSERT INTO `rt_menu` VALUES (10, '角色管理', 'auth/rols', 1, 10, 'fa-adn', '_self', 2, 1);
-INSERT INTO `rt_menu` VALUES (11, '管理员管理', 'auth/index', 1, 11, 'fa-android', '_self', 2, 1);
-INSERT INTO `rt_menu` VALUES (12, '操作日志', 'auth/logs', 1, 12, 'fa-hourglass-end', '_self', 2, 1);
-INSERT INTO `rt_menu` VALUES (13, '系统设置', 'set/index', 1, 13, 'fa-angle-double-down', '_self', 2, 1);
-INSERT INTO `rt_menu` VALUES (14, '计划任务', 'set/crons', 1, 14, 'fa-arrow-up', '_self', 2, 1);
-INSERT INTO `rt_menu` VALUES (21, '编辑菜单', 'auth/menuEdit', 2, 20, 'fa-address-card-o', '_self', 9, 2);
-INSERT INTO `rt_menu` VALUES (22, '删除菜单', 'auth/menuDel', 2, 21, 'fa-address-card-o', '_self', 9, 2);
-INSERT INTO `rt_menu` VALUES (24, '编辑管理员', 'auth/adminEdit', 2, 20, '', '_self', 11, 2);
-INSERT INTO `rt_menu` VALUES (25, '删除管理员', 'auth/adminDel', 2, 21, '', '_self', 11, 2);
-INSERT INTO `rt_menu` VALUES (26, '编辑角色', 'auth/rolsEdit', 2, 22, '', '_self', 10, 2);
-INSERT INTO `rt_menu` VALUES (27, '删除角色', 'auth/rolsDel', 1, 23, '', '_self', 10, 2);
-INSERT INTO `rt_menu` VALUES (28, '编辑配置', 'set/confEdit', 2, 24, '', '_self', 13, 2);
-INSERT INTO `rt_menu` VALUES (29, '删除配置', 'set/confDel', 2, 25, '', '_self', 13, 2);
-INSERT INTO `rt_menu` VALUES (30, '设置配置', 'set/confSet', 2, 26, '', '_self', 13, 2);
-INSERT INTO `rt_menu` VALUES (31, '编辑配置项', 'set/setEdit', 2, 27, '', '_self', 13, 2);
-INSERT INTO `rt_menu` VALUES (32, '删除配置项', 'set/setDel', 2, 28, '', '_self', 13, 2);
-INSERT INTO `rt_menu` VALUES (33, '编辑计划任务', 'set/cronsEdit', 2, 29, '', '_self', 14, 2);
-INSERT INTO `rt_menu` VALUES (34, '删除计划任务', 'set/cronDel', 2, 30, '', '_self', 14, 2);
-INSERT INTO `rt_menu` VALUES (35, '错误日志', 'auth/errs', 1, 31, 'fa-ban', '_self', 2, 1);
-INSERT INTO `rt_menu` VALUES (36, '系统分类', 'cate/index', 1, 32, 'fa-align-justify', '_self', 2, 1);
-INSERT INTO `rt_menu` VALUES (37, '用户地址', 'user/address', 1, 33, 'fa-at', '_self', 1, 1);
+INSERT INTO `rt_menu` VALUES (1, '内容管理', 'content', NULL, 0, 1, 'fa-address-book', '_self', 0, 0);
+INSERT INTO `rt_menu` VALUES (2, '系统管理', 'system', NULL, 0, 2, 'fa-lemon-o', '_self', 0, 0);
+INSERT INTO `rt_menu` VALUES (3, '财务管理', 'account', NULL, 0, 3, 'fa-slideshare', '_self', 0, 0);
+INSERT INTO `rt_menu` VALUES (4, '用户管理', 'user/index', NULL, 1, 4, 'fa-stumbleupon-circle', '_self', 1, 1);
+INSERT INTO `rt_menu` VALUES (5, '用户账户', 'user/account', NULL, 1, 5, 'fa-viacoin', '_self', 1, 1);
+INSERT INTO `rt_menu` VALUES (7, '文章管理', 'art/index', NULL, 1, 7, 'fa-file-text', '_self', 1, 1);
+INSERT INTO `rt_menu` VALUES (9, '菜单管理', 'auth/menus', NULL, 1, 9, 'fa-dot-circle-o', '_self', 2, 1);
+INSERT INTO `rt_menu` VALUES (10, '角色管理', 'auth/rols', NULL, 1, 10, 'fa-adn', '_self', 2, 1);
+INSERT INTO `rt_menu` VALUES (11, '管理员管理', 'auth/index', NULL, 1, 11, 'fa-android', '_self', 2, 1);
+INSERT INTO `rt_menu` VALUES (12, '操作日志', 'auth/logs', NULL, 1, 12, 'fa-hourglass-end', '_self', 2, 1);
+INSERT INTO `rt_menu` VALUES (13, '系统设置', 'set/index', NULL, 1, 13, 'fa-angle-double-down', '_self', 2, 1);
+INSERT INTO `rt_menu` VALUES (14, '计划任务', 'set/crons', NULL, 1, 14, 'fa-arrow-up', '_self', 2, 1);
+INSERT INTO `rt_menu` VALUES (15, '前端菜单', 'menu/list', NULL, 5, 0, NULL, NULL, 0, 1);
+INSERT INTO `rt_menu` VALUES (21, '编辑菜单', 'auth/menuEdit', NULL, 2, 20, 'fa-address-card-o', '_self', 9, 2);
+INSERT INTO `rt_menu` VALUES (22, '删除菜单', 'auth/menuDel', NULL, 2, 21, 'fa-address-card-o', '_self', 9, 2);
+INSERT INTO `rt_menu` VALUES (24, '编辑管理员', 'auth/adminEdit', NULL, 2, 20, '', '_self', 11, 2);
+INSERT INTO `rt_menu` VALUES (25, '删除管理员', 'auth/adminDel', NULL, 2, 21, '', '_self', 11, 2);
+INSERT INTO `rt_menu` VALUES (26, '编辑角色', 'auth/rolsEdit', NULL, 2, 22, '', '_self', 10, 2);
+INSERT INTO `rt_menu` VALUES (27, '删除角色', 'auth/rolsDel', NULL, 1, 23, '', '_self', 10, 2);
+INSERT INTO `rt_menu` VALUES (28, '编辑配置', 'set/confEdit', NULL, 2, 24, '', '_self', 13, 2);
+INSERT INTO `rt_menu` VALUES (29, '删除配置', 'set/confDel', NULL, 2, 25, '', '_self', 13, 2);
+INSERT INTO `rt_menu` VALUES (30, '设置配置', 'set/confSet', NULL, 2, 26, '', '_self', 13, 2);
+INSERT INTO `rt_menu` VALUES (31, '编辑配置项', 'set/setEdit', NULL, 2, 27, '', '_self', 13, 2);
+INSERT INTO `rt_menu` VALUES (32, '删除配置项', 'set/setDel', NULL, 2, 28, '', '_self', 13, 2);
+INSERT INTO `rt_menu` VALUES (33, '编辑计划任务', 'set/cronsEdit', NULL, 2, 29, '', '_self', 14, 2);
+INSERT INTO `rt_menu` VALUES (34, '删除计划任务', 'set/cronDel', NULL, 2, 30, '', '_self', 14, 2);
+INSERT INTO `rt_menu` VALUES (35, '错误日志', 'auth/errs', NULL, 1, 31, 'fa-ban', '_self', 2, 1);
+INSERT INTO `rt_menu` VALUES (36, '系统分类', 'cate/index', NULL, 1, 32, 'fa-align-justify', '_self', 2, 1);
+INSERT INTO `rt_menu` VALUES (37, '用户地址', 'user/address', NULL, 1, 33, 'fa-at', '_self', 1, 1);
 COMMIT;
 
 -- ----------------------------

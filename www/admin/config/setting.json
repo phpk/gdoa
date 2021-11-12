@@ -1,10 +1,10 @@
 {
 	"logo": {
-		"title": "Pear Admin",
-		"image": "admin/images/logo.png"
+		"title": "GodoCms",
+		"image": "/static/logo.png"
 	},
 	"menu": {
-		"data": "admin/data/menu.json",
+		"data" : "/server/menu/list",
 		"collaspe": true,
 		"accordion": true,
 		"method": "GET",
@@ -46,15 +46,7 @@
 	"links": [{
 			"icon": "layui-icon layui-icon-auz",
 			"title": "官方网站",
-			"href": "http://www.pearadmin.com"
-		},{
-			"icon": "layui-icon layui-icon-auz",
-			"title": "开发文档",
-			"href": "http://www.pearadmin.com"
-		},{
-			"icon": "layui-icon layui-icon-auz",
-			"title": "开源地址",
-			"href": "https://gitee.com/Jmysy/Pear-Admin-Layui"
+			"href": "http://godo.im"
 		}
 	],
 	"other": {

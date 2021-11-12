@@ -20,6 +20,8 @@ module.exports = class extends think.Controller {
 ### 正确返回
 ```json
 {
+    code : 200,
+    data : token|string
 }
 ```
 */
@@ -37,7 +39,7 @@ module.exports = class extends think.Controller {
         let admin = await this.model('admin').where({
             username: post.username
         }).find();
-        
+        let adminId = admin.admin_id;
         if (think.isEmpty(admin)) {
             await this.session('loginNum', loginNum + 1);
             return this.err('用户不存在');
@@ -56,7 +58,7 @@ module.exports = class extends think.Controller {
         let salt = this.service('login').randomString(),
             md5Salt = think.md5(salt);
         let token = jwt.sign({
-            adminId: admin.admin_id
+            adminId: adminId
         }, md5Salt, {
             expiresIn: 60 * 60 * 1 //1小时过期
         });
@@ -64,7 +66,7 @@ module.exports = class extends think.Controller {
         let password = this.service('login').createPassword(post.password, salt);
         //更新用户密码和登录状态
         await this.model('admin')
-            .where({ admin_id: admin.admin_id })
+            .where({ admin_id: adminId })
             .update({
                 password,
                 salt,
@@ -72,18 +74,23 @@ module.exports = class extends think.Controller {
                 login_time : this.now()
             })
         //添加缓存
-        await this.session('adminId', admin.admin_id);
+        await this.session('adminId', adminId);
         //只允许一个帐号在一个端下登录
-        let cacheId = 'admin_' + admin.admin_id;
-        await this.cache(cacheId, md5Salt);
+        await this.cache('admin_' + adminId, md5Salt);
+        //设置路由缓存
+        let routeData = await this.model('menu').list(adminId);
+        await this.cache('perms_' + adminId, routeData.perms);
+        //设置菜单缓存
+        await this.cache('menus_' + adminId, routeData.menus);
+        console.log(routeData)
         //jwt校验用
         await this.session('salt', md5Salt);
         //设定保活
         await this.session('statusTime', this.now());
         //添加登录日志
-        this.adminId = admin.admin_id;
+        this.adminId = adminId;
         this.adminLog(admin.username + '登录');
-        return this.ok({token});
+        return this.ok(token);
     }
 /**
 

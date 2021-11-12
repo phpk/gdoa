@@ -5,7 +5,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 		<title> 后台管理 </title>
 		<!-- 依 赖 样 式 -->
-		<link rel="stylesheet" href="component/pear/css/pear.css" />
+		<link rel="stylesheet" href="component/ui/css/ui.css" />
 		<!-- 加 载 样 式 -->
 		<link rel="stylesheet" href="admin/css/loader.css" />
 		<!-- 布 局 样 式 -->
@@ -81,9 +81,10 @@
 			<a href="#" class="layui-icon layui-icon-shrink-right"></a>
 		</div>
 		<!-- 依 赖 脚 本 -->
-		<script src="component/layui/layui.js"></script>
-		<script src="component/pear/pear.js"></script>
 		<script src="config/config.js"></script>
+		<script src="component/layui/layui.js"></script>
+		<script src="component/ui/ui.js"></script>
+		
 		<!-- 框 架 初 始 化 -->
 		<script>
 			layui.use(['admin','jquery','popup'], function() {
@@ -91,8 +92,11 @@
 				var admin = layui.admin;
 				var popup = layui.popup;
 				
-				admin.setConfigType("yml");
-				admin.setConfigPath("config/pear.config.yml");
+				//admin.setConfigType("yml");
+				//admin.setConfigPath("config/pear.config.yml");
+
+				admin.setConfigType("json");
+				admin.setConfigPath("config/setting.json");
 				
 				admin.render();
 				
@@ -107,18 +111,18 @@
 				
 				// 初始化消息回调
 				admin.message();
-				let h = getHeader();
-				console.log(h)
-				$.ajax({
-					url : '/server/index',
-					headers : h,
-					success : (res) => {
-						console.log(res)
-					},
-					error : (err) => {
-						console.log(err)
-					}
-				})
+				//let h = getHeader();
+				//console.log(h)
+				//$.ajax({
+				//	url : '/server/index',
+				//	headers : h,
+				//	success : (res) => {
+				//		console.log(res)
+				//	},
+				//	error : (err) => {
+				//		console.log(err)
+				//	}
+				//})
 				// admin.message(function(id, title, context, form) {});
 			})
 		</script>		
