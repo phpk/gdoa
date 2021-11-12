@@ -31,7 +31,7 @@ mysql: {
 
 ## 本地预览
 
-通过运行 `npm start` 启动一个本地服务器。默认访问地址 http://localhost:8360 。
+通过运行 `npm start` 启动一个本地服务器。默认访问地址 http://localhost:8100 。
 
 ```bash
 npm start
