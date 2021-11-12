@@ -13,6 +13,8 @@
 ### 正确返回
 ```json
 {
+    code : 200,
+    data : token|string
 }
 ```
 

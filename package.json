@@ -28,16 +28,16 @@
     "thinkjs": "^3.0.0"
   },
   "devDependencies": {
+    "ava": "^0.18.0",
     "babel-cli": "^6.24.1",
     "babel-preset-think-node": "^1.0.0",
-    "node-notifier": "^5.0.2",
-    "think-inspect": "0.0.2",
-    "think-babel": "^1.0.3",
-    "think-watcher": "^3.0.0",
     "eslint": "^4.2.0",
     "eslint-config-think": "^1.0.0",
-    "ava": "^0.18.0",
-    "nyc": "^7.0.0"
+    "node-notifier": "^5.0.2",
+    "nyc": "^7.0.0",
+    "think-babel": "^1.0.3",
+    "think-inspect": "0.0.2",
+    "think-watcher": "^3.0.0"
   },
   "repository": "",
   "license": "MIT",
