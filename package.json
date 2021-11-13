@@ -7,6 +7,7 @@
     "start": "node development.js",
     "test": "THINK_UNIT_TEST=1 nyc ava test/ && nyc report --reporter=html",
     "compile": "babel --no-babelrc src/ --presets think-node --out-dir app/",
+    "doc": "apidoc-markdown -i src -t www/docs/apidoctpl.md -o www/docs/doc --multi",
     "lint": "eslint src/",
     "lint-fix": "eslint --fix src/"
   },
@@ -16,18 +17,16 @@
     "think-cache": "^1.0.0",
     "think-cache-file": "^1.0.8",
     "think-cache-redis": "^1.2.6",
-    "think-jsdoc": "^0.1.1",
     "think-logger3": "^1.0.0",
     "think-model": "^1.0.0",
     "think-model-mysql": "^1.0.0",
     "think-session": "^1.0.0",
     "think-session-file": "^1.0.5",
     "think-session-redis": "^1.1.4",
-    "think-view": "^1.0.0",
-    "think-view-nunjucks": "^1.0.1",
     "thinkjs": "^3.0.0"
   },
   "devDependencies": {
+    "apidoc-markdown": "^7.0.1",
     "ava": "^0.18.0",
     "babel-cli": "^6.24.1",
     "babel-preset-think-node": "^1.0.0",

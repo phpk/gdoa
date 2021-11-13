@@ -4,11 +4,11 @@
 		"image": "/static/logo.png"
 	},
 	"menu": {
-		"data" : "/server/menu/list",
+		"data": "menu/list",
 		"collaspe": true,
 		"accordion": true,
 		"method": "GET",
-		"control": false,
+		"control": true,
 		"select": "0"
 	},
 	"tab": {
@@ -22,28 +22,34 @@
 		}
 	},
 	"theme": {
-		"defaultColor": "2",
-		"defaultMenu": "dark-theme",
+		"defaultColor": "3",
+		"defaultMenu": "light-theme",
 		"allowCustom": true
 	},
-	"colors": [{
+	"colors": [
+		{
 			"id": "1",
 			"color": "#2d8cf0"
-		},{
+		},
+		{
 			"id": "2",
 			"color": "#5FB878"
-		},{
+		},
+		{
 			"id": "3",
 			"color": "#1E9FFF"
-		}, {
+		},
+		{
 			"id": "4",
 			"color": "#FFB800"
-		}, {
+		},
+		{
 			"id": "5",
 			"color": "darkgray"
 		}
 	],
-	"links": [{
+	"links": [
+		{
 			"icon": "layui-icon layui-icon-auz",
 			"title": "官方网站",
 			"href": "http://godo.im"

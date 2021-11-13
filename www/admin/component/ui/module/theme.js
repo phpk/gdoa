@@ -74,7 +74,7 @@ layui.define(["jquery","layer"], function (exports) {
 		style += '.pear-btn:hover {color: '+color+';background-color: ' + second + ';}'
 		style += '.pear-btn-primary[plain] {color: '+ color +' !important;background: ' + second + ' !important;}'
 		style += '.pear-btn-primary[plain]:hover {background-color: ' + color + '!important}'
-		style += '.light-theme .pear-nav-tree .layui-this a:hover,.light-theme .pear-nav-tree .layui-this,.light-theme .pear-nav-tree .layui-this a {background-color:'+second+'!important;color:'+color+'!important;}'
+		style += '.light-theme .pear-nav-tree .layui-this a:hover,.light-theme .pear-nav-tree .layui-this,.light-theme .pear-nav-tree .layui-this a {background-color:'+second+'!important;}'
 		style += '.light-theme .pear-nav-tree .layui-this{ border-right: 3px solid '+color+'!important}'
 		style += '.loader:after {background:'+color+'}'
 		if(this.autoHead === true || this.autoHead === "true"){

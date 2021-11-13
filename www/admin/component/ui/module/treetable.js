@@ -8,29 +8,50 @@ layui.define(['layer', 'table'], function (exports) {
     var treetable = {
 
         render: function (param) {
-            param.method = param.method?param.method:"GET";
+            param.method = param.method ? param.method : "GET";
             if (!treetable.checkParam(param)) {
                 return;
             }
             if (param.data) {
                 treetable.init(param, param.data);
             } else {
-                if(param.method === 'post' || param.method === 'POST') {
-                    $.post(param.url, param.where, function(res){
-                        if(param.parseData){
+                if (param.method === 'post' || param.method === 'POST') {
+                    $.post(param.url, param.where, function (res) {
+                        if (param.parseData) {
                             res = param.parseData(res);
                             param.data = res.data;
                         }
                         treetable.init(param, res.data);
                     });
                 } else {
-                    $.get(param.url, param.where, function(res){
-                        if(param.parseData){
+                    _get(layui, param.url, (res) => {
+                        if (param.parseData) {
                             res = param.parseData(res);
-                            param.data = res.data;
+                            param.data = res;
                         }
-                        treetable.init(param, res.data);
-                    });
+                        treetable.init(param, res);
+                    })
+                    // $.ajax({
+                    //     url: param.url,
+                    //     method: "get",
+                    //     body: param.where,
+                    //     headers: getHeader(),
+                    //     success: res => {
+                    //         console.log(res.data)
+                    //         if (param.parseData) {
+                    //             res = param.parseData(res);
+                    //             param.data = res.data;
+                    //         }
+                    //         treetable.init(param, res.data);
+                    //     }
+                    // })
+                    // $.get(param.url, param.where, function(res){
+                    //     if(param.parseData){
+                    //         res = param.parseData(res);
+                    //         param.data = res.data;
+                    //     }
+                    //     treetable.init(param, res.data);
+                    // });
                 }
             }
         },
@@ -43,14 +64,14 @@ layui.define(['layer', 'table'], function (exports) {
                 var tt = tNodes[i];
                 if (!tt.id) {
                     if (!param.treeIdName) {
-                        layer.msg('参数treeIdName不能为空', {icon: 5});
+                        layer.msg('参数treeIdName不能为空', { icon: 5 });
                         return;
                     }
                     tt.id = tt[param.treeIdName];
                 }
                 if (!tt.pid) {
                     if (!param.treePidName) {
-                        layer.msg('参数treePidName不能为空', {icon: 5});
+                        layer.msg('参数treePidName不能为空', { icon: 5 });
                         return;
                     }
                     tt.pid = tt[param.treePidName];
@@ -112,14 +133,14 @@ layui.define(['layer', 'table'], function (exports) {
 
             // 渲染表格
             table.render(param);
-            var result = instances.some(item=>item.key===param.elem);
-            if(!result){
-                instances.push({key:param.elem,value:param});
+            var result = instances.some(item => item.key === param.elem);
+            if (!result) {
+                instances.push({ key: param.elem, value: param });
             }
         },
-        reload: function(elem) {
-            instances.forEach(function(item){
-                if(item.key === elem) {
+        reload: function (elem) {
+            instances.forEach(function (item) {
+                if (item.key === elem) {
                     $(elem).next().remove();
                     item.value.data = undefined;
                     item.value.url = item.value.prevUrl;
@@ -127,31 +148,31 @@ layui.define(['layer', 'table'], function (exports) {
                 }
             })
         },
-		search: function(elem,keyword) {
-			var $tds = $(elem).next('.treeTable').find('.layui-table-body tbody tr td');
-			if (!keyword) {
-			    $tds.css('background-color', 'transparent');
-			    layer.msg("请输入关键字", {icon: 5});
-			    return;
-			}
-			var searchCount = 0;
-			$tds.each(function () {
-			    $(this).css('background-color', 'transparent');
-			    if ($(this).text().indexOf(keyword) >= 0) {
-			        $(this).css('background-color', 'rgba(250,230,160,0.5)');
-			        if (searchCount == 0) {
-			            $('body,html').stop(true);
-			            $('body,html').animate({scrollTop: $(this).offset().top - 150}, 500);
-			        }
-			        searchCount++;
-			    }
-			});
-			if (searchCount == 0) {
-			    layer.msg("没有匹配结果", {icon: 5});
-			} else {
-			    treetable.expandAll(elem);
-			}
-		},
+        search: function (elem, keyword) {
+            var $tds = $(elem).next('.treeTable').find('.layui-table-body tbody tr td');
+            if (!keyword) {
+                $tds.css('background-color', 'transparent');
+                layer.msg("请输入关键字", { icon: 5 });
+                return;
+            }
+            var searchCount = 0;
+            $tds.each(function () {
+                $(this).css('background-color', 'transparent');
+                if ($(this).text().indexOf(keyword) >= 0) {
+                    $(this).css('background-color', 'rgba(250,230,160,0.5)');
+                    if (searchCount == 0) {
+                        $('body,html').stop(true);
+                        $('body,html').animate({ scrollTop: $(this).offset().top - 150 }, 500);
+                    }
+                    searchCount++;
+                }
+            });
+            if (searchCount == 0) {
+                layer.msg("没有匹配结果", { icon: 5 });
+            } else {
+                treetable.expandAll(elem);
+            }
+        },
         getEmptyNum: function (pid, data) {
             var num = 0;
             if (!pid) {
@@ -203,12 +224,12 @@ layui.define(['layer', 'table'], function (exports) {
         // 检查参数
         checkParam: function (param) {
             if (!param.treeSpid && param.treeSpid != 0) {
-                layer.msg('参数treeSpid不能为空', {icon: 5});
+                layer.msg('参数treeSpid不能为空', { icon: 5 });
                 return false;
             }
 
             if (!param.treeColIndex && param.treeColIndex != 0) {
-                layer.msg('参数treeColIndex不能为空', {icon: 5});
+                layer.msg('参数treeColIndex不能为空', { icon: 5 });
                 return false;
             }
             return true;

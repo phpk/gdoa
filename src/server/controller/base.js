@@ -6,22 +6,29 @@ module.exports = class extends think.Controller {
     this.adminId = 0;
   }
   async __before() {
+    if (!await this.checkToken()) return false;
+    //权限验证
+    let url = `${this.ctx.controller}/${this.ctx.action}`;
+    console.log(url)
+
+  }
+  async checkToken() {
     let headers = this.ctx.headers;
     //console.log(headers)
-    if (!headers.rttoken) {
-      this.status = 403;
+    if (!headers.rttoken || headers.rttoken == 'undefined') {
+      this.status = 401;
       this.ctx.body = {
-        code: 403,
-        message : 'token none!'
+        code: 401,
+        message: 'token none!'
       };
-      return;
+      return false;
     }
     //token验证
     let jwtChk = await this.chkJwt(headers.rttoken);
     if (jwtChk.code != 200) {
-      this.status = 401;
+      this.status = 402;
       this.ctx.body = jwtChk;
-      return;
+      return false;
     }
     //判断保活
     if (!await this.checkStatusTime()) {
@@ -30,12 +37,9 @@ module.exports = class extends think.Controller {
         code: 403,
         message: '超过保活时间!'
       };
-      return;
+      return false;
     }
-    //权限验证
-    let url = `${this.ctx.controller}:${this.ctx.action}`;
-    console.log(url)
-
+    return true;
   }
   //判断保活
   async checkStatusTime() {
@@ -57,7 +61,7 @@ module.exports = class extends think.Controller {
       adminId = await this.session('adminId');
     if (!salt || !adminId) {
       return {
-        code: 401,
+        code: 4021,
         message: 'session 不存在'
       };
     }
@@ -66,7 +70,7 @@ module.exports = class extends think.Controller {
     if (!chkSalt || salt != chkSalt) {
       await this.clearSatus(adminId);
       return {
-        code: 401,
+        code: 4022,
         message: '有其他用户登录该账户'
       };
     }
@@ -77,19 +81,19 @@ module.exports = class extends think.Controller {
       await this.clearSatus(adminId);
       await this.cache('admin_' + adminId, null);
       return {
-        code: 401,
+        code: 4023,
         message: '认证过期'
       };;
     }
     this.adminId = adminId;
     return {
-      code : 200
+      code: 200
     };
   }
   async clearSatus(adminId) {
     await this.session(null);
     //await this.cache('admin_' + adminId, null);
-    
+
   }
   __after() {
 

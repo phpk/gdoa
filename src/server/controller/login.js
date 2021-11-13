@@ -1,30 +1,30 @@
 const svgCaptcha = require("svg-captcha");
 const jwt = require('jsonwebtoken');
-const ADMINDIR = 'server';
+//const ADMINDIR = 'server';
 /**
-# 用户登录
-*/
+ * @apiDefine login 用户登录
+ */
 module.exports = class extends think.Controller {
-/**
-## 登录
-> 方法：POST
+    /**
+     * @api {post} login/do  用户登录
+     * @apiGroup login
+     *
+     * @apiParam {string} username 用户 必填
+     * @apiParam {string} password 密码 必填
+     * @apiParam {string} captcha 验证码 必填
+     *
+     * @apiSuccess {number}  code   结果码
+     * @apiSuccess {string} data   数据
+     * @apiSuccess {string} message  提示
+     *
+     * @apiSuccessExample Success-Response:
+     * {
+     * "code": 0,
+     * "message": "ok",
+     * "data":token
+     * }
+     */
 
-### 参数
-
-| **参数名** | **类型** | **说明** | **是否必填** |
-| --- | --- | --- | --- |
-|username| string|用户|√|
-|password| string|密码| √|
-|captcha | string|验证码 |√|
-            
-### 正确返回
-```json
-{
-    code : 200,
-    data : token|string
-}
-```
-*/
     async doAction() {
         let post = this.post()
         if (!await this.chkCapcha(post.captcha)) {
@@ -71,18 +71,19 @@ module.exports = class extends think.Controller {
                 password,
                 salt,
                 login_num: admin.login_num + 1,
-                login_time : this.now()
+                login_time: this.now()
             })
         //添加缓存
         await this.session('adminId', adminId);
         //只允许一个帐号在一个端下登录
         await this.cache('admin_' + adminId, md5Salt);
         //设置路由缓存
-        let routeData = await this.model('menu').list(adminId);
-        await this.cache('perms_' + adminId, routeData.perms);
+        //let routeData = await this.model('menu').list(adminId);
+        //await this.cache('perms_' + adminId, routeData.perms);
         //设置菜单缓存
-        await this.cache('menus_' + adminId, routeData.menus);
-        console.log(routeData)
+        //await this.cache('menus_' + adminId, routeData.menus);
+		await this.model('menu').cacheData(adminId);
+        //console.log(routeData)
         //jwt校验用
         await this.session('salt', md5Salt);
         //设定保活
@@ -92,19 +93,14 @@ module.exports = class extends think.Controller {
         this.adminLog(admin.username + '登录');
         return this.ok(token);
     }
-/**
+    /**
+     * 
+     * @api {get} login/captcha 获取验证码
+     * @apiGroup login
+     * @apiDescription 返回base64位图片
+     * 
+     */
 
-## 获取验证码
-> 方法：GET
-
-### 参数
-> null
-
-### 正确返回
-```bash
-base64位图片
-```
-*/
     async captchaAction() {
         let option = {
             size: 4, // 验证码长度

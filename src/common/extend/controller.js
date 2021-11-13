@@ -5,7 +5,7 @@ function ok(data, message = "ok") {
         data,
         message
     }
-    return;
+    return false;
 }
 function err(message = "error", code = 401) {
     this.header('Content-Type', 'application/json');
@@ -13,7 +13,7 @@ function err(message = "error", code = 401) {
         code,
         message
     }
-    return;
+    return false;
 }
 /**
  * 获取当前时间撮
@@ -45,7 +45,7 @@ async function adminLog(msg) {
     } catch (error) {
         console.log(error)
     }
-    
+
 }
 module.exports = {
     ok,

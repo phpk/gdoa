@@ -6,7 +6,7 @@ module.exports = class extends think.Model {
         }).getField('auth_id');
         //再从角色表里取出对应的菜单权限id
         let rulesId = await this.model('admin_auth')
-            .where({ id: ['IN', authIds]})
+            .where({ id: ['IN', authIds] })
             .getField('rules');
         let data = [];
         if (rulesId.indexOf('-1') > -1) {
@@ -28,7 +28,7 @@ module.exports = class extends think.Model {
         const findById = (id) => {
             let child = [];
             data.forEach((value) => {
-                if (value.pid == id) {
+                if (value.pid == id && value.ifshow < 1) {
                     child.push(value);
                 }
             });
@@ -51,5 +51,12 @@ module.exports = class extends think.Model {
         let menus = deeploop(0);
         return { perms, menus };
     }
-    
+    async cacheData(adminId) {
+        //设置路由缓存
+        let routeData = await this.list(adminId);
+        await think.cache('perms_' + adminId, routeData.perms);
+        //设置菜单缓存
+        await think.cache('menus_' + adminId, routeData.menus);
+    }
+
 }
