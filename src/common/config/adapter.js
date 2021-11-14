@@ -7,32 +7,28 @@ const path = require('path');
 const isDev = think.env === 'development';
 const redisSession = require('think-session-redis');
 const redisCache = require('think-cache-redis');
+const conf = require('./config.js')
 /**
  * cache adapter config
  * @type {Object}
  */
-// exports.cache = {
-//   type: 'file',
-//   common: {
-//     timeout: 24 * 60 * 60 * 1000 // millisecond
-//   },
-//   file: {
-//     handle: fileCache,
-//     cachePath: path.join(think.ROOT_PATH, 'runtime/cache'), // absoulte path is necessarily required
-//     pathDepth: 1,
-//     gcInterval: 24 * 60 * 60 * 1000 // gc interval
-//   }
-// };
+
 exports.cache = {
-  type: 'redis',
+  type: conf.cache.type,
   common: {
-    timeout: 24 * 3600 * 1000 // millisecond
+    timeout: conf.cache.timeout // millisecond
   },
   redis: {
     handle: redisCache,
-    port: 6379,
-    host: '127.0.0.1',
-    password: ''
+    port: conf.redis.port,
+    host: conf.redis.host,
+    password: conf.redis.password
+  },
+  file: {
+    handle: fileCache,
+    cachePath: path.join(think.ROOT_PATH, 'runtime/cache'), // absoulte path is necessarily required
+    pathDepth: 1,
+    gcInterval: 24 * 60 * 60 * 1000 // gc interval
   }
 };
 /**
@@ -48,14 +44,14 @@ exports.model = {
   },
   mysql: {
     handle: mysql,
-    database: 'gdcms',
-    prefix: 'rt_',
-    encoding: 'utf8',
-    host: '127.0.0.1',
-    port: '8889',
-    user: 'root',
-    password: 'root',
-    dateStrings: true
+    database: conf.mysql.database,
+    prefix: conf.mysql.prefix,
+    encoding: conf.mysql.encoding,
+    host: conf.mysql.host,
+    port: conf.mysql.port,
+    user: conf.mysql.user,
+    password: conf.mysql.password,
+    dateStrings: conf.mysql.dateStrings
   }
 };
 
@@ -63,27 +59,13 @@ exports.model = {
  * session adapter config
  * @type {Object}
  */
-/*
+
 exports.session = {
-  type: 'file',
+  type: conf.session.type,
   common: {
     cookie: {
-      name: 'thinkjs',
-      keys: ['werwer', 'werwer'],
-      signed: true
-    }
-  },
-  file: {
-    handle: fileSession,
-    sessionPath: path.join(think.ROOT_PATH, 'runtime/session')
-  }
-};*/
-exports.session = {
-  type: 'redis',
-  common: {
-    cookie: {
-      name: 'godocms',
-      maxAge: 1 * 3600 * 1000,
+      name: conf.cookie.name,
+      maxAge: conf.session.maxAge,
       //expires: '',
       path: '/',  //a string indicating the path of the cookie
       //domain: '',
@@ -97,8 +79,12 @@ exports.session = {
   },
   redis: {
     handle: redisSession,
-    maxAge: 3600 * 1000, //session timeout, if not set, session will be persistent.
+    maxAge: conf.session.maxAge, //session timeout, if not set, session will be persistent.
     autoUpdate: true, //update expired time when get session, default is false
+  },
+  file: {
+    handle: fileSession,
+    sessionPath: path.join(think.ROOT_PATH, 'runtime/session')
   }
 }
 

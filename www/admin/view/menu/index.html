@@ -72,7 +72,7 @@
                 treeIdName: 'id',
                 treePidName: 'pid',
                 skin:'line',
-                treeDefaultClose: true,
+                treeDefaultClose: false,
                 toolbar:'#power-toolbar',
                 elem: '#power-table',
                 url: 'menu/oplist',
@@ -113,12 +113,20 @@
 				 treetable.foldAll("#power-table");
 			}
         });
+
          form.on('switch(ifshow)', function (data) {
-            let v = '0';
-            if (data.elem.checked) v = '1';
-            console.log(data.value)
-            console.log(v)
-            //$('input[name=status]').val(v);
+            let v = 1;
+            if (data.elem.checked) v = 0;
+            let postData = {
+                id : data.value,
+                ifshow : v
+            };
+            _post(layui, 'menu/ifshow', postData, res => {
+                //console.log(res)
+            },err => {
+                $(data.elem).prop('checked', false);
+                form.render('checkbox');
+            })
         });
         window.add = function(){
             layer.open({
@@ -141,23 +149,14 @@
             });
         }
         window.remove = function(obj){
-            layer.confirm('确定要删除该权限', {icon: 3, title:'提示'}, function(index){
+            layer.confirm('确定要删除该权限', {icon: 3, title:'提示'}, (index) => {
                 layer.close(index);
-                let loading = layer.load();
-                $.ajax({
-                    url: MODULE_PATH+"remove/"+obj.data['id'],
-                    dataType:'json',
-                    type:'delete',
-                    success:function(result){
-                        layer.close(loading);
-                        if(result.success){
-                            layer.msg(result.msg,{icon:1,time:1000},function(){
-                                obj.del();
-                            });
-                        }else{
-                            layer.msg(result.msg,{icon:2,time:1000});
-                        }
-                    }
+                _post(layui, 'menu/del',{id : obj.data.id}, res => {
+                    layer.msg('删除成功',{icon:1,time:1000},() => {
+                        obj.del();
+                     });
+                }, err => {
+                    //layer.msg('删除失败',{icon:2,time:1000});
                 })
             });
         }

@@ -47,12 +47,13 @@
 					button = layui.button,
 					popup = layui.popup,
 					$ = layui.$,
-					layer = layui.layer,
-					codeImage = $('#codeImage'),
-					captchaUrl = apiUrl + 'login/captcha';
-				codeImage.attr('src',captchaUrl + '?t=' + Math.random());
+					layer = layui.layer;
+					changeImg = () => {
+						$('#codeImage').attr('src',apiUrl + 'login/captcha?t=' + Math.random());
+					}
+				changeImg();
 				codeImage.click(() => {
-					$('#codeImage').attr('src', captchaUrl + '?t=' + Math.random());
+					changeImg();
 				});
 				
                 // 登 录 提 交
@@ -86,45 +87,13 @@
 						layer.close(index);
 						setToken(res);
 						location.href = 'index.html';
-					})
-					/*
-					$.ajax({
-						type: "post",
-						url: `${apiUrl}login/do`,
-						data: {
-							password: data.password,
-							username: data.username,
-							captcha: data.captcha
-						},
-						success: function(res) {
-							layer.close(index); //关闭加载动画
-
-							//console.log(res)
-							
-							if (res.code === 200) {
-								setToken(res.data);
-								location.href = 'index.html';
-							} else {
-								$('#err').html(res.message);
-								layer.msg(res.message, {
-									icon: 2
-								});
-							}
-						},
-						error: function(xhr) {
-							layer.close(index); //关闭加载动画
-							if (xhr.status === 401) {
-								layer.msg('未授权访问接口！', {
-									icon: 2
-								});
-							} else {
-								layer.msg('通讯失败！请重试！', {
-									icon: 2
-								});
-							}
+					}, err => {
+						layer.close(index);
+						if(err.code == 202) {
+							changeImg();
 						}
-					});*/
-					
+					})
+				
 					return false;
 				});
 			})

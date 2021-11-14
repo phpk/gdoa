@@ -1,13 +1,13 @@
 function ok(data, message = "ok") {
     this.header('Content-Type', 'application/json');
     this.ctx.body = {
-        code: 200,
+        code: 0,
         data,
         message
     }
     return false;
 }
-function err(message = "error", code = 401) {
+function err(message = "error", code = 201) {
     this.header('Content-Type', 'application/json');
     this.ctx.body = {
         code,
@@ -25,31 +25,8 @@ function now(t = '') {
         return parseInt((new Date(t).getTime()) / 1000);
     }
 }
-async function adminLog(msg) {
-    try {
-        let postData = this.post();
-        //删除敏感字段
-        if (postData.password)
-            delete postData.password;
-        let saveData = {
-            admin_id: this.adminId,
-            log: msg,
-            data: JSON.stringify(postData),
-            ip: this.ctx.ip,
-            agent: this.ctx.userAgent,
-            url: this.ctx.path,
-            method: this.ctx.method,
-            addtime: now()
-        };
-        await think.model('admin_log').add(saveData);
-    } catch (error) {
-        console.log(error)
-    }
-
-}
 module.exports = {
     ok,
     err,
-    now,
-    adminLog
+    now
 }

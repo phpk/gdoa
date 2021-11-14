@@ -16,33 +16,43 @@ const getHeader = () => {
 }
 const errorStatus = (xhr, layui) => {
     console.log(xhr)
-    if (xhr.status === 401) {
-        layui.layer.msg('访问接口未带token！', {
-            icon: 2
+    if (xhr.status === 400) {
+        layui.layer.msg('未授权访问！', {
+            icon: 2, time: 2000
         });
-		top.location.href = 'login.html';
+    }
+    else if (xhr.status === 401) {
+        layui.layer.msg('访问接口未带token！', {
+            icon: 2, time: 2000
+        });
+        top.location.href = '/admin/login.html';
     }
     else if (xhr.status === 402) {
         layui.layer.msg('token校验失败！', {
-            icon: 2
+            icon: 2, time: 2000
         });
-        top.location.href = 'login.html';
+        top.location.href = '/admin/login.html';
     }
     else if (xhr.status === 403) {
         layui.layer.msg('一段时间未操作，超过保活时间！', {
-            icon: 2
+            icon: 2, time: 2000
         });
-        top.location.href = 'login.html';
+        top.location.href = '/admin/login.html';
+    }
+    else if (xhr.status === 406) {
+        layui.layer.msg('一段时间未操作，超过保活时间！', {
+            icon: 2, time: 2000
+        });
+        top.location.href = '/admin/login.html';
     }
     else if (xhr.status === 404) {
-        layui.layer.msg('一段时间未操作，超过保活时间！', {
-            icon: 2
+        layui.layer.msg('请求的地址不存在！', {
+            icon: 2, time: 2000
         });
-        top.location.href = 'login.html';
     }
     else {
         layui.layer.msg('通讯失败！请重试！', {
-            icon: 2
+            icon: 2, time: 2000
         });
     }
 }
@@ -54,11 +64,11 @@ const _get = (layui, url, suc, err) => {
         headers: getHeader(),
         success: (res) => {
             //console.log(res)
-            if (res.code === 200) {
+            if (res.code === 0) {
                 suc(res.data)
             } else {
                 layui.layer.msg(res.message, {
-                    icon: 2
+                    icon: 2, time: 2000
                 });
                 err && err(res);
             }
@@ -71,6 +81,11 @@ const _get = (layui, url, suc, err) => {
 }
 const _post = (layui, url, data, suc, err) => {
     //console.log(`${apiUrl}${url}`)
+    layui.$.ajaxSetup({
+        xhrFields: {
+            withCredentials: true
+        }
+    });
     layui.$.ajax({
         type: "post",
         url: `${apiUrl}${url}`,
@@ -78,11 +93,11 @@ const _post = (layui, url, data, suc, err) => {
         data,
         success: (res) => {
             //console.log(res)
-            if (res.code === 200) {
+            if (res.code === 0) {
                 suc(res.data)
             } else {
                 layui.layer.msg(res.message, {
-                    icon: 2
+                    icon: 2, time: 2000
                 });
                 err && err(res);
             }

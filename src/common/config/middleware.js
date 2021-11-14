@@ -1,9 +1,24 @@
 const path = require('path');
 const isDev = think.env === 'development';
-
+//const csrf = require('think-csrf');
+const conf = require('./config.js')
 module.exports = [
   {
+    handle: 'csrf',
+    enable: conf.csrf.enable,
+    match: /^\/server/,
+    options: {
+      headerName: conf.csrf.headerName
+    }
+  },
+  {
+    handle: 'ratelimit',
+    enable: conf.ratelimit.enable,
+    match: /^\/server/,
+  },
+  {
     handle: 'meta',
+    match: /^\/server/,
     options: {
       logRequest: isDev,
       sendResponseTime: isDev

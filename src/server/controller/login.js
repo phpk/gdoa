@@ -2,6 +2,7 @@ const svgCaptcha = require("svg-captcha");
 const jwt = require('jsonwebtoken');
 //const ADMINDIR = 'server';
 /**
+ * @class 
  * @apiDefine login 用户登录
  */
 module.exports = class extends think.Controller {
@@ -28,7 +29,7 @@ module.exports = class extends think.Controller {
     async doAction() {
         let post = this.post()
         if (!await this.chkCapcha(post.captcha)) {
-            return this.err('验证码错误')
+            return this.err('验证码错误', 202)
         }
         //杜绝用户反复查表
         let loginNum = await this.session('loginNum');
@@ -82,15 +83,27 @@ module.exports = class extends think.Controller {
         //await this.cache('perms_' + adminId, routeData.perms);
         //设置菜单缓存
         //await this.cache('menus_' + adminId, routeData.menus);
-		await this.model('menu').cacheData(adminId);
+        await this.model('menu').cacheData(adminId);
         //console.log(routeData)
         //jwt校验用
         await this.session('salt', md5Salt);
         //设定保活
         await this.session('statusTime', this.now());
         //添加登录日志
-        this.adminId = adminId;
-        this.adminLog(admin.username + '登录');
+        //this.adminId = adminId;
+        //this.adminOpLog(admin.username + '登录', ['password']);
+        delete post.password;
+        let logData = {
+            admin_id: adminId,
+            log: admin.username + '用户登录',
+            data: JSON.stringify(post),
+            ip: this.ctx.ip,
+            agent: this.ctx.userAgent,
+            url: this.ctx.path,
+            method: this.ctx.method,
+            addtime: this.now()
+        };
+        await think.model('admin_oplog').add(logData);
         return this.ok(token);
     }
     /**
