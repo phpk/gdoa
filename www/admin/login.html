@@ -49,10 +49,10 @@
 					$ = layui.$,
 					layer = layui.layer;
 					changeImg = () => {
-						$('#codeImage').attr('src',apiUrl + 'login/captcha?t=' + Math.random());
+						$('#codeImage').attr('src',apiUrl + 'login/captcha?t='+ Math.random());
 					}
 				changeImg();
-				codeImage.click(() => {
+				$('#codeImage').click(() => {
 					changeImg();
 				});
 				

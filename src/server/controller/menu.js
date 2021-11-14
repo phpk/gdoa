@@ -43,42 +43,9 @@ module.exports = class extends Base {
     async oplistAction() {
         let list = await this.model('menu').select()
         await this.adminViewLog('菜单列表');
-        return this.ok(list)
+        return this.ok({ list, count: list.length })
     }
-    //前台渲染递归
-    async tree(tid) {
-        let data = await this.model('menu').select()
-        //根据 id取出某一个分类的子集
-        const findById = (id) => {
-            let child = [];
-            data.forEach((value) => {
-                if (value.pid == id) {
-                    value.name = value.title;
-                    if (id == tid) {
-                        value.checked = true;
-                    }
-                    value.open = false;
-                    child.push(value);
-                }
-            });
-            return child;
-        };
-        // 递归查询到数据并将数据存储到数组 
-        const deeploop = function (id) {
-            let dataArr = findById(id);
-            if (dataArr.length <= 0) {
-                return null;
-            } else {
-                dataArr.forEach((value) => {
-                    if (deeploop(value.id) != null) {
-                        value["children"] = deeploop(value.id);
-                    }
-                });
-            }
-            return dataArr;
-        };
-        return deeploop(0)
-    }
+
     /**
      * 
      * @api {get} menu/one 获取单个菜单数据
@@ -100,7 +67,7 @@ module.exports = class extends Base {
             data = {};
         }
 
-        let list = await this.tree(id);
+        let list = await this.tree([id]);
         let pname = '顶层目录';
         data.list = [
             {
@@ -205,7 +172,7 @@ module.exports = class extends Base {
      *
      * @apiParam  {Number} id 菜单id
      * @apiParam  {Number} ifshow 显示状态0或1
-     * @apiSuccess (200) 
+     * @apiSuccess (200)  name description
      *
      */
     async ifshowAction() {
@@ -232,7 +199,7 @@ module.exports = class extends Base {
      *
      * @apiParam  {Number} id 菜单id
      * 
-     * @apiSuccess (200)
+     * @apiSuccess (200) name description
      *
      */
     async delAction() {

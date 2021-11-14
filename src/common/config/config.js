@@ -8,10 +8,13 @@ module.exports = {
     headerName: 'csrf_token',
     enable: true
   },
+  helmet: {
+    enable: true
+  },
   ratelimit: {
     enable: true,
-    interval: 3 * 60 * 1000, // 1 minutes
-    max: 1,
+    interval: 1 * 60 * 1000, // 1 minutes
+    max: 100,
   },
   cache: {
     type: 'redis',//or 'file'

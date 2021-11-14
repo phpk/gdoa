@@ -11,7 +11,6 @@ module.exports = (options = {}, app) => {
     options = Object.assign({}, defaultOptions, conf.ratelimit);
     return (ctx, next) => {
         if (options.enable) {
-
             const limiter = RateLimit.middleware(options);
             //  apply to all requests
             app.use(limiter);

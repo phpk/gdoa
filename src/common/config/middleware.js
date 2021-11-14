@@ -12,6 +12,14 @@ module.exports = [
     }
   },
   {
+    handle: 'helmet',
+    enable: conf.helmet.enable,
+    match: /^\/server/,
+    options: {
+      enable: conf.helmet.enable
+    }
+  },
+  {
     handle: 'ratelimit',
     enable: conf.ratelimit.enable,
     match: /^\/server/,

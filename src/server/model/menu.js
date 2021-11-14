@@ -1,4 +1,9 @@
 module.exports = class extends think.Model {
+    /**
+     * 获取列表
+     * @param {Number} adminId 
+     * @returns 
+     */
     async list(adminId) {
         //先从角色映射表里取出管理员对应的角色
         let authIds = await think.model('admin_map').where({
@@ -28,6 +33,7 @@ module.exports = class extends think.Model {
         const findById = (id) => {
             let child = [];
             data.forEach((value) => {
+                //前台是否显示
                 if (value.pid == id && value.ifshow < 1) {
                     child.push(value);
                 }
@@ -51,12 +57,55 @@ module.exports = class extends think.Model {
         let menus = deeploop(0);
         return { perms, menus };
     }
+    /**
+     * 设置缓存
+     * @param {Number} adminId 
+     */
     async cacheData(adminId) {
         //设置路由缓存
         let routeData = await this.list(adminId);
         await think.cache('perms_' + adminId, routeData.perms);
         //设置菜单缓存
         await think.cache('menus_' + adminId, routeData.menus);
+    }
+    /**
+     * 前台渲染递归
+     * @param {array} tid 
+     * @returns 
+     */
+    async tree(tid) {
+        let data = await this.model('menu').select()
+        //根据 id取出某一个分类的子集
+        const findById = (id) => {
+            let child = [];
+            data.forEach((value) => {
+                if (value.pid == id) {
+                    value.name = value.title;
+                    //前台是否选择了
+                    if (tid.includes(id)) {
+                        value.checked = true;
+                    }
+                    value.open = false;
+                    child.push(value);
+                }
+            });
+            return child;
+        };
+        // 递归查询到数据并将数据存储到数组 
+        const deeploop = function (id) {
+            let dataArr = findById(id);
+            if (dataArr.length <= 0) {
+                return null;
+            } else {
+                dataArr.forEach((value) => {
+                    if (deeploop(value.id) != null) {
+                        value["children"] = deeploop(value.id);
+                    }
+                });
+            }
+            return dataArr;
+        };
+        return deeploop(0)
     }
 
 }

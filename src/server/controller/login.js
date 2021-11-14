@@ -126,6 +126,7 @@ module.exports = class extends think.Controller {
         await this.session('verifyCaptcha', captcha.text.toLowerCase());
         this.header('Content-Type', 'image/svg+xml');
         this.ctx.body = captcha.data;
+        //return this.success({ img: captcha.data })
     }
     //验证验证码
     async chkCapcha(code) {

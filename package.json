@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "jsonwebtoken": "^8.5.1",
+    "koa-helmet": "^6.1.0",
     "koa2-ratelimit": "^0.9.0",
     "svg-captcha": "^1.4.0",
     "think-cache": "^1.0.0",

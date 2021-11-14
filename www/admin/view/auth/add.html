@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>添加角色</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../../component/ui/css/ui.css" />
+
+</head>
+<body>
+<div class="layuimini-container">
+    <div class="layuimini-main">
+        <form class="layui-form layui-form-pane" action="">
+            <div class="layui-form-item">
+                <label class="layui-form-label">角色名称</label>
+                <div class="layui-input-block">
+                    <input type="text" name="name" value="{{data.name}}" lay-verify="required" autocomplete="off" placeholder="请输入角色名称" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">菜单列表</label>
+                <div class="layui-input-block">
+                   <div id="treearea"></div>
+                </div>
+            </div>
+          
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit="" lay-filter="subbtn">立即提交</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script src="../../config/config.js"></script>
+<script src="../../component/layui/layui.js"></script>
+<script src="../../component/ui/ui.js"></script>
+<script>
+    layui.use(['form','layer','tree'], function () {
+        var form = layui.form
+            , layer = layui.layer
+			, $ = layui.$
+			, tree = layui.tree;
+
+           //渲染
+		   let tid = $('#tid').val();
+		$.getJSON('/admin/auth/getMenu?token=' + token + '&id=' + tid,
+		(res) => {
+			let data =res.data;
+			let decrypt = new JSEncrypt();
+			decrypt.setPrivateKey(privkey);
+			let secret = decrypt.decrypt(data['key']);//解锁
+			//console.log(secret)
+			let bytes  = CryptoJS.AES.decrypt(data['data'], secret);//解密
+			let rt = bytes.toString(CryptoJS.enc.Utf8);
+			//console.log(rt)
+			rt = JSON.parse(rt);
+			console.log(rt)
+			var inst1 = tree.render({
+			     elem: '#treearea'//绑定元素
+				,showCheckbox : true
+			    ,data: rt.list
+				,id: 'trees' //定义索引
+			});
+			if(rt.rules.length > 0){
+				tree.setChecked('trees', rt.rules);
+			}
+			
+		})
+           
+        
+        //监听提交
+        form.on('submit(subbtn)', function (data) {
+			data = data.field;
+			data.token = token;
+			data.id = data.tid;
+			let arr = tree.getChecked('trees');
+			let list = [];
+			let treeIds = function(arr) {
+				for (const item of arr) {
+					list.push(item.id);
+					let subs = item.children;
+					if (subs && subs.length > 0) {
+						treeIds(subs, list);
+					}
+				}
+				return list.join(',');	//以逗号拼接返回
+			}
+			data.rules = treeIds(arr);
+			console.log(JSON.stringify(data))
+			//return;
+            $.ajax({
+            	type: "post",
+            	url: `/admin/auth/rolsEdit`,
+            	data: data,
+            	success: function(res) {
+            		console.log(JSON.stringify(res))
+            		if (res.errno === 0) {
+						layer.msg(res.errmsg, {
+							icon: 1
+						});
+						window.parent.location.reload();
+						window.parent.layer.closeAll();
+						
+            		} else {
+            			layer.msg(res.errmsg, {
+            				icon: 2
+            			});
+            		}
+            	},
+            	error: function(xhr) {
+            		layer.msg('通信失败！请重试！', {
+            			icon: 2
+            		});
+            	}
+            });
+            return false;
+        });
+
+
+
+    });
+</script>
+
+</body>
+</html>
