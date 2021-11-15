@@ -45,7 +45,7 @@ module.exports = class extends think.Controller {
             await this.session('loginNum', loginNum + 1);
             return this.err('用户不存在');
         }
-        if (admin.status < 1) {
+        if (admin.status != 0) {
             await this.session('loginNum', loginNum + 1);
             return this.err('用户被禁用');
         }

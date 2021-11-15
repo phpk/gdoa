@@ -27,7 +27,7 @@
 								<i class="layui-icon layui-icon-search"></i>
 								查询
 							</button>
-							<button type="reset" class="pear-btn pear-btn-md">
+							<button type="reset" class="pear-btn pear-btn-md" lay-filter="user-reset" lay-submit>
 								<i class="layui-icon layui-icon-refresh"></i>
 								重置
 							</button>
@@ -47,10 +47,7 @@
 		        <i class="layui-icon layui-icon-add-1"></i>
 		        新增
 		    </button>
-		    <button class="pear-btn pear-btn-danger pear-btn-md" lay-event="batchRemove">
-		        <i class="layui-icon layui-icon-delete"></i>
-		        删除
-		    </button>
+		    
 		</script>
 
 		<script type="text/html" id="user-bar">
@@ -59,24 +56,10 @@
 		</script>
 
 		<script type="text/html" id="user-enable">
-			<input type="checkbox" name="enable" value="{{d.id}}" lay-skin="switch" lay-text="启用|禁用" lay-filter="user-enable" {{ d.enable== true ? 'checked' : '' }} />
+			<input type="checkbox" name="status" value="{{d.admin_id}}" lay-skin="switch" lay-text="启用|禁用" lay-filter="user-enable" {{ d.status== 0 ? 'checked' : '' }} />
 		</script>
 
-		<script type="text/html" id="user-sex">
-			{{#if (d.sex == 1) { }}
-		    <span>男</span>
-		    {{# }else if(d.sex == 2){ }}
-		    <span>女</span>
-		    {{# } }}
-		</script>
-
-		<script type="text/html" id="user-login">
-			{{#if (d.login == 0) { }}
-		    <span>在线</span>
-		    {{# }else if(d.sex == 1){ }}
-		    <span>离线</span>
-		    {{# } }}
-		</script>
+		
 
 		<script type="text/html" id="user-loginTime">
 			{{layui.util.toDateString(d.login_time*1000, 'yyyy-MM-dd HH:mm:ss')}}
@@ -94,9 +77,7 @@
 				let MODULE_PATH = "./";
 
 				let cols = [
-					[{
-							type: 'checkbox'
-						},
+					[
 						{
 							title: 'ID',
 							field: 'admin_id',
@@ -186,16 +167,44 @@
 						window.batchRemove(obj);
 					}
 				});
+				// 监听搜索操作
 
 				form.on('submit(user-query)', function(data) {
 					table.reload('user-table', {
-						where: data.field
+						where: {
+							param : $('form').serialize()
+						},
+						page: {
+					        curr: 1
+					    }
 					})
 					return false;
 				});
-
-				form.on('switch(user-enable)', function(obj) {
-					layer.tips(this.value + ' ' + this.name + '：' + obj.elem.checked, obj.othis);
+				form.on('submit(user-reset)', function(data){
+					table.reload('user-table', {
+						where: {
+							param : ''
+						},
+						page: {
+					        curr: 1
+					    }
+					});
+					return false;
+				})
+				form.on('switch(user-enable)', function(data) {
+					//layer.tips(this.value + ' ' + this.name + '：' + obj.elem.checked, obj.othis);
+					let v = 1;
+					if (data.elem.checked) v = 0;
+					let postData = {
+						id : data.value,
+						status : v
+					};
+					_post(layui, 'admin/enable', postData, res => {
+						//console.log(res)
+					},err => {
+						$(data.elem).prop('checked', false);
+						form.render('checkbox');
+					})
 				});
 
 				window.add = function() {
@@ -216,83 +225,26 @@
 						type: 2,
 						title: '修改',
 						shade: 0.1,
-						area: ['500px', '400px'],
+						offset: 'rt',
+						area: ['80%', '100%'],
+						anim: 1,
+						maxmin: true,
 						content: MODULE_PATH + 'edit.html?id=' + obj.data.admin_id
 					});
 				}
-
-				window.remove = function(obj) {
-					layer.confirm('确定要删除该用户', {
-						icon: 3,
-						title: '提示'
-					}, function(index) {
-						layer.close(index);
-						let loading = layer.load();
-						$.ajax({
-							url: MODULE_PATH + "remove/" + obj.data['userId'],
-							dataType: 'json',
-							type: 'delete',
-							success: function(result) {
-								layer.close(loading);
-								if (result.success) {
-									layer.msg(result.msg, {
-										icon: 1,
-										time: 1000
-									}, function() {
-										obj.del();
-									});
-								} else {
-									layer.msg(result.msg, {
-										icon: 2,
-										time: 1000
-									});
-								}
-							}
+				window.remove = function(obj){
+		            layer.confirm('确定要删除该用户', {icon: 3, title:'提示'}, function(index){
+		                layer.close(index);
+		                _post(layui, 'admin/del',{adnin_id : obj.data.id}, res => {
+							layer.msg('删除成功',{icon:1,time:1000},() => {
+								obj.del();
+							});
+						}, err => {
+							//layer.msg('删除失败',{icon:2,time:1000});
 						})
-					});
-				}
-
-				window.batchRemove = function(obj) {
-					
-					var checkIds = common.checkField(obj,'userId');
-					
-					if (checkIds === "") {
-						layer.msg("未选中数据", {
-							icon: 3,
-							time: 1000
-						});
-						return false;
-					}
-					
-					layer.confirm('确定要删除这些用户', {
-						icon: 3,
-						title: '提示'
-					}, function(index) {
-						layer.close(index);
-						let loading = layer.load();
-						$.ajax({
-							url: MODULE_PATH + "batchRemove/" + ids,
-							dataType: 'json',
-							type: 'delete',
-							success: function(result) {
-								layer.close(loading);
-								if (result.success) {
-									layer.msg(result.msg, {
-										icon: 1,
-										time: 1000
-									}, function() {
-										table.reload('user-table');
-									});
-								} else {
-									layer.msg(result.msg, {
-										icon: 2,
-										time: 1000
-									});
-								}
-							}
-						})
-					});
-				}
+		            });
+		        }
+				
 
 				window.refresh = function(param) {
 					table.reload('user-table');

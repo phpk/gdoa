@@ -99,6 +99,9 @@ const _post = (layui, url, data, suc, err) => {
                 layui.layer.msg(res.message, {
                     icon: 2, time: 2000
                 });
+                if (res.code >= 400) {
+                    errorStatus({ status: res.code }, layui)
+                }
                 err && err(res);
             }
         },

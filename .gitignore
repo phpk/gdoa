@@ -1,6 +1,6 @@
 node_modules/
 runtime/
-logs/
+./logs/
 .history/
 .vscode/
 app/

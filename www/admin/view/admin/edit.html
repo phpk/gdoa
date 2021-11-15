@@ -23,7 +23,7 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">密码</label>
                 <div class="layui-input-block">
-                    <input type="password" name="password" lay-verify="required|len" autocomplete="off" placeholder="请输入登录密码" min="6" class="layui-input">
+                    <input type="password" name="password" autocomplete="off" placeholder="请输入登录密码，为空则不修改" class="layui-input">
                 </div>
             </div>
             <div class="layui-form-item">
@@ -64,6 +64,7 @@
     </div>
     <div class="bottom">
         <div class="button-container">
+            <input type="hidden" name="admin_id">
             <button type="submit" class="pear-btn pear-btn-primary pear-btn-sm" lay-submit="" lay-filter="user-save">
                 <i class="layui-icon layui-icon-ok"></i>
                 提交
@@ -84,20 +85,22 @@
         form.verify({
             len : (val, item) => {
                 let min = item.getAttribute("min")
-                if(val.length < min) {
+                if(val.length > 0 && val.length < min) {
                     return '长度不能小于' + min;
                 }
             }
         })
            //渲染
 		_get(layui, 'admin/editBefore?id=' + req.id, res => {
-            console.log(res)
-			   tree.render({
+            //console.log(res)
+            form.val("editform",res);
+			tree.render({
 			     elem: '#treearea'//绑定元素
 					,showCheckbox : true
 					,data: res.authList
 					,id: 'trees' //定义索引
-				});
+			});
+            tree.setChecked('trees', res.rules);
 		},err => {
             console.log(err)
         });
@@ -112,7 +115,11 @@
                 layer.msg("所属角色不能为空");
                 return false;
             }
-			_post(layui, 'admin/add', data, res => {
+            if(data.password.length > 0 && data.password.length < 6) {
+                layer.msg("密码长度不能小于6位");
+                return false;
+            }
+			_post(layui, 'admin/edit', data, res => {
 				//console.log(res)
 				parent.layui.table.reload("user-table");
 				parent.layer.close(parent.layer.getFrameIndex(window.name));//关闭当前页
