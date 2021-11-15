@@ -73,19 +73,18 @@ module.exports = class extends think.Model {
      * @param {array} tid 
      * @returns 
      */
-    async tree(tid) {
+    async tree() {
         let data = await this.model('menu').select()
         //根据 id取出某一个分类的子集
+        //console.log(tid)
         const findById = (id) => {
             let child = [];
             data.forEach((value) => {
                 if (value.pid == id) {
                     value.name = value.title;
-                    //前台是否选择了
-                    if (tid.includes(id)) {
-                        value.checked = true;
-                    }
-                    value.open = false;
+                    value.field = 'id';
+                    value.spread = false;
+
                     child.push(value);
                 }
             });

@@ -46,6 +46,7 @@
     </div>
     <div class="bottom">
         <div class="button-container">
+            <input type="hidden" name="id">
             <button type="submit" class="pear-btn pear-btn-primary pear-btn-sm" lay-submit="" lay-filter="user-save">
                 <i class="layui-icon layui-icon-ok"></i>
                 提交
@@ -61,16 +62,22 @@
         let form = layui.form
             , layer = layui.layer
 			, $ = layui.$
-			, tree = layui.tree;
+			, tree = layui.tree
+            , req = _req();
 
            //渲染
-		   _get(layui, 'auth/addTree', res => {
+		   _get(layui, 'auth/beforEdit?id=' + req.id, res => {
+               form.val("editform",res);
 			   tree.render({
 			     elem: '#treearea'//绑定元素
 					,showCheckbox : true
-					,data: res
+					,data: res.menus
 					,id: 'trees' //定义索引
 				});
+                console.log(res.rules)
+                if(res.rules.length > 0){
+                    tree.setChecked('trees', res.rules.split(','));
+                }
 		   });
            
         
@@ -90,7 +97,8 @@
 				return list.join(',');	//以逗号拼接返回
 			}
 			data.rules = treeIds(arr);
-			_post(layui, 'auth/add', data, res => {
+            //console.log(data)
+			_post(layui, 'auth/edit', data, res => {
 				//console.log(res)
 				parent.layui.table.reload("role-table");
 				parent.layer.close(parent.layer.getFrameIndex(window.name));//关闭当前页

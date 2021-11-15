@@ -120,3 +120,27 @@ const _req = () => {
     }
     return theRequest;
 }
+const treeIds = (arr) => {
+    for (const item of arr) {
+        list.push(item.id);
+        let subs = item.children;
+        if (subs && subs.length > 0) {
+            treeIds(subs, list);
+        }
+    }
+    return list.join(',');	//以逗号拼接返回
+}
+const getTree = (arr) => {
+    let list = [];
+    let treeIds = function (arr) {
+        for (const item of arr) {
+            list.push(item.id);
+            let subs = item.children;
+            if (subs && subs.length > 0) {
+                treeIds(subs, list);
+            }
+        }
+        return list.join(',');	//以逗号拼接返回
+    }
+    return treeIds(arr);
+}

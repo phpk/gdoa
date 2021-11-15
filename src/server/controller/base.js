@@ -103,20 +103,28 @@ module.exports = class extends think.Controller {
       };
     }
     //校验
-    let rt = await jwt.verify(token, salt);
-    //过期
-    if (rt.adminId != adminId) {
-      await this.clearSatus(adminId);
-      await this.cache('admin_' + adminId, null);
+    try {
+      let rt = await jwt.verify(token, salt);
+      //过期
+      if (rt.adminId != adminId) {
+        await this.clearSatus(adminId);
+        await this.cache('admin_' + adminId, null);
+        return {
+          code: 4023,
+          message: '认证过期'
+        };
+      }
+      this.adminId = adminId;
+      return {
+        code: 0
+      };
+    } catch (error) {
       return {
         code: 4023,
         message: '认证过期'
-      };;
+      };
     }
-    this.adminId = adminId;
-    return {
-      code: 0
-    };
+
   }
   /**
    * 清除状态
@@ -149,7 +157,7 @@ module.exports = class extends think.Controller {
         agent: this.ctx.userAgent,
         url: this.ctx.path,
         method: this.ctx.method,
-        addtime: now()
+        addtime: this.now()
       };
       await think.model('admin_oplog').add(saveData);
     } catch (error) {
@@ -175,7 +183,7 @@ module.exports = class extends think.Controller {
         agent: this.ctx.userAgent,
         url,
         method: this.ctx.method,
-        addtime: now()
+        addtime: this.now()
       };
       //如果之前没有访问
       if (think.isEmpty(has)) {
@@ -189,7 +197,7 @@ module.exports = class extends think.Controller {
           await think.model('admin_viewlog')
             .where({ id: has.id })
             .update({
-              leavetime: now()
+              leavetime: this.now()
             })
         }
       }

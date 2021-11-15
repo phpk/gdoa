@@ -43,7 +43,7 @@ module.exports = class extends Base {
     async oplistAction() {
         let list = await this.model('menu').select()
         await this.adminViewLog('菜单列表');
-        return this.ok({ list, count: list.length })
+        return this.ok(list)
     }
 
     /**
@@ -67,7 +67,7 @@ module.exports = class extends Base {
             data = {};
         }
 
-        let list = await this.tree([id]);
+        let list = await this.model('menu').tree();
         let pname = '顶层目录';
         data.list = [
             {

@@ -25,8 +25,34 @@ function now(t = '') {
         return parseInt((new Date(t).getTime()) / 1000);
     }
 }
+function params(dto, post) {
+    let save = {},
+        msg = '';
+    for (let p in dto) {
+        let item = dto[p];
+        if (item.require) {
+            if (!post.hasOwnProperty(p) || !post[p] || post[p].length < 1) {
+                msg = item.name + '不能为空'
+            }
+        }
+        if (item.type == 'number') {
+            post[p] = post[p] * 1;
+        }
+        save[p] = post[p];
+    }
+    return { msg, save }
+}
+function checkNumber(fieldName) {
+    let id = this.post(fieldName) * 1 || this.get(fieldName) * 1;
+    if (isNaN(id) || id < 1) {
+        return false;
+    };
+    return id;
+}
 module.exports = {
     ok,
     err,
-    now
+    now,
+    params,
+    checkNumber
 }

@@ -58,6 +58,7 @@ layui.define(['layer', 'table'], function (exports) {
         // 渲染表格
         init: function (param, data) {
             var mData = [];
+            ///console.log(data)
             var doneCallback = param.done;
             var tNodes = data;
             for (var i = 0; i < tNodes.length; i++) {
@@ -132,6 +133,7 @@ layui.define(['layer', 'table'], function (exports) {
             };
 
             // 渲染表格
+            //param.data.list = mData;
             table.render(param);
             var result = instances.some(item => item.key === param.elem);
             if (!result) {

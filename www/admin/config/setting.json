@@ -13,6 +13,7 @@
 	},
 	"tab": {
 		"muiltTab": true,
+		"enable": true,
 		"keepState": true,
 		"tabMax": 30,
 		"index": {
@@ -57,7 +58,7 @@
 	],
 	"other": {
 		"keepLoad": 1200,
-		"autoHead": false
+		"autoHead": true
 	},
 	"header": {
 		"message": "admin/data/message.json"

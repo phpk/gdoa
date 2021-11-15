@@ -268,10 +268,9 @@ layui.define(['laytpl', 'laypage', 'layer', 'form', 'util'], function (exports) 
     options.response = $.extend({
       statusName: 'code' //规定数据状态的字段名称
       , statusCode: 0 //规定成功的状态码
-      , msgName: 'message' //规定状态信息的字段名称
+      , msgName: 'msg' //规定状态信息的字段名称
       , dataName: 'data' //规定数据总数的字段名称
-      , listName: 'list' //规定数据总数的字段名称
-      , totalRowName: 'total' //规定数据统计的字段名称
+      , totalRowName: 'totalRow' //规定数据统计的字段名称
       , countName: 'count'
     }, options.response);
 
@@ -730,7 +729,7 @@ layui.define(['laytpl', 'laypage', 'layer', 'form', 'util'], function (exports) 
               ('返回的数据不符合规范，正确的成功状态码应为："' + response.statusName + '": ' + response.statusCode)
             );
           } else {
-            that.renderData(res, curr, res[response.dataName][response.countName]), sort();
+            that.renderData(res, curr, res[response.countName]), sort();
             options.time = (new Date().getTime() - that.startTime) + ' ms'; //耗时（接口请求+视图渲染）
           }
           that.setColsWidth();
@@ -774,7 +773,7 @@ layui.define(['laytpl', 'laypage', 'layer', 'form', 'util'], function (exports) 
   Class.prototype.renderData = function (res, curr, count, sort) {
     var that = this
       , options = that.config
-      , data = res[options.response.dataName][options.response.listName] || [] //列表数据
+      , data = res[options.response.dataName] || [] //列表数据
       , totalRowData = res[options.response.totalRowName] //合计行数据
       , trs = []
       , trs_fixed = []
