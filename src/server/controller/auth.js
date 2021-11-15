@@ -11,7 +11,7 @@ module.exports = class extends Base {
      * @apiHeader {string} rttoken 必填
      *
      * @apiParam  {number} page 页码
-     * @apiParam  {number} page 每页显示数据
+     * @apiParam  {number} limit 每页显示数据
      *
      * @apiSuccess (200) {type} name description
      *

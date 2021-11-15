@@ -73,6 +73,7 @@ GET auth/list
 | Name     | Type       | Description                           |
 |----------|------------|---------------------------------------|
 | page | `number` | <p>页码</p> |
+| limit | `number` | <p>每页显示数据</p> |
 
 ### 返回信息
 
