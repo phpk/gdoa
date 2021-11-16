@@ -157,13 +157,17 @@
         window.remove = function(obj){
             layer.confirm('确定要删除该权限', {icon: 3, title:'提示'}, (index) => {
                 layer.close(index);
-                _post(layui, 'menu/del',{id : obj.data.id}, res => {
-                    layer.msg('删除成功',{icon:1,time:1000},() => {
-                        obj.del();
-                     });
-                }, err => {
-                    //layer.msg('删除失败',{icon:2,time:1000});
-                })
+                _post(layui, 'menu/del',
+                    {id : obj.data.id},
+                    res => {
+                        layer.msg('删除成功',{icon:1,time:1000},() => {
+                            obj.del();
+                        });
+                    }, 
+                    err => {
+                        //layer.msg('删除失败',{icon:2,time:1000});
+                    }
+                )
             });
         }
 		

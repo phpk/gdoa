@@ -17,37 +17,9 @@ module.exports = class extends Base {
      *
      */
     async opAction() {
-        let page = this.get('page') * 1 || 1,
-            limit = this.get('limit') * 1 || 10;
-        let wh = this.get('param'),
-            wsql = {};
-        if (wh) wsql = this.parseSearch(wh, wsql);
-
-        let list = await this.model('admin_oplog')
-            .alias('l')
-            .field('l.*,u.admin_id,u.username')
-            .join({
-                table: 'admin',
-                join: 'left',
-                as: 'u',
-                on: ['admin_id', 'admin_id']
-            })
-            .where(wsql)
-            .page(page, limit)
-            .order("l.addtime desc")
-            .select();
-        let count = await this.model('admin_oplog')
-            .alias('l')
-            .field('l.*,u.admin_id,u.name')
-            .join({
-                table: 'admin',
-                join: 'left',
-                as: 'u',
-                on: ['admin_id', 'admin_id']
-            })
-            .where(wsql).count();
+        const { list, count } = await this.coms('admin_oplog')
         await this.adminViewLog('管理员操作日志');
-        return this.ok({ list, count })
+        return this.success({ list, count })
     }
     /**
      * @api {get} logs/view 行为日志列表
@@ -62,37 +34,9 @@ module.exports = class extends Base {
      *
      */
     async viewAction() {
-        let page = this.get('page') * 1 || 1,
-            limit = this.get('limit') * 1 || 10;
-        let wh = this.get('param'),
-            wsql = {};
-        if (wh) wsql = this.parseSearch(wh, wsql);
-
-        let list = await this.model('admin_viewlog')
-            .alias('l')
-            .field('l.*,u.admin_id,u.username')
-            .join({
-                table: 'admin',
-                join: 'left',
-                as: 'u',
-                on: ['admin_id', 'admin_id']
-            })
-            .where(wsql)
-            .page(page, limit)
-            .order("l.addtime desc")
-            .select();
-        let count = await this.model('admin_viewlog')
-            .alias('l')
-            .field('l.*,u.admin_id,u.name')
-            .join({
-                table: 'admin',
-                join: 'left',
-                as: 'u',
-                on: ['admin_id', 'admin_id']
-            })
-            .where(wsql).count();
+        const { list, count } = await this.coms('admin_viewlog')
         await this.adminViewLog('管理员行为日志');
-        return this.ok({ list, count })
+        return this.success({ list, count })
     }
     /**
      * @api {get} logs/err 错误日志列表
@@ -107,13 +51,16 @@ module.exports = class extends Base {
      *
      */
     async errAction() {
-        let page = this.get('page') * 1 || 1,
-            limit = this.get('limit') * 1 || 10;
-        let wh = this.get('param'),
-            wsql = {};
-        if (wh) wsql = this.parseSearch(wh, wsql);
+        const { list, count } = await this.coms('error')
+        await this.adminViewLog('系统错误日志');
+        return this.success({ list, count })
+    }
+    async coms(tableName) {
+        let { page, limit, param } = this.get();
+        let wsql = {};
+        if (wh) wsql = this.parseSearch(param, wsql);
 
-        let list = await this.model('error')
+        let list = await this.model(tableName)
             .alias('l')
             .field('l.*,u.admin_id,u.username')
             .join({
@@ -126,7 +73,7 @@ module.exports = class extends Base {
             .page(page, limit)
             .order("l.addtime desc")
             .select();
-        let count = await this.model('error')
+        let count = await this.model(tableName)
             .alias('l')
             .field('l.*,u.admin_id,u.name')
             .join({
@@ -136,7 +83,6 @@ module.exports = class extends Base {
                 on: ['admin_id', 'admin_id']
             })
             .where(wsql).count();
-        await this.adminViewLog('系统错误日志');
-        return this.ok({ list, count })
+        return { list, count }
     }
 };

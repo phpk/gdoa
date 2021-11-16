@@ -56,6 +56,21 @@ const errorStatus = (xhr, layui) => {
         });
     }
 }
+const parseMsg = (msgs, layui) => {
+    if (msgs.constructor === Object) {
+        //console.log('111')
+        for (let p in msgs) {
+            //console.log(msgs[p])
+            layui.layer.msg(msgs[p], {
+                icon: 2, time: 2000
+            });
+        }
+    } else {
+        layui.layer.msg(msgs, {
+            icon: 2, time: 2000
+        });
+    }
+}
 const _get = (layui, url, suc, err) => {
     //console.log(`${apiUrl}${url}`)
     layui.$.ajax({
@@ -67,9 +82,10 @@ const _get = (layui, url, suc, err) => {
             if (res.code === 0) {
                 suc(res.data)
             } else {
-                layui.layer.msg(res.message, {
-                    icon: 2, time: 2000
-                });
+                // layui.layer.msg(res.message, {
+                //     icon: 2, time: 2000
+                // });
+                parseMsg(res.message, layui);
                 err && err(res);
             }
         },
@@ -96,9 +112,8 @@ const _post = (layui, url, data, suc, err) => {
             if (res.code === 0) {
                 suc(res.data)
             } else {
-                layui.layer.msg(res.message, {
-                    icon: 2, time: 2000
-                });
+                parseMsg(res.message, layui);
+                
                 if (res.code >= 400) {
                     errorStatus({ status: res.code }, layui)
                 }

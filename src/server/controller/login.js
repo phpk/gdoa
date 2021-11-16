@@ -25,17 +25,16 @@ module.exports = class extends think.Controller {
      * "data":token
      * }
      */
-
     async doAction() {
-        let post = this.post()
+        let post = this.post();
         if (!await this.chkCapcha(post.captcha)) {
-            return this.err('验证码错误', 202)
+            return this.fail('验证码错误')
         }
         //杜绝用户反复查表
         let loginNum = await this.session('loginNum');
         loginNum = loginNum ? loginNum : 0;
         if (loginNum > 10) {
-            return this.err('登录错误次数太多，大侠请留步，请一小时后再试!');
+            return this.fail('登录错误次数太多，大侠请留步，请一小时后再试!');
         }
         let admin = await this.model('admin').where({
             username: post.username
@@ -43,17 +42,17 @@ module.exports = class extends think.Controller {
         let adminId = admin.admin_id;
         if (think.isEmpty(admin)) {
             await this.session('loginNum', loginNum + 1);
-            return this.err('用户不存在');
+            return this.fail('用户不存在');
         }
         if (admin.status != 0) {
             await this.session('loginNum', loginNum + 1);
-            return this.err('用户被禁用');
+            return this.fail('用户被禁用');
         }
         let pwd = this.service('login').createPassword(post.password, admin.salt);
         //console.log(pwd)
         if (pwd != admin.password) {
             await this.session('loginNum', loginNum + 1);
-            return this.err('密码错误');
+            return this.fail('密码错误');
         }
         //生成一个16位的随机数
         let salt = this.service('login').randomString(),
@@ -67,7 +66,9 @@ module.exports = class extends think.Controller {
         let password = this.service('login').createPassword(post.password, salt);
         //更新用户密码和登录状态
         await this.model('admin')
-            .where({ admin_id: adminId })
+            .where({
+                admin_id: adminId
+            })
             .update({
                 password,
                 salt,
@@ -79,10 +80,6 @@ module.exports = class extends think.Controller {
         //只允许一个帐号在一个端下登录
         await this.cache('admin_' + adminId, md5Salt);
         //设置路由缓存
-        //let routeData = await this.model('menu').list(adminId);
-        //await this.cache('perms_' + adminId, routeData.perms);
-        //设置菜单缓存
-        //await this.cache('menus_' + adminId, routeData.menus);
         await this.model('menu').cacheData(adminId);
         //console.log(routeData)
         //jwt校验用
@@ -90,8 +87,6 @@ module.exports = class extends think.Controller {
         //设定保活
         await this.session('statusTime', this.now());
         //添加登录日志
-        //this.adminId = adminId;
-        //this.adminOpLog(admin.username + '登录', ['password']);
         delete post.password;
         let logData = {
             admin_id: adminId,
@@ -104,7 +99,7 @@ module.exports = class extends think.Controller {
             addtime: this.now()
         };
         await think.model('admin_oplog').add(logData);
-        return this.ok(token);
+        return this.success(token);
     }
     /**
      * 

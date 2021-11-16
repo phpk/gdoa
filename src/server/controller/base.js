@@ -206,6 +206,21 @@ module.exports = class extends think.Controller {
       console.log(error)
     }
   }
+  /**
+   * 判断是否有数据
+   * @param {string} tableName 
+   * @param {object} sql 
+   * @returns 
+   */
+
+  async hasData(tableName, sql) {
+    let has = await this.model(tableName).where(sql).find();
+    //console.log(has)
+    if (!think.isEmpty(has)) {
+      return true;
+    }
+    return false;
+  }
   __after() {
 
   }

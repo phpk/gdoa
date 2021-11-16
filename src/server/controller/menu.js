@@ -26,7 +26,7 @@ module.exports = class extends Base {
     async listAction() {
         let menus = await this.cache('menus_' + this.adminId);
         //console.log(menus);
-        return this.ok(menus)
+        return this.success(menus)
     }
     /**
      * 
@@ -43,7 +43,7 @@ module.exports = class extends Base {
     async oplistAction() {
         let list = await this.model('menu').select()
         await this.adminViewLog('菜单列表');
-        return this.ok(list)
+        return this.success(list)
     }
 
     /**
@@ -58,8 +58,8 @@ module.exports = class extends Base {
      * 
      */
     async oneAction() {
-        let id = this.get('id') * 1;
-        if (isNaN(id)) return this.err('id error');
+        let id = this.get('id');
+        
         let data;
         if (id > 0) {
             data = await this.model('menu').where({ id }).find();
@@ -88,7 +88,7 @@ module.exports = class extends Base {
             await this.adminViewLog('添加菜单');
         }
 
-        return this.ok(data)
+        return this.success(data)
     }
     /**
      *
@@ -110,23 +110,14 @@ module.exports = class extends Base {
      */
     async editAction() {
         let post = this.post(),
-            id = post.id * 1;
-        if (isNaN(id) || id < 1) return this.err('id error')
-        let has = await this.model('menu').where({ id }).find();
-        if (think.isEmpty(has)) return this.err("编辑的菜单不存在");
-        let save = {
-            title: post.title,
-            href: post.href,
-            route: post.route,
-            icon: post.icon,
-            type: post.type,
-            order_num: post.order_num,
-            pid: post.pid
-        }
-        let rt = await this.model('menu').where({ id }).update(save)
+            id = post.id;
+        if (!await this.hasData('menu', { id }))
+            return this.fail("编辑的菜单不存在");
+        
+        let rt = await this.model('menu').where({ id }).update(post)
         await this.model('menu').cacheData(this.adminId);
         await this.adminOpLog('编辑菜单');
-        return this.ok(rt)
+        return this.success(rt)
     }
     /**
      *
@@ -148,20 +139,10 @@ module.exports = class extends Base {
      */
     async addAction() {
         let post = this.post();
-        if (!post.title) return this.err('title error')
-        let save = {
-            title: post.title,
-            href: post.href,
-            route: post.route,
-            icon: post.icon,
-            type: post.type,
-            order_num: post.order_num,
-            pid: post.pid
-        }
-        let rt = await this.model('menu').add(save)
+        let rt = await this.model('menu').add(post);
         await this.model('menu').cacheData(this.adminId);
         await this.adminOpLog('添加菜单');
-        return this.ok(rt)
+        return this.success(rt)
     }
     /**
      *
@@ -177,17 +158,17 @@ module.exports = class extends Base {
      */
     async ifshowAction() {
         let post = this.post(),
-            id = post.id * 1;
-        if (isNaN(id) || id < 1) return this.err('id error')
-        let has = await this.model('menu').where({ id }).find()
-        if (think.isEmpty(has)) return this.err("数据不存在")
+            id = post.id;
+        if (!await this.hasData('menu', { id }))
+            return this.fail("数据不存在");
+        
         let rt = await this.model('menu')
             .where({ id })
             .update({
                 ifshow: post.ifshow
             })
         await this.adminOpLog('设置菜单显示');
-        return this.ok(rt)
+        return this.success(rt)
 
     }
     /**
@@ -204,18 +185,17 @@ module.exports = class extends Base {
      */
     async delAction() {
         let post = this.post(),
-            id = post.id * 1;
-        if (isNaN(id) || id < 1) return this.err('id error')
-
-        let has = await this.model('menu').where({ id }).find()
-        if (think.isEmpty(has)) return this.err("数据不存在")
-
-        let sun = await this.model('menu').where({ pid: id }).find()
-        if (!think.isEmpty(sun)) return this.err("请先删除菜单下的子目录")
-
+            id = post.id;
+        
+        if (!await this.hasData('menu', { id }))
+            return this.fail("数据不存在");
+        
+        if (await this.hasData('menu', { pid: id }))
+            return this.fail("请先删除菜单下的子目录");
+        
         let rt = await this.model('menu').where({ id }).delete();
         await this.adminOpLog('删除菜单');
-        return this.ok(rt)
+        return this.success(rt);
     }
 
 };

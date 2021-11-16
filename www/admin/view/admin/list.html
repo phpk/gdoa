@@ -235,7 +235,7 @@
 				window.remove = function(obj){
 		            layer.confirm('确定要删除该用户', {icon: 3, title:'提示'}, function(index){
 		                layer.close(index);
-		                _post(layui, 'admin/del',{adnin_id : obj.data.id}, res => {
+		                _post(layui, 'admin/del',{admin_id : obj.data.admin_id}, res => {
 							layer.msg('删除成功',{icon:1,time:1000},() => {
 								obj.del();
 							});

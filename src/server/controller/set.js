@@ -4,8 +4,8 @@ const Base = require('./base.js');
  * @apiDefine set 系统配置
  */
 module.exports = class extends Base {
-     /**
-     * @api {get} set/list 系统配置列表
+    /**
+     * @api {get} set/cate 系统配置类目列表
      * @apiGroup set
      *
      * @apiHeader {string} rttoken 必填
@@ -16,7 +16,15 @@ module.exports = class extends Base {
      * @apiSuccess (200) {type} name description
      *
      */
-    async listAction() {
+    async cateAction() {
+        let { page, limit } = this.get();
+
+        let list = await this.model('set_cate').page(page, limit).select();
+        let count = await this.model('set_cate').count();
+
+        return this.success({ list, count })
+    }
+    async cateAddAction() {
 
     }
 };

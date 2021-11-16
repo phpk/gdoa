@@ -17,14 +17,13 @@ module.exports = class extends Base {
      *
      */
     async listAction() {
-        let page = this.get('page') * 1 || 1,
-            limit = this.get('limit') * 1 || 10;
+        let { page, limit } = this.get();
         let list = await this.model('admin_auth')
             .page(page, limit)
             .select();
         let count = await think.model('admin_auth').count();
         await this.adminViewLog('角色列表');
-        return this.ok({ list, count })
+        return this.success({ list, count })
     }
     /**
      * @api {post} auth/add 添加角色
@@ -41,16 +40,9 @@ module.exports = class extends Base {
      */
     async addAction() {
         let post = this.post();
-        if (!post.name) return this.err('名称不能为空');
-        let add = {
-            name: post.name,
-            status: post.status * 1,
-            rules: post.rules,
-            remark: post.remark
-        }
-        let rt = await this.model('admin_auth').add(add)
+        let rt = await this.model('admin_auth').add(post);
         await this.adminOpLog('添加角色');
-        return this.ok(rt)
+        return this.success(rt);
     }
     /**
      * @api {post} auth/addTree 角色添加前
@@ -66,7 +58,7 @@ module.exports = class extends Base {
     async addTreeAction() {
         let menus = await this.model('menu').tree();
         await this.adminViewLog('添加角色');
-        return this.ok(menus);
+        return this.success(menus);
     }
     /**
      * @api {post} auth/beforEdit 角色编辑前
@@ -80,14 +72,14 @@ module.exports = class extends Base {
      *
      */
     async beforEditAction() {
-        let id = this.get('id') * 1;
-        if (!think.isNumber(id) || id < 1) return this.err('id error');
+        let id = this.get('id');
+
         let data = await this.model('admin_auth').where({ id }).find()
         if (think.isEmpty(data)) return this.fail('the data none')
         //console.log(data.rules.split(','))
         data.menus = await this.model('menu').tree()
         await this.adminViewLog('编辑角色');
-        return this.ok(data)
+        return this.success(data)
     }
     /**
      * @api {post} auth/eidt 编辑角色
@@ -104,23 +96,15 @@ module.exports = class extends Base {
      */
     async editAction() {
         let post = this.post(),
-            id = post.id * 1;
-        if (!post.name) return this.err('名称不能为空');
-        if (!think.isNumber(id) || id < 1) return this.err('id error');
-        let has = await this.model('admin_auth').where({ id }).find()
-        if (think.isEmpty(has)) return this.fail('the data none')
-
-        let save = {
-            name: post.name,
-            status: post.status * 1,
-            rules: post.rules,
-            remark: post.remark
-        }
+            id = post.id;
+        if (!await this.hasData('admin_auth', { id }))
+            return this.fail("数据不存在");
+        
         let rt = await this.model('admin_auth')
             .where({ id })
-            .update(save)
+            .update(post);
         await this.adminOpLog('编辑角色');
-        return this.ok(rt)
+        return this.success(rt)
     }
     /**
      * @api {post} auth/enable 设置角色是否可用
@@ -136,17 +120,18 @@ module.exports = class extends Base {
      */
     async enableAction() {
         let post = this.post(),
-            id = post.id * 1;
-        if (isNaN(id) || id < 1) return this.err('id error')
-        let has = await this.model('admin_auth').where({ id }).find()
-        if (think.isEmpty(has)) return this.err("数据不存在")
+            id = post.id;
+        
+        if (!await this.hasData('admin_auth', { id }))
+            return this.fail("数据不存在");
+        
         let rt = await this.model('admin_auth')
             .where({ id })
             .update({
                 status: post.status
             })
         await this.adminOpLog('设置角色可用');
-        return this.ok(rt)
+        return this.success(rt)
     }
     /**
      * @api {post} auth/del 删除角色
@@ -161,18 +146,16 @@ module.exports = class extends Base {
      */
     async delAction() {
         let post = this.post(),
-            id = post.id * 1;
-        if (isNaN(id) || id < 1) return this.err('id error')
-        if (id == 1) return this.err('系统角色禁止删除');
-        let has = await this.model('admin_auth').where({ id }).find()
-        if (think.isEmpty(has)) return this.err("数据不存在")
-
-        let sun = await this.model('admin_map').where({ auth_id: id }).find()
-        if (!think.isEmpty(sun)) return this.err("请先删除角色下的管理员")
+            id = post.id;
+        if (!await this.hasData('admin_auth', { id }))
+            return this.fail("数据不存在");
+        
+        if (await this.hasData('admin_map', { auth_id:  id }))
+            return this.fail("请先删除角色下的管理员");
 
         let rt = await this.model('admin_auth').where({ id }).delete();
         await this.adminOpLog('删除角色');
-        return this.ok(rt)
+        return this.success(rt)
     }
 
 }
