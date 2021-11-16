@@ -24,7 +24,23 @@ module.exports = class extends Base {
 
         return this.success({ list, count })
     }
+    /**
+     * @api {get} set/cateAdd 添加系统配置类目
+     * @apiGroup set
+     *
+     * @apiHeader {string} rttoken 必填
+     *
+     * @apiParam  {string} key 类目键值
+     * @apiParam  {string} name 类目名
+     *
+     * @apiSuccess (200) {type} name description
+     *
+     */
     async cateAddAction() {
-
+        let post = this.post();
+        if (await this.hasData('set_cate', { key: post.key }))
+            return this.fail('系统中存在相同的键值')
+        let id = await this.model('set_cate').add(post);
+        return this.success(id);
     }
 };

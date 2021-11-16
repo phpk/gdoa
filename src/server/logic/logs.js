@@ -17,12 +17,15 @@ module.exports = class extends think.Logic {
         }
     }
     opAction() {
+        this.allowMethods = 'get';
         this.rules = {};
     }
     viewAction() {
+        this.allowMethods = 'get';
         this.rules = {};
     }
     errAction() {
+        this.allowMethods = 'get';
         this.rules = {};
     }
 };

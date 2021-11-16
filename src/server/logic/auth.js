@@ -70,6 +70,7 @@ module.exports = class extends think.Logic {
         }
     }
     enableAction() {
+        this.allowMethods = 'post';
         this.rules = {
             id: {
                 int: { min: 1 },
