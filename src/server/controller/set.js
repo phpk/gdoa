@@ -43,4 +43,12 @@ module.exports = class extends Base {
         let id = await this.model('set_cate').add(post);
         return this.success(id);
     }
+    async cateEditAction() {
+        let post = this.post();
+        if(post.key) return this.fail('key不允许编辑');
+        let has = await this.model('set_cate').where({id : post.id}).find();
+        if(think.isEmpty(has)) return this.fail('编辑的数据不存在');
+        let rt = await this.model('set_cate').update(post);
+
+    }
 };

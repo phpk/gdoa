@@ -32,4 +32,22 @@ module.exports = class extends think.Logic {
             }
         }
     }
+    cateEditAction() {
+        this.allowMethods = 'post';
+        this.rules = {
+            id : {
+                required : true,
+                int : {min : 2},
+                aliasName : '类目id'
+            },
+            name: {
+                required: true,
+                length: { min: 2, max: 255 },
+                aliasName: '类目名'
+            },
+            remark: {
+                aliasName : '标注'
+            }
+        }
+    }
 };
