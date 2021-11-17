@@ -24,8 +24,9 @@
                             <label class="layui-form-label">类目标志</label>
                             <div class="layui-input-block">
                                 <input type="text" name="key" lay-verify="required" autocomplete="off" placeholder="请输入类目标志" class="layui-input">
+                                <div class="layui-form-mid layui-word-aux">不能和系统中的其他类目标志相同</div>
                             </div>
-                            <div class="layui-form-mid layui-word-aux">不能和系统中的其他类目标志相同</div>
+                            
                         </div>
                         <div class="layui-form-item layui-form-text">
                             <label class="layui-form-label">备注</label>
@@ -65,7 +66,7 @@
                         parent
                             .layui
                             .table
-                            .reload("role-table");
+                            .reload("user-table");
                         parent
                             .layer
                             .close(parent.layer.getFrameIndex(window.name)); //关闭当前页

@@ -2,7 +2,7 @@
 module.exports = {
     workers: 1,
     port: 8100, //启动端口
-    statusTime: 60 * 60, //保活时间，默认1小时
+    statusTime: 12 * 60 * 60, //保活时间，默认12小时
     adminDir: 'server', //后端目录
     csrf: {
         headerName: 'csrf_token',
@@ -22,11 +22,11 @@ module.exports = {
     },
     cookie: {
         name: 'csrf_token',
-        maxAge: 1 * 3600 * 1000
+        maxAge: 12 * 3600 * 1000
     },
     session: {
         type: 'redis', //or 'file'
-        maxAge: 1 * 3600 * 1000
+        maxAge: 12 * 3600 * 1000
     },
     mysql: {
         database: 'gdcms',

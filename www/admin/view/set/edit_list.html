@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>用户管理</title>
+		<title>编辑配置列表</title>
 		<link rel="stylesheet" href="../../component/ui/css/ui.css" />
 	</head>
 	<body class="pear-container">
@@ -20,9 +20,6 @@
 		    </button>
 		</script>
 
-		<script type="text/html" id="set-enable">
-			<input type="checkbox" name="status" value="{{d.id}}" lay-skin="switch" lay-text="启用|禁用" lay-filter="set-enable" {{ d.enable== 0 ? 'checked' : '' }} />
-		</script>
 		<script type="text/html" id="set-bar">
 			<button class="pear-btn pear-btn-primary pear-btn-sm" lay-event="edit">
 				<i class="layui-icon layui-icon-edit"></i>
@@ -114,7 +111,7 @@
                         ],
                         anim: 1,
                         maxmin: true,
-						content: MODULE_PATH + 'edit_list.html?id=' + obj.data.id
+						content: MODULE_PATH + 'edit.html?id=' + obj.data.id
 					});
 				}
 
