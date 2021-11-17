@@ -1,7 +1,7 @@
 // default config
 module.exports = {
     workers: 1,
-    port: 8100, //启动端口
+    port: 8200, //启动端口
     statusTime: 12 * 60 * 60, //保活时间，默认12小时
     adminDir: 'server', //后端目录
     csrf: {
