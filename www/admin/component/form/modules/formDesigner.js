@@ -534,8 +534,8 @@ layui.config({ base: '/admin/component/form/modules/'}).define(["layer", "laytpl
             , MOD_NAME = 'formDesigner'
             , ELEM = '.layui-form-designer'
             , TP_MAIN = ['<div class="layui-layout layui-layout-admin">'
-                , '<div class="layui-header">'
-                , '<div class="layui-logo">表单设计器</div>'
+                , '<div class="layui-header layui-bg-blue">'
+                , '<div class="layui-logo">表单</div>'
                 , '<!-- 头部区域（可配合layui已有的水平导航） -->'
                 , '<ul class="layui-nav layui-layout-left">'
                 , '<li class="layui-nav-item"><a href=""></a></li>'
@@ -596,13 +596,15 @@ layui.config({ base: '/admin/component/form/modules/'}).define(["layer", "laytpl
                 , '<div class="layui-tab layui-tab-brief" lay-filter="form-attr">'
                 , '<ul class="layui-tab-title">'
                 , '<li class="layui-this">字段设置</li>'
-                , '<li>表单设置</li>'
+                , '<li lay-id="formParams">表单设置</li>'
                 , '</ul>'
                 , '<div class="layui-tab-content">'
                 , '<div class="layui-tab-item layui-show" id="columnProperty">'
                 , '</div>'
+                , '</form>'
                 , '<div class="layui-tab-item" id="formProperty">'
                 , '<!--表单ID-->'
+                , '<form class="layui-form  layui-form-pane" lay-filter="myform" id="myform">'
                 , '<div class="layui-form-item">'
                 , '<label class="layui-form-label">表单标志</label>'
                 , '<div class="layui-input-block">'
@@ -619,6 +621,16 @@ layui.config({ base: '/admin/component/form/modules/'}).define(["layer", "laytpl
                 , 'placeholder="请输入表单名称" autocomplete="off" class="layui-input">'
                 , '</div>'
                 , '</div>'
+                , '<!--参数-->'
+                , '<div class="layui-form-item" >'
+                , '  <label class="layui-form-label">参数</label>'
+                , '  <div class="layui-input-block">'
+                , '    <button style="margin: 5px 0px 0px 30px;" type="button" id="params-add" class="layui-btn layui-btn-primary layui-btn-sm"><i class="layui-icon layui-icon-addition"></i>增加选项</button>'
+                , '  </div>'
+                , '</div>'
+                , '<div id="params-area" >'
+                , '</div>'
+                , '<input type="hidden" name="params_len" id="params_len" value="0">'
                 , '<!--数据地址-->'
                 , '<div class="layui-form-item">'
                 , '<label class="layui-form-label">数据地址</label>'
@@ -643,11 +655,18 @@ layui.config({ base: '/admin/component/form/modules/'}).define(["layer", "laytpl
                 , 'placeholder="请输入生成地址" autocomplete="off" class="layui-input">'
                 , '</div>'
                 , '</div>'
+                , '<div class="layui-form-item">'
+                , '<div class="layui-input-block">'
+                , '<button type="button" class="layui-btn">刷新</button>'
+                , '<button type="button" class="layui-btn layui-btn-primary">测试</button>'
+                , '</div>'
+                , '</div>'
                 , '<!--//end-->'
-                , '</div>'
-                , '</div>'
-                , '</div>'
                 , '</form>'
+                , '</div>'
+                , '</div>'
+                , '</div>'
+                
                 , '</div>'
                 , '</div>'
                 , '</div>'].join('')
@@ -3577,37 +3596,69 @@ layui.config({ base: '/admin/component/form/modules/'}).define(["layer", "laytpl
                 options.htmlCode.script = '';
                 var _htmlelem = $('<div style="height:100%;width:100%;"></div>');
                 that.generateHtml(options.data, _htmlelem);
+                let formdata = form.val('myform');
+                let formName = formdata.formName || '表单';
+                let formId = formdata.formId || 'userForm';
+                let get_url = formdata.get_url;
+                let params_len = formdata.params_len;
+                let getUrlStr = '',
+                    paramUrls = '"' + get_url;
+                if(get_url) {
+                    if(params_len > 0) {
+                        paramUrls += get_url.indexOf('?') === -1 ? '?' : '';
+                        let i = 0;
+                        for(let p in formdata) {
+                            if(p.indexOf('params_key') > -1) {
+                                let v = formdata[p];
+                                if(i > 0){
+                                    paramUrls += '+"&'+v+'="+req.'+v;
+                                }else{
+                                    paramUrls = paramUrls + v +'="+req.'+v;
+                                }
+                                i++;
+                            }
+                        }
+                        //get_url = get_url.slice(0,get_url.length-6);
+                    }else{
+                        paramUrls += get_url + '"';
+                    }
+                    getUrlStr += '_get(layui, '+paramUrls.replace(/\s*/g,"")+', res => {\n';
+                    getUrlStr += 'form.val("'+formId+'",res);\n'; 
+                    getUrlStr += '});\n';
+                }
+                
                 //构件 html  
                 var TP_HTML_CODE = ['<!DOCTYPE html>'
                     , '<html>'
                     , '<head>'
                     , '<meta charset="utf-8">'
                     , '<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">'
-                    , '<title>表单设计器代码</title>'
-                    , '<link rel="stylesheet" href="../layui/css/layui.css" />'
-                    , '<link rel="stylesheet" href="./modules/formDesigner.css" />\n' +
-                    '  <link rel="stylesheet" href="./modules/cron/cron.css" />\n' +
-                    '  <link rel="stylesheet" href="./modules/labelGeneration/labelGeneration.css" />\n' +
-                    '  <link rel="stylesheet" href="./modules/formPreview.css" />'
+                    , '<title>'+formName+'</title>'
+                    , '<link rel="stylesheet" href="/admin/component/layui/css/layui.css" />'
+                    , '<link rel="stylesheet" href="/admin/component/form/modules/formDesigner.css" />\n' +
+                    '  <link rel="stylesheet" href="/admin/component/form/modules/cron/cron.css" />\n' +
+                    '  <link rel="stylesheet" href="/admin/component/form/modules/labelGeneration/labelGeneration.css" />\n' +
+                    '  <link rel="stylesheet" href="/admin/component/form/modules/formPreview.css" />'
                     , '</head>'
                     , '<body>'
-                    , '<div id="testdemo" style="margin: 10px 20px;"><form  class="layui-form" style="height:100%;" id="formPreviewForm">'
+                    , '<div id="'+formId+'-body" style="margin: 10px 20px;"><form  class="layui-form" style="height:100%;" id="'+formId+'"  lay-filter="'+formId+'">'
                     , '' + _htmlelem.html() + ''
                     , '<div class="layui-form-item">'
                     , '<div class="layui-input-block">'
-                    , '<button type="submit" class="layui-btn" lay-submit="" lay-filter="formPreviewForm">提交</button>'
+                    , '<button type="submit" class="layui-btn" lay-submit="" lay-filter="'+formId+'">提交</button>'
                     , '<button type="reset" class="layui-btn layui-btn-primary">重置</button>'
                     , '</div>'
                     , '</div>'
                     , '</form></div>'
-                    , '<script type="text/javascript" src="../layui/layui.js"></script>'
-                    , '<script type="text/javascript" src="./modules/Sortable/Sortable.js"> </script>\n' +
-                    '  <script type="text/javascript" src="./modules/numberInput/numberInput.js"></script>\n' +
-                    '  <script type="text/javascript" src="./modules/icon/iconPicker.js"></script>\n' +
-                    '  <script type="text/javascript" src="./modules/cron/cron.js"></script>\n' +
-                    '  <script type="text/javascript" src="./modules/iceEditor/iceEditor.js"></script>\n' +
-                    '  <script type="text/javascript" src="./modules/labelGeneration/labelGeneration.js"></script>\n' +
-                    '  <script type="text/javascript" src="./js/config.js?v=100"></script>'
+                    , '<script type="text/javascript" src="/admin/config/config.js"></script>'
+                    , '<script type="text/javascript" src="/admin/component/layui/layui.js"></script>'
+                    , '<script type="text/javascript" src="/admin/component/form/modules/Sortable/Sortable.js"> </script>\n' +
+                    '  <script type="text/javascript" src="/admin/component/form/modules/numberInput/numberInput.js"></script>\n' +
+                    '  <script type="text/javascript" src="/admin/component/form/modules/icon/iconPicker.js"></script>\n' +
+                    '  <script type="text/javascript" src="/admin/component/form/modules/cron/cron.js"></script>\n' +
+                    '  <script type="text/javascript" src="/admin/component/form/modules/iceEditor/iceEditor.js"></script>\n' +
+                    '  <script type="text/javascript" src="/admin/component/form/modules/labelGeneration/labelGeneration.js"></script>\n' +
+                    '  <script type="text/javascript" src="/admin/component/form/js/config.js?v=100"></script>'
                     , '<script>'
                     , 'layui.use(["layer", "laytpl", "element", "form", "slider", "laydate", "rate", "colorpicker", "layedit", "carousel", "upload", "formField","numberInput","iconPicker", "cron","labelGeneration"], function () {'
                     , 'var $ = layui.jquery'
@@ -3628,9 +3679,11 @@ layui.config({ base: '/admin/component/form/modules/'}).define(["layer", "laytpl
                     '  , numberInput = layui.numberInput\n' +
                     '  , iconPicker = layui.iconPicker\n' +
                     '  , cron = layui.cron\n' +
+                    '  , req = _req()\n' +
                     '  , labelGeneration = layui.labelGeneration;'
                     , options.htmlCode.script
-                    , '});'
+                    , '});\n'
+                    , getUrlStr
                     , '</script>'
                     , '</body>'
                     , '</html>'].join('')
@@ -3689,8 +3742,58 @@ layui.config({ base: '/admin/component/form/modules/'}).define(["layer", "laytpl
                 });
 
             });
+            //params-area
+            $('#params-add').on('click', function(e) {
+                //console.log(e)
+                let i = $("#params-area").children("div").length;
+                let str = '<div class="layui-form-item params-list">';
+                str += '<div class="layui-inline" style="margin-right: 0px;width:20px; margin-left:20px;">';
+                str += i + 1;
+                str += '  </div>';
+                str += '<div class="layui-inline" style="margin-right: 0px;width:100px; margin-left:10px;">';
+                str += '   <input type="text" name="params_key[]" placeholder="参数"  autocomplete="off" value="" class="layui-input">';
+                str += '  </div>';
+                str += '<div class="layui-inline" style="margin-right: 0px;width:100px; margin-left:30px;">';
+                str += '   <input type="text" name="params_val[]"  placeholder="测试值" autocomplete="off" value="" class="layui-input">';
+                str += '  </div>';
+                str += '  <div class="layui-inline" style="margin-left: 20px;">';
+                str += '   <i class="layui-icon layui-icon-delete params-delete" style="color:red;font-size:20px;"></i>';
+                str += '  </div>';
+                str += '</div>';
+                $('#params-area').append(str);
+                let len = $("#params-area").children("div").length;
+                $('#params_len').val(len);
+                
+            });
+            $('#params-area').on('click', 'i.params-delete', function(e) {
+                //console.log(e)
+                $(this).closest('.params-list').remove()
+            })
             $('.saveJson').on('click', function () {
                 console.log(options.data)
+                //console.log(element)
+                let formdata = form.val('myform');
+                console.log(formdata)
+                //console.log($("#myform").serialize());
+                if(formdata.formId == '') {
+                    layer.msg('表单标志不能为空！');
+                    element.tabChange('form-attr', 'formParams');
+                    $('#formId').focus();
+                    return false;
+                }
+                if(formdata.formName == '') {
+                    layer.msg('表单名称不能为空！');
+                    element.tabChange('form-attr', 'formParams');
+                    $('#formName').focus();
+                    return false;
+                }
+                if(formdata.form_path == '') {
+                    layer.msg('生成地址不能为空！');
+                    element.tabChange('form-attr', 'formParams');
+                    $('#form_path').focus();
+                    return false;
+                }
+                
                 //window.localStorage.setItem('layui_form_json', JSON.stringify(options.data));
                 /*
                 CoreUtil.sendPut("/activiti-form/setActivitiForm", {"id":$("#fromId").val(),"formData":JSON.stringify(options.data)}, function (res) {
