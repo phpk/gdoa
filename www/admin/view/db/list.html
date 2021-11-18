@@ -2,41 +2,18 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>表单管理</title>
+		<title>数据库管理</title>
 		<link rel="stylesheet" href="../../component/ui/css/ui.css" />
 	</head>
 	<body class="pear-container">
+		
 		<div class="layui-card">
 			<div class="layui-card-body">
-				<form class="layui-form" action="">
-					<div class="layui-form-item">
-						<div class="layui-form-item layui-inline">
-							<label class="layui-form-label">表单名</label>
-							<div class="layui-input-inline">
-								<input type="text" name="name" placeholder="" class="layui-input">
-							</div>
-						</div>
-						<div class="layui-form-item layui-inline">
-							<button class="pear-btn pear-btn-md pear-btn-primary" lay-submit lay-filter="form-query">
-								<i class="layui-icon layui-icon-search"></i>
-								查询
-							</button>
-							<button type="reset" class="pear-btn pear-btn-md" lay-filter="form-reset" lay-submit>
-								<i class="layui-icon layui-icon-refresh"></i>
-								重置
-							</button>
-						</div>
-					</div>
-				</form>
-			</div>
-		</div>
-		<div class="layui-card">
-			<div class="layui-card-body">
-				<table id="form-table" lay-filter="form-table"></table>
+				<table id="db-table" lay-filter="db-table"></table>
 			</div>
 		</div>
 
-		<script type="text/html" id="form-toolbar">
+		<script type="text/html" id="db-toolbar">
 			<button class="pear-btn pear-btn-primary pear-btn-md" lay-event="add">
 		        <i class="layui-icon layui-icon-add-1"></i>
 		        新增
@@ -44,14 +21,19 @@
 		    
 		</script>
 
-		<script type="text/html" id="form-bar">
+		<script type="text/html" id="db-bar">
 			<button class="pear-btn pear-btn-primary pear-btn-sm" lay-event="edit"><i class="layui-icon layui-icon-edit"></i></button>
 		    <button class="pear-btn pear-btn-danger pear-btn-sm" lay-event="remove"><i class="layui-icon layui-icon-delete"></i></button>
 		</script>
 
+		<script type="text/html" id="db-enable">
+			<input type="checkbox" name="status" value="{{d.admin_id}}" lay-skin="switch" lay-text="启用|禁用" lay-filter="db-enable" {{ d.status== 0 ? 'checked' : '' }} />
+		</script>
 
-		<script type="text/html" id="form-addTime">
-			{{layui.util.toDateString(d.add_time*1000, 'yyyy-MM-dd HH:mm:ss')}}
+		
+
+		<script type="text/html" id="db-loginTime">
+			{{layui.util.toDateString(d.login_time*1000, 'yyyy-MM-dd HH:mm:ss')}}
 		</script>
 		<script src="../../config/config.js"></script>
 		<script src="../../component/layui/layui.js"></script>
@@ -69,44 +51,45 @@
 					[
 						{
 							title: 'ID',
-							field: 'id',
+							field: 'admin_id',
 							align: 'center'
 						},
 						{
-							title: '名称',
-							field: 'name',
+							title: '账号',
+							field: 'username',
 							align: 'center',
 							width: 100
 						},
 						{
-							title: '关联id',
-							field: 'link_id',
+							title: '姓名',
+							field: 'name',
 							align: 'center'
 						},
 						{
-							title: '数据来源',
-							field: 'get_url',
+							title: '电话',
+							field: 'mobile',
 							align: 'center'
 						},
 						{
-							title: '数据发送',
-							field: 'post_url',
-							align: 'center'
-						},
-                        {
-							title: '表单地址',
-							field: 'form_path',
-							align: 'center'
-						},
-                        {
-							title: '添加时间',
-							field: 'add_time',
+							title: '启用',
+							field: 'status',
 							align: 'center',
-							toolbar : '#form-addTime'
+							templet: '#db-enable'
+						},
+						{
+							title: '登录次数',
+							field: 'login_num',
+							align: 'center'
+						},
+						{
+							title: '登录时间',
+							field: 'login_time',
+							align: 'center',
+							templet: '#db-loginTime'
 						},
 						{
 							title: '操作',
-							toolbar: '#form-bar',
+							toolbar: '#db-bar',
 							align: 'center',
 							width: 130
 						}
@@ -114,8 +97,8 @@
 				]
 
 				table.render({
-					elem: '#form-table',
-					url: apiUrl + 'form/list',
+					elem: '#db-table',
+					url: apiUrl + 'db/list',
 					headers : getHeader(),
 					parseData: function(res) {
 						//console.log(res)
@@ -130,7 +113,7 @@
 					cols: cols,
 					skin: 'line',
 
-					toolbar: '#form-toolbar',
+					toolbar: '#db-toolbar',
 					defaultToolbar: [{
 						title: '刷新',
 						layEvent: 'refresh',
@@ -138,7 +121,7 @@
 					}, 'filter', 'print', 'exports']
 				});
 
-				table.on('tool(form-table)', function(obj) {
+				table.on('tool(db-table)', function(obj) {
 					if (obj.event === 'remove') {
 						window.remove(obj);
 					} else if (obj.event === 'edit') {
@@ -146,17 +129,19 @@
 					}
 				});
 
-				table.on('toolbar(form-table)', function(obj) {
+				table.on('toolbar(db-table)', function(obj) {
 					if (obj.event === 'add') {
 						window.add();
 					} else if (obj.event === 'refresh') {
 						window.refresh();
-					} 
+					} else if (obj.event === 'batchRemove') {
+						window.batchRemove(obj);
+					}
 				});
 				// 监听搜索操作
 
-				form.on('submit(form-query)', function(data) {
-					table.reload('form-table', {
+				form.on('submit(db-query)', function(data) {
+					table.reload('db-table', {
 						where: {
 							param : $('form').serialize()
 						},
@@ -166,8 +151,8 @@
 					})
 					return false;
 				});
-				form.on('submit(form-reset)', function(data){
-					table.reload('form-table', {
+				form.on('submit(db-reset)', function(data){
+					table.reload('db-table', {
 						where: {
 							param : ''
 						},
@@ -177,7 +162,21 @@
 					});
 					return false;
 				})
-				
+				form.on('switch(db-enable)', function(data) {
+					//layer.tips(this.value + ' ' + this.name + '：' + obj.elem.checked, obj.othis);
+					let v = 1;
+					if (data.elem.checked) v = 0;
+					let postData = {
+						id : data.value,
+						status : v
+					};
+					_post(layui, 'admin/enable', postData, res => {
+						//console.log(res)
+					},err => {
+						$(data.elem).prop('checked', false);
+						form.render('checkbox');
+					})
+				});
 
 				window.add = function() {
 					layer.open({
@@ -185,7 +184,7 @@
 						title: '新增',
 						shade: 0.1,
 						offset: 'rt',
-						area: ['100%', '100%'],
+						area: ['80%', '100%'],
 						anim: 1,
 						maxmin: true,
 						content: MODULE_PATH + 'add.html'
@@ -198,16 +197,16 @@
 						title: '修改',
 						shade: 0.1,
 						offset: 'rt',
-						area: ['90%', '100%'],
+						area: ['80%', '100%'],
 						anim: 1,
 						maxmin: true,
-						content: MODULE_PATH + 'add.html?form_id=' + obj.data.id
+						content: MODULE_PATH + 'edit.html?id=' + obj.data.admin_id
 					});
 				}
 				window.remove = function(obj){
-		            layer.confirm('确定要删除', {icon: 3, title:'提示'}, function(index){
+		            layer.confirm('确定要删除该用户', {icon: 3, title:'提示'}, function(index){
 		                layer.close(index);
-		                _post(layui, 'form/delete',{id : obj.data.id}, res => {
+		                _post(layui, 'admin/del',{admin_id : obj.data.admin_id}, res => {
 							layer.msg('删除成功',{icon:1,time:1000},() => {
 								obj.del();
 							});
@@ -219,7 +218,7 @@
 				
 
 				window.refresh = function(param) {
-					table.reload('form-table');
+					table.reload('db-table');
 				}
 			})
 		</script>

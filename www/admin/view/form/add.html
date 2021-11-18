@@ -40,6 +40,7 @@
                     k && addParamsData(k, vals[i],type)
                 })
             }
+            console.log(req)
             if(req.form_id && req.form_id > 0) {
                 _get(layui, 'form/addBefore?id=' + req.form_id, res => {
                 //console.log(res)

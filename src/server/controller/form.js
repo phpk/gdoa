@@ -71,19 +71,22 @@ module.exports = class extends Base {
             link_name: data.link_name,
             link_field: data.link_field,
             params_get: data.params_get,
-            params_post : data.params_post
+            params_post : data.params_post,
+            update_time : this.now()
         }
         //if (data.params_len > 0)
         //存数据
         if (data.form_id > 0) {
             let has = await this.model('form').where({ id: data.form_id }).find()
             if (think.isEmpty(has)) {
+                save.add_time = this.now();
                 id = await this.model('form').add(save);
             } else {
                 id = data.form_id;
                 await this.model('form').where({ id: data.form_id }).update(save)
             }
         } else {
+            save.add_time = this.now();
             id = await this.model('form').add(save);
         }
         //回写
@@ -115,43 +118,5 @@ module.exports = class extends Base {
         data.formName = data.name;
         return this.success(data)
     }
-    /**
-     * @api {get} form/edit 编辑表单前
-     * @apiGroup form
-     *
-     * @apiHeader {string} rttoken 必填
-     *
-     * @apiParam  {number} id id
-     *
-     * @apiSuccess (200) {type} name description
-     *
-     */
-    async editBeforeAction() {
-        let id = this.get('id');
-        let data = await this.model('form').where({ id }).find();
-        if (!think.isEmpty(data)) {
-            return this.fail('数据不存在')
-        }
-        return this.success(data)
-    }
-    /**
-     * @api {post} form/edit 编辑表单
-     * @apiGroup form
-     *
-     * @apiHeader {string} rttoken 必填
-     *
-     * @apiParam  {number} id id
-     *
-     * @apiSuccess (200) {type} name description
-     *
-     */
-    async editAction() {
-        let data = this.post(),
-            id = data.id;
-        if (!this.hasData('form', { id })) {
-            return this.fail('数据不存在')
-        }
-        let rt = await this.model('from').where({ id }).update(data)
-        return this.success(rt)
-    }
+    
 };
