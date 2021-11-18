@@ -51,8 +51,6 @@ module.exports = class extends Base {
                 })
                 .delete()
         }
-            
-
         return this.success()
     }
     /**
