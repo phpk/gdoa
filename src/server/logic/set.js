@@ -1,83 +1,7 @@
 module.exports = class extends think.Logic {
-    cateAction() {
-        this.allowMethods = 'get';
-        this.rules = {
-            page: {
-                default: 1,
-                int: { min: 1 },
-                aliasName: '页码'
-            },
-            limit: {
-                default: 20,
-                int: true,
-                aliasName: '页数'
-            }
-        }
-    }
-    cateAddAction() {
-        this.allowMethods = 'post';
-        this.rules = {
-            key: {
-                required: true,
-                length: { min: 3, max: 255 },
-                aliasName : '类目键值'
-            },
-            name: {
-                required: true,
-                length: { min: 2, max: 255 },
-                aliasName: '类目名'
-            },
-            remark: {
-                aliasName : '标注'
-            }
-        }
-    }
-    cateEditBeforeAction() {
-        this.allowMethods = 'get';
-        this.rules = {
-            id: {
-                required: true,
-                int: { min: 2 },
-                aliasName: '类目id'
-            }
-        }
-    }
-    cateEditAction() {
-        this.allowMethods = 'post';
-        this.rules = {
-            id : {
-                required : true,
-                int : {min : 2},
-                aliasName : '类目id'
-            },
-            name: {
-                required: true,
-                length: { min: 2, max: 255 },
-                aliasName: '类目名'
-            },
-            remark: {
-                aliasName : '标注'
-            }
-        }
-    }
-    cateDeleteAction() {
-        this.allowMethods = 'post';
-        this.rules = {
-            id: {
-                required: true,
-                int: { min: 2 },
-                aliasName: '类目id'
-            }
-        }
-    }
     addAction() {
         this.allowMethods = 'post';
         this.rules = {
-            cate_id: {
-                required: true,
-                int: { min: 1 },
-                aliasName: '类目id'
-            },
             key: {
                 required: true,
                 length: { min: 2, max: 255 },
@@ -97,11 +21,6 @@ module.exports = class extends think.Logic {
     listAction() {
         this.allowMethods = 'get';
         this.rules = {
-            cate_id: {
-                required: true,
-                int: { min: 1 },
-                aliasName: '类目id'
-            },
             page: {
                 default: 1,
                 int: { min: 1 },
@@ -114,6 +33,24 @@ module.exports = class extends think.Logic {
             }
         }
     }
+    async setBeforeAction() {
+        let conftype = this.get('conftype');
+        let data = await this.model('set').where({ key: conftype }).find()
+        if (think.isEmpty(data)) return this.fail('数据不存在')
+        if (data.val) {
+            return this.success(JSON.parse(data.val))
+        } else {
+            return this.success()
+        }
+    }
+    async setConfAction() {
+        let conftype = this.post('conftype');
+        let data = await this.model('set').where({ key: conftype }).find()
+        if (think.isEmpty(data)) return this.fail('数据不存在')
+        let save = { val: JSON.stringify(this.post()) };
+        await this.model('set').where({ id: data.id }).update(save);
+        return this.success()
+    }
     deleteAction() {
         this.allowMethods = 'post';
         this.rules = {
@@ -121,6 +58,21 @@ module.exports = class extends think.Logic {
                 required: true,
                 int: { min: 1 },
                 aliasName: '配置id'
+            }
+        }
+    }
+    enableAction() {
+        this.allowMethods = 'post';
+        this.rules = {
+            id: {
+                int: { min: 1 },
+                required: true,
+                aliasName: 'id'
+            },
+            status: {
+                int: true,
+                required: true,
+                aliasName: '状态'
             }
         }
     }

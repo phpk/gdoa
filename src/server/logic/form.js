@@ -29,9 +29,33 @@ module.exports = class extends think.Logic {
     addAction() {
         this.allowMethods = 'post';
         this.rules = {
-            name : {
+            formName : {
                 required: true,
                 aliasName : '表单名称'
+            },
+            formId: {
+                required: true,
+                aliasName : '表单标志'
+            },
+            form_path: {
+            //    required: true,
+                aliasName : '生成地址'
+            },
+            params_len: {
+                int : true,
+                aliasName :'参数个数'
+            },
+            params_get: {
+                aliasName: '接收参数'
+            },
+            params_post: {
+                aliasName: '发送参数'
+            },
+            get_url: {
+                aliasName : '数据地址'
+            },
+            post_url: {
+                aliasName: '发送地址'
             }
         }
     }
