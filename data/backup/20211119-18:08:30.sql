@@ -109,7 +109,7 @@ CREATE TABLE `rt_admin_oplog` (
   `method` varchar(100) CHARACTER SET utf8 DEFAULT NULL COMMENT '方法',
   `addtime` int(10) unsigned DEFAULT '0' COMMENT '添加时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 203 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '管理操作日志';
+) ENGINE = InnoDB AUTO_INCREMENT = 209 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '管理操作日志';
 
 # ------------------------------------------------------------
 # SCHEMA DUMP FOR TABLE: rt_admin_viewlog
@@ -127,7 +127,7 @@ CREATE TABLE `rt_admin_viewlog` (
   `addtime` int(10) unsigned DEFAULT '0' COMMENT '添加时间',
   `leavetime` int(10) unsigned DEFAULT '0' COMMENT '离开时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 214 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '管理员查看日志';
+) ENGINE = InnoDB AUTO_INCREMENT = 216 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '管理员查看日志';
 
 # ------------------------------------------------------------
 # SCHEMA DUMP FOR TABLE: rt_area
@@ -157,9 +157,9 @@ CREATE TABLE `rt_article` (
   `content` text CHARACTER SET utf8 NOT NULL COMMENT '内容',
   `author` varchar(32) CHARACTER SET utf8 NOT NULL COMMENT '作者:id:name',
   `show_switch` tinyint(1) NOT NULL DEFAULT '1' COMMENT '展示:1=展示,0=隐藏',
-  `show_time` datetime DEFAULT NULL,
-  `up_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `add_time` datetime DEFAULT CURRENT_TIMESTAMP,
+  `show_time` int(10) unsigned DEFAULT '0',
+  `up_time` int(10) unsigned DEFAULT '0',
+  `add_time` int(10) unsigned DEFAULT '0',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '文章';
 
@@ -460,7 +460,7 @@ CREATE TABLE `rt_menu` (
   `ifshow` tinyint(3) unsigned DEFAULT '0' COMMENT '是否显示0显示1不显示',
   PRIMARY KEY (`id`) USING BTREE,
   KEY `url` (`route`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 93 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '系统菜单';
+) ENGINE = InnoDB AUTO_INCREMENT = 94 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '系统菜单';
 
 # ------------------------------------------------------------
 # SCHEMA DUMP FOR TABLE: rt_msg
@@ -805,14 +805,14 @@ VALUES
   (
     1,
     'admin',
-    'c1027273bf401fede290641952d30fac',
-    'F8yRsMe7nJmpGTFB',
+    'bef129c0bcfe78fbcc6d673858db075f',
+    'ErXijSYhKrXMrkxk',
     0,
     NULL,
     NULL,
     0,
-    1637296765,
-    122,
+    1637316500,
+    127,
     0
   );
 INSERT INTO
@@ -6297,6 +6297,150 @@ VALUES
     'POST',
     1637298574
   );
+INSERT INTO
+  `rt_admin_oplog` (
+    `id`,
+    `admin_id`,
+    `log`,
+    `data`,
+    `ip`,
+    `agent`,
+    `url`,
+    `method`,
+    `addtime`
+  )
+VALUES
+  (
+    203,
+    1,
+    'admin用户登录',
+    '{\"username\":\"admin\",\"captcha\":\"dfnm\"}',
+    '::ffff:127.0.0.1',
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:94.0) Gecko/20100101 Firefox/94.0',
+    '/server/login/do',
+    'POST',
+    1637305837
+  );
+INSERT INTO
+  `rt_admin_oplog` (
+    `id`,
+    `admin_id`,
+    `log`,
+    `data`,
+    `ip`,
+    `agent`,
+    `url`,
+    `method`,
+    `addtime`
+  )
+VALUES
+  (
+    204,
+    1,
+    '添加菜单',
+    '{\"title\":\"数据库文档\",\"pname\":\"35\",\"route\":\"db/doc\",\"href\":\"\",\"icon\":\"layui-icon layui-icon-service\",\"type\":2,\"order_num\":0,\"pid\":35}',
+    '::ffff:127.0.0.1',
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:94.0) Gecko/20100101 Firefox/94.0',
+    '/server/menu/add',
+    'POST',
+    1637308898
+  );
+INSERT INTO
+  `rt_admin_oplog` (
+    `id`,
+    `admin_id`,
+    `log`,
+    `data`,
+    `ip`,
+    `agent`,
+    `url`,
+    `method`,
+    `addtime`
+  )
+VALUES
+  (
+    205,
+    1,
+    'admin用户登录',
+    '{\"username\":\"admin\",\"captcha\":\"ocgr\"}',
+    '::ffff:127.0.0.1',
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:94.0) Gecko/20100101 Firefox/94.0',
+    '/server/login/do',
+    'POST',
+    1637309763
+  );
+INSERT INTO
+  `rt_admin_oplog` (
+    `id`,
+    `admin_id`,
+    `log`,
+    `data`,
+    `ip`,
+    `agent`,
+    `url`,
+    `method`,
+    `addtime`
+  )
+VALUES
+  (
+    206,
+    1,
+    'admin用户登录',
+    '{\"username\":\"admin\",\"captcha\":\"bdzc\"}',
+    '::ffff:127.0.0.1',
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:94.0) Gecko/20100101 Firefox/94.0',
+    '/server/login/do',
+    'POST',
+    1637313775
+  );
+INSERT INTO
+  `rt_admin_oplog` (
+    `id`,
+    `admin_id`,
+    `log`,
+    `data`,
+    `ip`,
+    `agent`,
+    `url`,
+    `method`,
+    `addtime`
+  )
+VALUES
+  (
+    207,
+    1,
+    'admin用户登录',
+    '{\"username\":\"admin\",\"captcha\":\"huo9\"}',
+    '::1',
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.82 Safari/537.36',
+    '/server/login/do',
+    'POST',
+    1637314347
+  );
+INSERT INTO
+  `rt_admin_oplog` (
+    `id`,
+    `admin_id`,
+    `log`,
+    `data`,
+    `ip`,
+    `agent`,
+    `url`,
+    `method`,
+    `addtime`
+  )
+VALUES
+  (
+    208,
+    1,
+    'admin用户登录',
+    '{\"username\":\"admin\",\"captcha\":\"f7yu\"}',
+    '::ffff:127.0.0.1',
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:94.0) Gecko/20100101 Firefox/94.0',
+    '/server/login/do',
+    'POST',
+    1637316500
+  );
 
 # ------------------------------------------------------------
 # DATA DUMP FOR TABLE: rt_admin_viewlog
@@ -11412,6 +11556,54 @@ VALUES
     '/server/menu/oplist',
     'GET',
     1637298574,
+    1637308877
+  );
+INSERT INTO
+  `rt_admin_viewlog` (
+    `id`,
+    `admin_id`,
+    `log`,
+    `ip`,
+    `agent`,
+    `url`,
+    `method`,
+    `addtime`,
+    `leavetime`
+  )
+VALUES
+  (
+    214,
+    1,
+    '添加菜单',
+    '::ffff:127.0.0.1',
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:94.0) Gecko/20100101 Firefox/94.0',
+    '/server/menu/one',
+    'GET',
+    1637308877,
+    1637308898
+  );
+INSERT INTO
+  `rt_admin_viewlog` (
+    `id`,
+    `admin_id`,
+    `log`,
+    `ip`,
+    `agent`,
+    `url`,
+    `method`,
+    `addtime`,
+    `leavetime`
+  )
+VALUES
+  (
+    215,
+    1,
+    '菜单列表',
+    '::ffff:127.0.0.1',
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:94.0) Gecko/20100101 Firefox/94.0',
+    '/server/menu/oplist',
+    'GET',
+    1637308898,
     0
   );
 
@@ -13118,6 +13310,34 @@ VALUES
     2,
     0,
     'layui-icon layui-icon-down',
+    NULL,
+    35,
+    1,
+    0
+  );
+INSERT INTO
+  `rt_menu` (
+    `id`,
+    `title`,
+    `route`,
+    `href`,
+    `type`,
+    `order_num`,
+    `icon`,
+    `open_type`,
+    `pid`,
+    `lid`,
+    `ifshow`
+  )
+VALUES
+  (
+    93,
+    '数据库文档',
+    'db/doc',
+    '',
+    2,
+    0,
+    'layui-icon layui-icon-service',
     NULL,
     35,
     1,
