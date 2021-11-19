@@ -1,5 +1,6 @@
 const json2md = require("json2md");
 const path = require('path');
+const fs = require('fs');
 module.exports = class extends think.Service {
     db() {
         const data = require(path.join(think.ROOT_PATH, 'data/db.json'));
@@ -46,6 +47,10 @@ module.exports = class extends think.Service {
             })
             rt.push({ hr: "" })
         }
-        return json2md(rt)
+        
+        let res = json2md(rt);
+        let sqlmdFile = path.join(think.ROOT_PATH, 'www/docs/doc/sql.md');
+        fs.writeFileSync(sqlmdFile, res);
+        return res;
     }
 }

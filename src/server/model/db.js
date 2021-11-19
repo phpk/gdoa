@@ -5,9 +5,17 @@ const backpath = path.join(think.ROOT_PATH, 'data/backup/');
 const mysqldump = require('mysqldump');
 const Importer = require('mysql-import');
 module.exports = class extends think.Model {
+    /**
+     * 表列表
+     * @returns array
+     */
     async list() {
         return await this.query("SHOW TABLE STATUS");
     }
+    /**
+     * 所有的缓存数据
+     * @returns object
+     */
     async tab() {
         if (think.isFile(datapath)) {
             return require(datapath);
@@ -15,6 +23,10 @@ module.exports = class extends think.Model {
             return await this.create();
         }
     }
+    /**
+     * 创建缓存
+     * @returns object
+     */
     async create() {
         let data = await this.all();
         fs.writeFileSync(datapath, JSON.stringify(data));
@@ -64,6 +76,9 @@ module.exports = class extends think.Model {
 
         return tabs;
     }
+    async fieldList(table) {
+        return this.query(`select COLUMN_NAME,COLUMN_COMMENT,COLUMN_KEY from information_schema.COLUMNS where table_name = '${table}'`);
+    }
     /**
      * 优化表
      */
@@ -77,6 +92,57 @@ module.exports = class extends think.Model {
     async repair(table) {
         await this.query('REPAIR TABLE ' + table);
     }
+    /**
+     * 删除表
+     * @returns {*}
+     */
+    async drop(table) {
+        if(!this.sysTable(table))
+        await this.query('DROP TABLE ' + table);
+    }
+    /**
+     * 清空表
+     * @param {string} table 
+     */
+    async clear(table) {
+        if(!this.sysTable(table))
+        await this.query('truncate TABLE ' + table);
+    }
+    /**
+     * 改表名
+     * @param {string} table 
+     * @param {string} newTable 
+     */
+    async renameTable(table, newTable) {
+        if(!this.sysTable(table))
+        await this.query('alter table '+table+' rename to '+ newTable);
+    }
+    /**
+     * 改表备注
+     * @param {string} table 
+     * @param {string} newComment 
+     */
+    async editTableComment(table, newComment) {
+        if(!this.sysTable(table))
+        await this.query(`ALTER TABLE ${table} COMMENT '${newComment}'`);
+    }
+    
+    /**
+     * 改表自增长id
+     * @param {string} table 
+     * @param {string} id 
+     */
+    async editTableAutoId(table, id) {
+        if(!this.sysTable(table))
+        await this.query(`ALTER TABLE ${table} auto_increment = ${id}`);
+    }
+    sysTable(table) {
+        let tabs = ['rt_admin','rt_admin_auth','rt_admin_map','rt_admin_oplog','rt_admin_viewlog',
+        'rt_error','rt_menu','rt_set','rt_form','rt_crons'];
+        if(tabs.includes(table)) return true;
+        return false;
+    }
+
     /**
      * 备份表
      */

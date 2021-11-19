@@ -118,10 +118,10 @@ module.exports = class extends think.Controller {
       return {
         code: 0
       };
-    } catch (error) {
+    } catch (e) {
       return {
-        code: 4023,
-        message: '认证过期'
+        code: 4024,
+        message: e.message
       };
     }
 

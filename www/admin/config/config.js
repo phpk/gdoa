@@ -57,6 +57,12 @@ const errorStatus = (xhr, layui) => {
     }
 }
 const parseMsg = (msgs, layui) => {
+    if(!msgs) {
+        layui.layer.msg('系统错误', {
+            icon: 2, time: 2000
+        });
+        return false;
+    }
     if (msgs.constructor === Object) {
         //console.log('111')
         for (let p in msgs) {
@@ -90,9 +96,14 @@ const _get = (layui, url, suc, err) => {
             }
         },
         error: (xhr) => {
+            console.log(xhr)
             err && err(xhr);
             errorStatus(xhr, layui)
-        }
+        },
+        complete :(xhr, ts) => {
+            console.log(xhr)
+            console.log(ts)
+        } 
     });
 }
 const _post = (layui, url, data, suc, err) => {
