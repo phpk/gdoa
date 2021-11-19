@@ -18,6 +18,22 @@
 		        <i class="layui-icon layui-icon-add-1"></i>
 		        新增
 		    </button>
+			<button class="pear-btn pear-btn-success" lay-event="update">
+		        <i class="layui-icon layui-icon-refresh"></i>
+		        更新
+		    </button>
+			<button class="pear-btn pear-btn-danger pear-btn-md" lay-event="backup">
+		        <i class="layui-icon layui-icon-senior"></i>
+		        备份
+		    </button>
+			<button class="pear-btn pear-btn-success pear-btn-md" lay-event="reback">
+		        <i class="layui-icon layui-icon-senior"></i>
+		        还原
+		    </button>
+			<button class="pear-btn pear-btn-warming pear-btn-md" lay-event="doc">
+		        <i class="layui-icon layui-icon-print"></i>
+		        文档
+		    </button>
 		    
 		</script>
 
@@ -26,15 +42,7 @@
 		    <button class="pear-btn pear-btn-danger pear-btn-sm" lay-event="remove"><i class="layui-icon layui-icon-delete"></i></button>
 		</script>
 
-		<script type="text/html" id="db-enable">
-			<input type="checkbox" name="status" value="{{d.admin_id}}" lay-skin="switch" lay-text="启用|禁用" lay-filter="db-enable" {{ d.status== 0 ? 'checked' : '' }} />
-		</script>
-
 		
-
-		<script type="text/html" id="db-loginTime">
-			{{layui.util.toDateString(d.login_time*1000, 'yyyy-MM-dd HH:mm:ss')}}
-		</script>
 		<script src="../../config/config.js"></script>
 		<script src="../../component/layui/layui.js"></script>
 		<script src="../../component/ui/ui.js"></script>
@@ -50,42 +58,39 @@
 				let cols = [
 					[
 						{
-							title: 'ID',
-							field: 'admin_id',
+							title: '表名',
+							field: 'Name',
 							align: 'center'
 						},
 						{
-							title: '账号',
-							field: 'username',
-							align: 'center',
-							width: 100
-						},
-						{
-							title: '姓名',
-							field: 'name',
+							title: '中文名',
+							field: 'Comment',
 							align: 'center'
 						},
 						{
-							title: '电话',
-							field: 'mobile',
+							title: '数据',
+							field: 'Rows',
 							align: 'center'
 						},
 						{
-							title: '启用',
-							field: 'status',
-							align: 'center',
-							templet: '#db-enable'
-						},
-						{
-							title: '登录次数',
-							field: 'login_num',
+							title: 'AutoID',
+							field: 'Auto_increment',
 							align: 'center'
 						},
 						{
-							title: '登录时间',
-							field: 'login_time',
-							align: 'center',
-							templet: '#db-loginTime'
+							title: '编码',
+							field: 'Collation',
+							align: 'center'
+						},
+						{
+							title: '创建时间',
+							field: 'Create_time',
+							align: 'center'
+						},
+						{
+							title: '更新时间',
+							field: 'Update_time',
+							align: 'center'
 						},
 						{
 							title: '操作',
@@ -109,7 +114,7 @@
 							"data": res.data.list //解析数据列表
 						};
 					},
-					page: true,
+					page: false,
 					cols: cols,
 					skin: 'line',
 
@@ -134,50 +139,46 @@
 						window.add();
 					} else if (obj.event === 'refresh') {
 						window.refresh();
-					} else if (obj.event === 'batchRemove') {
-						window.batchRemove(obj);
+					} else if (obj.event === 'update') {
+						window.update(obj);
+					}
+					else if (obj.event === 'backup') {
+						window.backup(obj);
+					}
+					else if(obj.event == 'reback') {
+						window.reback(obj);
 					}
 				});
-				// 监听搜索操作
-
-				form.on('submit(db-query)', function(data) {
-					table.reload('db-table', {
-						where: {
-							param : $('form').serialize()
-						},
-						page: {
-					        curr: 1
-					    }
-					})
-					return false;
-				});
-				form.on('submit(db-reset)', function(data){
-					table.reload('db-table', {
-						where: {
-							param : ''
-						},
-						page: {
-					        curr: 1
-					    }
+				window.update = function(){
+					let index = layer.load(0, {
+						time: 5 * 1000
 					});
-					return false;
-				})
-				form.on('switch(db-enable)', function(data) {
-					//layer.tips(this.value + ' ' + this.name + '：' + obj.elem.checked, obj.othis);
-					let v = 1;
-					if (data.elem.checked) v = 0;
-					let postData = {
-						id : data.value,
-						status : v
-					};
-					_post(layui, 'admin/enable', postData, res => {
-						//console.log(res)
-					},err => {
-						$(data.elem).prop('checked', false);
-						form.render('checkbox');
+					_post(layui, 'db/update', {}, res => {
+						layer.close(index); 
+						layer.msg('更新成功',{icon:1,time:1000});
 					})
-				});
-
+				}
+				window.backup = function() {
+					let index = layer.load(0, {
+						time: 5 * 1000
+					}); //显示加载中动画，最多10秒自动关闭
+					_post(layui, 'db/backup', {}, res => {
+						layer.close(index); //关闭加载动画
+						layer.msg('备份成功',{icon:1,time:1000});
+					})
+				}
+				window.reback = function() {
+					layer.open({
+						type: 2,
+						title: '还原',
+						shade: 0.1,
+						offset: 'rt',
+						area: ['80%', '100%'],
+						anim: 1,
+						maxmin: true,
+						content: MODULE_PATH + 'reback.html'
+					});
+				}
 				window.add = function() {
 					layer.open({
 						type: 2,

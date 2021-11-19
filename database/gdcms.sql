@@ -11,7 +11,7 @@
  Target Server Version : 50732
  File Encoding         : 65001
 
- Date: 18/11/2021 18:48:46
+ Date: 19/11/2021 12:55:46
 */
 
 SET NAMES utf8mb4;
@@ -66,7 +66,7 @@ CREATE TABLE `rt_admin` (
 -- Records of rt_admin
 -- ----------------------------
 BEGIN;
-INSERT INTO `rt_admin` VALUES (1, 'admin', 'e2a4af601f14d459cb18d490996647d0', '4YCAP6z34hDPBx2J', 0, NULL, NULL, 0, 1637229759, 117, 0);
+INSERT INTO `rt_admin` VALUES (1, 'admin', 'c1027273bf401fede290641952d30fac', 'F8yRsMe7nJmpGTFB', 0, NULL, NULL, 0, 1637296765, 122, 0);
 INSERT INTO `rt_admin` VALUES (2, 'test', 'c7b30ad98095b7b560585ffd6371aa47', 'x6pdhRYF4f6bHpFc', 1636948516, '1test', '13873150575', 0, 0, 0, 0);
 INSERT INTO `rt_admin` VALUES (5, 'test12', 'c108dd09fba019c8b9681248c876bb4e', 'Ahn7EScJBw3R2TZR', 1636948870, '222', '13885863355', 0, 0, 0, 1636958930);
 COMMIT;
@@ -91,6 +91,51 @@ BEGIN;
 INSERT INTO `rt_admin_auth` VALUES (1, '总管理员', '-1', 0, NULL);
 INSERT INTO `rt_admin_auth` VALUES (2, 'aaa', '1,4,5,7,37,53', 0, 'aaa');
 INSERT INTO `rt_admin_auth` VALUES (15, 'test2', '1,4,5,7,37,53,2,9,20,21,22,23,57,10,26,27,56,58,59,60,61,11,24,25,62,63,64,65,12,66,67,68,13,28,29,30,31,32,14,33,34,35,36,3,15', 1, '');
+COMMIT;
+
+-- ----------------------------
+-- Table structure for rt_admin_log
+-- ----------------------------
+DROP TABLE IF EXISTS `rt_admin_log`;
+CREATE TABLE `rt_admin_log` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `admin_id` int(10) unsigned NOT NULL COMMENT '管理员账号',
+  `log` varchar(255) CHARACTER SET utf8 NOT NULL COMMENT '日志名称',
+  `data` text CHARACTER SET utf8 COMMENT '返回记录',
+  `ip` varchar(64) CHARACTER SET utf8 DEFAULT '' COMMENT 'IP地址',
+  `agent` varchar(255) CHARACTER SET utf8 DEFAULT '' COMMENT '客户端信息',
+  `url` varchar(255) CHARACTER SET utf8 DEFAULT NULL COMMENT '地址',
+  `method` varchar(100) CHARACTER SET utf8 DEFAULT NULL COMMENT '方法',
+  `addtime` int(10) unsigned DEFAULT '0' COMMENT '添加时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='管理操作日志';
+
+-- ----------------------------
+-- Records of rt_admin_log
+-- ----------------------------
+BEGIN;
+INSERT INTO `rt_admin_log` VALUES (1, 1, 'admin登录', '{\"password\":\"admin\",\"username\":\"admin\",\"captcha\":\"angt\"}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:94.0) Gecko/20100101 Firefox/94.0', '/server/login/do', 'POST', 1636683208);
+INSERT INTO `rt_admin_log` VALUES (2, 1, 'admin登录', '{\"username\":\"admin\",\"captcha\":\"wueq\"}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:94.0) Gecko/20100101 Firefox/94.0', '/server/login/do', 'POST', 1636683396);
+INSERT INTO `rt_admin_log` VALUES (3, 1, 'admin登录', '{\"username\":\"admin\",\"captcha\":\"8mau\"}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:94.0) Gecko/20100101 Firefox/94.0', '/server/login/do', 'POST', 1636684074);
+INSERT INTO `rt_admin_log` VALUES (4, 1, 'admin登录', '{\"username\":\"admin\",\"captcha\":\"za72\"}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:94.0) Gecko/20100101 Firefox/94.0', '/server/login/do', 'POST', 1636687935);
+INSERT INTO `rt_admin_log` VALUES (5, 1, 'admin登录', '{\"username\":\"admin\",\"captcha\":\"cxdq\"}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:94.0) Gecko/20100101 Firefox/94.0', '/server/login/do', 'POST', 1636688572);
+INSERT INTO `rt_admin_log` VALUES (6, 1, 'admin登录', '{\"username\":\"admin\",\"captcha\":\"l3nr\"}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:94.0) Gecko/20100101 Firefox/94.0', '/server/login/do', 'POST', 1636689117);
+INSERT INTO `rt_admin_log` VALUES (7, 1, 'admin登录', '{\"username\":\"admin\",\"captcha\":\"ra5w\"}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:94.0) Gecko/20100101 Firefox/94.0', '/server/login/do', 'POST', 1636689550);
+INSERT INTO `rt_admin_log` VALUES (8, 1, 'admin登录', '{\"username\":\"admin\",\"captcha\":\"2xem\"}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.82 Safari/537.36', '/server/login/do', 'POST', 1636689633);
+INSERT INTO `rt_admin_log` VALUES (9, 1, 'admin登录', '{\"username\":\"admin\",\"captcha\":\"2esr\"}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.82 Safari/537.36', '/server/login/do', 'POST', 1636690261);
+INSERT INTO `rt_admin_log` VALUES (10, 1, 'admin登录', '{\"username\":\"admin\",\"captcha\":\"tqxc\"}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.82 Safari/537.36', '/server/login/do', 'POST', 1636691944);
+INSERT INTO `rt_admin_log` VALUES (11, 1, 'admin登录', '{\"username\":\"admin\",\"captcha\":\"g3kj\"}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.82 Safari/537.36', '/server/login/do', 'POST', 1636707053);
+INSERT INTO `rt_admin_log` VALUES (12, 1, 'admin登录', '{\"username\":\"admin\",\"captcha\":\"quyg\"}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.82 Safari/537.36', '/server/login/do', 'POST', 1636708393);
+INSERT INTO `rt_admin_log` VALUES (13, 1, 'admin登录', '{\"username\":\"admin\",\"captcha\":\"spkv\"}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.82 Safari/537.36', '/server/login/do', 'POST', 1636708927);
+INSERT INTO `rt_admin_log` VALUES (14, 1, 'admin登录', '{\"username\":\"admin\",\"captcha\":\"q7hv\"}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.82 Safari/537.36', '/server/login/do', 'POST', 1636708992);
+INSERT INTO `rt_admin_log` VALUES (15, 1, 'admin登录', '{\"username\":\"admin\",\"captcha\":\"kvm9\"}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.82 Safari/537.36', '/server/login/do', 'POST', 1636709026);
+INSERT INTO `rt_admin_log` VALUES (16, 1, 'admin登录', '{\"username\":\"admin\",\"captcha\":\"4tdv\"}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.82 Safari/537.36', '/server/login/do', 'POST', 1636709593);
+INSERT INTO `rt_admin_log` VALUES (17, 1, 'admin登录', '{\"username\":\"admin\",\"captcha\":\"rnxn\"}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.82 Safari/537.36', '/server/login/do', 'POST', 1636710000);
+INSERT INTO `rt_admin_log` VALUES (18, 1, 'admin登录', '{\"username\":\"admin\",\"captcha\":\"zwgk\"}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.82 Safari/537.36', '/server/login/do', 'POST', 1636711037);
+INSERT INTO `rt_admin_log` VALUES (19, 1, 'admin登录', '{\"username\":\"admin\",\"captcha\":\"vz4m\"}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Code/1.62.0 Chrome/91.0.4472.164 Electron/13.5.1 Safari/537.36', '/server/login/do', 'POST', 1636719500);
+INSERT INTO `rt_admin_log` VALUES (20, 1, 'admin登录', '{\"username\":\"admin\",\"captcha\":\"csq3\"}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Code/1.62.0 Chrome/91.0.4472.164 Electron/13.5.1 Safari/537.36', '/server/login/do', 'POST', 1636719624);
+INSERT INTO `rt_admin_log` VALUES (21, 1, 'admin登录', '{\"username\":\"admin\",\"captcha\":\"5u96\"}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Code/1.62.0 Chrome/91.0.4472.164 Electron/13.5.1 Safari/537.36', '/server/login/do', 'POST', 1636719837);
+INSERT INTO `rt_admin_log` VALUES (22, 1, 'admin登录', '{\"username\":\"admin\",\"captcha\":\"ssr7\"}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Code/1.62.0 Chrome/91.0.4472.164 Electron/13.5.1 Safari/537.36', '/server/login/do', 'POST', 1636754198);
 COMMIT;
 
 -- ----------------------------
@@ -130,7 +175,7 @@ CREATE TABLE `rt_admin_oplog` (
   `method` varchar(100) CHARACTER SET utf8 DEFAULT NULL COMMENT '方法',
   `addtime` int(10) unsigned DEFAULT '0' COMMENT '添加时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=184 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='管理操作日志';
+) ENGINE=InnoDB AUTO_INCREMENT=202 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='管理操作日志';
 
 -- ----------------------------
 -- Records of rt_admin_oplog
@@ -319,6 +364,24 @@ INSERT INTO `rt_admin_oplog` VALUES (180, 1, 'admin用户登录', '{\"username\"
 INSERT INTO `rt_admin_oplog` VALUES (181, 1, 'admin用户登录', '{\"username\":\"admin\",\"captcha\":\"kbla\"}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:94.0) Gecko/20100101 Firefox/94.0', '/server/login/do', 'POST', 1637229759);
 INSERT INTO `rt_admin_oplog` VALUES (182, 1, '添加菜单', '{\"title\":\"设置配置前\",\"pname\":\"13\",\"route\":\"set/setBefore\",\"href\":\"\",\"icon\":\"layui-icon layui-icon-at\",\"type\":3,\"order_num\":0,\"pid\":13}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:94.0) Gecko/20100101 Firefox/94.0', '/server/menu/add', 'POST', 1637232296);
 INSERT INTO `rt_admin_oplog` VALUES (183, 1, '添加菜单', '{\"title\":\"设置配置\",\"pname\":\"13\",\"route\":\"set/setConf\",\"href\":\"\",\"icon\":\"layui-icon layui-icon-404\",\"type\":3,\"order_num\":0,\"pid\":13}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:94.0) Gecko/20100101 Firefox/94.0', '/server/menu/add', 'POST', 1637232332);
+INSERT INTO `rt_admin_oplog` VALUES (184, 1, 'admin用户登录', '{\"username\":\"admin\",\"captcha\":\"q27r\"}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:94.0) Gecko/20100101 Firefox/94.0', '/server/login/do', 'POST', 1637278992);
+INSERT INTO `rt_admin_oplog` VALUES (185, 1, '编辑菜单', '{\"title\":\"表单设计器\",\"pname\":\"2\",\"route\":\"form/list\",\"href\":\"view/form/list.html\",\"icon\":\"layui-icon layui-icon-template-1\",\"type\":1,\"order_num\":0,\"id\":82,\"pid\":2}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:94.0) Gecko/20100101 Firefox/94.0', '/server/menu/edit', 'POST', 1637279183);
+INSERT INTO `rt_admin_oplog` VALUES (186, 1, '编辑菜单', '{\"title\":\"数据库设计\",\"pname\":\"系统管理\",\"route\":\"db/list\",\"href\":\"db/list.html\",\"icon\":\"layui-icon layui-icon-layouts\",\"type\":1,\"order_num\":31,\"id\":35,\"pid\":2}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:94.0) Gecko/20100101 Firefox/94.0', '/server/menu/edit', 'POST', 1637279223);
+INSERT INTO `rt_admin_oplog` VALUES (187, 1, '编辑菜单', '{\"title\":\"系统字典\",\"pname\":\"系统管理\",\"route\":\"cate/index\",\"href\":\"\",\"icon\":\"layui-icon layui-icon-fonts-clear\",\"type\":1,\"order_num\":32,\"id\":36,\"pid\":2}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:94.0) Gecko/20100101 Firefox/94.0', '/server/menu/edit', 'POST', 1637279260);
+INSERT INTO `rt_admin_oplog` VALUES (188, 1, '编辑菜单', '{\"title\":\"表单设计器\",\"pname\":\"系统管理\",\"route\":\"form/list\",\"href\":\"view/form/list.html\",\"icon\":\"layui-icon layui-icon-template-1\",\"type\":1,\"order_num\":31,\"id\":82,\"pid\":2}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:94.0) Gecko/20100101 Firefox/94.0', '/server/menu/edit', 'POST', 1637279285);
+INSERT INTO `rt_admin_oplog` VALUES (189, 1, '编辑菜单', '{\"title\":\"系统字典\",\"pname\":\"系统管理\",\"route\":\"cate/index\",\"href\":\"\",\"icon\":\"layui-icon layui-icon-fonts-clear\",\"type\":1,\"order_num\":50,\"id\":36,\"pid\":2}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:94.0) Gecko/20100101 Firefox/94.0', '/server/menu/edit', 'POST', 1637279295);
+INSERT INTO `rt_admin_oplog` VALUES (190, 1, '编辑菜单', '{\"title\":\"数据库设计\",\"pname\":\"系统管理\",\"route\":\"db/list\",\"href\":\"view/db/list.html\",\"icon\":\"layui-icon layui-icon-layouts\",\"type\":1,\"order_num\":31,\"id\":35,\"pid\":2}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:94.0) Gecko/20100101 Firefox/94.0', '/server/menu/edit', 'POST', 1637281307);
+INSERT INTO `rt_admin_oplog` VALUES (191, 1, 'admin用户登录', '{\"username\":\"admin\",\"captcha\":\"yvjx\"}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:94.0) Gecko/20100101 Firefox/94.0', '/server/login/do', 'POST', 1637282800);
+INSERT INTO `rt_admin_oplog` VALUES (192, 1, 'admin用户登录', '{\"username\":\"admin\",\"captcha\":\"3f5x\"}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:94.0) Gecko/20100101 Firefox/94.0', '/server/login/do', 'POST', 1637286423);
+INSERT INTO `rt_admin_oplog` VALUES (193, 1, '编辑菜单', '{\"title\":\"数据表设计\",\"pname\":\"系统管理\",\"route\":\"db/list\",\"href\":\"view/db/list.html\",\"icon\":\"layui-icon layui-icon-layouts\",\"type\":1,\"order_num\":31,\"id\":35,\"pid\":2}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:94.0) Gecko/20100101 Firefox/94.0', '/server/menu/edit', 'POST', 1637287584);
+INSERT INTO `rt_admin_oplog` VALUES (194, 1, '添加菜单', '{\"title\":\"更新表缓存\",\"pname\":\"35\",\"route\":\"db/update\",\"href\":\"\",\"icon\":\"layui-icon layui-icon-refresh\",\"type\":1,\"order_num\":0,\"pid\":35}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:94.0) Gecko/20100101 Firefox/94.0', '/server/menu/add', 'POST', 1637287821);
+INSERT INTO `rt_admin_oplog` VALUES (195, 1, '编辑菜单', '{\"title\":\"更新表缓存\",\"pname\":\"数据表设计\",\"route\":\"db/update\",\"href\":\"\",\"icon\":\"layui-icon layui-icon-refresh\",\"type\":2,\"order_num\":0,\"id\":88,\"pid\":35}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:94.0) Gecko/20100101 Firefox/94.0', '/server/menu/edit', 'POST', 1637287847);
+INSERT INTO `rt_admin_oplog` VALUES (196, 1, 'admin用户登录', '{\"username\":\"admin\",\"captcha\":\"quvk\"}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:94.0) Gecko/20100101 Firefox/94.0', '/server/login/do', 'POST', 1637293146);
+INSERT INTO `rt_admin_oplog` VALUES (197, 1, '添加菜单', '{\"title\":\"备份数据\",\"pname\":\"35\",\"route\":\"db/backup\",\"href\":\"\",\"icon\":\"layui-icon layui-icon-templeate-1\",\"type\":2,\"order_num\":0,\"pid\":35}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:94.0) Gecko/20100101 Firefox/94.0', '/server/menu/add', 'POST', 1637293324);
+INSERT INTO `rt_admin_oplog` VALUES (198, 1, 'admin用户登录', '{\"username\":\"admin\",\"captcha\":\"uc9l\"}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:94.0) Gecko/20100101 Firefox/94.0', '/server/login/do', 'POST', 1637296765);
+INSERT INTO `rt_admin_oplog` VALUES (199, 1, '添加菜单', '{\"title\":\"还原数据列表\",\"pname\":\"35\",\"route\":\"db/backupFile\",\"href\":\"\",\"icon\":\"layui-icon layui-icon-list\",\"type\":2,\"order_num\":0,\"pid\":35}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:94.0) Gecko/20100101 Firefox/94.0', '/server/menu/add', 'POST', 1637296812);
+INSERT INTO `rt_admin_oplog` VALUES (200, 1, '添加菜单', '{\"title\":\"数据还原\",\"pname\":\"35\",\"route\":\"db/reback\",\"href\":\"\",\"icon\":\"layui-icon layui-icon-water\",\"type\":2,\"order_num\":0,\"pid\":35}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:94.0) Gecko/20100101 Firefox/94.0', '/server/menu/add', 'POST', 1637297488);
+INSERT INTO `rt_admin_oplog` VALUES (201, 1, '编辑菜单', '{\"title\":\"数据还原2\",\"pname\":\"数据表设计\",\"route\":\"db/reback\",\"href\":\"\",\"icon\":\"layui-icon layui-icon-water\",\"type\":2,\"order_num\":0,\"id\":91,\"pid\":35}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:94.0) Gecko/20100101 Firefox/94.0', '/server/menu/edit', 'POST', 1637297619);
 COMMIT;
 
 -- ----------------------------
@@ -336,7 +399,7 @@ CREATE TABLE `rt_admin_viewlog` (
   `addtime` int(10) unsigned DEFAULT '0' COMMENT '添加时间',
   `leavetime` int(10) unsigned DEFAULT '0' COMMENT '离开时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=182 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='管理员查看日志';
+) ENGINE=InnoDB AUTO_INCREMENT=209 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='管理员查看日志';
 
 -- ----------------------------
 -- Records of rt_admin_viewlog
@@ -522,7 +585,34 @@ INSERT INTO `rt_admin_viewlog` VALUES (177, 1, '编辑菜单', '::ffff:127.0.0.1
 INSERT INTO `rt_admin_viewlog` VALUES (178, 1, '添加菜单', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:94.0) Gecko/20100101 Firefox/94.0', '/server/menu/one', 'GET', 1637232277, 1637232296);
 INSERT INTO `rt_admin_viewlog` VALUES (179, 1, '菜单列表', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:94.0) Gecko/20100101 Firefox/94.0', '/server/menu/oplist', 'GET', 1637232296, 1637232300);
 INSERT INTO `rt_admin_viewlog` VALUES (180, 1, '添加菜单', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:94.0) Gecko/20100101 Firefox/94.0', '/server/menu/one', 'GET', 1637232300, 1637232332);
-INSERT INTO `rt_admin_viewlog` VALUES (181, 1, '菜单列表', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:94.0) Gecko/20100101 Firefox/94.0', '/server/menu/oplist', 'GET', 1637232332, 0);
+INSERT INTO `rt_admin_viewlog` VALUES (181, 1, '菜单列表', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:94.0) Gecko/20100101 Firefox/94.0', '/server/menu/oplist', 'GET', 1637232332, 1637279173);
+INSERT INTO `rt_admin_viewlog` VALUES (182, 1, '编辑菜单', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:94.0) Gecko/20100101 Firefox/94.0', '/server/menu/one', 'GET', 1637279173, 1637279183);
+INSERT INTO `rt_admin_viewlog` VALUES (183, 1, '菜单列表', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:94.0) Gecko/20100101 Firefox/94.0', '/server/menu/oplist', 'GET', 1637279183, 1637279193);
+INSERT INTO `rt_admin_viewlog` VALUES (184, 1, '编辑菜单', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:94.0) Gecko/20100101 Firefox/94.0', '/server/menu/one', 'GET', 1637279193, 1637279223);
+INSERT INTO `rt_admin_viewlog` VALUES (185, 1, '菜单列表', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:94.0) Gecko/20100101 Firefox/94.0', '/server/menu/oplist', 'GET', 1637279223, 1637279251);
+INSERT INTO `rt_admin_viewlog` VALUES (186, 1, '编辑菜单', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:94.0) Gecko/20100101 Firefox/94.0', '/server/menu/one', 'GET', 1637279251, 1637279260);
+INSERT INTO `rt_admin_viewlog` VALUES (187, 1, '菜单列表', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:94.0) Gecko/20100101 Firefox/94.0', '/server/menu/oplist', 'GET', 1637279260, 1637279279);
+INSERT INTO `rt_admin_viewlog` VALUES (188, 1, '编辑菜单', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:94.0) Gecko/20100101 Firefox/94.0', '/server/menu/one', 'GET', 1637279279, 1637279285);
+INSERT INTO `rt_admin_viewlog` VALUES (189, 1, '菜单列表', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:94.0) Gecko/20100101 Firefox/94.0', '/server/menu/oplist', 'GET', 1637279285, 1637279291);
+INSERT INTO `rt_admin_viewlog` VALUES (190, 1, '编辑菜单', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:94.0) Gecko/20100101 Firefox/94.0', '/server/menu/one', 'GET', 1637279291, 1637279295);
+INSERT INTO `rt_admin_viewlog` VALUES (191, 1, '菜单列表', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:94.0) Gecko/20100101 Firefox/94.0', '/server/menu/oplist', 'GET', 1637279295, 1637281301);
+INSERT INTO `rt_admin_viewlog` VALUES (192, 1, '编辑菜单', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:94.0) Gecko/20100101 Firefox/94.0', '/server/menu/one', 'GET', 1637281301, 1637281307);
+INSERT INTO `rt_admin_viewlog` VALUES (193, 1, '菜单列表', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:94.0) Gecko/20100101 Firefox/94.0', '/server/menu/oplist', 'GET', 1637281307, 1637287504);
+INSERT INTO `rt_admin_viewlog` VALUES (194, 1, '添加菜单', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:94.0) Gecko/20100101 Firefox/94.0', '/server/menu/one', 'GET', 1637287504, 1637287574);
+INSERT INTO `rt_admin_viewlog` VALUES (195, 1, '编辑菜单', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:94.0) Gecko/20100101 Firefox/94.0', '/server/menu/one', 'GET', 1637287574, 1637287584);
+INSERT INTO `rt_admin_viewlog` VALUES (196, 1, '菜单列表', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:94.0) Gecko/20100101 Firefox/94.0', '/server/menu/oplist', 'GET', 1637287584, 1637287791);
+INSERT INTO `rt_admin_viewlog` VALUES (197, 1, '添加菜单', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:94.0) Gecko/20100101 Firefox/94.0', '/server/menu/one', 'GET', 1637287791, 1637287821);
+INSERT INTO `rt_admin_viewlog` VALUES (198, 1, '菜单列表', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:94.0) Gecko/20100101 Firefox/94.0', '/server/menu/oplist', 'GET', 1637287821, 1637287840);
+INSERT INTO `rt_admin_viewlog` VALUES (199, 1, '编辑菜单', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:94.0) Gecko/20100101 Firefox/94.0', '/server/menu/one', 'GET', 1637287840, 1637287847);
+INSERT INTO `rt_admin_viewlog` VALUES (200, 1, '菜单列表', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:94.0) Gecko/20100101 Firefox/94.0', '/server/menu/oplist', 'GET', 1637287847, 1637293302);
+INSERT INTO `rt_admin_viewlog` VALUES (201, 1, '添加菜单', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:94.0) Gecko/20100101 Firefox/94.0', '/server/menu/one', 'GET', 1637293302, 1637293324);
+INSERT INTO `rt_admin_viewlog` VALUES (202, 1, '菜单列表', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:94.0) Gecko/20100101 Firefox/94.0', '/server/menu/oplist', 'GET', 1637293324, 1637296780);
+INSERT INTO `rt_admin_viewlog` VALUES (203, 1, '添加菜单', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:94.0) Gecko/20100101 Firefox/94.0', '/server/menu/one', 'GET', 1637296780, 1637296812);
+INSERT INTO `rt_admin_viewlog` VALUES (204, 1, '菜单列表', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:94.0) Gecko/20100101 Firefox/94.0', '/server/menu/oplist', 'GET', 1637296812, 1637297467);
+INSERT INTO `rt_admin_viewlog` VALUES (205, 1, '添加菜单', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:94.0) Gecko/20100101 Firefox/94.0', '/server/menu/one', 'GET', 1637297467, 1637297488);
+INSERT INTO `rt_admin_viewlog` VALUES (206, 1, '菜单列表', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:94.0) Gecko/20100101 Firefox/94.0', '/server/menu/oplist', 'GET', 1637297488, 1637297552);
+INSERT INTO `rt_admin_viewlog` VALUES (207, 1, '编辑菜单', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:94.0) Gecko/20100101 Firefox/94.0', '/server/menu/one', 'GET', 1637297552, 1637297619);
+INSERT INTO `rt_admin_viewlog` VALUES (208, 1, '菜单列表', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:94.0) Gecko/20100101 Firefox/94.0', '/server/menu/oplist', 'GET', 1637297619, 0);
 COMMIT;
 
 -- ----------------------------
@@ -644,6 +734,27 @@ CREATE TABLE `rt_company` (
 
 -- ----------------------------
 -- Records of rt_company
+-- ----------------------------
+BEGIN;
+COMMIT;
+
+-- ----------------------------
+-- Table structure for rt_config
+-- ----------------------------
+DROP TABLE IF EXISTS `rt_config`;
+CREATE TABLE `rt_config` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `key` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `val` text COLLATE utf8mb4_unicode_ci,
+  `isrun` tinyint(2) DEFAULT '1',
+  `param` text COLLATE utf8mb4_unicode_ci,
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE KEY `key` (`key`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='系统配置表';
+
+-- ----------------------------
+-- Records of rt_config
 -- ----------------------------
 BEGIN;
 COMMIT;
@@ -928,7 +1039,7 @@ CREATE TABLE `rt_menu` (
   `ifshow` tinyint(3) unsigned DEFAULT '0' COMMENT '是否显示0显示1不显示',
   PRIMARY KEY (`id`) USING BTREE,
   KEY `url` (`route`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=88 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='系统菜单';
+) ENGINE=InnoDB AUTO_INCREMENT=92 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='系统菜单';
 
 -- ----------------------------
 -- Records of rt_menu
@@ -961,8 +1072,8 @@ INSERT INTO `rt_menu` VALUES (31, '编辑配置', 'set/edit', '', 2, 27, 'layui-
 INSERT INTO `rt_menu` VALUES (32, '编辑配置前', 'set/editBefore', '', 3, 28, 'layui-icon layui-icon-rate-half', '_self', 13, 2, 0);
 INSERT INTO `rt_menu` VALUES (33, '编辑计划任务', 'set/cronsEdit', NULL, 2, 29, '', '_self', 14, 2, 0);
 INSERT INTO `rt_menu` VALUES (34, '删除计划任务', 'set/cronDel', NULL, 2, 30, '', '_self', 14, 2, 0);
-INSERT INTO `rt_menu` VALUES (35, '系统设计', 'design', '', 0, 31, 'layui-icon layui-icon-fonts-code', '_self', 2, 1, 0);
-INSERT INTO `rt_menu` VALUES (36, '系统分类', 'cate/index', '', 1, 32, 'layui-icon layui-icon-fonts-clear', '_self', 2, 1, 0);
+INSERT INTO `rt_menu` VALUES (35, '数据表设计', 'db/list', 'view/db/list.html', 1, 31, 'layui-icon layui-icon-layouts', '_self', 2, 1, 0);
+INSERT INTO `rt_menu` VALUES (36, '系统字典', 'cate/index', '', 1, 50, 'layui-icon layui-icon-fonts-clear', '_self', 2, 1, 0);
 INSERT INTO `rt_menu` VALUES (37, '用户地址', 'user/address', '', 1, 33, 'layui-icon layui-icon-key', '_self', 1, 1, 0);
 INSERT INTO `rt_menu` VALUES (53, '首页工作台', 'index/welcome', 'index/welcome', 1, 1, 'layui-icon layui-icon-rate-solid', NULL, 1, 1, 0);
 INSERT INTO `rt_menu` VALUES (56, '查看角色', 'auth/one', '', 2, 0, 'layui-icon layui-icon-camera', NULL, 10, 1, 0);
@@ -978,12 +1089,16 @@ INSERT INTO `rt_menu` VALUES (65, '管理员启用禁用', 'admin/enable', '', 2
 INSERT INTO `rt_menu` VALUES (66, '操作日志', 'logs/op', 'view/logs/op.html', 1, 0, 'layui-icon layui-icon-date', NULL, 12, 1, 0);
 INSERT INTO `rt_menu` VALUES (67, '行为日志', 'logs/view', 'view/logs/view.html', 1, 0, 'layui-icon layui-icon-cols', NULL, 12, 1, 0);
 INSERT INTO `rt_menu` VALUES (68, '错误日志', 'logs/err', 'view/logs/err.html', 1, 0, 'layui-icon layui-icon-survey', NULL, 12, 1, 0);
-INSERT INTO `rt_menu` VALUES (82, '表单设计器', 'form/list', 'view/form/list.html', 1, 0, 'layui-icon layui-icon-template-1', NULL, 35, 1, 0);
+INSERT INTO `rt_menu` VALUES (82, '表单设计器', 'form/list', 'view/form/list.html', 1, 31, 'layui-icon layui-icon-template-1', NULL, 2, 1, 0);
 INSERT INTO `rt_menu` VALUES (83, '添加表单', 'form/add', 'view/form/add.html', 2, 0, 'layui-icon layui-icon-auz', NULL, 82, 1, 0);
 INSERT INTO `rt_menu` VALUES (84, '设置配置可用', 'set/enable', '', 3, 0, '', NULL, 13, 1, 0);
 INSERT INTO `rt_menu` VALUES (85, '添加表单前', 'form/addBefore', '', 3, 0, 'layui-icon layui-icon-headset', NULL, 82, 1, 0);
 INSERT INTO `rt_menu` VALUES (86, '设置配置前', 'set/setBefore', '', 3, 0, 'layui-icon layui-icon-at', NULL, 13, 1, 0);
 INSERT INTO `rt_menu` VALUES (87, '设置配置', 'set/setConf', '', 3, 0, 'layui-icon layui-icon-404', NULL, 13, 1, 0);
+INSERT INTO `rt_menu` VALUES (88, '更新表缓存', 'db/update', '', 2, 0, 'layui-icon layui-icon-refresh', NULL, 35, 1, 0);
+INSERT INTO `rt_menu` VALUES (89, '备份数据', 'db/backup', '', 2, 0, 'layui-icon layui-icon-templeate-1', NULL, 35, 1, 0);
+INSERT INTO `rt_menu` VALUES (90, '还原数据列表', 'db/backupFile', '', 2, 0, 'layui-icon layui-icon-list', NULL, 35, 1, 0);
+INSERT INTO `rt_menu` VALUES (91, '数据还原2', 'db/reback', '', 2, 0, 'layui-icon layui-icon-water', NULL, 35, 1, 0);
 COMMIT;
 
 -- ----------------------------
@@ -1323,6 +1438,25 @@ CREATE TABLE `rt_store` (
 
 -- ----------------------------
 -- Records of rt_store
+-- ----------------------------
+BEGIN;
+COMMIT;
+
+-- ----------------------------
+-- Table structure for rt_sys_cate
+-- ----------------------------
+DROP TABLE IF EXISTS `rt_sys_cate`;
+CREATE TABLE `rt_sys_cate` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `key` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT '0' COMMENT '唯一标志',
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '名称',
+  `desc` text COLLATE utf8mb4_unicode_ci COMMENT '描述',
+  PRIMARY KEY (`id`) USING BTREE,
+  KEY `key` (`key`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='系统总分类表';
+
+-- ----------------------------
+-- Records of rt_sys_cate
 -- ----------------------------
 BEGIN;
 COMMIT;

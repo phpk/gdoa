@@ -58,7 +58,7 @@ module.exports = class extends Base {
     async coms(tableName) {
         let { page, limit, param } = this.get();
         let wsql = {};
-        if (wh) wsql = this.parseSearch(param, wsql);
+        if (param) wsql = this.parseSearch(param, wsql);
 
         let list = await this.model(tableName)
             .alias('l')
