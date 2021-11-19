@@ -28,8 +28,8 @@ module.exports = class extends think.Model {
             if (!tabs[tabname]) tabs[tabname] = {};
             tabs[tabname].tabname = tabname;
             tabs[tabname].tabcomment = el.TABLE_COMMENT;
-            if (!tabs[tabname].fields) tabs[tabname].fields = [];
-            tabs[tabname].fields.push({
+            if (!tabs[tabname].fields) tabs[tabname].fields = {};
+            tabs[tabname].fields[el.COLUMN_NAME] = {
                 name: el.COLUMN_NAME,
                 comment: el.COLUMN_COMMENT,
                 type: el.COLUMN_TYPE,
@@ -38,7 +38,7 @@ module.exports = class extends think.Model {
                 extra: el.EXTRA,
                 default: el.COLUMN_DEFAULT,
                 order: el.ORDINAL_POSITION
-            });
+            };
         });
         //索引
         let indexData = await this.query("SELECT * FROM information_schema.statistics WHERE table_schema = '" + think.config('mysql.database') + "'");
@@ -82,7 +82,7 @@ module.exports = class extends think.Model {
      */
     async backup() {
         let date = (new Date()).valueOf();
-        let file = backpath + think.datetime(date, 'YYYYMMDD-HH-mm-ss') + '.sql';
+        let file = backpath + think.datetime(date, 'YYYYMMDD-HH:mm:ss') + '.sql';
         try {
             await mysqldump({
                 connection: think.config('mysql'),

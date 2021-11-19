@@ -148,6 +148,9 @@
 					else if(obj.event == 'reback') {
 						window.reback(obj);
 					}
+					else if(obj.event == 'doc') {
+						window.doc(obj);
+					}
 				});
 				window.update = function(){
 					let index = layer.load(0, {
@@ -177,6 +180,18 @@
 						anim: 1,
 						maxmin: true,
 						content: MODULE_PATH + 'reback.html'
+					});
+				}
+				window.doc = function() {
+					layer.open({
+						type: 2,
+						title: '文档',
+						shade: 0.1,
+						offset: 'rt',
+						area: ['80%', '100%'],
+						anim: 1,
+						maxmin: true,
+						content: MODULE_PATH + 'doc.html'
 					});
 				}
 				window.add = function() {

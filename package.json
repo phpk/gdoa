@@ -12,6 +12,7 @@
     "lint-fix": "eslint --fix src/"
   },
   "dependencies": {
+    "json2md": "^1.12.0",
     "jsonwebtoken": "^8.5.1",
     "koa-helmet": "^6.1.0",
     "koa2-ratelimit": "^0.9.0",
