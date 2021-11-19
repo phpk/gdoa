@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>数据库文档</title>
+		<link rel="stylesheet" href="../../component/ui/css/ui.css" />
+        <style type="text/css">
+html {
+    font-family: sans-serif;
+    -ms-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+}
+ 
+body {
+    padding: 20px;
+}
+table {
+margin:20px;
+    border-collapse: collapse;
+    border-spacing: 0;
+    empty-cells: show;
+    border: 1px solid #cbcbcb;
+}
+ 
+td,th {
+    padding: 0;
+}
+
+table td,table th {
+    border-left: 1px solid #cbcbcb;
+    border-width: 0 0 0 1px;
+    font-size: inherit;
+    margin: 0;
+    overflow: visible;
+    padding: .5em 1em;
+}
+ 
+table thead {
+    background-color: #e0e0e0;
+    color: #000;
+    text-align: left;
+    vertical-align: bottom;
+}
+ 
+table tbody tr:nth-child(odd) {
+    background-color: transparent;
+}
+ 
+table tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+pre{
+    background-color: #f2f2f2;
+    padding:20px;
+}
+</style>
+	</head>
+	<body class="pear-container"> 
+        <div class="pear-row" style="text-align:right">
+            <button class="pear-btn pear-btn-primary pear-btn-md" lay-event="add" id="downpdf">
+                    <i class="layui-icon ayui-icon-download-circle"></i>
+                    下载PDF
+            </button>
+        </div>
+    <div class="layui-card">
+            
+			<div class="layui-card-body">
+				<div id="content"></div>
+			</div>
+		</div>
+    <script src="../../config/config.js"></script>
+		<script src="../../component/layui/layui.js"></script>
+		<script src="../../component/ui/ui.js"></script>
+        <script src="/docs/js/marked.min.js"></script>
+        <script src="/docs/js/html2pdf.bundle.min.js"></script>
+		<script>
+			layui.use(['table', 'jquery','common'], function() {
+				let table = layui.table;
+				let $ = layui.jquery;
+				let common = layui.common;
+
+				let MODULE_PATH = "./";
+                _get(layui, 'db/doc', res => {
+                    //console.log(res)
+                    $('#content').html(marked.parse(res));
+                    $("#downpdf").click(function(e){
+                        //console.log(e)
+                        let element = document.getElementById('content');
+                        html2pdf().from(element).save();
+                    })
+                })
+			})
+		</script>
+	</body>
+</html>
+
+		
