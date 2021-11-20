@@ -88,4 +88,89 @@ module.exports = class extends think.Logic {
             }
         }
     }
+    fieldListAction() {
+        this.allowMethods = 'get';
+        this.rules = {
+            table: {
+                required: true,
+                aliasName: '表名'
+            }
+        }
+    }
+    fieldsAction() {
+        this.allowMethods = 'get';
+        this.rules = {
+            table: {
+                required: true,
+                aliasName: '表名'
+            }
+        }
+    }
+    editDataAction() {
+        this.allowMethods = 'post';
+        this.rules = {
+            table: {
+                required: true,
+                aliasName: '表名'
+            },
+            field: {
+                required: true,
+                aliasName: '字段名'
+            },
+
+            value: {
+                required: true,
+                aliasName: '修改的内容'
+            },
+            old: {
+                aliasName: '旧值'
+            }
+        }
+    }
+    delDataAction() {
+        this.allowMethods = 'post';
+        this.rules = {
+            table: {
+                required: true,
+                aliasName: '表名'
+            },
+            data: {
+                aliasName: '字段名'
+            }
+        }
+    }
+    delFieldAction() {
+        this.allowMethods = 'post';
+        this.rules = {
+            table: {
+                required: true,
+                aliasName: '表名'
+            },
+            field: {
+                required: true,
+                aliasName: '字段名'
+            }
+        }
+    }
+    sortFieldAction() {
+        this.allowMethods = 'post';
+        this.rules = {
+            table: {
+                required: true,
+                aliasName: '表名'
+            },
+            field: {
+                required: true,
+                aliasName: '字段名'
+            },
+            t: {
+                required: true,
+                aliasName: '排序方式'
+            },
+            sortField: {
+                required: true,
+                aliasName: '位置字段名'
+            }
+        }
+    }
 }

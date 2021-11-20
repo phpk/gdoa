@@ -1,4 +1,3 @@
-const ThinkSessionFile = require('think-session-file');
 const Base = require('./base.js');
 
 /**
@@ -150,6 +149,139 @@ module.exports = class extends Base {
         try {
             await this.model('db').clear(table);
             return this.success()
+        } catch (e) {
+            return this.fail(e.message)
+        }
+    }
+    async fieldListAction() {
+        let table = this.get('table');
+        try {
+            let list = await this.model('db').fieldList(table);
+            let rt = [];
+            list.forEach(d => {
+                rt.push({
+                    title: d.COLUMN_COMMENT ? d.COLUMN_COMMENT : d.COLUMN_NAME,
+                    //title: d.COLUMN_NAME,
+                    field: d.COLUMN_NAME,
+                    align: 'center',
+                    edit: 'text',
+                    filter: true,
+                    align: 'left',
+                    sort : true
+                })
+            });
+            return this.success([rt])
+        } catch (e) {
+            return this.fail(e.message)
+        }
+    }
+    async fieldsAction() {
+        let table = this.get('table');
+        try {
+            let data = await this.model('db').fieldList(table);
+            let list = [];
+            data.forEach(el => {
+                list.push({
+                    name: el.COLUMN_NAME,
+                    comment: el.COLUMN_COMMENT,
+                    type: el.COLUMN_TYPE,
+                    isnull: el.IS_NULLABLE,
+                    key: el.COLUMN_KEY,
+                    extra: el.EXTRA,
+                    default: el.COLUMN_DEFAULT,
+                    order: el.ORDINAL_POSITION
+                })
+            });
+            return this.success({list, count : list.length})
+        } catch (e) {
+            return this.fail(e.message)
+        }
+    }
+    async listDataAction() {
+        let { page, limit, param,table } = this.get();
+        let wsql = {};
+        if (param) wsql = this.parseSearch(param, wsql);
+        let tname = table.replace(think.config('mysql.prefix'), '');
+        let list = await this.model(tname)
+            .where(wsql)
+            .page(page, limit)
+            .select();
+        let count = await think.model(tname).where(wsql).count();
+        //await this.adminViewLog('管理员列表');
+        return this.success({ list, count })
+    }
+    async editDataAction() {
+        let post = this.post(),
+            table = post.table;
+        if (this.model('db').sysTable(table))
+            return this.fail('系统表数据不允许编辑');
+        try {
+            let tname = table.replace(think.config('mysql.prefix'), '');
+            let whereSql = JSON.parse(post.data), sql = {};
+            //delete whereSql[post.field];
+            let keys = await this.model('db').getKey(post.table);
+            if (!keys) return this.fail('该表无主键');
+            for (let p in whereSql) {
+                if (keys.includes(p)) {
+                    if (p == post.field) {
+                        sql[p] = old;
+                    } else {
+                        sql[p] = whereSql[p];
+                    }
+                }
+            }
+            let up = {};
+            up[post.field] = post.value;
+            let has = await this.model(tname).where(sql).find();
+            if (!think.isEmpty(has)) {
+                await this.model(tname).where(sql).update(up);
+            } else {
+                await this.model(tname).add(whereSql);
+            }
+            
+            return this.success()
+        } catch (e) {
+            return this.fail(e.message)
+        }
+        
+    }
+
+    async delDataAction() {
+        let post = this.post();
+        //console.log(post)
+        try {
+            let whereSql = JSON.parse(post.data), sql = {};
+            if (this.model('db').sysTable(post.table))
+                return this.fail('系统表数据不允许删除');
+            let keys = await this.model('db').getKey(post.table);
+            if (!keys) return this.fail('该表无主键');
+            for (let p in whereSql) {
+                if (keys.includes(p)) {
+                    sql[p] = whereSql[p];
+                }
+            }
+            //console.log(sql)
+            let tname = post.table.replace(think.config('mysql.prefix'), '');
+            await this.model(tname).where(sql).delete();
+            return this.success()
+        } catch (e) {
+            return this.fail(e.message)
+        }
+    }
+    async delFieldAction() {
+        //console.log(this.post())
+        let { table, field } = this.post();
+        try {
+            await this.model('db').delField(table, field);
+            return this.success()
+        } catch (e) {
+            return this.fail(e.message)
+        }
+    }
+    async sortFieldAction() {
+        let { table, field, t, sortField } = this.post();
+        try {
+            await this.model('db').sortField(table, field, t, sortField);
         } catch (e) {
             return this.fail(e.message)
         }

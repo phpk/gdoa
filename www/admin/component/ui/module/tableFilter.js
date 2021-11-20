@@ -872,11 +872,11 @@ layui.define(['table', 'form', 'laydate', 'util', 'excel', 'laytpl'], function (
               url: url,
               data: datas,
               dataType: 'json',
-              method: 'post',
+              method: 'get',
               headers: myTable.headers || {},
               contentType: myTable.contentType,
               success: function (result) {
-
+                //console.log(result)
                 var uls = [];
                 for (var key in result) {
                   var list = result[key];
@@ -899,13 +899,17 @@ layui.define(['table', 'form', 'laydate', 'util', 'excel', 'laytpl'], function (
                           }
                           list = tempList;
                         }
-                        list.sort(function (a, b) {
-                          if (isNaN(a) || isNaN(b)) {
-                            return String(a) >= String(b)
-                          } else {
-                            return Number(a) - Number(b)
-                          }
-                        })
+                        //console.log(list)
+                        if (Array.isArray(list)) {
+                          list.sort(function (a, b) {
+                            if (isNaN(a) || isNaN(b)) {
+                              return String(a) >= String(b)
+                            } else {
+                              return Number(a) - Number(b)
+                            }
+                          })
+                        }
+                        
                         for (i = 0; i < list.length; i++) {
                           if (UNHANDLED_VALUES.indexOf(list[i]) === -1) {
                             var line = {};

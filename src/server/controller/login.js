@@ -60,7 +60,8 @@ module.exports = class extends think.Controller {
         let token = jwt.sign({
             adminId: adminId
         }, md5Salt, {
-            expiresIn: 60 * 60 * 1 //1小时过期
+            expiresIn: 60 * 60 * 12 //12小时过期
+            //expiresIn:-1//永不过期
         });
 
         let password = this.service('login').createPassword(post.password, salt);

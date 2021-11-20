@@ -39,6 +39,7 @@ layui.config({
 	message: "message",     // 通知组件
 	toast: "toast",          // 消息通知
 	iconSelectedPlus: "iconSelectedPlus/index",//图标选择器
+	soulTable: 'soulTable'
 }).use(['layer', 'theme'], function () {
 	layui.theme.changeTheme(window, false);
 });

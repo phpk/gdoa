@@ -76,9 +76,32 @@ module.exports = class extends think.Model {
 
         return tabs;
     }
+    /**
+     * 获取表字段
+     * @param {string} table 
+     * @returns 
+     */
     async fieldList(table) {
-        return this.query(`select COLUMN_NAME,COLUMN_COMMENT,COLUMN_KEY from information_schema.COLUMNS where table_name = '${table}'`);
+        return this.query(`select COLUMN_NAME,COLUMN_COMMENT,COLUMN_KEY,COLUMN_TYPE,COLUMN_TYPE,EXTRA,IS_NULLABLE,COLUMN_KEY,COLUMN_DEFAULT,ORDINAL_POSITION FROM information_schema.COLUMNS where table_name = '${table}' GROUP BY COLUMN_NAME`);
     }
+    /**
+     * 获取表主键
+     * @param {string} table 
+     */
+    
+    async getKey(table) {
+        let data = await this.query(`select COLUMN_NAME,COLUMN_COMMENT,COLUMN_KEY from information_schema.COLUMNS where table_name = '${table}' AND (COLUMN_KEY='PRI' OR COLUMN_KEY='UNI') GROUP BY COLUMN_NAME`);
+        //console.log(data)
+        if (data.length > 0) {
+            let rt = []
+            data.forEach(d => {
+                rt.push(d.COLUMN_NAME)
+            })
+            return rt;
+        }
+        return false;
+    }
+    
     /**
      * 优化表
      */
@@ -137,12 +160,25 @@ module.exports = class extends think.Model {
         await this.query(`ALTER TABLE ${table} auto_increment = ${id}`);
     }
     sysTable(table) {
-        let tabs = ['rt_admin','rt_admin_auth','rt_admin_map','rt_admin_oplog','rt_admin_viewlog',
-        'rt_error','rt_menu','rt_set','rt_form','rt_crons'];
-        if(tabs.includes(table)) return true;
+        let tabs = ['admin','admin_auth','admin_map','admin_oplog','admin_viewlog',
+            'error', 'menu', 'set', 'form', 'crons'];
+        let prefix = think.config('mysql.prefix');
+        if (tabs.includes(prefix + table) || tabs.includes(table)) return true;
         return false;
     }
-
+    /**
+     * 删除字段
+     * @param {string} table 
+     * @param {string} field 
+     */
+    async delField(table, field) {
+        if (!this.sysTable(table))
+        //console.log(`alter table ${table} drop column ${field}`)
+        await this.query(`alter table '${table}' drop column '${field}'`);
+    }
+    async sortField(table, field, t = 'AFTER', sortField) {
+        await this.query(`ALTER TABLE '${table}' CHANGE '${field}' ${t} '${sortField}'`);
+    }
     /**
      * 备份表
      */

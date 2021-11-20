@@ -42,7 +42,7 @@ LAY_EXCEL = {
     var Props = {
       Title: filename,
       Subject: 'Export From web browser',
-      Author: "excel",
+      Author: "excel.wj2015.com",
       Manager: '',
       Company: '',
       Category: '',
