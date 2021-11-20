@@ -82,20 +82,29 @@ module.exports = class extends think.Model {
      * @returns 
      */
     async fieldList(table) {
-        return this.query(`select COLUMN_NAME,COLUMN_COMMENT,COLUMN_KEY,COLUMN_TYPE,COLUMN_TYPE,EXTRA,IS_NULLABLE,COLUMN_KEY,COLUMN_DEFAULT,ORDINAL_POSITION FROM information_schema.COLUMNS where table_name = '${table}' GROUP BY COLUMN_NAME`);
+        //过滤掉重复的
+        let rt = await this.query(`select COLUMN_NAME,COLUMN_COMMENT,COLUMN_KEY,COLUMN_TYPE,COLUMN_TYPE,EXTRA,IS_NULLABLE,COLUMN_KEY,COLUMN_DEFAULT,ORDINAL_POSITION FROM information_schema.COLUMNS where table_name = '${table}'`);
+        let cache = [],keys = [];
+        rt.forEach(d => {
+            if(!keys.includes(d.COLUMN_NAME)){
+                keys.push(d.COLUMN_NAME)
+                cache.push(d)
+            }
+        })
+        return cache;
     }
     /**
      * 获取表主键
      * @param {string} table 
      */
-    
     async getKey(table) {
-        let data = await this.query(`select COLUMN_NAME,COLUMN_COMMENT,COLUMN_KEY from information_schema.COLUMNS where table_name = '${table}' AND (COLUMN_KEY='PRI' OR COLUMN_KEY='UNI') GROUP BY COLUMN_NAME`);
+        let data = await this.query(`select COLUMN_NAME,COLUMN_COMMENT,COLUMN_KEY from information_schema.COLUMNS where table_name = '${table}' AND (COLUMN_KEY='PRI' OR COLUMN_KEY='UNI')`);
         //console.log(data)
         if (data.length > 0) {
             let rt = []
             data.forEach(d => {
-                rt.push(d.COLUMN_NAME)
+                if(!rt.includes(d.COLUMN_NAME))
+                    rt.push(d.COLUMN_NAME);
             })
             return rt;
         }
@@ -176,8 +185,53 @@ module.exports = class extends think.Model {
         //console.log(`alter table ${table} drop column ${field}`)
         await this.query(`alter table '${table}' drop column '${field}'`);
     }
-    async sortField(table, field, t = 'AFTER', sortField) {
-        await this.query(`ALTER TABLE '${table}' CHANGE '${field}' ${t} '${sortField}'`);
+    parseRow(row) {
+        let str = row.type + " ";
+        if(row.isnull !== 'YES') {
+            str += "NOT NULL ";
+        }
+        if(row.extra == 'auto_increment') {
+            str += "AUTO_INCREMENT ";
+        }else{
+            if(row.default === null) {
+                str += "DEFAULT NULL ";
+            }else{
+                str += "DEFAULT '" + row.default + "' ";
+            }
+        }
+        // if(row.comment) {
+        //     str += " COMMENT '"+row.comment+"'";
+        // }
+        return str;
+
+    }
+    async sortField(table, row, t = 'AFTER', sortField) {
+        //console.log(row)
+        if(this.sysTable(table)) return;
+        let sql = this.parseRow(row);
+        if(t !== 'AFTER') {
+            await this.query(`ALTER TABLE ${table} modify ${row.name} ${sql} COMMENT '${row.comment}' first`);
+        }else{
+            await this.query(`ALTER TABLE ${table} modify ${row.name} ${sql} COMMENT '${row.comment}' after ${sortField}`);
+        }
+    }
+    async changeFieldName(table, row, newName) {
+        let sql = this.parseRow(row);
+        await this.query(`alter table ${table} change ${row.name} ${newName} ${row.type} COMMENT '${row.comment}'`);
+    }
+    async changeFieldComment(table, row, newComment) {
+        let sql = this.parseRow(row);
+        await this.query(`ALTER TABLE ${table} MODIFY COLUMN ${row.name} ${row.type} COMMENT '${newComment}'`);
+    }
+    async changeFieldDefault(table, row, val) {
+        await this.query(`alter table ${table} alter column ${row.name} set default '${val}'`);
+    }
+    async hasField(table, field) {
+        let rows =  await this.query(`select * FROM information_schema.COLUMNS where table_name = '${table}' and COLUMN_NAME = '${field}'`);
+        if(rows.length > 0) {
+            return true;
+        }
+        return false;
     }
     /**
      * 备份表

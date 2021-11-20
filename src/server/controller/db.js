@@ -172,6 +172,7 @@ module.exports = class extends Base {
             });
             return this.success([rt])
         } catch (e) {
+            console.log(e)
             return this.fail(e.message)
         }
     }
@@ -241,6 +242,7 @@ module.exports = class extends Base {
             
             return this.success()
         } catch (e) {
+            console.log(e)
             return this.fail(e.message)
         }
         
@@ -279,9 +281,33 @@ module.exports = class extends Base {
         }
     }
     async sortFieldAction() {
-        let { table, field, t, sortField } = this.post();
+        let { table, row, t, sortField } = this.post();
         try {
-            await this.model('db').sortField(table, field, t, sortField);
+            await this.model('db').sortField(table, JSON.parse(row), t, sortField);
+            return this.success()
+        } catch (e) {
+            return this.fail(e.message)
+        }
+    }
+    async changeFieldNameAction() {
+        let {table, row, field, value, old} = this.post();
+        let rowdata = JSON.parse(row);
+        console.log(rowdata)
+        try {
+            if(field == 'name') {
+                if(await this.model('db').hasField(table, value)) {
+                    return this.fail('表中存在相同的字段')
+                }
+                rowdata.name = old;
+                await this.model('db').changeFieldName(table, rowdata, value);
+            }
+            else if(field == 'comment') {
+                await this.model('db').changeFieldComment(table, rowdata, value);
+            }
+            else if(field == 'default') {
+                await this.model('db').changeFieldDefault(table, rowdata, value);
+            }
+            return this.success()
         } catch (e) {
             return this.fail(e.message)
         }

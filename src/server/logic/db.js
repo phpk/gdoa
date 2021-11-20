@@ -159,9 +159,9 @@ module.exports = class extends think.Logic {
                 required: true,
                 aliasName: '表名'
             },
-            field: {
+            row: {
                 required: true,
-                aliasName: '字段名'
+                aliasName: '字段数据'
             },
             t: {
                 required: true,

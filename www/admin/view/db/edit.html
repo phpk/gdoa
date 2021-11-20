@@ -12,12 +12,16 @@
 				<table id="db-table" lay-filter="db-table"></table>
 			</div>
 		</div>
+        
         <script type="text/html" id="db-toolbar">
 			<button class="pear-btn pear-btn-primary pear-btn-md" lay-event="add">
 				<i class="layui-icon layui-icon-add-1"></i>
 		        新增
 		    </button>
-		
+            <button class="pear-btn pear-btn-danger pear-btn-md" id="indexmenu" lay-event="sindex">
+                索引
+                <i class="layui-icon layui-icon-down layui-font-12"></i>
+              </button>
 
 		</script>
         <script id="type-bar" type="text/html">
@@ -27,7 +31,10 @@
 			<button class="pear-btn pear-btn-danger pear-btn-sm" lay-event="remove"><i class="layui-icon layui-icon-delete"></i></button>
 		</script>
         <script type="text/html" id="null-bar">
-			<input type="checkbox" name="status" value="{{d.name}}" lay-skin="switch" lay-text="是|否" lay-filter="null-enable" {{ d.isnull== 'YES' ? 'checked' : '' }} />
+			<input type="checkbox" name="isnull" value="{{d.name}}" lay-skin='switch' lay-filter="isnull" {{ d.isnull == 'YES' ? 'checked' : '' }} />
+		</script>
+        <script type="text/html" id="auto-bar">
+			<input type="checkbox" name="auto" value="{{d.name}}" lay-skin='switch' lay-filter="auto" {{ d.extra == 'auto_increment' ? 'checked' : '' }} />
 		</script>
 		<script src="../../config/config.js"></script>
 		<script src="../../component/layui/layui.js"></script>
@@ -57,36 +64,57 @@
                 })
 				let cols = [
 					[
+                        {
+                            type : 'checkbox',
+                            field : 'name',
+                            title:'设置索引'
+                        },
 						{
 							title: '字段名',
 							field: 'name',
 							align: 'center',
 							edit: 'text',
-							width: 150,
+							width: 120,
 							align: 'left'
 						}, {
 							title: '中文名',
 							field: 'comment',
 							align: 'center',
 							edit: 'text',
-							width: 120,
-							align: 'left'
-						}, {
+							width: 150,
+							align: 'left',
+                            //fixed: 'left'
+						},{
 							title: '类型',
 							field: 'type',
-                            width: 180,
+                            width: 150,
 							align: 'center',
-							toolbar: '#type-bar',
+							//toolbar: '#type-bar',//todo 做弹窗限制
+                            edit: 'text',
 						}, {
-							title: 'isnull',
+							title: '默认值',
+							field: 'default',
+							align: 'center',
+                            edit: 'text',
+							width: 70,
+							align: 'left'
+						}, {
+							title: '为空',
 							field: 'isnull',
 							align: 'center',
+                            width: 78,
                             toolbar: '#null-bar',
 						}, {
+							title: 'Auto',
+							field: 'extra',
+							align: 'center',
+                            width: 78,
+                            toolbar: '#auto-bar',
+						},{
 							title: 'key',
 							field: 'key',
 							align: 'center',
-                            contextmenu: {
+                            /*contextmenu: {
                                 body: [
                                     {
                                         name: '设为普通索引',
@@ -95,7 +123,7 @@
                                         }
                                     },
                                     {
-                                        name: '设为唯一主键',
+                                        name: '设为唯一索引',
                                         click: function(obj) {
                                             //obj.del() 
                                         }
@@ -107,13 +135,14 @@
                                         }
                                     },
                                 ]
-                            }
+                            }*/
 						},
                         {
 							title: '操作',
 							toolbar: '#op-bar',
 							align: 'center',
-							width: 70
+							width: 70,
+                            fixed: 'right'
 						}
 					]
 				]
@@ -158,6 +187,7 @@
                     }
 				});
                 table.on('tool(db-table)', function(obj) {
+                    console.log(obj)
 					if (obj.event === 'ftype') {
 						//window.remove(obj);
                         //console.log(obj)
@@ -165,66 +195,102 @@
                         //设置类型
 					} else if (obj.event === 'remove') {
 						window.remove(obj);
-					}
+					} 
 				});
+                form.on('switch(isnull)', function(data) {
+                    console.log(data)
+                })
+                form.on('switch(auto)', function(data) {
+                    console.log(data)
+                })
+                
                 table.on('toolbar(db-table)', function(obj) {
+                    console.log(obj)
 					if (obj.event === 'add') {
 						window.add();
 					} else if (obj.event === 'refresh') {
 						window.refresh();
-					}
+					} else if(obj.event === 'sindex') {
+                        dropdown.render({
+                            elem: this, show: true, //这个很关键，代表其它事件中触发即显示
+                            data: [
+                                {
+                                    title: '查看索引',
+                                    id: 'opData'
+                                }, {
+                                    title: '设置唯一索引',
+                                    id: 'edit'
+                                }, {
+                                    title: '设置普通索引',
+                                    id: 'opOptimize'
+                                }, {
+                                    title: '设为主键',
+                                    id: 'opRepair'
+                                }
+                            ],
+                            click: function (data, othis) {
+                                var elem = $(this.elem),
+                                    table = elem.data('id'); //表格列表的预埋数据
+                                window[data.id](table);
+                            }
+                        });
+                    }
 				});
+                //table.on('checkbox(db-table)', function(obj){
+                //    console.log(obj)
+                //});
                 //设置是否为空
-                form.on('switch(db-enable)', function(data) {
-					let v = 1;
-					if (data.elem.checked) v = 0;
-					let postData = {
-						id : data.value,
-						status : v
-					};
-					_post(layui, 'admin/enable', postData, res => {
-						//console.log(res)
-					},err => {
-						$(data.elem).prop('checked', false);
-						form.render('checkbox');
-					})
-				});
+                //form.on('event(isnull)', function(data) {
+                //    console.log(data)
+					// let v = 1;
+					// if (data.elem.checked) v = 0;
+					// let postData = {
+					// 	id : data.value,
+					// 	status : v
+					// };
+					// _post(layui, 'admin/enable', postData, res => {
+					// 	//console.log(res)
+					// },err => {
+					// 	$(data.elem).prop('checked', false);
+					// 	form.render('checkbox');
+					// })
+				//});
                 //编辑名字
                 table.on('edit(db-table)', function (obj) {
-					//console.log(obj)
 					let old = $(this)
 						.prev()
 						.text();
 					//console.log(old)
 					let update = {
-						table: obj.data.Name,
-						field: obj.field,
+						table: req.table,
+						row: JSON.stringify(obj.data),
+                        field : obj.field,
 						value: obj.value,
 						old
 					}
-					_post(layui, 'db/editTable', update, res => {
+					_post(layui, 'db/changeFieldName', update, res => {
 						//console.log(res)
-
-						if (obj.field == 'Auto_increment') {
-							layer.msg('更新成功，更新自增长后id可能会混乱！', {
-								icon: 3,
-								time: 2000
-							});
-						} else {
-							layer.msg('更新成功', {
+                        layer.msg('更新成功', {
 								icon: 1,
 								time: 1000
-							});
-						}
+						});
 					}, err => {
 						//console.log(err)
 
 					})
 				});
                 //添加字段
-                window.add = function(){
-
-                }
+                window.add = function() {
+					layer.open({
+						type: 2,
+						title: '新增',
+						shade: 0.1,
+						offset: 'rt',
+						area: ['90%', '100%'],
+						anim: 1,
+						content: MODULE_PATH + 'add.html'
+					});
+				}
                 //设置类型
                 window.setType = function(obj) {
 
@@ -257,7 +323,8 @@
                     console.log(obj)
                     let postData = {
                         table : req.table,
-                        field : obj.row.name
+                        //field : obj.row.name,
+                        row : JSON.stringify(obj.row)
                     }
                     if(obj.newIndex > 0) {
                         postData.t = 'AFTER';
@@ -270,6 +337,10 @@
                     console.log(postData)
                     _post(layui, 'db/sortField',postData, res => {
                         console.log(res)
+                        layer.msg('更新成功', {
+								icon: 1,
+								time: 1000
+						});
                     })
                 }
 				window.refresh = function (param) {
