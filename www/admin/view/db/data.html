@@ -50,7 +50,7 @@
                 let MODULE_PATH = "./";
                 //console.log(req)
                 _get(layui, 'db/fieldList?table=' + req.table, cols => {
-                    console.log(cols);
+                    //console.log(cols);
                     cols[0].push({title: '操作', toolbar: '#op-bar', align: 'center', width: 100, fixed: 'right'});
                     table.render({
                         elem: '#data-table',

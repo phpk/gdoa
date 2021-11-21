@@ -254,23 +254,14 @@
                                     title: '查看索引',
                                     id: 'viewKey'
                                 }, {
-                                    title: '设置唯一索引-btree',
+                                    title: '设置唯一索引',
                                     id: 'setUnikeyBtree'
                                 }, {
-                                    title: '设置普通索引-btree',
+                                    title: '设置普通索引',
                                     id: 'setKeyBtree'
-                                }, {
-                                    title: '设置唯一索引-hash',
-                                    id: 'setUnikeyHash'
-                                }, {
-                                    title: '设置普通索引-hash',
-                                    id: 'setKeyHash'
                                 }, {
                                     title: '设为主键',
                                     id: 'setKey'
-                                }, {
-                                    title: '删除主键',
-                                    id: 'delKey'
                                 }
                             ],
                             click: function (data, othis) {
@@ -320,6 +311,33 @@
 							anim: 1,
 							content: MODULE_PATH + 'keys.html?table=' + req.table
 						});
+					}else{
+						let list = table.checkStatus('db-table').data;
+						//console.log(list)
+						if(id == 'setKey' && list.length != 1) {
+							layer.msg('设置主键只能选择一个字段');
+							return false;
+						}
+						if(list.length < 1){
+							layer.msg('至少选择一行');
+							return false;
+						}
+						let names = list.map(d => {
+							return "`" + d.name + "`";
+						});
+						_post(layui, 'db/setKey', {
+							names : names.join(','),
+							table : req.table,
+							type : id
+						},res => {
+							layer.msg('设置成功', {
+								icon: 1,
+								time: 1000
+							}, () => {
+								table.reload('db-table');
+							});
+						})
+
 					}
 				}
                 //添加字段

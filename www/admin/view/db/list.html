@@ -34,6 +34,10 @@
 				<i class="layui-icon layui-icon-print"></i>
 		        文档
 		    </button>
+			<button class="pear-btn pear-btn-warming pear-btn-md" lay-event="sql">
+				<i class="layui-icon layui-icon-print"></i>
+		        SQL查询
+		    </button>
 
 		</script>
 
@@ -165,6 +169,9 @@
 								title: '编辑表',
 								id: 'edit'
 							}, {
+								title: '复制表',
+								id: 'opCopy'
+							}, {
 								title: '优化表',
 								id: 'opOptimize'
 							}, {
@@ -176,6 +183,9 @@
 							}, {
 								title: '删除表',
 								id: 'remove'
+							}, {
+								title: '看SQL',
+								id: 'viewSql'
 							}
 						],
 						click: function (data, othis) {
@@ -247,6 +257,35 @@
 						});
 					})
 				}
+				window.sql = function() {
+					layer.open({
+						type: 2,
+						title: 'SQL查询',
+						shade: 0.1,
+						offset: 'rt',
+						area: [
+							'80%', '100%'
+						],
+						anim: 1,
+						maxmin: true,
+						content: MODULE_PATH + 'sql.html'
+					});
+				}
+				window.viewSql = function (obj) {
+					//console.log(obj)
+					layer.open({
+						type: 2,
+						title: 'SQL查询',
+						shade: 0.1,
+						offset: 'rt',
+						area: [
+							'80%', '100%'
+						],
+						anim: 1,
+						maxmin: true,
+						content: MODULE_PATH + 'sql.html?table=' + obj
+					});
+				}
 				window.reback = function () {
 					layer.open({
 						type: 2,
@@ -286,7 +325,7 @@
 						],
 						anim: 1,
 						maxmin: true,
-						content: MODULE_PATH + 'add.html'
+						content: MODULE_PATH + 'creat.html'
 					});
 				}
 
@@ -317,7 +356,7 @@
 								icon: 1,
 								time: 1000
 							}, () => {
-								obj.del();
+								table.reload('db-table');
 							});
 						}, err => {
 							//layer.msg('删除失败',{icon:2,time:1000});
@@ -350,6 +389,7 @@
 							icon: 1,
 							time: 1000
 						});
+						table.reload('db-table');
 					})
 				}
 				window.opOptimize = function (obj) {
@@ -364,6 +404,22 @@
 							icon: 1,
 							time: 1000
 						});
+						table.reload('db-table');
+					})
+				}
+				window.opCopy = function (obj) {
+					let index = layer.load(0, {
+						time: 5 * 1000
+					});
+					_post(layui, 'db/opcopy', {
+						table: obj
+					}, res => {
+						layer.close(index);
+						layer.msg('复制成功', {
+							icon: 1,
+							time: 1000
+						});
+						table.reload('db-table');
 					})
 				}
 				window.opClear = function (obj) {

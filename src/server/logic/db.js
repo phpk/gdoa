@@ -70,6 +70,15 @@ module.exports = class extends think.Logic {
             }
         }
     }
+    opcopyAction() {
+        this.allowMethods = 'post';
+        this.rules = {
+            table: {
+                required : true,
+                aliasName: '表名'
+            }
+        }
+    }
     repairAction() {
         this.allowMethods = 'post';
         this.rules = {
@@ -215,6 +224,71 @@ module.exports = class extends think.Logic {
                 required: true,
                 aliasName: '状态'
             }
+        }
+    }
+    keysListAction() {
+        this.allowMethods = 'get';
+        this.rules = {
+            table : {
+                required : true,
+                aliasName : '表名'
+            }
+        }
+    }
+    delKeyAction() {
+        this.allowMethods = 'post';
+        this.rules = {
+            table : {
+                required : true,
+                aliasName : '表名'
+            },
+            name : {
+                required : true,
+                aliasName : '索引名'
+            }
+        }
+    }
+    setKeyAction() {
+        this.allowMethods = 'post';
+        this.rules = {
+            table : {
+                required : true,
+                aliasName : '表名'
+            },
+            names : {
+                required : true,
+                aliasName : '索引名'
+            },
+            type : {
+                required : true,
+                aliasName : '操作'
+            }
+        }
+    }
+    createTableAction() {
+        this.allowMethods = 'post';
+        this.rules = {
+            name : {
+                required : true,
+                aliasName : '表名'
+            },
+            comment : {
+                required : true,
+                aliasName : '表注释'
+            },
+            add_time : {
+                aliasName : '添加时间'
+            },
+            update_time : {
+                aliasName : '更新时间'
+            },
+            admin_id : {
+                aliasName:'管理员id'
+            },
+            user_id : {
+                aliasName : '用户id'
+            }
+
         }
     }
 }

@@ -153,6 +153,26 @@ module.exports = class extends think.Model {
         await this.query('REPAIR TABLE ' + table);
     }
     /**
+     * 获取创建sql
+     * @param {string} table 
+     * @returns 
+     */
+    async getSql(table){
+        let sql = await this.query("show create table " + table);
+        return "DROP TABLE IF EXISTS `" + table + "`;\n " +
+        sql[0]['Create Table'];
+    }
+    /**
+     * 复制表
+     * @param {string} table 
+     */
+    async opcopy(table) {
+        let sqldata = await this.query("show create table " + table);
+        let sql = sqldata[0]['Create Table'];
+        let newsql = sql.replace(new RegExp(table,'g'),table + "_copy");
+        await this.query(newsql)
+    }
+    /**
      * 删除表
      * @returns {*}
      */
@@ -328,12 +348,40 @@ module.exports = class extends think.Model {
         }
         return false;
     }
+    async delKey(table, name){
+        if(name === 'PRIMARY') {
+            await this.query(`alter table ${table} drop primary key;`);
+        }else{
+            await this.query(`alter table ${table} drop index ${name}`);
+        }
+    }
+    async setKey(table, names, type) {
+        if(type == 'setKey') {
+            await this.query("ALTER TABLE `"+table+"` ADD PRIMARY KEY("+names+")");
+        }
+        else if(type == 'setUnikeyBtree') {
+            await this.query("ALTER TABLE `"+table+"` ADD UNIQUE("+names+")");
+        }
+        else if(type == 'setKeyBtree') {
+            await this.query("ALTER TABLE `"+table+"` ADD INDEX("+names+")");
+        }
+    }
+    async createTable(data) {
+        let sql = "CREATE TABLE `"+data.name+"` (`id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '唯一标志'";
+        if(data.add_time) sql += ",`add_time` int(10) NOT NULL DEFAULT '0' COMMENT '添加时间'";
+        if(data.update_time) sql += ",`update_time` int(10) NOT NULL DEFAULT '0' COMMENT '更新时间'";
+        if(data.user_id) sql += ",`user_id` int(10) NOT NULL DEFAULT '0' COMMENT '用户id'";
+        if(data.admin_id) sql += ",`admin_id` int(10) NOT NULL DEFAULT '0' COMMENT '管理员id'";
+        sql += ",PRIMARY KEY (`id`)";
+        sql += ") ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='"+data.comment+"'";
+        await this.query(sql);
+    }
     /**
      * 备份表
      */
     async backup() {
         let date = (new Date()).valueOf();
-        let file = backpath + think.datetime(date, 'YYYYMMDD-HH:mm:ss') + '.sql';
+        let file = backpath + think.datetime(date, 'YYYY-MM-DD_HH:mm:ss') + '.sql';
         try {
             await mysqldump({
                 connection: think.config('mysql'),

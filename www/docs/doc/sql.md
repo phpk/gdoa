@@ -52,13 +52,13 @@
 
 | 排序  | 字段名 | 名称  | 类型  | 是否为空 | 索引  | 默认值 |
 | --- | --- | --- | --- | ---- | --- | --- |
-| 1 | order_id | 订单id | int(10) unsigned | YES |  | 0 |
-| 2 | product_id | 商品id | int(10) unsigned | YES |  | 0 |
-| 3 | group_id | 集团id | int(10) unsigned | YES |  | 0 |
-| 4 | store_id | 店铺id | int(10) unsigned | YES |  | 0 |
-| 5 | manager_id | 员工id | int(10) unsigned | YES |  | 0 |
-| 6 | money | 实际业绩 | decimal(10,2) unsigned | YES |  | 0.00 |
-| 7 | achievement_id |  | int(10) unsigned | NO | PRI | null |
+| 1 | achievement_id |  | int(10) unsigned | NO | PRI | null |
+| 2 | order_id | 订单id | int(10) unsigned | YES |  | 0 |
+| 3 | product_id | 商品id | int(10) unsigned | YES |  | 0 |
+| 4 | group_id | 集团id | int(10) unsigned | YES |  | 0 |
+| 5 | store_id | 店铺id | int(10) unsigned | YES |  | 0 |
+| 6 | manager_id | 员工id | int(10) unsigned | YES |  | 0 |
+| 7 | money | 实际业绩 | decimal(10,2) unsigned | YES |  | 0.00 |
 | 8 | all_money | 订单总额 | decimal(10,2) unsigned | YES |  | 0.00 |
 | 9 | add_time | 添加时间 | int(10) unsigned | YES |  | null |
 | 10 | update_time | 发放时间 | int(10) unsigned | YES |  | 0 |
@@ -69,13 +69,13 @@
 ```js
 DROP TABLE IF EXISTS `rt_achievement`;
  CREATE TABLE `rt_achievement` (
-  `order_id` int(10) unsigned DEFAULT '0' COMMENT '订单id',
+  `achievement_id` int(11) NOT NULL COMMENT '555',
+  `order_id` int(10) unsigned DEFAULT NULL COMMENT '订单id',
   `product_id` int(10) unsigned DEFAULT '0' COMMENT '商品id',
   `group_id` int(10) unsigned DEFAULT '0' COMMENT '集团id',
   `store_id` int(10) unsigned DEFAULT '0' COMMENT '店铺id',
   `manager_id` int(10) unsigned DEFAULT '0' COMMENT '员工id',
   `money` decimal(10,2) unsigned DEFAULT '0.00' COMMENT '实际业绩',
-  `achievement_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `all_money` decimal(10,2) unsigned DEFAULT '0.00' COMMENT '订单总额',
   `add_time` int(10) unsigned DEFAULT NULL COMMENT '添加时间',
   `update_time` int(10) unsigned DEFAULT '0' COMMENT '发放时间',
@@ -89,17 +89,18 @@ DROP TABLE IF EXISTS `rt_achievement`;
 
 | 排序  | 字段名 | 名称  | 类型  | 是否为空 | 索引  | 默认值 |
 | --- | --- | --- | --- | ---- | --- | --- |
-| 1 | admin_id | 唯一标志 | int(10) unsigned | NO | PRI | null |
 | 2 | username | 用户名 | varchar(50) | NO | UNI | null |
 | 3 | password | 密码 | varchar(32) | NO |  | null |
-| 4 | salt | 密码钥匙 | varchar(16) | NO |  | null |
-| 5 | add_time | 添加时间 | int(10) | NO |  | 0 |
-| 6 | name | 真实姓名 | varchar(100) | YES |  | null |
-| 7 | mobile | 手机号 | varchar(15) | YES | UNI | 0 |
-| 8 | status | 状态1正常0禁用 | tinyint(2) | NO |  | 1 |
-| 9 | login_time | 登录时间 | int(10) | YES |  | 0 |
-| 10 | login_num | 登录次数 | int(10) | YES |  | 0 |
-| 11 | update_time | 更新时间 | int(10) | YES |  | 0 |
+| 1 | admin_id | 唯一标志 | int(10) | NO | PRI | 0 |
+| 4 | salt | 密码钥匙 | varchar(32) | NO |  | null |
+| 6 | add_time | 添加时间 | int(10) | NO |  | 0 |
+| 7 | name | 真实姓名 | varchar(100) | YES |  | null |
+| 8 | mobile | 手机号 | int(10) | YES | UNI | null |
+| 9 | status | 状态1正常0禁用 | tinyint(2) | NO |  | 1 |
+| 10 | login_time | 登录时间 | int(10) | YES |  | 0 |
+| 11 | login_num | 登录次数 | int(10) | YES |  | 0 |
+| 12 | update_time | 更新时间 | int(10) | YES |  | 0 |
+| 5 | role_id | 角色id | int(10) | NO |  | 0 |
 
 
 创建代码
@@ -107,9 +108,9 @@ DROP TABLE IF EXISTS `rt_achievement`;
 ```js
 DROP TABLE IF EXISTS `rt_admin`;
  CREATE TABLE `rt_admin` (
-  `admin_id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '唯一标志',
   `username` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '用户名',
   `password` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '密码',
+  `admin_id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '唯一标志',
   `salt` varchar(16) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '密码钥匙',
   `add_time` int(10) NOT NULL DEFAULT '0' COMMENT '添加时间',
   `name` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '真实姓名',
@@ -244,7 +245,7 @@ DROP TABLE IF EXISTS `rt_admin_oplog`;
   `method` varchar(100) CHARACTER SET utf8 DEFAULT NULL COMMENT '方法',
   `addtime` int(10) unsigned DEFAULT '0' COMMENT '添加时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=233 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='管理操作日志'
+) ENGINE=InnoDB AUTO_INCREMENT=236 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='管理操作日志'
 ```
 
 ---
@@ -279,7 +280,7 @@ DROP TABLE IF EXISTS `rt_admin_viewlog`;
   `addtime` int(10) unsigned DEFAULT '0' COMMENT '添加时间',
   `leavetime` int(10) unsigned DEFAULT '0' COMMENT '离开时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=245 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='管理员查看日志'
+) ENGINE=InnoDB AUTO_INCREMENT=251 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='管理员查看日志'
 ```
 
 ---
@@ -315,17 +316,19 @@ DROP TABLE IF EXISTS `rt_area`;
 
 | 排序  | 字段名 | 名称  | 类型  | 是否为空 | 索引  | 默认值 |
 | --- | --- | --- | --- | ---- | --- | --- |
-| 1 | id | ID | int(11) unsigned | NO | PRI | null |
+| 1 | ids | 文章id | int(10) unsigned | NO | PRI | null |
 | 2 | category_id | 分类:id:title | int(11) | NO |  | null |
-| 3 | title | 文章名 | varchar(128) | NO |  | null |
+| 3 | title2 | 文章标题 | varchar(128) | YES |  | null |
 | 4 | desc_content |  | varchar(255) | NO |  | null |
 | 5 | image |  | varchar(255) | YES |  | null |
 | 6 | content | 内容 | text | NO |  | null |
 | 7 | author | 作者:id:name | varchar(32) | NO |  | null |
 | 8 | show_switch | 展示:1=展示,0=隐藏 | tinyint(1) | NO |  | 1 |
-| 9 | show_time |  | int(10) unsigned | YES |  | 0 |
-| 10 | up_time |  | int(10) unsigned | YES |  | 0 |
-| 11 | add_time |  | int(10) unsigned | YES |  | 0 |
+| 9 | show_time |  | datetime | YES |  | null |
+| 10 | up_time |  | datetime | YES |  | CURRENT_TIMESTAMP |
+| 11 | add_time |  | datetime | YES |  | CURRENT_TIMESTAMP |
+| 1 | id | ID | int(11) unsigned | NO | PRI | null |
+| 3 | title | 文章名 | varchar(128) | NO |  | null |
 
 
 创建代码
@@ -333,10 +336,10 @@ DROP TABLE IF EXISTS `rt_area`;
 ```js
 DROP TABLE IF EXISTS `rt_article`;
  CREATE TABLE `rt_article` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `category_id` int(11) NOT NULL COMMENT '分类:id:title',
-  `title` varchar(128) CHARACTER SET utf8 NOT NULL COMMENT '文章名',
-  `desc_content` varchar(255) CHARACTER SET utf8 NOT NULL DEFAULT '',
+  `ids` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '文章id',
+  `category_id` int(11) NOT NULL DEFAULT '0' COMMENT '分类id',
+  `title2` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '文章标题',
+  `desc_content` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `image` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
   `content` text CHARACTER SET utf8 NOT NULL COMMENT '内容',
   `author` varchar(32) CHARACTER SET utf8 NOT NULL COMMENT '作者:id:name',
@@ -344,7 +347,7 @@ DROP TABLE IF EXISTS `rt_article`;
   `show_time` int(10) unsigned DEFAULT '0',
   `up_time` int(10) unsigned DEFAULT '0',
   `add_time` int(10) unsigned DEFAULT '0',
-  PRIMARY KEY (`id`) USING BTREE
+  PRIMARY KEY (`ids`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='文章'
 ```
 
@@ -548,6 +551,7 @@ DROP TABLE IF EXISTS `rt_crons`;
 | 4 | msg |  | text | YES |  | null |
 | 5 | addtime |  | int(10) unsigned | YES |  | 0 |
 | 6 | admin_id |  | int(10) unsigned | YES |  | 0 |
+| 5 | add_time |  | int(10) unsigned | YES |  | 0 |
 
 
 创建代码
@@ -894,11 +898,16 @@ DROP TABLE IF EXISTS `rt_manger_auth`;
 | 4 | href | 前端地址 | varchar(255) | YES |  | null |
 | 5 | type | 0目录1菜单2按钮3权限 | tinyint(2) | YES |  | 0 |
 | 6 | order_num | 排序 | int(10) | YES |  | 0 |
-| 7 | icon |  | varchar(255) | YES |  | null |
+| 6 | icon |  | varchar(255) | YES |  | null |
 | 8 | open_type |  | varchar(255) | YES |  | null |
-| 9 | pid |  | int(10) | YES |  | 0 |
-| 10 | lid |  | tinyint(3) | YES |  | 1 |
+| 8 | pid |  | int(10) | YES |  | 0 |
+| 9 | lid |  | tinyint(3) | YES |  | 1 |
 | 11 | ifshow | 是否显示0显示1不显示 | tinyint(3) unsigned | YES |  | 0 |
+| 2 | name |  | varchar(255) | YES |  | null |
+| 3 | url | 权限标志 | varchar(255) | YES |  | null |
+| 4 | ismenu | 0目录1菜单2按钮 | tinyint(2) | YES |  | 0 |
+| 5 | order |  | int(5) | YES |  | 0 |
+| 7 | target |  | varchar(255) | YES |  | null |
 
 
 创建代码
@@ -919,7 +928,7 @@ DROP TABLE IF EXISTS `rt_menu`;
   `ifshow` tinyint(3) unsigned DEFAULT '0' COMMENT '是否显示0显示1不显示',
   PRIMARY KEY (`id`) USING BTREE,
   KEY `url` (`route`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=106 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='系统菜单'
+) ENGINE=InnoDB AUTO_INCREMENT=108 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='系统菜单'
 ```
 
 ---

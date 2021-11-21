@@ -79,23 +79,23 @@ module.exports = class extends Base {
         let data = this.post();
         //console.log(data)
         try {
-            if(data.field == 'Auto_increment') {
-                if(isNaN(data.value) || data.value < 1)
+            if (data.field == 'Auto_increment') {
+                if (isNaN(data.value) || data.value < 1)
                     return this.fail('自增长id必须大于0')
                 await this.model('db').editTableAutoId(data.table, data.value);
             }
-            else if(data.field == 'Name') {
+            else if (data.field == 'Name') {
                 await this.model('db').renameTable(data.old, data.value);
             }
-            else if(data.field == 'Comment') {
+            else if (data.field == 'Comment') {
                 await this.model('db').editTableComment(data.table, data.value);
             }
-            
+
             return this.success()
         } catch (error) {
             return this.fail(error.message)
         }
-        
+
     }
     /**
      * @api {post} db/delTable 删除表
@@ -139,6 +139,35 @@ module.exports = class extends Base {
             return this.fail(e.message)
         }
     }
+    async opcopyAction() {
+        let table = this.post('table');
+        try {
+            await this.model('db').opcopy(table);
+            return this.success()
+        } catch (e) {
+            return this.fail(e.message)
+        }
+    }
+    async getSqlAction() {
+        //console.log(this.get())
+        let table = this.get('table');
+        //console.log(table)
+        try {
+            let rt = await this.model('db').getSql(table);
+            return this.success(rt)
+        } catch (e) {
+            return this.fail(e.message)
+        }
+    }
+    async runSqlAction() {
+        let code = this.post('code');
+        try {
+            let rt = await this.model('db').query(code);
+            return this.success(rt)
+        } catch (e) {
+            return this.fail(e.message)
+        }
+    }
     /**
      * @api {post} db/clear 清空表
      * @apiGroup db
@@ -167,7 +196,7 @@ module.exports = class extends Base {
                     edit: 'text',
                     filter: true,
                     align: 'left',
-                    sort : true
+                    sort: true
                 })
             });
             return this.success([rt])
@@ -193,13 +222,13 @@ module.exports = class extends Base {
                     order: el.ORDINAL_POSITION
                 })
             });
-            return this.success({list, count : list.length})
+            return this.success({ list, count: list.length })
         } catch (e) {
             return this.fail(e.message)
         }
     }
     async listDataAction() {
-        let { page, limit, param,table } = this.get();
+        let { page, limit, param, table } = this.get();
         let wsql = {};
         if (param) wsql = this.parseSearch(param, wsql);
         let tname = table.replace(think.config('mysql.prefix'), '');
@@ -239,13 +268,13 @@ module.exports = class extends Base {
             } else {
                 await this.model(tname).add(whereSql);
             }
-            
+
             return this.success()
         } catch (e) {
             console.log(e)
             return this.fail(e.message)
         }
-        
+
     }
 
     async delDataAction() {
@@ -290,20 +319,20 @@ module.exports = class extends Base {
         }
     }
     async changeFieldNameAction() {
-        let {table, name, field, value} = this.post();
+        let { table, name, field, value } = this.post();
         let row = await this.model('db').fieldRow(table, name);
         try {
-            if(field == 'name') {
+            if (field == 'name') {
                 // if(await this.model('db').hasField(table, value)) {
                 //     return this.fail('表中存在相同的字段')
                 // }
                 //rowdata.name = old;
                 await this.model('db').changeFieldName(table, row, value);
             }
-            else if(field == 'comment') {
+            else if (field == 'comment') {
                 await this.model('db').changeFieldComment(table, row, value);
             }
-            else if(field == 'default') {
+            else if (field == 'default') {
                 await this.model('db').changeFieldDefault(table, row, value);
             }
             else if (field == 'type') {
@@ -338,7 +367,7 @@ module.exports = class extends Base {
             console.log(e.message)
             return this.fail(e.message)
         }
-        
+
     }
     async addFieldAction() {
         let post = this.post();
@@ -346,7 +375,7 @@ module.exports = class extends Base {
         // console.log(post)
         // return;
         try {
-            if(await this.model('db').hasField(table, post.name)) {
+            if (await this.model('db').hasField(table, post.name)) {
                 return this.fail('表中存在相同的字段')
             }
             await this.model('db').addField(table, post);
@@ -359,7 +388,38 @@ module.exports = class extends Base {
     async keysListAction() {
         let table = this.get('table');
         let list = await this.model('db').keysList(table);
-        return this.success({list})
+        return this.success({ list })
     }
+    async delKeyAction() {
+        let { table, name } = this.post();
+        try {
+            await this.model('db').delKey(table, name);
+            return this.success()
+        } catch (e) {
+            console.log(e)
+            return this.fail(e.message)
+        }
 
+    }
+    async setKeyAction() {
+        let {table, names, type} = this.post()
+        try {
+            await this.model('db').setKey(table, names, type);
+            return this.success()
+        } catch (e) {
+            console.log(e)
+            return this.fail(e.message)
+        }
+    }
+    async createTableAction() {
+        let data = this.post();
+        try {
+            await this.model('db').createTable(data);
+            return this.success();
+        } catch (e) {
+            console.log(e)
+            return this.fail(e.message)
+        }
+    }
+    
 }

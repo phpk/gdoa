@@ -53,7 +53,7 @@
 							title: '操作',
 							toolbar: '#del-bar',
 							align: 'center',
-							width: 130
+							width: 80
 						}
 					]
 				]
@@ -78,7 +78,30 @@
 
 				table.on('tool(user-table)', function(obj) {
 					if (obj.event === 'remove') {
-						window.remove(obj);
+						//window.remove(obj);
+						layer.confirm('确定要删除该字段吗？', {
+						icon: 3,
+						title: '提示'
+					}, function (index) {
+						layer.close(index);
+						let postdata = {
+							table : req.table,
+							name : obj.data.name
+						}
+						console.log(postdata)
+						_post(layui, 'db/delKey',postdata, res => {
+							layer.msg('删除成功', {
+								icon: 1,
+								time: 1000
+							}, () => {
+								obj.del();
+								table.reload('user-table');
+							});
+						}, err => {
+							
+						})
+					})
+						
 					}
 				});
 			})
