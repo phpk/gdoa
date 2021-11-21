@@ -93,6 +93,34 @@ module.exports = class extends think.Model {
         })
         return cache;
     }
+    async fieldRow(table, field) {
+        let list = await this.fieldList(table);
+        //console.log(list)
+        return list.find(d => {
+            return d.COLUMN_NAME === field;
+        })
+    }
+    async keysList(table) {
+        let indexData = await this.query("SELECT * FROM information_schema.statistics WHERE table_schema = '" + think.config('mysql.database') + "' and TABLE_NAME = '" + table + "'");
+        let rt = {}, cache = [];
+        indexData.forEach(el => {
+            if (!rt[el.INDEX_NAME]) {
+                rt[el.INDEX_NAME] = {
+                    type: el.INDEX_TYPE,
+                    fields: []
+                }
+            }
+            rt[el.INDEX_NAME].fields.push(el.COLUMN_NAME)
+        })
+        for (let p in rt) {
+            cache.push({
+                name: p,
+                type: rt[p].type,
+                fields : rt[p].fields
+            })
+        }
+        return cache;
+    }
     /**
      * 获取表主键
      * @param {string} table 
@@ -183,9 +211,10 @@ module.exports = class extends think.Model {
     async delField(table, field) {
         if (!this.sysTable(table))
         //console.log(`alter table ${table} drop column ${field}`)
-        await this.query(`alter table '${table}' drop column '${field}'`);
+        await this.query(`alter table ${table} drop column ${field}`);
     }
     parseRow(row) {
+        
         let str = row.type + " ";
         if(row.isnull !== 'YES') {
             str += "NOT NULL ";
@@ -205,6 +234,13 @@ module.exports = class extends think.Model {
         return str;
 
     }
+    parseField(row) {
+        let def = row.COLUMN_DEFAULT !== null ? ` DEFAULT '${row.COLUMN_DEFAULT}'` : '';
+        let nul = row.IS_NULLABLE !== 'YES' ? ' NOT NULL ' : ' NULL ';
+        let comment = row.COLUMN_COMMENT !== '' ? " COMMENT '" + row.COLUMN_COMMENT+"'" : "";
+        let auto = row.EXTRA === 'auto_increment' ? " AUTO_INCREMENT " : "";
+        return { nul, def, auto, comment };
+    }
     async sortField(table, row, t = 'AFTER', sortField) {
         //console.log(row)
         if(this.sysTable(table)) return;
@@ -216,15 +252,74 @@ module.exports = class extends think.Model {
         }
     }
     async changeFieldName(table, row, newName) {
-        let sql = this.parseRow(row);
-        await this.query(`alter table ${table} change ${row.name} ${newName} ${row.type} COMMENT '${row.comment}'`);
+        let { nul, def, auto, comment } = this.parseField(row);
+        await this.query(`alter table ${table} change ${row.COLUMN_NAME} ${newName} ${row.COLUMN_TYPE} ${nul} ${def} ${auto} ${comment}`);
+        console.log(this.lastSql)
     }
     async changeFieldComment(table, row, newComment) {
-        let sql = this.parseRow(row);
-        await this.query(`ALTER TABLE ${table} MODIFY COLUMN ${row.name} ${row.type} COMMENT '${newComment}'`);
+        let { nul, def, auto } = this.parseField(row);
+        await this.query(`ALTER TABLE ${table} MODIFY COLUMN ${row.COLUMN_NAME} ${row.COLUMN_TYPE} ${nul} ${def} ${auto} COMMENT '${newComment}'`);
+    }
+    async changeFieldType(table, row, ntype) {
+        let { nul, def, auto, comment } = this.parseField(row);
+        await this.query(`ALTER TABLE ${table} MODIFY COLUMN ${row.COLUMN_NAME} ${ntype} ${nul} ${def} ${auto} ${comment}`);
     }
     async changeFieldDefault(table, row, val) {
-        await this.query(`alter table ${table} alter column ${row.name} set default '${val}'`);
+        await this.query(`alter table ${table} alter column ${row.COLUMN_NAME} set default '${val}'`);
+    }
+    async changeFieldNull(table, row, status) {
+        let { def, auto, comment } = this.parseField(row);
+        if (row.IS_NULLABLE === 'NO' && status === 0) {
+            //console.log(row)
+            await this.query(`ALTER TABLE ${table} MODIFY COLUMN ${row.COLUMN_NAME} ${row.COLUMN_TYPE} NULL ${def} ${auto} ${comment}`);
+        }
+        if (row.IS_NULLABLE === 'YES' && status === 1) {
+            //console.log(row)
+            await this.query(`ALTER TABLE ${table} MODIFY COLUMN ${row.COLUMN_NAME} ${row.COLUMN_TYPE} NOT NULL ${def} ${auto} ${comment}`);
+        }
+    }
+    async changeFieldAuto(table, row, status) {
+        let {nul, def, comment } = this.parseField(row);
+        if (status === 1 && row.EXTRA === 'auto_increment') {
+            await this.query(`ALTER TABLE ${table} MODIFY COLUMN ${row.COLUMN_NAME} ${row.COLUMN_TYPE} ${nul} ${def} ${comment}`);
+        }
+        if (status === 0 && row.EXTRA === '') {
+            //console.log(row)
+            await this.query(`ALTER TABLE ${table} MODIFY COLUMN ${row.COLUMN_NAME} ${row.COLUMN_TYPE} ${nul} ${def} AUTO_INCREMENT ${comment}`);
+        }
+    }
+    async addField(table, data) {
+        let sql = `ALTER TABLE ${table} ADD COLUMN ${data.name} ${data.type}`;
+        if (data.len > 0) {
+            sql += `(${data.len}`;
+            if (data.decimals > 0) {
+                sql += `,${data.decimals}) `;
+            } else {
+                sql += `) `;
+            }
+        }
+        if (data.attribute) {
+            sql += ` ${data.attribute} `;
+        }
+        if (data.virtuality != '' && data.virtualitycode != '') {
+            sql += ` as (${data.virtualitycode}) ${data.virtuality} `;
+        }
+        if (data.isnull > 0) {
+            sql += ` NULL `;
+        } else {
+            sql += ` NOT NULL `;
+        }
+        if (data.collation) {
+            sql += ` COLLATE ${data.collation} `;
+        }
+        if (data.default != '') {
+            sql += ` DEFAULT ${data.default} `;
+        }
+        if (data.comment) {
+            sql += ` COMMENT '${data.comment}'`;
+        }
+        //console.log(sql)
+        await this.query(sql);
     }
     async hasField(table, field) {
         let rows =  await this.query(`select * FROM information_schema.COLUMNS where table_name = '${table}' and COLUMN_NAME = '${field}'`);

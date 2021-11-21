@@ -173,4 +173,48 @@ module.exports = class extends think.Logic {
             }
         }
     }
+    changeFieldNameAction() {
+        this.allowMethods = 'post';
+        this.rules = {
+            table: {
+                required: true,
+                aliasName: '表名'
+            },
+            name: {
+                required: true,
+                aliasName: '字段名'
+            },
+            field: {
+                required: true,
+                aliasName: '字段属性'
+            },
+            value: {
+                required: true,
+                aliasName: '更改值'
+            }
+
+        }
+    }
+    setStatusAction() {
+        this.allowMethods = 'post';
+        this.rules = {
+            table: {
+                required: true,
+                aliasName: '表名'
+            },
+            name: {
+                required: true,
+                aliasName: '字段名'
+            },
+            type: {
+                required: true,
+                aliasName: '类型'
+            },
+            status: {
+                int : {min:0,max:1},
+                required: true,
+                aliasName: '状态'
+            }
+        }
+    }
 }

@@ -197,11 +197,47 @@
 						window.remove(obj);
 					} 
 				});
+				
                 form.on('switch(isnull)', function(data) {
-                    console.log(data)
+					let v = 1;
+					if (data.elem.checked) v = 0;
+					let postData = {
+						table:req.table,
+					 	name : data.value,
+					 	status : v,
+						type : 'isnull'
+					};
+					//console.log(postData)
+					_post(layui, 'db/setStatus', postData, res => {
+						layer.msg('更新成功', {
+								icon: 1,
+								time: 1000
+						});
+					}, err => {
+						$(data.elem).prop('checked', false);
+						form.render('checkbox');
+					})
+					
                 })
                 form.on('switch(auto)', function(data) {
-                    console.log(data)
+                    let v = 1;
+					if (data.elem.checked) v = 0;
+					let postData = {
+						table:req.table,
+					 	name : data.value,
+					 	status : v,
+						type : 'auto'
+					};
+					//console.log(postData)
+					_post(layui, 'db/setStatus', postData, res => {
+						layer.msg('更新成功', {
+								icon: 1,
+								time: 1000
+						});
+					}, err => {
+						$(data.elem).prop('checked', false);
+						form.render('checkbox');
+					})
                 })
                 
                 table.on('toolbar(db-table)', function(obj) {
@@ -216,54 +252,46 @@
                             data: [
                                 {
                                     title: '查看索引',
-                                    id: 'opData'
+                                    id: 'viewKey'
                                 }, {
-                                    title: '设置唯一索引',
-                                    id: 'edit'
+                                    title: '设置唯一索引-btree',
+                                    id: 'setUnikeyBtree'
                                 }, {
-                                    title: '设置普通索引',
-                                    id: 'opOptimize'
+                                    title: '设置普通索引-btree',
+                                    id: 'setKeyBtree'
+                                }, {
+                                    title: '设置唯一索引-hash',
+                                    id: 'setUnikeyHash'
+                                }, {
+                                    title: '设置普通索引-hash',
+                                    id: 'setKeyHash'
                                 }, {
                                     title: '设为主键',
-                                    id: 'opRepair'
+                                    id: 'setKey'
+                                }, {
+                                    title: '删除主键',
+                                    id: 'delKey'
                                 }
                             ],
                             click: function (data, othis) {
-                                var elem = $(this.elem),
-                                    table = elem.data('id'); //表格列表的预埋数据
-                                window[data.id](table);
+                                var elem = $(this.elem); 
+                                window.opKey(data);
                             }
                         });
                     }
 				});
-                //table.on('checkbox(db-table)', function(obj){
-                //    console.log(obj)
-                //});
-                //设置是否为空
-                //form.on('event(isnull)', function(data) {
-                //    console.log(data)
-					// let v = 1;
-					// if (data.elem.checked) v = 0;
-					// let postData = {
-					// 	id : data.value,
-					// 	status : v
-					// };
-					// _post(layui, 'admin/enable', postData, res => {
-					// 	//console.log(res)
-					// },err => {
-					// 	$(data.elem).prop('checked', false);
-					// 	form.render('checkbox');
-					// })
-				//});
+               
                 //编辑名字
                 table.on('edit(db-table)', function (obj) {
 					let old = $(this)
 						.prev()
 						.text();
 					//console.log(old)
+					let name = obj.data.name;
+					if(obj.field == 'name') name = old;
 					let update = {
 						table: req.table,
-						row: JSON.stringify(obj.data),
+						name,
                         field : obj.field,
 						value: obj.value,
 						old
@@ -279,19 +307,34 @@
 
 					})
 				});
+				window.opKey = function(data) {
+					//console.log(data)
+					let id = data.id;
+					if(id == 'viewKey') {
+						layer.open({
+							type: 2,
+							title: '查看索引',
+							shade: 0.1,
+							offset: 'rt',
+							area: ['80%', '100%'],
+							anim: 1,
+							content: MODULE_PATH + 'keys.html?table=' + req.table
+						});
+					}
+				}
                 //添加字段
                 window.add = function() {
 					layer.open({
 						type: 2,
-						title: '新增',
+						title: '新增字段',
 						shade: 0.1,
 						offset: 'rt',
 						area: ['90%', '100%'],
 						anim: 1,
-						content: MODULE_PATH + 'add.html'
+						content: MODULE_PATH + 'add.html?table=' + req.table
 					});
 				}
-                //设置类型
+                //设置类型 todo://
                 window.setType = function(obj) {
 
                 }

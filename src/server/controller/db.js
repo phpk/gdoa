@@ -290,27 +290,76 @@ module.exports = class extends Base {
         }
     }
     async changeFieldNameAction() {
-        let {table, row, field, value, old} = this.post();
-        let rowdata = JSON.parse(row);
-        console.log(rowdata)
+        let {table, name, field, value} = this.post();
+        let row = await this.model('db').fieldRow(table, name);
         try {
             if(field == 'name') {
-                if(await this.model('db').hasField(table, value)) {
-                    return this.fail('表中存在相同的字段')
-                }
-                rowdata.name = old;
-                await this.model('db').changeFieldName(table, rowdata, value);
+                // if(await this.model('db').hasField(table, value)) {
+                //     return this.fail('表中存在相同的字段')
+                // }
+                //rowdata.name = old;
+                await this.model('db').changeFieldName(table, row, value);
             }
             else if(field == 'comment') {
-                await this.model('db').changeFieldComment(table, rowdata, value);
+                await this.model('db').changeFieldComment(table, row, value);
             }
             else if(field == 'default') {
-                await this.model('db').changeFieldDefault(table, rowdata, value);
+                await this.model('db').changeFieldDefault(table, row, value);
+            }
+            else if (field == 'type') {
+                await this.model('db').changeFieldType(table, row, value);
             }
             return this.success()
         } catch (e) {
+            console.log(e.message)
             return this.fail(e.message)
         }
+    }
+    async setStatusAction() {
+        let { table, name, status, type } = this.post();
+        try {
+            let row = await this.model('db').fieldRow(table, name);
+            //console.log(row);
+            //return;
+            if (type == 'isnull') {
+                if (status === 0 && (row.COLUMN_KEY === 'PRI' || row.EXTRA === 'auto_increment')) {
+                    return this.fail('改字段不允许设置空')
+                }
+                await this.model('db').changeFieldNull(table, row, status);
+            }
+            else if (type == 'auto') {
+                if (status === 0 && row.COLUMN_KEY !== 'PRI') {
+                    return this.fail('只有主键才能设置自增长')
+                }
+                await this.model('db').changeFieldAuto(table, row, status);
+            }
+            return this.success()
+        } catch (e) {
+            console.log(e.message)
+            return this.fail(e.message)
+        }
+        
+    }
+    async addFieldAction() {
+        let post = this.post();
+        let table = post.table;
+        // console.log(post)
+        // return;
+        try {
+            if(await this.model('db').hasField(table, post.name)) {
+                return this.fail('表中存在相同的字段')
+            }
+            await this.model('db').addField(table, post);
+            return this.success()
+        } catch (e) {
+            console.log(e.message)
+            return this.fail(e.message)
+        }
+    }
+    async keysListAction() {
+        let table = this.get('table');
+        let list = await this.model('db').keysList(table);
+        return this.success({list})
     }
 
 }
