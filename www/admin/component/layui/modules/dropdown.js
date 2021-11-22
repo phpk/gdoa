@@ -267,10 +267,11 @@ layui.define(['jquery', 'laytpl', 'lay'], function(exports){
       ,data = othis.data('item') || {}
       ,isChild = data.child && data.child.length > 0;
       
-      if(!isChild && data.type !== '-'){
+      //if(!isChild && data.type !== '-'){
         that.remove();
         typeof options.click === 'function' && options.click(data, othis);
-      }
+      //}
+      
     });
     
     //触发菜单组展开收缩

@@ -233,8 +233,7 @@ module.exports = class extends think.Model {
         //console.log(`alter table ${table} drop column ${field}`)
         await this.query(`alter table ${table} drop column ${field}`);
     }
-    parseRow(row) {
-        
+    parseRow(row) {   
         let str = row.type + " ";
         if(row.isnull !== 'YES') {
             str += "NOT NULL ";
@@ -243,7 +242,7 @@ module.exports = class extends think.Model {
             str += "AUTO_INCREMENT ";
         }else{
             if(row.default === null) {
-                str += "DEFAULT NULL ";
+                //str += "DEFAULT NULL ";
             }else{
                 str += "DEFAULT '" + row.default + "' ";
             }
@@ -257,6 +256,9 @@ module.exports = class extends think.Model {
     parseField(row) {
         let def = row.COLUMN_DEFAULT !== null ? ` DEFAULT '${row.COLUMN_DEFAULT}'` : '';
         let nul = row.IS_NULLABLE !== 'YES' ? ' NOT NULL ' : ' NULL ';
+        // if (row.IS_NULLABLE !== 'yes') {
+        //     def = '';
+        // }
         let comment = row.COLUMN_COMMENT !== '' ? " COMMENT '" + row.COLUMN_COMMENT+"'" : "";
         let auto = row.EXTRA === 'auto_increment' ? " AUTO_INCREMENT " : "";
         return { nul, def, auto, comment };
@@ -274,7 +276,7 @@ module.exports = class extends think.Model {
     async changeFieldName(table, row, newName) {
         let { nul, def, auto, comment } = this.parseField(row);
         await this.query(`alter table ${table} change ${row.COLUMN_NAME} ${newName} ${row.COLUMN_TYPE} ${nul} ${def} ${auto} ${comment}`);
-        console.log(this.lastSql)
+        //console.log(this.lastSql)
     }
     async changeFieldComment(table, row, newComment) {
         let { nul, def, auto } = this.parseField(row);
@@ -348,6 +350,17 @@ module.exports = class extends think.Model {
         }
         return false;
     }
+    async hasTable(table) {
+        let prefix = think.config('mysql.prefix');
+        if (table.indexOf(prefix) === -1) {
+            table = prefix + table;
+        }
+        let rows = await this.query(`select * FROM information_schema.COLUMNS where table_name = '${table}'`);
+        if (rows.length > 0) {
+            return true;
+        }
+        return false;
+    }
     async delKey(table, name){
         if(name === 'PRIMARY') {
             await this.query(`alter table ${table} drop primary key;`);
@@ -371,7 +384,8 @@ module.exports = class extends think.Model {
         if(data.add_time) sql += ",`add_time` int(10) NOT NULL DEFAULT '0' COMMENT '添加时间'";
         if(data.update_time) sql += ",`update_time` int(10) NOT NULL DEFAULT '0' COMMENT '更新时间'";
         if(data.user_id) sql += ",`user_id` int(10) NOT NULL DEFAULT '0' COMMENT '用户id'";
-        if(data.admin_id) sql += ",`admin_id` int(10) NOT NULL DEFAULT '0' COMMENT '管理员id'";
+        if (data.admin_id) sql += ",`admin_id` int(10) NOT NULL DEFAULT '0' COMMENT '管理员id'";
+        if (data.title) sql += ",`title` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '名称'";
         sql += ",PRIMARY KEY (`id`)";
         sql += ") ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='"+data.comment+"'";
         await this.query(sql);

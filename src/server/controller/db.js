@@ -399,7 +399,6 @@ module.exports = class extends Base {
             console.log(e)
             return this.fail(e.message)
         }
-
     }
     async setKeyAction() {
         let {table, names, type} = this.post()

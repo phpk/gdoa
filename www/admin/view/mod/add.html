@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>添加模块</title>
+        <meta name="renderer" content="webkit">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <link rel="stylesheet" href="../../component/ui/css/ui.css"/>
+
+    </head>
+    <body>
+        <form class="layui-form" action="" lay-filter="editform">
+            <div class="mainBox">
+                <div class="main-container">
+                    <div class="main-container">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">模块名称</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="name" lay-verify="required" autocomplete="off" placeholder="请输入模块名称" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">模块路径</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="path" lay-verify="required" value="server" autocomplete="off" placeholder="请输入模块路径" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">模块标志</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="tags" lay-verify="required" autocomplete="off" placeholder="请输入模块标志" class="layui-input">
+                                <div class="layui-form-mid layui-word-aux">不能和系统中的其他模块标志相同</div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">模块类型</label>
+                            <div class="layui-input-block">
+                                <input type="radio" name="type" lay-filter="mtype" value="1" title="空模块" checked>
+                                <input type="radio" name="type" lay-filter="mtype" value="2" title="增删改查">
+                            </div>
+                        </div>
+                        <div class="layui-form-item" id="none-area">
+                            <label class="layui-form-label">创建文件</label>
+                            <div class="layui-input-block">
+                            <input type="checkbox" name="none_controller" title="控制层" checked>
+                            <input type="checkbox" name="none_logic" title="逻辑层">
+                            <input type="checkbox" name="none_model" title="模型层">
+                            <input type="checkbox" name="none_service" title="服务层">
+                            </div>
+                        </div>
+                        <div id="rule-area" style="display : none">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">上级权限</label>
+                                <div class="layui-input-block">
+                                <button class="pear-btn pear-btn-sm pear-btn-warming" id="chooseRule">
+                                    <span id="ruleText">选择权限</span>
+                                    <i class="layui-icon layui-icon-down layui-font-12"></i>
+                                </button>
+                                </div>
+                            </div>
+                             <div class="layui-form-item">
+                                <label class="layui-form-label">图标</label>
+                                <div class="layui-input-block">
+                                <input name="icon" id="icon" value="" 
+                                class="layui-input" lay-filter="iconPicker" lay-vertype="tips" style="width:30px">
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <div class="layui-form-item layui-form-text">
+                            <label class="layui-form-label">备注</label>
+                            <div class="layui-input-block">
+                                <textarea name="remark" placeholder="请输入内容" class="layui-textarea"></textarea>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="bottom">
+                <div class="button-container">
+                    <input type="hidden" name="pid" value="0" id="pid">
+                    <button type="submit" class="pear-btn pear-btn-primary pear-btn-sm" lay-submit="" lay-filter="user-save">
+                        <i class="layui-icon layui-icon-ok"></i>
+                提交
+            </button>
+                </div>
+            </div>
+        </form>
+        <script src="../../config/config.js"></script>
+        <script src="../../component/layui/layui.js"></script>
+        <script src="../../component/ui/ui.js"></script>
+        <script>
+            layui.use([
+                'form', 'layer','dropdown','iconPicker'
+            ], function () {
+                let form = layui.form,
+                    layer = layui.layer,
+                    $ = layui.$,
+                    dropdown = layui.dropdown,
+                    iconPicker = layui.iconPicker;
+
+                form.on('radio(mtype)', function(data){
+                    //console.log(data.elem); //得到radio原始DOM对象
+                    console.log(data.value); //被点击的radio的value值
+                    if(data.value > 1) {
+                        $('#rule-area').show();
+                        $('#none-area').hide();
+                    }else{
+                        $('#rule-area').hide();
+                        $('#none-area').show();
+                    }
+                });
+                iconPicker.render({
+                    elem: "#icon",
+                    type: "fontClass",
+                    search: true,
+                    page: true,
+                    limit: 12,
+                    cellWidth: '43px',
+                    click: function(data) {},
+                    success: function(d) {}
+                });
+                _get(layui, 'mod/addBefore', res => {
+                    console.log(res)
+                    dropdown.render({
+                        elem: '#chooseRule',
+                        data: res,
+                        trigger : 'hover',
+                        click : (d, el) => {
+                            //console.log(d)
+                            $('#ruleText').text(d.title);
+                            $('#pid').val(d.id);
+                        }
+                    })  
+                });
+                $('.layui-dropdown').on('click',e=>{
+                    console.log(e)
+                })
+                //监听提交
+                form.on('submit(user-save)', function (data) {
+                    data = data.field;
+                    _post(layui, 'mod/add', data, res => {
+                        //console.log(res)
+                        parent
+                            .layui
+                            .table
+                            .reload("mod-table");
+                        parent
+                            .layer
+                            .close(parent.layer.getFrameIndex(window.name)); //关闭当前页
+
+                    })
+
+                    return false;
+                });
+
+            });
+        </script>
+
+    </body>
+</html>

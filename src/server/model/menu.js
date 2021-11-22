@@ -99,6 +99,7 @@ module.exports = class extends think.Model {
                 dataArr.forEach((value) => {
                     if (deeploop(value.id) != null) {
                         value["children"] = deeploop(value.id);
+                        //value["child"] = value['children'];
                     }
                 });
             }
