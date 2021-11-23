@@ -120,6 +120,23 @@ module.exports = class extends think.Logic {
             }
         }
     }
-
+    editDataAction() {
+        this.allowMethods = 'post';
+        this.rules = {
+            id: {
+                int: { min: 1 },
+                required: true,
+                aliasName: '菜单id'
+            },
+            field: {
+                required: true,
+                aliasName : '字段名称'
+            },
+            value: {
+                required: true,
+                aliasName : '字段值'
+            }
+        }
+    }
     
 };

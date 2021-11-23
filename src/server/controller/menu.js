@@ -41,7 +41,7 @@ module.exports = class extends Base {
     * @apiSuccess {string} message  提示
      */
     async oplistAction() {
-        let list = await this.model('menu').select()
+        let list = await this.model('menu').order("order_num asc").select()
         await this.adminViewLog('菜单列表');
         return this.success(list)
     }
@@ -118,6 +118,18 @@ module.exports = class extends Base {
         await this.model('menu').cacheData(this.adminId);
         await this.adminOpLog('编辑菜单');
         return this.success(rt)
+    }
+    async editDataAction() {
+        let {id, field, value} = this.post();
+        if (!await this.hasData('menu', { id }))
+            return this.fail("编辑的菜单不存在");
+        if (field == 'order_num' && think.isNumber(value)) {
+            return this.fail('排序应该为数字')
+        }
+        let up = {};
+        up[field] = value;
+        await this.model('menu').where({ id }).update(up);
+        return this.success()
     }
     /**
      *

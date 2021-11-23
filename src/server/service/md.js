@@ -2,8 +2,9 @@ const json2md = require("json2md");
 const path = require('path');
 const fs = require('fs');
 module.exports = class extends think.Service {
-    db() {
-        const data = require(path.join(think.ROOT_PATH, 'data/db.json'));
+    db(data) {
+        //const data = require(path.join(think.ROOT_PATH, 'data/db.json'));
+        //const data = think.model('db').all();
         let rt = [];
         rt.push({ 'h3': '表清单' });
         //{ headers: ["a", "b"], rows: [{ a: "col1", b: "col2" }] } } or { table: { headers: ["a", "b"], rows: [["col1", "col2"]] }

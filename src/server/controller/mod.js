@@ -20,6 +20,14 @@ module.exports = class extends Base {
         let { page, limit } = this.get();
 
         let list = await this.model('mod').page(page, limit).select();
+        let types = {
+            1: '控制层',
+            2: '模型层',
+            3: '服务层'
+        };
+        list.forEach(d => {
+            d.typeName = types[d.type];
+        })
         let count = await this.model('mod').count();
 
         return this.success({ list, count })
@@ -36,8 +44,10 @@ module.exports = class extends Base {
      *
      */
     async addBeforeAction() {
-        let list = await this.model('mod').authTree();
-        return this.success(list);
+        //let authTree = await this.model('mod').authTree();
+        let params = await this.model('params').select();
+        let tableList = await this.model('mod').tableList();
+        return this.success({params,tableList});
     }
     /**
      * @api {get} mod/add 添加模块
@@ -53,27 +63,28 @@ module.exports = class extends Base {
      */
     async addAction() {
         let post = this.post();
-        let tags = post.tags;
+        let key = post.key;
         let sys = ['mod', 'admin', 'db', 'form', 'auth', 'admin', 'api', 'index', 'logs', 'set','base','demo','cate'];
-        if (sys.includes(tags)) return this.fail('系统中存在相同模块');
-        if (await this.hasData('mod', { tags: post.tags, path: post.path })) {
+        if (sys.includes(key)) return this.fail('系统中存在相同模块');
+        if (await this.hasData('mod', { key: key, type: post.type })) {
             return this.fail('系统中存在相同的模块');
         }
-        //console.log(post)
-        if (post.type === 2) {
-            let has = await this.model('db').hasTable(tags);
-            if (!has) return this.fail('系统中不存在模块表');
-            await this.service('mod').createModCurd(post);
+        if (post.params) {
+            post.paramsList  = await think.model('params')
+                .where({ id: ['in', post.params.split(',')] })
+                .select();
         }
-        if (post.type === 1) {
-            //console.log(post)
-            await this.service('mod').createModNone(post);
-        }
+        console.log(post);
+        await this.service('mod').createModNone(post);
         
         let add = {
             name: post.name,
-            tags: post.tags,
-            path: post.path,
+            key: post.key,
+            server_path: post.server_path,
+            params: post.params,
+            type : post.type,
+            tables_main: post.tables_main,
+            tables_more : post.tables_more,
             remark : post.remark
         }
         let id = await this.model('mod').add(add);
@@ -94,7 +105,9 @@ module.exports = class extends Base {
         let id = this.get('id');
         let data = await this.model('mod').where({ id }).find()
         if (think.isEmpty(data)) return this.fail('数据为空')
-        return this.success(data);
+        let params = await this.model('params').select();
+        let tableList = await this.model('mod').tableList();
+        return this.success({data, params, tableList});
     }
     /**
      * @api {get} mod/eidt 编辑模块
@@ -110,7 +123,7 @@ module.exports = class extends Base {
      */
     async editAction() {
         let post = this.post();
-        if (post.tags) return this.fail('tags不允许编辑');
+        //if (post.key) return this.fail('tags不允许编辑');
         let has = await this.model('mod').where({ id: post.id }).find();
         if (think.isEmpty(has)) return this.fail('编辑的数据不存在');
         await this.model('mod').update(post);

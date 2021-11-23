@@ -18,11 +18,15 @@
 				<i class="layui-icon layui-icon-add-1"></i>
 		        新增
 		    </button>
-			<button class="pear-btn pear-btn-success" lay-event="update">
+			<button class="pear-btn pear-btn-danger pear-btn-md" lay-event="batchRemove">
+				<i class="layui-icon layui-icon-delete"></i>
+		        删除
+		    </button>
+			<!--button class="pear-btn pear-btn-success pear-btn-md" lay-event="update">
 				<i class="layui-icon layui-icon-refresh"></i>
 		        更新
-		    </button>
-			<button class="pear-btn pear-btn-danger pear-btn-md" lay-event="backup">
+		    </button-->
+			<button class="pear-btn pear-btn-success pear-btn-md" lay-event="backup">
 				<i class="layui-icon layui-icon-senior"></i>
 		        备份
 		    </button>
@@ -34,7 +38,7 @@
 				<i class="layui-icon layui-icon-print"></i>
 		        文档
 		    </button>
-			<button class="pear-btn pear-btn-warming pear-btn-md" lay-event="sql">
+			<button class="pear-btn pear-btn-md" lay-event="sql">
 				<i class="layui-icon layui-icon-print"></i>
 		        SQL查询
 		    </button>
@@ -54,7 +58,12 @@
 		<script src="../../component/ui/ui.js"></script>
 		<script>
 			layui.use([
-				'table', 'form', 'dropdown', 'jquery', 'common','soulTable'
+				'table',
+				'form',
+				'dropdown',
+				'jquery',
+				'common',
+				'soulTable'
 			], function () {
 				let table = layui.table;
 				let form = layui.form;
@@ -68,13 +77,15 @@
 				let cols = [
 					[
 						{
+							type: 'checkbox'
+						}, {
 							title: '表名',
 							field: 'Name',
 							align: 'center',
 							sort: true,
 							edit: 'text',
 							width: 180,
-							filter: true, 
+							filter: true,
 							align: 'left'
 						}, {
 							title: '中文名',
@@ -82,7 +93,7 @@
 							align: 'center',
 							edit: 'text',
 							width: 180,
-							filter: true, 
+							filter: true,
 							align: 'left'
 						}, {
 							title: 'AutoID',
@@ -135,7 +146,9 @@
 							"data": res.data.list //解析数据列表
 						};
 					},
-					height: $(document).height() - $('#db-table').offset().top - 20,
+					height: $(document).height() - $('#db-table')
+						.offset()
+						.top - 20,
 					done: function () {
 						soulTable.render(this)
 					},
@@ -257,7 +270,7 @@
 						});
 					})
 				}
-				window.sql = function() {
+				window.sql = function () {
 					layer.open({
 						type: 2,
 						title: 'SQL查询',
@@ -441,6 +454,36 @@
 						}, err => {
 							//layer.msg('删除失败',{icon:2,time:1000});
 						})
+					});
+				}
+				window.batchRemove = function (obj) {
+
+					var checkIds = common.checkField(obj, 'Name');
+					//console.log(checkIds)
+					if (checkIds === "") {
+						layer.msg("未选中数据", {
+							icon: 3,
+							time: 1000
+						});
+						return false;
+					}
+
+					layer.confirm('确定要删除这些表', {
+						icon: 3,
+						title: '提示'
+					}, function (index) {
+						layer.close(index);
+						let postData = {
+							ids: checkIds
+						};
+						_post(layui, 'db/batchRemove', postData, res => {
+							layer.msg('删除成功', {
+								icon: 1,
+								time: 1000
+							}, function () {
+								table.reload('db-table');
+							});
+						});
 					});
 				}
 				window.refresh = function (param) {

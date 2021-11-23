@@ -41,6 +41,8 @@ layui.config({
 	iconSelectedPlus: "iconSelectedPlus/index",//图标选择器
 	iconPicker: "iconPicker",
 	cron: "cron",
+	selectN: 'selectN',
+	selectM: 'selectM',
 	soulTable: 'soulTable'
 }).use(['layer', 'theme'], function () {
 	layui.theme.changeTheme(window, false);

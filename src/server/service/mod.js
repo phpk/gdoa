@@ -6,35 +6,50 @@ const srcPath = path.join(think.ROOT_PATH, 'src/');
 const viewPath = path.join(think.ROOT_PATH, 'www/admin/view/');
 module.exports = class extends think.Service {
     async createModNone(data) {
-        let file,
-            path = srcPath + data.path,
-            tags = data.tags;
-        if (data.none_controller) {
-            file = path + '/controller/' + tags + '.js';
-            if (!think.isFile(file)) {
-                fs.writeFileSync(file, noneTpl.controllerTpl);
+        let path = srcPath + data.server_path,
+            key = data.key,
+            name = data.name,
+            type = data.type,
+            paramStr = ``;
+        if (data.paramsList) {
+            data.paramsList.forEach(d => {
+                if (d.type == 1) {
+                    paramStr += `const ${d.key} = require('${d.content}');\n`;
+                }
+                else if (d.type == 2) {
+                    paramStr += `const ${d.key} = ${d.content};\n`;
+                }
+                else if (d.type == 3) {
+                    paramStr += `const ${d.key} = '${d.content}';\n`;
+                }
+            });
+        }
+        //console.log(paramStr)
+        if (type == 1) {
+            let controllerFile = path + '/controller/' + key + '.js';
+            if (!think.isFile(controllerFile)) {
+                fs.writeFileSync(controllerFile, paramStr + noneTpl.controllerTpl.replace(/{{key}}/g, key).replace(/{{name}}/g, name));
+            }
+            let logicFile = path + '/logic/' + key + '.js';
+            if (!think.isFile(logicFile)) {
+                fs.writeFileSync(logicFile, noneTpl.logicTpl.replace(/{{key}}/g, key).replace(/{{name}}/g, name));
             }
         }
-        if (data.none_logic) {
-            file = path + '/logic/' + tags + '.js';
-            if (!think.isFile(file)) {
-                fs.writeFileSync(file, noneTpl.logicTpl);
+        if (type == 2) {
+            let modelFile = path + '/model/' + key + '.js';
+            if (!think.isFile(modelFile)) {
+                fs.writeFileSync(modelFile, paramStr + noneTpl.modelTpl.replace(/{{key}}/g, key).replace(/{{name}}/g, name));
             }
         }
-        if (data.none_model) {
-            file = path + '/model/' + tags + '.js';
-            if (!think.isFile(file)) {
-                fs.writeFileSync(file, noneTpl.modelTpl);
-            }
-        }
-        if (data.none_service) {
-            file = path + '/service/' + tags + '.js';
-            if (!think.isFile(file)) {
-                fs.writeFileSync(file, noneTpl.serviceTpl);
+        if (type == 3) {
+            let serviceFile = path + '/service/' + key + '.js';
+            if (!think.isFile(serviceFile)) {
+                fs.writeFileSync(serviceFile, paramStr + noneTpl.serviceTpl.replace(/{{key}}/g, key).replace(/{{name}}/g, name));
             }
         }
     }
     async createModCurd(data) {
+        /*
         let path = srcPath + data.path,
             name = data.name,
             tags = data.tags,
@@ -51,6 +66,6 @@ module.exports = class extends think.Service {
         if (!think.isFile(logicTpl)) {
             fs.writeFileSync(logicFile, logicTpl);
         }
-        
+        */
     }
 }

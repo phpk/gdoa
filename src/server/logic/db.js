@@ -291,4 +291,13 @@ module.exports = class extends think.Logic {
 
         }
     }
+    batchRemoveAction() {
+        this.allowMethods = 'post';
+        this.rules = {
+            ids: {
+                required: true,
+                aliasName : '表名'
+            }
+        }
+    }
 }

@@ -20,19 +20,19 @@ module.exports = class extends think.Model {
         if (think.isFile(datapath)) {
             return require(datapath);
         } else {
-            return await this.create();
+            return await this.createList();
         }
     }
     /**
      * 创建缓存
      * @returns object
      */
-    async create() {
-        let data = await this.all();
+    async createList() {
+        let data = await this.allList();
         fs.writeFileSync(datapath, JSON.stringify(data));
         return data;
     }
-    async all() {
+    async allList() {
         let list = await this.query("SELECT t.TABLE_NAME,t.TABLE_COMMENT,c.COLUMN_NAME,c.COLUMN_TYPE,c.COLUMN_COMMENT,c.EXTRA,c.IS_NULLABLE,c.COLUMN_KEY,c.COLUMN_DEFAULT,c.ORDINAL_POSITION FROM information_schema.TABLES t,INFORMATION_SCHEMA.Columns c WHERE c.TABLE_NAME=t.TABLE_NAME AND t.`TABLE_SCHEMA`='" + think.config('mysql.database') + "'");
         let tabs = {};
         list.forEach(el => {
@@ -268,77 +268,77 @@ module.exports = class extends think.Model {
         if(this.sysTable(table)) return;
         let sql = this.parseRow(row);
         if(t !== 'AFTER') {
-            await this.query(`ALTER TABLE ${table} modify ${row.name} ${sql} COMMENT '${row.comment}' first`);
+            await this.query(`ALTER TABLE \`${table}\` modify \`${row.name}\` ${sql} COMMENT '${row.comment}' first`);
         }else{
-            await this.query(`ALTER TABLE ${table} modify ${row.name} ${sql} COMMENT '${row.comment}' after ${sortField}`);
+            await this.query(`ALTER TABLE \`${table}\` modify \`${row.name}\` ${sql} COMMENT '${row.comment}' after \`${sortField}\``);
         }
     }
     async changeFieldName(table, row, newName) {
         let { nul, def, auto, comment } = this.parseField(row);
-        await this.query(`alter table ${table} change ${row.COLUMN_NAME} ${newName} ${row.COLUMN_TYPE} ${nul} ${def} ${auto} ${comment}`);
+        await this.query(`alter table \`${table}\` change \`${row.COLUMN_NAME}\` \`${newName}\` ${row.COLUMN_TYPE} ${nul} ${def} ${auto} ${comment}`);
         //console.log(this.lastSql)
     }
     async changeFieldComment(table, row, newComment) {
         let { nul, def, auto } = this.parseField(row);
-        await this.query(`ALTER TABLE ${table} MODIFY COLUMN ${row.COLUMN_NAME} ${row.COLUMN_TYPE} ${nul} ${def} ${auto} COMMENT '${newComment}'`);
+        await this.query(`ALTER TABLE \`${table}\` MODIFY COLUMN \`${row.COLUMN_NAME}\` ${row.COLUMN_TYPE} ${nul} ${def} ${auto} COMMENT '${newComment}'`);
     }
     async changeFieldType(table, row, ntype) {
         let { nul, def, auto, comment } = this.parseField(row);
-        await this.query(`ALTER TABLE ${table} MODIFY COLUMN ${row.COLUMN_NAME} ${ntype} ${nul} ${def} ${auto} ${comment}`);
+        await this.query(`ALTER TABLE \`${table}\` MODIFY COLUMN \`${row.COLUMN_NAME}\` ${ntype} ${nul} ${def} ${auto} ${comment}`);
     }
     async changeFieldDefault(table, row, val) {
-        await this.query(`alter table ${table} alter column ${row.COLUMN_NAME} set default '${val}'`);
+        await this.query(`alter table \`${table}\` alter column \`${row.COLUMN_NAME}\` set default '${val}'`);
     }
     async changeFieldNull(table, row, status) {
         let { def, auto, comment } = this.parseField(row);
         if (row.IS_NULLABLE === 'NO' && status === 0) {
             //console.log(row)
-            await this.query(`ALTER TABLE ${table} MODIFY COLUMN ${row.COLUMN_NAME} ${row.COLUMN_TYPE} NULL ${def} ${auto} ${comment}`);
+            await this.query(`ALTER TABLE \`${table}\` MODIFY COLUMN \`${row.COLUMN_NAME}\` ${row.COLUMN_TYPE} NULL ${def} ${auto} ${comment}`);
         }
         if (row.IS_NULLABLE === 'YES' && status === 1) {
             //console.log(row)
-            await this.query(`ALTER TABLE ${table} MODIFY COLUMN ${row.COLUMN_NAME} ${row.COLUMN_TYPE} NOT NULL ${def} ${auto} ${comment}`);
+            await this.query(`ALTER TABLE \`${table}\` MODIFY COLUMN \`${row.COLUMN_NAME}\` ${row.COLUMN_TYPE} NOT NULL ${def} ${auto} ${comment}`);
         }
     }
     async changeFieldAuto(table, row, status) {
         let {nul, def, comment } = this.parseField(row);
         if (status === 1 && row.EXTRA === 'auto_increment') {
-            await this.query(`ALTER TABLE ${table} MODIFY COLUMN ${row.COLUMN_NAME} ${row.COLUMN_TYPE} ${nul} ${def} ${comment}`);
+            await this.query(`ALTER TABLE \`${table}\` MODIFY COLUMN \`${row.COLUMN_NAME}\` ${row.COLUMN_TYPE} ${nul} ${def} ${comment}`);
         }
         if (status === 0 && row.EXTRA === '') {
             //console.log(row)
-            await this.query(`ALTER TABLE ${table} MODIFY COLUMN ${row.COLUMN_NAME} ${row.COLUMN_TYPE} ${nul} ${def} AUTO_INCREMENT ${comment}`);
+            await this.query(`ALTER TABLE \`${table}\` MODIFY COLUMN \`${row.COLUMN_NAME}\` ${row.COLUMN_TYPE} ${nul} ${def} AUTO_INCREMENT ${comment}`);
         }
     }
     async addField(table, data) {
-        let sql = `ALTER TABLE ${table} ADD COLUMN ${data.name} ${data.type}`;
+        let sql = "ALTER TABLE `" + table + "` ADD COLUMN `" + data.name + "` " + data.type;
         if (data.len > 0) {
-            sql += `(${data.len}`;
+            sql += "(" + data.len;
             if (data.decimals > 0) {
-                sql += `,${data.decimals}) `;
+                sql += "," + data.decimals + ") ";
             } else {
-                sql += `) `;
+                sql += ") ";
             }
         }
         if (data.attribute) {
-            sql += ` ${data.attribute} `;
+            sql += " " + data.attribute + " ";
         }
         if (data.virtuality != '' && data.virtualitycode != '') {
-            sql += ` as (${data.virtualitycode}) ${data.virtuality} `;
+            sql += " as (" + data.virtualitycode + ") " + data.virtuality + " ";
         }
         if (data.isnull > 0) {
-            sql += ` NULL `;
+            sql += " NULL ";
         } else {
-            sql += ` NOT NULL `;
+            sql += " NOT NULL ";
         }
         if (data.collation) {
-            sql += ` COLLATE ${data.collation} `;
+            sql += " COLLATE " + data.collation + " ";
         }
         if (data.default != '') {
-            sql += ` DEFAULT ${data.default} `;
+            sql += " DEFAULT '" + data.default + "' ";
         }
         if (data.comment) {
-            sql += ` COMMENT '${data.comment}'`;
+            sql += " COMMENT '" + data.comment + "' ";
         }
         //console.log(sql)
         await this.query(sql);
@@ -387,7 +387,7 @@ module.exports = class extends think.Model {
         if (data.admin_id) sql += ",`admin_id` int(10) NOT NULL DEFAULT '0' COMMENT '管理员id'";
         if (data.title) sql += ",`title` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '名称'";
         sql += ",PRIMARY KEY (`id`)";
-        sql += ") ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='"+data.comment+"'";
+        sql += ") ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='"+data.comment+"'";
         await this.query(sql);
     }
     /**

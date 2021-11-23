@@ -1,3 +1,4 @@
+const prefix = think.config('mysql.prefix');
 module.exports = class extends think.Model {
     /**
      * 前台渲染递归
@@ -42,6 +43,32 @@ module.exports = class extends think.Model {
                 child: deeploop(0)
             }
         ];
+    }
+    async hasTable(table) {
+        
+        if (table.indexOf(prefix) === -1) {
+            table = prefix + table;
+        }
+        let rows = await this.query(`select * FROM information_schema.COLUMNS where table_name = '${table}'`);
+        if (rows.length > 0) {
+            return true;
+        }
+        return false;
+    }
+    async tableList() {
+        let list = await this.query("SELECT TABLE_NAME,TABLE_COMMENT FROM information_schema.TABLES WHERE `TABLE_SCHEMA` = '" + think.config('mysql.database') + "'");
+        let rt = {}, res = [];
+        list.forEach(d => {
+            //let name = d.TABLE_NAME.replace(new RegExp(prefix, 'g'), '');
+            let name = d.TABLE_NAME;
+            if (!rt[name]) {
+                rt[name] = d.TABLE_COMMENT;
+            }
+        });
+        for (let p in rt) {
+            res.push({ name: rt[p], id : p })
+        }
+        return res;
     }
 
 };

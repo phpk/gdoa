@@ -21,53 +21,43 @@
                             </div>
                         </div>
                         <div class="layui-form-item">
-                            <label class="layui-form-label">模块路径</label>
-                            <div class="layui-input-block">
-                                <input type="text" name="path" lay-verify="required" value="server" autocomplete="off" placeholder="请输入模块路径" class="layui-input">
-                            </div>
-                        </div>
-                        <div class="layui-form-item">
                             <label class="layui-form-label">模块标志</label>
                             <div class="layui-input-block">
-                                <input type="text" name="tags" lay-verify="required" autocomplete="off" placeholder="请输入模块标志" class="layui-input">
+                                <input type="text" name="key" lay-verify="required" autocomplete="off" placeholder="请输入模块标志" class="layui-input">
                                 <div class="layui-form-mid layui-word-aux">不能和系统中的其他模块标志相同</div>
                             </div>
                         </div>
                         <div class="layui-form-item">
+                            <label class="layui-form-label">后台路径</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="server_path" lay-verify="required" value="server" autocomplete="off" placeholder="请输入后台路径" class="layui-input">
+                            </div>
+                        </div>
+                        
+                        <div class="layui-form-item">
                             <label class="layui-form-label">模块类型</label>
                             <div class="layui-input-block">
-                                <input type="radio" name="type" lay-filter="mtype" value="1" title="空模块" checked>
-                                <input type="radio" name="type" lay-filter="mtype" value="2" title="增删改查">
+                                <input type="radio" value="1" name="type" title="控制层" checked class="modck">
+                                <input type="radio" value="2" name="type" title="模型层">
+                                <input type="radio" value="3" name="type" title="服务层">
                             </div>
                         </div>
-                        <div class="layui-form-item" id="none-area">
-                            <label class="layui-form-label">创建文件</label>
+                        
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">主表</label>
                             <div class="layui-input-block">
-                            <input type="checkbox" name="none_controller" title="控制层" checked>
-                            <input type="checkbox" name="none_logic" title="逻辑层">
-                            <input type="checkbox" name="none_model" title="模型层">
-                            <input type="checkbox" name="none_service" title="服务层">
+                                <select name="tables_main" lay-verify="required" lay-search id="key-area">
+                                    <option value="">请选择表</option>
+                                </select>
                             </div>
                         </div>
-                        <div id="rule-area" style="display : none">
-                            <div class="layui-form-item">
-                                <label class="layui-form-label">上级权限</label>
-                                <div class="layui-input-block">
-                                <button class="pear-btn pear-btn-sm pear-btn-warming" id="chooseRule">
-                                    <span id="ruleText">选择权限</span>
-                                    <i class="layui-icon layui-icon-down layui-font-12"></i>
-                                </button>
-                                </div>
-                            </div>
-                             <div class="layui-form-item">
-                                <label class="layui-form-label">图标</label>
-                                <div class="layui-input-block">
-                                <input name="icon" id="icon" value="" 
-                                class="layui-input" lay-filter="iconPicker" lay-vertype="tips" style="width:30px">
-                                </div>
-                            </div>
-
-
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">附加表</label>
+                            <div class="layui-input-block" id="tables"></div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">全局参数</label>
+                            <div class="layui-input-block" id="params"></div>
                         </div>
                         <div class="layui-form-item layui-form-text">
                             <label class="layui-form-label">备注</label>
@@ -94,25 +84,15 @@
         <script src="../../component/ui/ui.js"></script>
         <script>
             layui.use([
-                'form', 'layer','dropdown','iconPicker'
+                'form', 'layer', 'dropdown', 'iconPicker','selectM'
             ], function () {
                 let form = layui.form,
                     layer = layui.layer,
                     $ = layui.$,
                     dropdown = layui.dropdown,
-                    iconPicker = layui.iconPicker;
+                    selectM = layui.selectM;
 
-                form.on('radio(mtype)', function(data){
-                    //console.log(data.elem); //得到radio原始DOM对象
-                    console.log(data.value); //被点击的radio的value值
-                    if(data.value > 1) {
-                        $('#rule-area').show();
-                        $('#none-area').hide();
-                    }else{
-                        $('#rule-area').hide();
-                        $('#none-area').show();
-                    }
-                });
+                /*
                 iconPicker.render({
                     elem: "#icon",
                     type: "fontClass",
@@ -120,42 +100,85 @@
                     page: true,
                     limit: 12,
                     cellWidth: '43px',
-                    click: function(data) {},
-                    success: function(d) {}
-                });
+                    click: function (data) {},
+                    success: function (d) {}
+                });*/
+
                 _get(layui, 'mod/addBefore', res => {
                     console.log(res)
+                    //渲染表列表
+                    res.tableList
+                        .forEach(d => {
+                            //console.log(d)
+                            $("#key-area").append(new Option(d.name, d.id));
+                        });
+                    form.render("select");
+                    //多选标签-所有配置
+                    selectM({
+                        //元素容器【必填】
+                        elem: '#tables'
+                        //候选数据【必填】
+                        ,data: res.tableList
+                        //最多选中个数，默认5
+                        ,max : 100
+                        //input的name 不设置与选择器相同(去#.)
+                        ,name: 'tables_more'
+                        //值的分隔符
+                        ,delimiter: ','
+                        //候选项数据的键名
+                        ,field: {idName:'id',titleName:'name'}
+                    });
+                    selectM({
+                        //元素容器【必填】
+                        elem: '#params'
+                        //候选数据【必填】
+                        ,data: res.params
+                        //最多选中个数，默认5
+                        ,max : 100
+                        //input的name 不设置与选择器相同(去#.)
+                        ,name: 'params'
+                        //值的分隔符
+                        ,delimiter: ','
+                        //候选项数据的键名
+                        ,field: {idName:'id',titleName:'name'}
+                    });
+                    //console.log(moreBtn)
+                    /*
+                    //渲染权限
                     dropdown.render({
                         elem: '#chooseRule',
-                        data: res,
-                        trigger : 'hover',
-                        click : (d, el) => {
+                        data: res.authTree,
+                        trigger: 'hover',
+                        click: (d, el) => {
                             //console.log(d)
                             $('#ruleText').text(d.title);
                             $('#pid').val(d.id);
                         }
-                    })  
-                });
-                $('.layui-dropdown').on('click',e=>{
-                    console.log(e)
-                })
-                //监听提交
-                form.on('submit(user-save)', function (data) {
-                    data = data.field;
-                    _post(layui, 'mod/add', data, res => {
-                        //console.log(res)
-                        parent
-                            .layui
-                            .table
-                            .reload("mod-table");
-                        parent
-                            .layer
-                            .close(parent.layer.getFrameIndex(window.name)); //关闭当前页
+                    })*/
+                    //监听提交
+                    form.on('submit(user-save)', function (data) {
+                        data = data.field;
+                        if(data.tables_more && data.tables_main && data.tables_more.split(',').indexOf(data.tables_main) !== -1) {
+                            layer.msg('附表中不能包含主表！');
+                            return false;
+                        }
+                        _post(layui, 'mod/add', data, rt => {
+                            //console.log(res)
+                            parent
+                                .layui
+                                .table
+                                .reload("mod-table");
+                            parent
+                                .layer
+                                .close(parent.layer.getFrameIndex(window.name)); //关闭当前页
 
-                    })
+                        })
 
-                    return false;
+                        return false;
+                    });
                 });
+                
+                
 
             });
         </script>

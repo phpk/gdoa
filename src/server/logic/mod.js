@@ -17,28 +17,37 @@ module.exports = class extends think.Logic {
     addAction() {
         this.allowMethods = 'post';
         this.rules = {
-            tags: {
-                required: true,
-                length: { min: 3, max: 255 },
-                aliasName: '标志'
-            },
             name: {
                 required: true,
                 length: { min: 2, max: 255 },
                 aliasName: '名称'
             },
-            path: {
+            key: {
+                required: true,
+                aliasName: '模块标志'
+            },
+            type: {
+                required: true,
+                aliasName : '模块类型'
+            },
+            server_path: {
                 required: true,
                 length: { min: 2, max: 255 },
-                aliasName: '路径'
+                aliasName: '后台路径'
+            },
+            params : {
+                aliasName: '参数'
+            },
+            tables_main: {
+                aliasName : '主表'
+            },
+            tables_more: {
+                aliasName : '附加表'
             },
             remark: {
                 aliasName: '标注'
             },
-            type: {
-                int: { min: 1 },
-                aliasName:'模块类型'
-            }
+            
         }
     }
     addBeforeAction() {
@@ -49,7 +58,7 @@ module.exports = class extends think.Logic {
         this.rules = {
             id: {
                 required: true,
-                int: { min: 1 },
+                int: { min: 0 },
                 aliasName: 'id'
             }
         }
@@ -59,13 +68,35 @@ module.exports = class extends think.Logic {
         this.rules = {
             id: {
                 required: true,
-                int: { min: 1 },
+                int: { min: 0 },
                 aliasName: 'id'
             },
             name: {
                 required: true,
                 length: { min: 2, max: 255 },
                 aliasName: '名称'
+            },
+            key: {
+                required: true,
+                aliasName: '模块标志'
+            },
+            type: {
+                required: true,
+                aliasName: '模块类型'
+            },
+            server_path: {
+                required: true,
+                length: { min: 2, max: 255 },
+                aliasName: '后台路径'
+            },
+            params: {
+                aliasName: '参数'
+            },
+            tables_main: {
+                aliasName: '主表'
+            },
+            tables_more: {
+                aliasName: '附加表'
             },
             remark: {
                 aliasName: '标注'

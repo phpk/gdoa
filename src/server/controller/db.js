@@ -20,7 +20,7 @@ module.exports = class extends Base {
      * @apiGroup db
      */
     async updateAction() {
-        await this.model('db').create();
+        await this.model('db').createList();
         return this.success();
     }
     /**
@@ -67,7 +67,9 @@ module.exports = class extends Base {
      * @apiHeader {string} rttoken 必填
      */
     async docAction() {
-        let rt = await this.service('md').db();
+        let data = await this.model('db').allList();
+        console.log(data)
+        let rt = await this.service('md').db(data);
         return this.success(rt)
     }
     /**
@@ -419,6 +421,22 @@ module.exports = class extends Base {
             console.log(e)
             return this.fail(e.message)
         }
+    }
+    async batchRemoveAction() {
+        let ids = this.post('ids');
+        //console.log(ids)
+        try {
+            let arr = ids.split(',');
+            if (arr.length > 0) {
+                arr.forEach(async (e) => {
+                    await this.model('db').drop(e);
+                })
+            }
+            return this.success()
+        } catch (e) {
+            return this.fail(e.message)
+        }
+        
     }
     
 }
