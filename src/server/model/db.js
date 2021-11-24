@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
-const datapath = path.join(think.ROOT_PATH, 'data/db.json');
-const backpath = path.join(think.ROOT_PATH, 'data/backup/');
+const datapath = path.join(think.ROOT_PATH, 'data/db/list.json');
+const backpath = path.join(think.ROOT_PATH, 'data/db/backup/');
 const mysqldump = require('mysqldump');
 const Importer = require('mysql-import');
 module.exports = class extends think.Model {

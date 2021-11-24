@@ -113,5 +113,86 @@ module.exports = class extends think.Logic {
             }
         }
     }
-    
+    paramsAction() {
+        this.allowMethods = 'get';
+        this.rules = {
+            page: {
+                default: 1,
+                int: { min: 1 },
+                aliasName: '页码'
+            },
+            limit: {
+                default: 20,
+                int: true,
+                aliasName: '页数'
+            }
+        }
+    }
+    paramsBeforeAction() {
+        this.allowMethods = 'get';
+        this.rules = {
+            id: {
+                required: true,
+                int: { min: 0 },
+                aliasName: 'id'
+            }
+        }
+    }
+    paramsAddAction() {
+        this.allowMethods = 'post';
+        this.rules = {
+            name: {
+                required: true,
+                length: { min: 2, max: 255 },
+                aliasName: '常量名称'
+            },
+            key: {
+                required: true,
+                length: { min: 2, max: 255 },
+                aliasName: '常量标志'
+            },
+            type: {
+                required: true,
+                int : {min:1,max:5},
+                aliasName: '常量类型'
+            },
+            content: {
+                required: true,
+                length: { min: 1, max: 255 },
+                aliasName: '常量内容'
+            }
+
+        }
+    }
+    paramsEditAction() {
+        this.allowMethods = 'post';
+        this.rules = {
+            id: {
+                required: true,
+                int: { min: 1 },
+                aliasName: 'id'
+            },
+            name: {
+                required: true,
+                length: { min: 2, max: 255 },
+                aliasName: '常量名称'
+            },
+            key: {
+                required: true,
+                length: { min: 2, max: 255 },
+                aliasName: '常量标志'
+            },
+            type: {
+                required: true,
+                int: { min: 1, max: 5 },
+                aliasName: '常量类型'
+            },
+            content: {
+                required: true,
+                length: { min: 1, max: 255 },
+                aliasName: '常量内容'
+            }
+
+        }
+    }
 };

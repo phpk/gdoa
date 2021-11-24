@@ -12,16 +12,18 @@
 | 8 | rt_api_input | 接口输入表 |
 | 9 | rt_api_logic | 接口逻辑表 |
 | 10 | rt_api_out | 接口输出表 |
-| 11 | rt_area | 区域表 |
-| 12 | rt_article | 文章 |
-| 13 | rt_cate | 系统分类表 |
-| 14 | rt_category | 文章分类 |
-| 15 | rt_crons | 系统计划任务表 |
-| 16 | rt_error | 系统错误日志表 |
-| 17 | rt_form | 系统表单 |
-| 18 | rt_menu | 系统菜单 |
-| 19 | rt_mod | 系统模块表 |
-| 20 | rt_set | 系统配置表 |
+| 11 | rt_api_params | 接口参数表 |
+| 12 | rt_area | 区域表 |
+| 13 | rt_article | 文章 |
+| 14 | rt_cate | 系统分类表 |
+| 15 | rt_category | 文章分类 |
+| 16 | rt_crons | 系统计划任务表 |
+| 17 | rt_error | 系统错误日志表 |
+| 18 | rt_form | 系统表单 |
+| 19 | rt_menu | 系统菜单 |
+| 20 | rt_mod | 系统模块表 |
+| 21 | rt_params | 全局常量表 |
+| 22 | rt_set | 系统配置表 |
 
 ---
 
@@ -185,7 +187,7 @@ DROP TABLE IF EXISTS `rt_admin_oplog`;
   `method` varchar(100) CHARACTER SET utf8 DEFAULT NULL COMMENT '方法',
   `addtime` int(10) unsigned DEFAULT '0' COMMENT '添加时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=258 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='管理操作日志'
+) ENGINE=InnoDB AUTO_INCREMENT=267 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='管理操作日志'
 ```
 
 ---
@@ -220,7 +222,7 @@ DROP TABLE IF EXISTS `rt_admin_viewlog`;
   `addtime` int(10) unsigned DEFAULT '0' COMMENT '添加时间',
   `leavetime` int(10) unsigned DEFAULT '0' COMMENT '离开时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=292 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='管理员查看日志'
+) ENGINE=InnoDB AUTO_INCREMENT=312 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='管理员查看日志'
 ```
 
 ---
@@ -301,6 +303,25 @@ DROP TABLE IF EXISTS `rt_api_out`;
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '唯一标志',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='接口输出表'
+```
+
+---
+
+#### rt_api_params-接口参数表
+
+| 排序  | 字段名 | 名称  | 类型  | 是否为空 | 索引  | 默认值 |
+| --- | --- | --- | --- | ---- | --- | --- |
+| 1 | id | 唯一标志 | int(10) unsigned | NO | PRI | null |
+
+
+创建代码
+
+```js
+DROP TABLE IF EXISTS `rt_api_params`;
+ CREATE TABLE `rt_api_params` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '唯一标志',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='接口参数表'
 ```
 
 ---
@@ -588,7 +609,7 @@ DROP TABLE IF EXISTS `rt_menu`;
   `ifshow` tinyint(3) unsigned DEFAULT '0' COMMENT '是否显示0显示1不显示',
   PRIMARY KEY (`id`) USING BTREE,
   KEY `url` (`route`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=123 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='系统菜单'
+) ENGINE=InnoDB AUTO_INCREMENT=129 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='系统菜单'
 ```
 
 ---
@@ -600,10 +621,12 @@ DROP TABLE IF EXISTS `rt_menu`;
 | 1 | id | 唯一标志 | int(10) unsigned | NO | PRI | null |
 | 2 | name | 模块名称 | varchar(100) | YES |  | null |
 | 3 | key | 系统标志 | varchar(60) | NO | UNI | null |
-| 4 | remark | 模块说明 | varchar(255) | NO |  | null |
-| 5 | server_path | 模块后台地址 | varchar(100) | YES |  | server/ |
-| 6 | view_path | 前台地址 | varchar(100) | NO |  | admin/view/ |
-| 7 | tables | 附加表 | varchar(255) | YES |  | null |
+| 4 | server_path | 模块路径 | varchar(100) | YES |  | server |
+| 5 | tables_main | 主表 | varchar(100) | NO |  | null |
+| 6 | tables_more | 附加表 | varchar(255) | YES |  | null |
+| 7 | type | 模块类型1控制层2数据层3服务层 | tinyint(2) | NO |  | 1 |
+| 8 | params | 全局参数 | varchar(255) | NO |  | null |
+| 9 | remark | 模块说明 | varchar(255) | NO |  | null |
 
 
 创建代码
@@ -614,13 +637,42 @@ DROP TABLE IF EXISTS `rt_mod`;
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '唯一标志',
   `name` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '模块名称',
   `key` varchar(60) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '系统标志',
+  `server_path` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT 'server' COMMENT '模块路径',
+  `tables_main` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '主表',
+  `tables_more` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '附加表',
+  `type` tinyint(2) NOT NULL DEFAULT '1' COMMENT '模块类型1控制层2数据层3服务层',
+  `params` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '全局参数',
   `remark` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '模块说明',
-  `server_path` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT 'server/' COMMENT '模块后台地址',
-  `view_path` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'admin/view/' COMMENT '前台地址',
-  `tables` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '附加表',
   PRIMARY KEY (`id`),
   UNIQUE KEY `key` (`key`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='系统模块表'
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='系统模块表'
+```
+
+---
+
+#### rt_params-全局常量表
+
+| 排序  | 字段名 | 名称  | 类型  | 是否为空 | 索引  | 默认值 |
+| --- | --- | --- | --- | ---- | --- | --- |
+| 1 | id | 唯一标志 | int(10) unsigned | NO | PRI | null |
+| 2 | name | 参数名称 | varchar(100) | NO |  | null |
+| 3 | key | 参数值 | varchar(255) | NO |  | null |
+| 4 | content | 参数内容 | varchar(255) | NO |  | null |
+| 5 | type | 参数类型1文件2数字3字符串 | tinyint(2) | NO |  | 1 |
+
+
+创建代码
+
+```js
+DROP TABLE IF EXISTS `rt_params`;
+ CREATE TABLE `rt_params` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '唯一标志',
+  `name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '参数名称',
+  `key` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '参数值',
+  `content` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '参数内容',
+  `type` tinyint(2) NOT NULL DEFAULT '1' COMMENT '参数类型1文件2数字3字符串',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='全局常量表'
 ```
 
 ---

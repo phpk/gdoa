@@ -32,6 +32,7 @@ module.exports = class extends Base {
 
         return this.success({ list, count })
     }
+    
     /**
      * @api {get} mod/addBefore 模块添加前
      * @apiGroup mod
@@ -74,9 +75,7 @@ module.exports = class extends Base {
                 .where({ id: ['in', post.params.split(',')] })
                 .select();
         }
-        console.log(post);
-        await this.service('mod').createModNone(post);
-        
+        //console.log(post);
         let add = {
             name: post.name,
             key: post.key,
@@ -88,6 +87,7 @@ module.exports = class extends Base {
             remark : post.remark
         }
         let id = await this.model('mod').add(add);
+        this.service('mod').createModNone(post);
         return this.success(id);
     }
     /**
@@ -127,6 +127,7 @@ module.exports = class extends Base {
         let has = await this.model('mod').where({ id: post.id }).find();
         if (think.isEmpty(has)) return this.fail('编辑的数据不存在');
         await this.model('mod').update(post);
+        this.service('mod').createModNone(post);
         return this.success()
     }
     /**
@@ -142,10 +143,73 @@ module.exports = class extends Base {
      */
     async deleteAction() {
         let id = this.post('id');
-        if (!await this.hasData('mod', { id }))
+        let data = await this.model('mod').where({id}).find()
+        if (think.isEmpty(data))
             return this.fail('数据不存在')
+        await this.service('mod').del(data);
         await this.model('mod').where({ id }).delete()
 
+        return this.success()
+    }
+    async paramsAction() {
+        let { page, limit } = this.get();
+
+        let list = await this.model('params').page(page, limit).select();
+        let types = {
+            1: '文件',
+            2: '数字',
+            3: '字符串',
+            4: '数组',
+            5: '对象'
+        };
+        list.forEach(d => {
+            d.typeName = types[d.type];
+        })
+        let count = await this.model('mod').count();
+
+        return this.success({ list, count })
+    }
+    async paramsBeforeAction() {
+        let id = this.get('id');
+        let data = await this.model('params').where({ id }).find()
+        if (think.isEmpty(data)) return this.fail('数据不存在')
+        return this.success(data)
+    }
+    async paramsAddAction() {
+        let data = this.post()
+        let has = await this.model('params').where({ key: data.key }).find()
+        if (!think.isEmpty(has)) return this.fail('系统中存在相同的key')
+        let add = {
+            name: data.name,
+            key: data.key,
+            type: data.type,
+            content: data.content
+        }
+        let rt = await this.model('params').add(add)
+        return this.success(data)
+    }
+    async paramsEditAction() {
+        let data = this.post(),
+            id = data.id;
+        let has = await this.model('params').where({ id }).find()
+        if (think.isEmpty(has)) return this.fail('数据不存在')
+        if (has.key != data.key) {
+            let haskey = await this.model('params').where({ key: data.key }).find();
+            if (!think.isEmpty(haskey)) return this.fail('系统中存在相同的key');
+        }
+        let up = {
+            name: data.name,
+            key: data.key,
+            type: data.type,
+            content: data.content
+        }
+        await this.model('params').where({ id }).update(up)
+        return this.success()
+    }
+    async paramDeleteAction() {
+        let id = this.post('id');
+        if (!this.hasData('params', { id })) return this.fail('数据不存在')
+        await this.model('params').where({ id }).delete()
         return this.success()
     }
 }

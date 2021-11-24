@@ -2,30 +2,26 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>系统模块管理</title>
+		<title>全局常量管理</title>
 		<link rel="stylesheet" href="../../component/ui/css/ui.css" />
 	</head>
 	<body class="pear-container">
 		
 		<div class="layui-card">
 			<div class="layui-card-body">
-				<table id="mod-table" lay-filter="mod-table"></table>
+				<table id="param-table" lay-filter="param-table"></table>
 			</div>
 		</div>
 
-		<script type="text/html" id="mod-toolbar">
+		<script type="text/html" id="param-toolbar">
 			<button class="pear-btn pear-btn-primary pear-btn-md" lay-event="add">
 		        <i class="layui-icon layui-icon-add-1"></i>
 		        新增
 		    </button>
-			<button class="pear-btn pear-btn-primary pear-btn-md" lay-event="add">
-		        <i class="layui-icon layui-icon-add-1"></i>
-		        全局参数
-		    </button>
 		</script>
 
 		
-		<script type="text/html" id="mod-bar">
+		<script type="text/html" id="param-bar">
 			<button class="pear-btn pear-btn-primary pear-btn-sm" lay-event="edit">
 				<i class="layui-icon layui-icon-edit"></i>
 			</button>
@@ -52,27 +48,27 @@
 						align: 'center'
 					}, {
 						title: '标志',
-						field: 'tags',
+						field: 'key',
 						align: 'center'
 					}, {
-						title: '路径',
-						field: 'path',
+						title: '内容',
+						field: 'content',
 						align: 'center'
 					}, {
-						title: '管理',
-						toolbar: '#op-bar',
+						title: '类型',
+						field: 'typeName',
 						align: 'center'
 					}, {
 						title: '操作',
-						toolbar: '#mod-bar',
+						toolbar: '#param-bar',
 						align: 'center'
 					}
 					]
 				]
 
 				table.render({
-					elem: '#mod-table',
-					url: apiUrl + 'mod/list',
+					elem: '#param-table',
+					url: apiUrl + 'mod/params',
 				    headers: getHeader(),
 					page: true,
                     parseData: function (res) {
@@ -85,14 +81,14 @@
                     },
 					cols: cols,
 					skin: 'line',
-					toolbar: '#mod-toolbar',
+					toolbar: '#param-toolbar',
 					defaultToolbar: [{
 						title: '刷新',
 						layEvent: 'refresh',
 						icon: 'layui-icon-refresh',
 					}, 'filter', 'print', 'exports']
 				});
-                table.on('tool(mod-table)', function(obj) {
+                table.on('tool(param-table)', function(obj) {
 					if (obj.event === 'remove') {
 						window.remove(obj);
 					} else if (obj.event === 'edit') {
@@ -103,22 +99,20 @@
 				window.add = function(obj) {
 					layer.open({
 						type: 2,
-						title: '添加模块',
+						title: '添加常量',
 						offset: 'rt',
                         area: [
                             '80%', '100%'
                         ],
                         anim: 1,
                         maxmin: true,
-						content: MODULE_PATH + 'add.html'
+						content: MODULE_PATH + 'param_edit.html'
 					});
 				}
                 
-
-    
                 //类目管理-------------------------------------------//
                 
-                table.on('toolbar(mod-table)', function(obj) {
+                table.on('toolbar(param-table)', function(obj) {
 					if (obj.event === 'add') {
 						window.add();
 					} else if (obj.event === 'refresh') {
@@ -130,21 +124,21 @@
 				window.edit = function(obj) {
 					layer.open({
 						type: 2,
-						title: '修改模块-' + obj.data.name,
+						title: '修改常量-' + obj.data.name,
 						offset: 'rt',
                         area: [
                             '80%', '100%'
                         ],
                         anim: 1,
                         maxmin: true,
-						content: MODULE_PATH + 'edit.html?id=' + obj.data.id
+						content: MODULE_PATH + 'param_edit.html?id=' + obj.data.id
 					});
 				}
 
 				window.remove = function(obj){
-		            layer.confirm('确定要删除该模块吗', {icon: 3, title:'提示'}, function(index){
+		            layer.confirm('确定要删除该常量吗', {icon: 3, title:'提示'}, function(index){
 		                layer.close(index);
-		                _post(layui, 'mod/delete',{id : obj.data.id}, res => {
+		                _post(layui, 'mod/paramDelete',{id : obj.data.id}, res => {
 							layer.msg('删除成功',{icon:1,time:1000},() => {
 								obj.del();
 							});
@@ -156,7 +150,7 @@
                 //类目管理结束-------------------------------------//
 
 				window.refresh = function(param) {
-					table.reload('mod-table');
+					table.reload('param-table');
 				}
 			})
 		</script>
