@@ -141,6 +141,10 @@ module.exports = class extends Base {
             return this.fail(e.message)
         }
     }
+    /**
+     * 复制表
+     * @returns 
+     */
     async opcopyAction() {
         let table = this.post('table');
         try {
@@ -150,6 +154,10 @@ module.exports = class extends Base {
             return this.fail(e.message)
         }
     }
+    /**
+     * 获取sql结果
+     * @returns 
+     */
     async getSqlAction() {
         //console.log(this.get())
         let table = this.get('table');
@@ -161,6 +169,10 @@ module.exports = class extends Base {
             return this.fail(e.message)
         }
     }
+    /**
+     * 执行sql
+     * @returns 
+     */
     async runSqlAction() {
         let code = this.post('code');
         try {
@@ -184,6 +196,10 @@ module.exports = class extends Base {
             return this.fail(e.message)
         }
     }
+    /**
+     * 数据字段头部
+     * @returns 
+     */
     async fieldListAction() {
         let table = this.get('table');
         try {
@@ -207,6 +223,10 @@ module.exports = class extends Base {
             return this.fail(e.message)
         }
     }
+    /**
+     * 字段列表
+     * @returns 
+     */
     async fieldsAction() {
         let table = this.get('table');
         try {
@@ -229,48 +249,45 @@ module.exports = class extends Base {
             return this.fail(e.message)
         }
     }
+    /**
+     * 数据列表
+     * @returns 
+     * @todo 添加查询
+     */
     async listDataAction() {
         let { page, limit, param, table } = this.get();
         let wsql = {};
         if (param) wsql = this.parseSearch(param, wsql);
-        let tname = table.replace(think.config('mysql.prefix'), '');
-        let list = await this.model(tname)
+        //let db = this.model('db');
+        //let tname = table.replace(think.config('mysql.prefix'), '');
+        
+        let listSql = await this.model('db')
+            .table(table, true)
             .where(wsql)
             .page(page, limit)
-            .select();
-        let count = await think.model(tname).where(wsql).count();
+            .buildSelectSql();
+        let list = await this.model('db').query(listSql);
+        //console.log(list)
+        //return;
+        let countData = await this.model('db').query(`select count(*) as num from ` + table);
+        //console.log(countData)
         //await this.adminViewLog('管理员列表');
-        return this.success({ list, count })
+        return this.success({ list, count: countData[0].num })
     }
+    /**
+     * 编辑数据
+     * @returns 
+     */
     async editDataAction() {
         let post = this.post(),
             table = post.table;
         if (this.model('db').sysTable(table))
             return this.fail('系统表数据不允许编辑');
         try {
-            let tname = table.replace(think.config('mysql.prefix'), '');
-            let whereSql = JSON.parse(post.data), sql = {};
-            //delete whereSql[post.field];
-            let keys = await this.model('db').getKey(post.table);
-            if (!keys) return this.fail('该表无主键');
-            for (let p in whereSql) {
-                if (keys.includes(p)) {
-                    if (p == post.field) {
-                        sql[p] = old;
-                    } else {
-                        sql[p] = whereSql[p];
-                    }
-                }
-            }
-            let up = {};
-            up[post.field] = post.value;
-            let has = await this.model(tname).where(sql).find();
-            if (!think.isEmpty(has)) {
-                await this.model(tname).where(sql).update(up);
-            } else {
-                await this.model(tname).add(whereSql);
-            }
-
+            let wh = await this.model('db').parseWhere(post);
+            if (!wh) return this.fail('该表无主键');
+            let sql = "update `" + post.table + "` set `"+post.field+"` = '"+post.value+"' where " + wh;
+            await this.model('db').query(sql);
             return this.success()
         } catch (e) {
             console.log(e)
@@ -278,29 +295,54 @@ module.exports = class extends Base {
         }
 
     }
-
+    /**
+     * 添加数据
+     * @returns 
+     */
+    async addDataAction() {
+        let post = this.post(),
+            table = post._table;
+        if (this.model('db').sysTable(table))
+            return this.fail('保护表数据不允许编辑');
+        try {
+            delete post._table;
+            let fields = [], vals = [];
+            for (let p in post) {
+                fields.push('`' + p + '`');
+                vals.push("'" + post[p] + "'");
+            }
+            let sql = "INSERT INTO `" + table + "` (" + fields.join(',') + ") VALUES (" + vals.join(',') + ")";
+            console.log(sql)
+            await this.model('db').query(sql);
+            return this.success()
+        } catch (e) {
+            console.log(e)
+            return this.fail(e.message)
+        }
+    }
+    /**
+     * 删除数据
+     * @returns 
+     */
     async delDataAction() {
         let post = this.post();
         //console.log(post)
         try {
-            let whereSql = JSON.parse(post.data), sql = {};
             if (this.model('db').sysTable(post.table))
-                return this.fail('系统表数据不允许删除');
-            let keys = await this.model('db').getKey(post.table);
-            if (!keys) return this.fail('该表无主键');
-            for (let p in whereSql) {
-                if (keys.includes(p)) {
-                    sql[p] = whereSql[p];
-                }
-            }
-            //console.log(sql)
-            let tname = post.table.replace(think.config('mysql.prefix'), '');
-            await this.model(tname).where(sql).delete();
+                return this.fail('保护数据不允许删除');
+            let wh = await this.model('db').parseWhere(post);
+            if (!wh) return this.fail('该表无主键');
+            let sql = "delete from `" + post.table + "` where " + wh;
+            await this.model('db').query(sql);
             return this.success()
         } catch (e) {
             return this.fail(e.message)
         }
     }
+    /**
+     * 删除字段
+     * @returns 
+     */
     async delFieldAction() {
         //console.log(this.post())
         let { table, field } = this.post();
@@ -311,6 +353,10 @@ module.exports = class extends Base {
             return this.fail(e.message)
         }
     }
+    /**
+     * 字段排序
+     * @returns 
+     */
     async sortFieldAction() {
         let { table, row, t, sortField } = this.post();
         try {
@@ -320,6 +366,10 @@ module.exports = class extends Base {
             return this.fail(e.message)
         }
     }
+    /**
+     * 更改字段名字
+     * @returns 
+     */
     async changeFieldNameAction() {
         let { table, name, field, value } = this.post();
         let row = await this.model('db').fieldRow(table, name);
@@ -346,6 +396,10 @@ module.exports = class extends Base {
             return this.fail(e.message)
         }
     }
+    /**
+     * 更改字段状态
+     * @returns 
+     */
     async setStatusAction() {
         let { table, name, status, type } = this.post();
         try {
@@ -371,6 +425,10 @@ module.exports = class extends Base {
         }
 
     }
+    /**
+     * 添加字段
+     * @returns 
+     */
     async addFieldAction() {
         let post = this.post();
         let table = post.table;
@@ -387,11 +445,19 @@ module.exports = class extends Base {
             return this.fail(e.message)
         }
     }
+    /**
+     * 主键列表
+     * @returns 
+     */
     async keysListAction() {
         let table = this.get('table');
         let list = await this.model('db').keysList(table);
         return this.success({ list })
     }
+    /**
+     * 删除主键
+     * @returns 
+     */
     async delKeyAction() {
         let { table, name } = this.post();
         try {
@@ -402,6 +468,10 @@ module.exports = class extends Base {
             return this.fail(e.message)
         }
     }
+    /**
+     * 设置主键
+     * @returns 
+     */
     async setKeyAction() {
         let {table, names, type} = this.post()
         try {
@@ -412,6 +482,10 @@ module.exports = class extends Base {
             return this.fail(e.message)
         }
     }
+    /**
+     * 创建表
+     * @returns 
+     */
     async createTableAction() {
         let data = this.post();
         try {
@@ -422,6 +496,10 @@ module.exports = class extends Base {
             return this.fail(e.message)
         }
     }
+    /**
+     * 批量删除表
+     * @returns 
+     */
     async batchRemoveAction() {
         let ids = this.post('ids');
         //console.log(ids)
@@ -437,6 +515,123 @@ module.exports = class extends Base {
             return this.fail(e.message)
         }
         
+    }
+    /**
+     * 数据库列表
+     * @returns object
+     */
+    async confListAction() {
+        let list = this.model('db').confList();
+        return this.success(list);
+    }
+    /**
+     * 添加数据库
+     */
+    async confAddAction() {
+        let data = this.post();
+        let rt = this.model('db').addConf(data);
+        if (rt) {
+            return this.success()
+        } else {
+            return this.fail()
+        }
+    }
+    /**
+     * 编辑数据库
+     */
+    async confEditAction() {
+        let data = this.post();
+        let rt = this.model('db').editConf(data);
+        if (rt) {
+            return this.success()
+        } else {
+            return this.fail()
+        }
+    }
+    async confEditBeforeAction() {
+        let name = this.get('name');
+        let data = this.model('db').getConf(name);
+        return this.success(data);
+    }
+    /**
+     * 测试数据库连接
+     */
+    async confTestAction() {
+        let rt = await this.model('db').testConf(this.post())
+        if (rt) {
+            //process.send('think-cluster-reload-workers');
+            return this.success()
+        } else {
+            return this.fail()
+        }
+    }
+    /**
+     * 删除数据库配置
+     */
+    async confDelAction() {
+        let name = this.post('name');
+        let rt = await this.model('db').delConf(name);
+        if (rt) {
+            process.send('think-cluster-reload-workers');
+            return this.success()
+        } else {
+            return this.fail('删除失败')
+        }
+    }
+    /**
+     * 更换数据库
+     */
+    async confChangeAction() {
+        //console.log(this.post())
+        let name = this.post('name');
+        
+        let rt = await this.model('db').changeConf(name);
+        if (rt) {
+            return this.success()
+        } else {
+            return this.fail('更换失败')
+        }
+    }
+    /**
+     * 保护列表
+     */
+    async safeListAction() {
+        let list = this.model('db').getSafe();
+        return this.success({ list });
+    }
+    /**
+     * 添加保护
+     */
+    async safeAddAction() {
+        let data = this.post();
+        try {
+            this.model('db').addSafe(data.names);
+            return this.success()
+        } catch (e) {
+            return this.fail(e.message)
+        }
+    }
+    /**
+     * 删除保护
+     */
+    async safeDelAction() {
+        let data = this.post();
+        try {
+            this.model('db').delSafe(data.name);
+            return this.success()
+        } catch (e) {
+            return this.fail(e.message)
+        }
+    }
+    async creatDatabaseAction() {
+        let name = this.post('name');
+        try {
+            await this.model('db').createDatabase(name);
+            return this.success();
+        } catch (e) {
+            console.log(e.message)
+            return this.fail(e.message);
+        }
     }
     
 }

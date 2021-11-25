@@ -187,7 +187,7 @@ DROP TABLE IF EXISTS `rt_admin_oplog`;
   `method` varchar(100) CHARACTER SET utf8 DEFAULT NULL COMMENT '方法',
   `addtime` int(10) unsigned DEFAULT '0' COMMENT '添加时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=267 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='管理操作日志'
+) ENGINE=InnoDB AUTO_INCREMENT=285 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='管理操作日志'
 ```
 
 ---
@@ -222,7 +222,7 @@ DROP TABLE IF EXISTS `rt_admin_viewlog`;
   `addtime` int(10) unsigned DEFAULT '0' COMMENT '添加时间',
   `leavetime` int(10) unsigned DEFAULT '0' COMMENT '离开时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=312 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='管理员查看日志'
+) ENGINE=InnoDB AUTO_INCREMENT=344 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='管理员查看日志'
 ```
 
 ---
@@ -233,7 +233,10 @@ DROP TABLE IF EXISTS `rt_admin_viewlog`;
 | --- | --- | --- | --- | ---- | --- | --- |
 | 1 | id | 唯一标志 | int(10) unsigned | NO | PRI | null |
 | 2 | name | 接口名称 | varchar(100) | NO |  | null |
-| 3 | key | 所属模块 | varchar(60) | NO |  | null |
+| 3 | mod_id | 模块id | int(10) unsigned | NO |  | 0 |
+| 4 | mod | 所属模块 | varchar(60) | NO |  | null |
+| 5 | key | 接口唯一标志 | varchar(100) | NO |  | null |
+| 6 | method | 接口方法 | varchar(20) | NO |  | null |
 
 
 创建代码
@@ -243,9 +246,12 @@ DROP TABLE IF EXISTS `rt_api`;
  CREATE TABLE `rt_api` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '唯一标志',
   `name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '接口名称',
-  `key` varchar(60) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '所属模块',
+  `mod_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '模块id',
+  `mod` varchar(60) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '所属模块',
+  `key` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '接口唯一标志',
+  `method` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '接口方法',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='接口管理表'
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='接口管理表'
 ```
 
 ---
@@ -609,7 +615,7 @@ DROP TABLE IF EXISTS `rt_menu`;
   `ifshow` tinyint(3) unsigned DEFAULT '0' COMMENT '是否显示0显示1不显示',
   PRIMARY KEY (`id`) USING BTREE,
   KEY `url` (`route`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=129 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='系统菜单'
+) ENGINE=InnoDB AUTO_INCREMENT=142 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='系统菜单'
 ```
 
 ---
@@ -645,7 +651,7 @@ DROP TABLE IF EXISTS `rt_mod`;
   `remark` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '模块说明',
   PRIMARY KEY (`id`),
   UNIQUE KEY `key` (`key`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='系统模块表'
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='系统模块表'
 ```
 
 ---

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>数据库编辑</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../../component/ui/css/ui.css" />
+
+</head>
+<body>
+<form class="layui-form" action="" lay-filter="editform">
+    <div class="mainBox">
+        <div class="main-container">
+            <div class="main-container">
+            <div class="layui-form-item">
+                <label class="layui-form-label">数据库名</label>
+                <div class="layui-input-block">
+                    <input type="text" name="database" lay-verify="required|len" autocomplete="off" min="1" placeholder="请输入数据库名" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">用户名</label>
+                <div class="layui-input-block">
+                    <input type="text" name="user" autocomplete="off" placeholder="请输入用户名" class="layui-input" lay-verify="required|len" min="2">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">密码</label>
+                <div class="layui-input-block">
+                    <input type="text" name="password" autocomplete="off" placeholder="请输入密码" class="layui-input"lay-verify="required|len" min="2">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">地址</label>
+                <div class="layui-input-block">
+                    <input type="text" name="host" autocomplete="off" placeholder="请输入地址" class="layui-input" lay-verify="required|len" min="2" value="127.0.0.1">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">端口</label>
+                <div class="layui-input-block">
+                    <input type="number" name="port" value="3306" lay-verify="required" autocomplete="off" placeholder="请输入端口" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">前缀</label>
+                <div class="layui-input-block">
+                    <input type="text" name="prefix" autocomplete="off" placeholder="请输入前缀" class="layui-input" value="rt_">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">编码</label>
+                <div class="layui-input-block">
+                    <input type="text" name="encoding" autocomplete="off" placeholder="请输入编码" class="layui-input" value="utf8">
+                </div>
+            </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="bottom">
+        <div class="button-container">
+            <button type="submit" class="pear-btn pear-btn-primary pear-btn-sm" lay-submit="" lay-filter="user-save">
+                <i class="layui-icon layui-icon-ok"></i>
+                提交
+            </button>
+            <button type="submit" class="pear-btn pear-btn-danger pear-btn-sm" lay-submit="" lay-filter="user-test">
+                <i class="layui-icon layui-icon-ok"></i>
+                测试连接
+            </button>
+        </div>
+    </div>
+</form>
+<script src="../../config/config.js"></script>
+<script src="../../component/layui/layui.js"></script>
+<script src="../../component/ui/ui.js"></script>
+<script>
+    layui.use(['form','layer','tree'], function () {
+        let form = layui.form
+            , layer = layui.layer
+			, $ = layui.$
+			, tree = layui.tree
+            , req = _req()
+            , postUrl;
+        form.verify({
+            len : (val, item) => {
+                let min = item.getAttribute("min")
+                if(val.length > 0 && val.length < min) {
+                    return '长度不能小于' + min;
+                }
+            }
+        })
+        //渲染
+		if(req.name) {
+            postUrl = 'db/confEdit';
+            _get(layui, 'db/confEditBefore?name='+req.name, res => {
+                //console.log(res)
+                form.val('editform', res)
+            })
+        }else{
+            postUrl = 'db/confAdd';
+        }
+           
+        
+        //监听提交
+        form.on('submit(user-save)', function (data) {
+			data = data.field;
+			if(req.name && req.name != data.name){
+                layer.msg("数据库名不允许变更");
+                return false;
+            }
+			_post(layui, postUrl, data, res => {
+				//console.log(res)
+				parent.layui.table.reload("conf-table");
+                parent.parent.layui.table.reload("db-table");
+				parent.layer.close(parent.layer.getFrameIndex(window.name));//关闭当前页
+				
+			})
+            return false;
+        });
+        form.on('submit(user-test)', function (data) {
+			data = data.field;
+			
+			_post(layui, 'db/confTest', data, res => {
+				console.log(res)
+				layer.msg('连接成功')
+			}, err => {
+                layer.msg('连接失败')
+            })
+            return false;
+        });
+
+
+    });
+</script>
+
+</body>
+</html>

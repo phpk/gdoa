@@ -51,6 +51,8 @@
                 //console.log(req)
                 _get(layui, 'db/fieldList?table=' + req.table, cols => {
                     //console.log(cols);
+                    let colsFields = $.extend(true, [], cols[0]);
+                    cols[0].unshift({type : 'radio',title:'copy'})
                     cols[0].push({title: '操作', toolbar: '#op-bar', align: 'center', width: 100, fixed: 'right'});
                     table.render({
                         elem: '#data-table',
@@ -129,8 +131,32 @@
                             window.add();
                         }
                     });
-                    window.add = function() {
+                    table.on('row(data-table)', function(obj) {
+                        //console.log(obj)
+                        let arr = [], data = obj.data;
+                        for(let p in data) {
+                            arr.push(p + '=' + data[p]);
+                        }
+                        console.log(arr)
+                        window.add(arr.join('&'))
+                    });
+                    window.add = function(data = '') {
                         //console.log(cols)
+                        //console.log(colsFields)
+                        let fields = [];
+                        colsFields.forEach(d => {
+                            fields.push(d.field)
+                        });
+                        layer.open({
+                            type: 2,
+                            title: '添加数据',
+                            shade: 0.1,
+                            offset: 'rt',
+                            area: ['90%', '100%'],
+                            anim: 1,
+                            content: MODULE_PATH + 'data-add.html?_table=' + req.table + '&_fields=' + fields.join(',') + '&' + data
+                        });
+                        /*
                         let cache = table.cache['data-table'], data = {};
                         //console.log(cache)
                         cols[0].forEach(d => {
@@ -142,7 +168,7 @@
                         table.reload("data-table", {
                             url: null,
                             data: cache
-                        })
+                        })*/
                         //console.log(data)
 
                     }

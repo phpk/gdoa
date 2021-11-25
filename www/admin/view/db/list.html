@@ -14,39 +14,49 @@
 		</div>
 
 		<script type="text/html" id="db-toolbar">
-			<button class="pear-btn pear-btn-primary pear-btn-md" lay-event="add">
+			<button class="layui-btn layui-btn-primary layui-border-green layui-btn-sm" lay-event="confList">
+				<i class="layui-icon layui-icon-windows"></i>
+		        数据库
+		    </button>
+			<button class="layui-btn layui-btn-primary layui-border-red layui-btn-sm" lay-event="add">
 				<i class="layui-icon layui-icon-add-1"></i>
-		        新增
+		        新增表
 		    </button>
-			<button class="pear-btn pear-btn-danger pear-btn-md" lay-event="batchRemove">
-				<i class="layui-icon layui-icon-delete"></i>
-		        删除
-		    </button>
-			<!--button class="pear-btn pear-btn-success pear-btn-md" lay-event="update">
-				<i class="layui-icon layui-icon-refresh"></i>
-		        更新
-		    </button-->
-			<button class="pear-btn pear-btn-success pear-btn-md" lay-event="backup">
+			<button class="layui-btn layui-btn-primary layui-border-blue layui-btn-sm" lay-event="mgr" id="mgr">
+				<i class="layui-icon layui-icon-cols"></i>
+				<span>操作</span>
+				<i class="layui-icon layui-icon-triangle-d"></i>
+			</button>
+			<button class="layui-btn layui-btn-primary layui-border-orange layui-btn-sm" lay-event="backup">
 				<i class="layui-icon layui-icon-senior"></i>
 		        备份
 		    </button>
-			<button class="pear-btn pear-btn-success pear-btn-md" lay-event="reback">
-				<i class="layui-icon layui-icon-senior"></i>
-		        还原
-		    </button>
-			<button class="pear-btn pear-btn-warming pear-btn-md" lay-event="doc">
+			<button class="layui-btn layui-btn-primary layui-border-black layui-btn-sm" lay-event="doc">
 				<i class="layui-icon layui-icon-print"></i>
 		        文档
 		    </button>
+			<!--button class="pear-btn pear-btn-danger pear-btn-md" lay-event="batchRemove">
+				<i class="layui-icon layui-icon-delete"></i>
+		        删除
+		    </button>
+			<button class="pear-btn pear-btn-success pear-btn-md" lay-event="update">
+				<i class="layui-icon layui-icon-refresh"></i>
+		        更新
+		    </button>
+			
 			<button class="pear-btn pear-btn-md" lay-event="sql">
 				<i class="layui-icon layui-icon-print"></i>
 		        SQL查询
 		    </button>
+			<button class="pear-btn pear-btn-success pear-btn-md" lay-event="reback">
+				<i class="layui-icon layui-icon-senior"></i>
+		        还原
+		    </button-->
 
 		</script>
 
 		<script id="op-bar" type="text/html">
-			<button class="pear-btn pear-btn-primary pear-btn-sm" lay-event="op" data-id="{{d.Name}}">
+			<button class="layui-btn layui-btn-primary layui-border-blue layui-btn-sm" lay-event="op" data-id="{{d.Name}}">
 				<i class="layui-icon layui-icon-cols"></i>
 				<span>操作</span>
 				<i class="layui-icon layui-icon-triangle-d"></i>
@@ -127,7 +137,7 @@
 							title: '操作',
 							toolbar: '#op-bar',
 							align: 'center',
-							width: 100,
+							width: 120,
 							fixed: 'right'
 						}
 					]
@@ -139,6 +149,7 @@
 					headers: getHeader(),
 					parseData: function (res) {
 						//console.log(res)
+
 						return {
 							"code": res.code, //解析接口状态
 							"msg": res.message, //解析提示文本
@@ -213,6 +224,7 @@
 
 				table.on('toolbar(db-table)', function (obj) {
 					window[obj.event](obj);
+
 				});
 				table.on('edit(db-table)', function (obj) {
 					//console.log(obj)
@@ -245,7 +257,36 @@
 
 					})
 				});
-
+				window.mgr = function (obj) {
+					console.log(obj);
+					dropdown.render({
+						elem: '#mgr', show: true, //这个很关键，代表其它事件中触发即显示
+						data: [
+							{
+								title: '批量删表',
+								id: 'batchRemove'
+							}, {
+								title: '更新缓存',
+								id: 'update'
+							}, {
+								title: '还原数据',
+								id: 'reback'
+							}, {
+								title: '加入保护',
+								id: 'addSafe'
+							}, {
+								title: '查看保护',
+								id: 'viewSafe'
+							}, {
+								title: 'SQL查询',
+								id: 'sql'
+							}
+						],
+						click: function (data, othis) {
+							window[data.id](obj);
+						}
+					});
+				}
 				window.update = function () {
 					let index = layer.load(0, {
 						time: 5 * 1000
@@ -269,6 +310,20 @@
 							time: 1000
 						});
 					})
+				}
+				window.confList = function () {
+					layer.open({
+						type: 2,
+						title: '数据库管理',
+						shade: 0.1,
+						offset: 'rt',
+						area: [
+							'80%', '100%'
+						],
+						anim: 1,
+						maxmin: true,
+						content: MODULE_PATH + 'conf.html'
+					});
 				}
 				window.sql = function () {
 					layer.open({
@@ -390,6 +445,20 @@
 						content: MODULE_PATH + 'data.html?table=' + name
 					});
 				}
+				window.viewSafe = function (name) {
+					layer.open({
+						type: 2,
+						title: '查看保护',
+						shade: 0.1,
+						offset: 'rt',
+						area: [
+							'90%', '100%'
+						],
+						anim: 1,
+						maxmin: true,
+						content: MODULE_PATH + 'safe.html'
+					});
+				}
 				window.opRepair = function (obj) {
 					let index = layer.load(0, {
 						time: 5 * 1000
@@ -454,6 +523,29 @@
 						}, err => {
 							//layer.msg('删除失败',{icon:2,time:1000});
 						})
+					});
+				}
+				window.addSafe = function (obj) {
+
+					var checkIds = common.checkField(obj, 'Name');
+					//console.log(checkIds)
+					if (checkIds === "") {
+						layer.msg("未选中数据", {
+							icon: 3,
+							time: 1000
+						});
+						return false;
+					}
+					let postData = {
+						names: checkIds
+					};
+					_post(layui, 'db/safeAdd', postData, res => {
+						layer.msg('删除成功', {
+							icon: 1,
+							time: 1000
+						}, function () {
+							table.reload('db-table');
+						});
 					});
 				}
 				window.batchRemove = function (obj) {
