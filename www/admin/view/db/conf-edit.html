@@ -23,7 +23,7 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">用户名</label>
                 <div class="layui-input-block">
-                    <input type="text" name="user" autocomplete="off" placeholder="请输入用户名" class="layui-input" lay-verify="required|len" min="2">
+                    <input type="text" name="user" value="root" autocomplete="off" placeholder="请输入用户名" class="layui-input" lay-verify="required|len" min="2">
                 </div>
             </div>
             <div class="layui-form-item">
@@ -32,6 +32,7 @@
                     <input type="text" name="password" autocomplete="off" placeholder="请输入密码" class="layui-input"lay-verify="required|len" min="2">
                 </div>
             </div>
+            
             <div class="layui-form-item">
                 <label class="layui-form-label">地址</label>
                 <div class="layui-input-block">
@@ -56,6 +57,54 @@
                     <input type="text" name="encoding" autocomplete="off" placeholder="请输入编码" class="layui-input" value="utf8">
                 </div>
             </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">ssh连接</label>
+                <div class="layui-input-block">
+                  <input type="checkbox" name="ssh" lay-skin="switch">
+                </div>
+            </div>
+            <div id="ssh-area">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">ssh地址</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="ssh-host" autocomplete="off" placeholder="请输入地址" class="layui-input"  value="127.0.0.1">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">ssh端口</label>
+                    <div class="layui-input-block">
+                        <input type="number" name="ssh-port" value="3306" autocomplete="off" placeholder="请输入端口" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">ssh用户名</label>
+                    <div class="layui-input-block">
+                        <input type="text" value="root" name="ssh-user" autocomplete="off" placeholder="请输入远程登录用户名" class="layui-input" >
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">验证方式</label>
+                    <div class="layui-input-block">
+                      <input type="radio" name="ssh-type" value="1" title="密码" checked>
+                      <input type="radio" name="ssh-type" value="2" title="密钥">
+                    </div>
+                  </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">ssh密码</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="ssh-password" autocomplete="off" placeholder="请输入远程登录密码" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">ssh密钥</label>
+                    <div class="layui-input-block">
+                        <button type="button" class="layui-btn layui-btn-primary" id="uploadkey">
+                            <i class="layui-icon">&#xe67c;</i>上传密钥
+                          </button>
+                    </div>
+                </div>
+                
+            </div>
 
             </div>
         </div>
@@ -77,11 +126,11 @@
 <script src="../../component/layui/layui.js"></script>
 <script src="../../component/ui/ui.js"></script>
 <script>
-    layui.use(['form','layer','tree'], function () {
+    layui.use(['form','layer','upload'], function () {
         let form = layui.form
             , layer = layui.layer
 			, $ = layui.$
-			, tree = layui.tree
+			, upload = layui.upload
             , req = _req()
             , postUrl;
         form.verify({
@@ -102,7 +151,19 @@
         }else{
             postUrl = 'db/confAdd';
         }
-           
+        //
+        //执行实例
+        let uploadInst = upload.render({
+            elem: '#uploadkey' //绑定元素
+            ,url: '/upload/' //上传接口
+            ,done: function(res){
+            //上传完毕回调
+
+            }
+            ,error: function(){
+            //请求异常回调
+            }
+        });
         
         //监听提交
         form.on('submit(user-save)', function (data) {

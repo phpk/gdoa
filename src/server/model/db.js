@@ -12,7 +12,7 @@ module.exports = class extends think.Model {
         //console.log(this.config)
         let conf = this.getConfig();
         
-        console.log(conf)
+        //console.log(conf)
         //console.log(think.config('mysql.database'))
         if (conf.database != think.config('mysql.database')) {
             conf.handle = this.config.handle;
@@ -22,16 +22,26 @@ module.exports = class extends think.Model {
     }
     async sql(str) {
         if (!this.config.ssh) {
-            return await this.query(str);
+            return this.query(str);
         } else {
-            let client = await mysqlssh.connect(this.config.sshConfig, this.config);
-            return new Promise(function (resolve, reject) {
-                client.query(str, function (err, results, fields) {
-                    if (err) reject(err);
-                    resolve(results);
-                    mysqlssh.close()
-                })
-            });
+            //console.log(this.config.sshConfig)
+            let conf = {
+                host : this.config.host,
+                user: this.config.user,
+                password: this.config.password,
+                database: this.config.database
+            }
+            //console.log(conf)
+            return mysqlssh.connect(this.config.sshConfig, conf).then(client => {
+                return new Promise(function (resolve, reject) {
+                    client.query(str, function (err, results, fields) {
+                        if (err) reject(err);
+                        resolve(results);
+                        //mysqlssh.close()
+                    })
+                });
+            })
+            
         }
     }
     /**
@@ -62,7 +72,7 @@ module.exports = class extends think.Model {
         return data;
     }
     async allList() {
-        let list = await this.query("SELECT t.TABLE_NAME,t.TABLE_COMMENT,c.COLUMN_NAME,c.COLUMN_TYPE,c.COLUMN_COMMENT,c.EXTRA,c.IS_NULLABLE,c.COLUMN_KEY,c.COLUMN_DEFAULT,c.ORDINAL_POSITION FROM information_schema.TABLES t,INFORMATION_SCHEMA.Columns c WHERE c.TABLE_NAME=t.TABLE_NAME AND t.`TABLE_SCHEMA`='" + this.config.database + "'");
+        let list = await this.sql("SELECT t.TABLE_NAME,t.TABLE_COMMENT,c.COLUMN_NAME,c.COLUMN_TYPE,c.COLUMN_COMMENT,c.EXTRA,c.IS_NULLABLE,c.COLUMN_KEY,c.COLUMN_DEFAULT,c.ORDINAL_POSITION FROM information_schema.TABLES t,INFORMATION_SCHEMA.Columns c WHERE c.TABLE_NAME=t.TABLE_NAME AND t.`TABLE_SCHEMA`='" + this.config.database + "'");
         let tabs = {};
         list.forEach(el => {
             let tabname = el.TABLE_NAME;
@@ -82,7 +92,7 @@ module.exports = class extends think.Model {
             };
         });
         //索引
-        let indexData = await this.query("SELECT * FROM information_schema.statistics WHERE table_schema = '" + this.config.database + "'");
+        let indexData = await this.sql("SELECT * FROM information_schema.statistics WHERE table_schema = '" + this.config.database + "'");
         indexData.forEach(el => {
             let tabname = el.TABLE_NAME;
             if (tabs[tabname]) {
@@ -98,7 +108,7 @@ module.exports = class extends think.Model {
         })
         //创建语句
         for (let p in tabs) {
-            let sql = await this.query("show create table " + p);
+            let sql = await this.sql("show create table " + p);
             tabs[p].sql = "DROP TABLE IF EXISTS `" + p + "`;\n " +
                         sql[0]['Create Table'];
         }
@@ -112,7 +122,7 @@ module.exports = class extends think.Model {
      */
     async fieldList(table) {
         //过滤掉重复的
-        let rt = await this.query(`select COLUMN_NAME,COLUMN_COMMENT,COLUMN_KEY,COLUMN_TYPE,COLUMN_TYPE,EXTRA,IS_NULLABLE,COLUMN_KEY,COLUMN_DEFAULT,ORDINAL_POSITION FROM information_schema.COLUMNS where table_name = '${table}'`);
+        let rt = await this.sql(`select COLUMN_NAME,COLUMN_COMMENT,COLUMN_KEY,COLUMN_TYPE,COLUMN_TYPE,EXTRA,IS_NULLABLE,COLUMN_KEY,COLUMN_DEFAULT,ORDINAL_POSITION FROM information_schema.COLUMNS where table_name = '${table}'`);
         let cache = [],keys = [];
         rt.forEach(d => {
             if(!keys.includes(d.COLUMN_NAME)){
@@ -130,7 +140,7 @@ module.exports = class extends think.Model {
         })
     }
     async keysList(table) {
-        let indexData = await this.query("SELECT * FROM information_schema.statistics WHERE table_schema = '" + this.config.database + "' and TABLE_NAME = '" + table + "'");
+        let indexData = await this.sql("SELECT * FROM information_schema.statistics WHERE table_schema = '" + this.config.database + "' and TABLE_NAME = '" + table + "'");
         let rt = {}, cache = [];
         indexData.forEach(el => {
             if (!rt[el.INDEX_NAME]) {
@@ -155,7 +165,7 @@ module.exports = class extends think.Model {
      * @param {string} table 
      */
     async getKey(table) {
-        let data = await this.query(`select COLUMN_NAME,COLUMN_COMMENT,COLUMN_KEY from information_schema.COLUMNS where table_name = '${table}' AND (COLUMN_KEY='PRI' OR COLUMN_KEY='UNI')`);
+        let data = await this.sql(`select COLUMN_NAME,COLUMN_COMMENT,COLUMN_KEY from information_schema.COLUMNS where table_name = '${table}' AND (COLUMN_KEY='PRI' OR COLUMN_KEY='UNI')`);
         //console.log(data)
         if (data.length > 0) {
             let rt = []
@@ -196,14 +206,14 @@ module.exports = class extends think.Model {
      * 优化表
      */
     async optimize(table) {
-        await this.query('OPTIMIZE TABLE ' + table);
+        await this.sql('OPTIMIZE TABLE ' + table);
     }
     /**
      * 修复表
      * @returns {*}
      */
     async repair(table) {
-        await this.query('REPAIR TABLE ' + table);
+        await this.sql('REPAIR TABLE ' + table);
     }
     /**
      * 获取创建sql
@@ -211,7 +221,7 @@ module.exports = class extends think.Model {
      * @returns 
      */
     async getSql(table){
-        let sql = await this.query("show create table " + table);
+        let sql = await this.sql("show create table " + table);
         return "DROP TABLE IF EXISTS `" + table + "`;\n " +
         sql[0]['Create Table'];
     }
@@ -220,10 +230,10 @@ module.exports = class extends think.Model {
      * @param {string} table 
      */
     async opcopy(table) {
-        let sqldata = await this.query("show create table " + table);
+        let sqldata = await this.sql("show create table " + table);
         let sql = sqldata[0]['Create Table'];
         let newsql = sql.replace(new RegExp(table,'g'),table + "_copy");
-        await this.query(newsql)
+        await this.sql(newsql)
     }
     /**
      * 删除表
@@ -231,7 +241,7 @@ module.exports = class extends think.Model {
      */
     async drop(table) {
         if(!this.sysTable(table))
-        await this.query('DROP TABLE ' + table);
+        await this.sql('DROP TABLE ' + table);
     }
     /**
      * 清空表
@@ -239,7 +249,7 @@ module.exports = class extends think.Model {
      */
     async clear(table) {
         if(!this.sysTable(table))
-        await this.query('truncate TABLE ' + table);
+        await this.sql('truncate TABLE ' + table);
     }
     /**
      * 改表名
@@ -248,7 +258,7 @@ module.exports = class extends think.Model {
      */
     async renameTable(table, newTable) {
         if(!this.sysTable(table))
-        await this.query('alter table '+table+' rename to '+ newTable);
+        await this.sql('alter table '+table+' rename to '+ newTable);
     }
     /**
      * 改表备注
@@ -257,7 +267,7 @@ module.exports = class extends think.Model {
      */
     async editTableComment(table, newComment) {
         if(!this.sysTable(table))
-        await this.query(`ALTER TABLE ${table} COMMENT '${newComment}'`);
+        await this.sql(`ALTER TABLE ${table} COMMENT '${newComment}'`);
     }
     
     /**
@@ -267,7 +277,7 @@ module.exports = class extends think.Model {
      */
     async editTableAutoId(table, id) {
         if(!this.sysTable(table))
-        await this.query(`ALTER TABLE ${table} auto_increment = ${id}`);
+        await this.sql(`ALTER TABLE ${table} auto_increment = ${id}`);
     }
     sysTable(table) {
         let prefix = this.config.prefix;
@@ -283,7 +293,7 @@ module.exports = class extends think.Model {
     async delField(table, field) {
         if (!this.sysTable(table))
         //console.log(`alter table ${table} drop column ${field}`)
-        await this.query(`alter table ${table} drop column ${field}`);
+        await this.sql(`alter table ${table} drop column ${field}`);
     }
     parseRow(row) {   
         let str = row.type + " ";
@@ -320,46 +330,46 @@ module.exports = class extends think.Model {
         if(this.sysTable(table)) return;
         let sql = this.parseRow(row);
         if(t !== 'AFTER') {
-            await this.query(`ALTER TABLE \`${table}\` modify \`${row.name}\` ${sql} COMMENT '${row.comment}' first`);
+            await this.sql(`ALTER TABLE \`${table}\` modify \`${row.name}\` ${sql} COMMENT '${row.comment}' first`);
         }else{
-            await this.query(`ALTER TABLE \`${table}\` modify \`${row.name}\` ${sql} COMMENT '${row.comment}' after \`${sortField}\``);
+            await this.sql(`ALTER TABLE \`${table}\` modify \`${row.name}\` ${sql} COMMENT '${row.comment}' after \`${sortField}\``);
         }
     }
     async changeFieldName(table, row, newName) {
         let { nul, def, auto, comment } = this.parseField(row);
-        await this.query(`alter table \`${table}\` change \`${row.COLUMN_NAME}\` \`${newName}\` ${row.COLUMN_TYPE} ${nul} ${def} ${auto} ${comment}`);
+        await this.sql(`alter table \`${table}\` change \`${row.COLUMN_NAME}\` \`${newName}\` ${row.COLUMN_TYPE} ${nul} ${def} ${auto} ${comment}`);
         //console.log(this.lastSql)
     }
     async changeFieldComment(table, row, newComment) {
         let { nul, def, auto } = this.parseField(row);
-        await this.query(`ALTER TABLE \`${table}\` MODIFY COLUMN \`${row.COLUMN_NAME}\` ${row.COLUMN_TYPE} ${nul} ${def} ${auto} COMMENT '${newComment}'`);
+        await this.sql(`ALTER TABLE \`${table}\` MODIFY COLUMN \`${row.COLUMN_NAME}\` ${row.COLUMN_TYPE} ${nul} ${def} ${auto} COMMENT '${newComment}'`);
     }
     async changeFieldType(table, row, ntype) {
         let { nul, def, auto, comment } = this.parseField(row);
-        await this.query(`ALTER TABLE \`${table}\` MODIFY COLUMN \`${row.COLUMN_NAME}\` ${ntype} ${nul} ${def} ${auto} ${comment}`);
+        await this.sql(`ALTER TABLE \`${table}\` MODIFY COLUMN \`${row.COLUMN_NAME}\` ${ntype} ${nul} ${def} ${auto} ${comment}`);
     }
     async changeFieldDefault(table, row, val) {
-        await this.query(`alter table \`${table}\` alter column \`${row.COLUMN_NAME}\` set default '${val}'`);
+        await this.sql(`alter table \`${table}\` alter column \`${row.COLUMN_NAME}\` set default '${val}'`);
     }
     async changeFieldNull(table, row, status) {
         let { def, auto, comment } = this.parseField(row);
         if (row.IS_NULLABLE === 'NO' && status === 0) {
             //console.log(row)
-            await this.query(`ALTER TABLE \`${table}\` MODIFY COLUMN \`${row.COLUMN_NAME}\` ${row.COLUMN_TYPE} NULL ${def} ${auto} ${comment}`);
+            await this.sql(`ALTER TABLE \`${table}\` MODIFY COLUMN \`${row.COLUMN_NAME}\` ${row.COLUMN_TYPE} NULL ${def} ${auto} ${comment}`);
         }
         if (row.IS_NULLABLE === 'YES' && status === 1) {
             //console.log(row)
-            await this.query(`ALTER TABLE \`${table}\` MODIFY COLUMN \`${row.COLUMN_NAME}\` ${row.COLUMN_TYPE} NOT NULL ${def} ${auto} ${comment}`);
+            await this.sql(`ALTER TABLE \`${table}\` MODIFY COLUMN \`${row.COLUMN_NAME}\` ${row.COLUMN_TYPE} NOT NULL ${def} ${auto} ${comment}`);
         }
     }
     async changeFieldAuto(table, row, status) {
         let {nul, def, comment } = this.parseField(row);
         if (status === 1 && row.EXTRA === 'auto_increment') {
-            await this.query(`ALTER TABLE \`${table}\` MODIFY COLUMN \`${row.COLUMN_NAME}\` ${row.COLUMN_TYPE} ${nul} ${def} ${comment}`);
+            await this.sql(`ALTER TABLE \`${table}\` MODIFY COLUMN \`${row.COLUMN_NAME}\` ${row.COLUMN_TYPE} ${nul} ${def} ${comment}`);
         }
         if (status === 0 && row.EXTRA === '') {
             //console.log(row)
-            await this.query(`ALTER TABLE \`${table}\` MODIFY COLUMN \`${row.COLUMN_NAME}\` ${row.COLUMN_TYPE} ${nul} ${def} AUTO_INCREMENT ${comment}`);
+            await this.sql(`ALTER TABLE \`${table}\` MODIFY COLUMN \`${row.COLUMN_NAME}\` ${row.COLUMN_TYPE} ${nul} ${def} AUTO_INCREMENT ${comment}`);
         }
     }
     async addField(table, data) {
@@ -393,10 +403,10 @@ module.exports = class extends think.Model {
             sql += " COMMENT '" + data.comment + "' ";
         }
         //console.log(sql)
-        await this.query(sql);
+        await this.sql(sql);
     }
     async hasField(table, field) {
-        let rows =  await this.query(`select * FROM information_schema.COLUMNS where table_name = '${table}' and COLUMN_NAME = '${field}'`);
+        let rows =  await this.sql(`select * FROM information_schema.COLUMNS where table_name = '${table}' and COLUMN_NAME = '${field}'`);
         if(rows.length > 0) {
             return true;
         }
@@ -407,7 +417,7 @@ module.exports = class extends think.Model {
         if (table.indexOf(prefix) === -1) {
             table = prefix + table;
         }
-        let rows = await this.query(`select * FROM information_schema.COLUMNS where table_name = '${table}'`);
+        let rows = await this.sql(`select * FROM information_schema.COLUMNS where table_name = '${table}'`);
         if (rows.length > 0) {
             return true;
         }
@@ -415,20 +425,20 @@ module.exports = class extends think.Model {
     }
     async delKey(table, name){
         if(name === 'PRIMARY') {
-            await this.query(`alter table ${table} drop primary key;`);
+            await this.sql(`alter table ${table} drop primary key;`);
         }else{
-            await this.query(`alter table ${table} drop index ${name}`);
+            await this.sql(`alter table ${table} drop index ${name}`);
         }
     }
     async setKey(table, names, type) {
         if(type == 'setKey') {
-            await this.query("ALTER TABLE `"+table+"` ADD PRIMARY KEY("+names+")");
+            await this.sql("ALTER TABLE `"+table+"` ADD PRIMARY KEY("+names+")");
         }
         else if(type == 'setUnikeyBtree') {
-            await this.query("ALTER TABLE `"+table+"` ADD UNIQUE("+names+")");
+            await this.sql("ALTER TABLE `"+table+"` ADD UNIQUE("+names+")");
         }
         else if(type == 'setKeyBtree') {
-            await this.query("ALTER TABLE `"+table+"` ADD INDEX("+names+")");
+            await this.sql("ALTER TABLE `"+table+"` ADD INDEX("+names+")");
         }
     }
     async createTable(data) {
@@ -440,7 +450,7 @@ module.exports = class extends think.Model {
         if (data.title) sql += ",`title` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '名称'";
         sql += ",PRIMARY KEY (`id`)";
         sql += ") ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='"+data.comment+"'";
-        await this.query(sql);
+        await this.sql(sql);
     }
     /**
      * 备份表
@@ -639,7 +649,7 @@ module.exports = class extends think.Model {
         try {
             data.handle = this.config.handle;
             this.config = data;
-            await this.query(`show status`);
+            await this.sql(`show status`);
             return true;
         } catch (e) {
             console.log(e.message)
@@ -739,7 +749,7 @@ module.exports = class extends think.Model {
         return true;
     }
     async createDatabase(name) {
-        await this.query(`CREATE DATABASE \`${name}\``);
+        await this.sql(`CREATE DATABASE \`${name}\``);
         if (name == think.config('mysql.database')) return false;
         let list = require(confpath),
             thisname = this.config.database;

@@ -176,7 +176,7 @@ module.exports = class extends Base {
     async runSqlAction() {
         let code = this.post('code');
         try {
-            let rt = await this.model('db').query(code);
+            let rt = await this.model('db').sql(code);
             return this.success(rt)
         } catch (e) {
             return this.fail(e.message)
@@ -266,10 +266,10 @@ module.exports = class extends Base {
             .where(wsql)
             .page(page, limit)
             .buildSelectSql();
-        let list = await this.model('db').query(listSql);
+        let list = await this.model('db').sql(listSql);
         //console.log(list)
         //return;
-        let countData = await this.model('db').query(`select count(*) as num from ` + table);
+        let countData = await this.model('db').sql(`select count(*) as num from ` + table);
         //console.log(countData)
         //await this.adminViewLog('管理员列表');
         return this.success({ list, count: countData[0].num })
@@ -287,7 +287,7 @@ module.exports = class extends Base {
             let wh = await this.model('db').parseWhere(post);
             if (!wh) return this.fail('该表无主键');
             let sql = "update `" + post.table + "` set `"+post.field+"` = '"+post.value+"' where " + wh;
-            await this.model('db').query(sql);
+            await this.model('db').sql(sql);
             return this.success()
         } catch (e) {
             console.log(e)
@@ -313,7 +313,7 @@ module.exports = class extends Base {
             }
             let sql = "INSERT INTO `" + table + "` (" + fields.join(',') + ") VALUES (" + vals.join(',') + ")";
             console.log(sql)
-            await this.model('db').query(sql);
+            await this.model('db').sql(sql);
             return this.success()
         } catch (e) {
             console.log(e)
@@ -333,7 +333,7 @@ module.exports = class extends Base {
             let wh = await this.model('db').parseWhere(post);
             if (!wh) return this.fail('该表无主键');
             let sql = "delete from `" + post.table + "` where " + wh;
-            await this.model('db').query(sql);
+            await this.model('db').sql(sql);
             return this.success()
         } catch (e) {
             return this.fail(e.message)
