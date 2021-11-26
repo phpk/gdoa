@@ -1,3 +1,4 @@
+const { fail } = require('./base.js');
 const Base = require('./base.js');
 
 /**
@@ -521,19 +522,31 @@ module.exports = class extends Base {
      * @returns object
      */
     async confListAction() {
-        let list = this.model('db').confList();
-        return this.success(list);
+        let { page, limit } = this.get();
+        let { list, count } = await this.model('database').list(page, limit);
+        console.log(list)
+        return this.success({ list, count });
     }
     /**
      * 添加数据库
      */
     async confAddAction() {
         let data = this.post();
-        let rt = this.model('db').addConf(data);
-        if (rt) {
-            return this.success()
-        } else {
-            return this.fail()
+        //console.log(data)
+        if (await this.model('database').hasData(data))
+            return this.fail('数据库中存在相同的配置')
+        try {
+            let can = await this.model('db').testConf(data);
+            if (can) {
+                await this.model('database').addData(data);
+                process.send('think-cluster-reload-workers');
+                return this.success()
+            } else {
+                return this.fail('连接不成功！')
+            }
+            
+        } catch (e) {
+            return this.fail(e.message)
         }
     }
     /**
@@ -541,23 +554,34 @@ module.exports = class extends Base {
      */
     async confEditAction() {
         let data = this.post();
-        let rt = this.model('db').editConf(data);
-        if (rt) {
-            return this.success()
-        } else {
-            return this.fail()
+        try {
+            let can = await this.model('db').testConf(data);
+            if (can) {
+                let rt = await this.model('database').upData(data);
+                if (!rt) this.fail('数据不存在');
+                process.send('think-cluster-reload-workers');
+                return this.success()
+            } else {
+                return this.fail('连接不成功！')
+            }
+        } catch (e) {
+            return this.fail(e.message)
         }
+        
     }
     async confEditBeforeAction() {
-        let name = this.get('name');
-        let data = this.model('db').getConf(name);
+        let id = this.get('id');
+        let data = await this.model('database').where({ id }).find();
+        //console.log(data)
         return this.success(data);
     }
     /**
      * 测试数据库连接
      */
     async confTestAction() {
-        let rt = await this.model('db').testConf(this.post())
+        let post = this.post();
+        console.log(post)
+        let rt = await this.model('db').testConf(post);
         if (rt) {
             //process.send('think-cluster-reload-workers');
             return this.success()
@@ -569,34 +593,35 @@ module.exports = class extends Base {
      * 删除数据库配置
      */
     async confDelAction() {
-        let name = this.post('name');
-        let rt = await this.model('db').delConf(name);
-        if (rt) {
+        let id = this.post('id');
+        if (id < 2) return this.fail('系统数据库不允许删除');
+        try {
+            let rt = await this.model('database').del(id);
+            if (!rt) return this.fail('数据库不存在');
             process.send('think-cluster-reload-workers');
-            return this.success()
-        } else {
-            return this.fail('删除失败')
+            return this.success();
+        } catch (e) {
+            return this.fail(e.message)
         }
     }
     /**
      * 更换数据库
      */
     async confChangeAction() {
-        //console.log(this.post())
-        let name = this.post('name');
-        
-        let rt = await this.model('db').changeConf(name);
-        if (rt) {
+        let id = this.post('id');
+        try {
+            await this.model('database').changeData(id);
+            process.send('think-cluster-reload-workers');
             return this.success()
-        } else {
-            return this.fail('更换失败')
+        } catch (e) {
+            return this.fail(e.message)
         }
     }
     /**
      * 保护列表
      */
     async safeListAction() {
-        let list = this.model('db').getSafe();
+        let list = await this.model('database').getSafe();
         return this.success({ list });
     }
     /**
@@ -605,7 +630,7 @@ module.exports = class extends Base {
     async safeAddAction() {
         let data = this.post();
         try {
-            this.model('db').addSafe(data.names);
+            await this.model('database').addSafe(data.names);
             return this.success()
         } catch (e) {
             return this.fail(e.message)
@@ -617,7 +642,7 @@ module.exports = class extends Base {
     async safeDelAction() {
         let data = this.post();
         try {
-            this.model('db').delSafe(data.name);
+            await this.model('database').safeDel(data.id);
             return this.success()
         } catch (e) {
             return this.fail(e.message)
@@ -627,6 +652,7 @@ module.exports = class extends Base {
         let name = this.post('name');
         try {
             await this.model('db').createDatabase(name);
+            process.send('think-cluster-reload-workers');
             return this.success();
         } catch (e) {
             console.log(e.message)

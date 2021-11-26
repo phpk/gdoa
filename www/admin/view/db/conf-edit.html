@@ -60,41 +60,42 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">ssh连接</label>
                 <div class="layui-input-block">
-                  <input type="checkbox" name="ssh" lay-skin="switch">
+                  <input type="checkbox" name="ssh" lay-skin="switch" lay-filter="ssh">
                 </div>
             </div>
-            <div id="ssh-area">
+            <div id="ssh-area" style="display:none">
                 <div class="layui-form-item">
                     <label class="layui-form-label">ssh地址</label>
                     <div class="layui-input-block">
-                        <input type="text" name="ssh-host" autocomplete="off" placeholder="请输入地址" class="layui-input"  value="127.0.0.1">
+                        <input type="text" name="shost" autocomplete="off" placeholder="请输入地址" class="layui-input"  value="127.0.0.1">
                     </div>
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-form-label">ssh端口</label>
                     <div class="layui-input-block">
-                        <input type="number" name="ssh-port" value="3306" autocomplete="off" placeholder="请输入端口" class="layui-input">
+                        <input type="number" name="sport" value="22" autocomplete="off" placeholder="请输入端口" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-form-label">ssh用户名</label>
                     <div class="layui-input-block">
-                        <input type="text" value="root" name="ssh-user" autocomplete="off" placeholder="请输入远程登录用户名" class="layui-input" >
+                        <input type="text" value="root" name="suser" autocomplete="off" placeholder="请输入远程登录用户名" class="layui-input" >
                     </div>
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-form-label">验证方式</label>
                     <div class="layui-input-block">
-                      <input type="radio" name="ssh-type" value="1" title="密码" checked>
-                      <input type="radio" name="ssh-type" value="2" title="密钥">
+                      <input type="radio" name="stype" lay-filter="sshtype" value="1" title="密码" checked>
+                      <input type="radio" name="stype" lay-filter="sshtype" value="2" title="密钥">
                     </div>
                   </div>
-                <div class="layui-form-item">
+                <div class="layui-form-item" id="sshpwd-area">
                     <label class="layui-form-label">ssh密码</label>
                     <div class="layui-input-block">
-                        <input type="text" name="ssh-password" autocomplete="off" placeholder="请输入远程登录密码" class="layui-input">
+                        <input type="text" name="spass" autocomplete="off" placeholder="请输入远程登录密码" class="layui-input">
                     </div>
                 </div>
+                <div id="sshkey-area" style="display:none">
                 <div class="layui-form-item">
                     <label class="layui-form-label">ssh密钥</label>
                     <div class="layui-input-block">
@@ -103,7 +104,13 @@
                           </button>
                     </div>
                 </div>
-                
+                <div class="layui-form-item">
+                    <label class="layui-form-label">密钥地址</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="spath" id="ssh-path" autocomplete="off" placeholder="本地开发可直接填写绝对路径" class="layui-input">
+                    </div>
+                </div>
+                </div>
             </div>
 
             </div>
@@ -111,6 +118,7 @@
     </div>
     <div class="bottom">
         <div class="button-container">
+            <input type="hidden" name="id" value="0">
             <button type="submit" class="pear-btn pear-btn-primary pear-btn-sm" lay-submit="" lay-filter="user-save">
                 <i class="layui-icon layui-icon-ok"></i>
                 提交
@@ -142,29 +150,80 @@
             }
         })
         //渲染
-		if(req.name) {
+        let changeStype = (stype) => {
+            if(stype == 2){
+                $('#sshkey-area').show();
+                $('#sshpwd-area').hide();
+            }else{
+                $('#sshkey-area').hide();
+                $('#sshpwd-area').show();
+            }
+        };
+		if(req.id) {
             postUrl = 'db/confEdit';
-            _get(layui, 'db/confEditBefore?name='+req.name, res => {
-                //console.log(res)
+            _get(layui, 'db/confEditBefore?id='+req.id, res => {
+                console.log(res)
                 form.val('editform', res)
+                if(res.ssh == 1){
+                    $('#ssh-area').show();
+                    changeStype(res.stype);
+                }
             })
         }else{
             postUrl = 'db/confAdd';
         }
+        form.on('switch(ssh)', function(data){
+            //console.log(data)
+            $('#ssh-area').toggle();
+        }); 
+        
+        form.on('radio(sshtype)', function(data){
+            //console.log(data)
+            //$('#ssh-area').toggle();
+            changeStype(data.value);
+        }); 
         //
         //执行实例
         let uploadInst = upload.render({
             elem: '#uploadkey' //绑定元素
-            ,url: '/upload/' //上传接口
+            ,url: apiUrl + 'upload/index' //上传接口
+            ,data: {
+                sys : 1
+            }
+            ,headers : getHeader()
+            ,exts : ['pem']
+            ,field : 'file'
             ,done: function(res){
             //上传完毕回调
-
+                console.log(res)
+                $('#ssh-path').val(res.data.filepath)
             }
             ,error: function(){
             //请求异常回调
+                
             }
         });
-        
+        let parseData = (data) => {
+            //console.log(data)
+            if(data.ssh && data.ssh == 'on') {
+                data.ssh = 1;
+                //console.log(sshConfig)
+                if(data.stype == 1) {
+                    if(!data.spass || data.spass.length < 2) {
+                        layer.msg('请输入ssh密码');
+                        return false;
+                    }
+                }else {
+                    if(!data.spath || data.spath.length < 2) {
+                        layer.msg('请上传或输入ssh密钥');
+                        return false;
+                    }
+                }
+            }else{
+                data.ssh = 0;
+            }
+            return data;
+        }
         //监听提交
         form.on('submit(user-save)', function (data) {
 			data = data.field;
@@ -172,8 +231,14 @@
                 layer.msg("数据库名不允许变更");
                 return false;
             }
-			_post(layui, postUrl, data, res => {
+            let postData = parseData(data);
+            //console.log(data)
+            //console.log(postData)
+            if(!postData) return false;
+            //return false;
+			_post(layui, postUrl, postData, res => {
 				//console.log(res)
+                //return false;
 				parent.layui.table.reload("conf-table");
                 parent.parent.layui.table.reload("db-table");
 				parent.layer.close(parent.layer.getFrameIndex(window.name));//关闭当前页
@@ -183,8 +248,10 @@
         });
         form.on('submit(user-test)', function (data) {
 			data = data.field;
-			
-			_post(layui, 'db/confTest', data, res => {
+			let postData = parseData(data);
+            //console.log(postData);
+            if(!postData) return false;
+			_post(layui, 'db/confTest', postData, res => {
 				console.log(res)
 				layer.msg('连接成功')
 			}, err => {

@@ -37,7 +37,7 @@ module.exports = [
     enable: true,
     options: {
       root: path.join(think.ROOT_PATH, 'www'),
-      publicPath: /^\/(static|admin|web|docs|favicon\.ico)/
+      publicPath: /^\/(static|admin|web|docs|upload|favicon\.ico)/
     }
   },
   {

@@ -6,33 +6,57 @@ const backpath = path.join(think.ROOT_PATH, 'data/db/backup/');
 const mysqldump = require('mysqldump');
 const Importer = require('mysql-import');
 const mysqlssh = require('mysql-ssh');
+
 module.exports = class extends think.Model {
     constructor(modelName, config) {
         super(modelName, config);
         //console.log(this.config)
-        let conf = this.getConfig();
-        
+        this.service = think.service('db', 'server');
+        let conf = this.service.getConfig();
         //console.log(conf)
-        //console.log(think.config('mysql.database'))
-        if (conf.database != think.config('mysql.database')) {
-            conf.handle = this.config.handle;
-            this.config = conf;
+        if (conf && conf.database != think.config('mysql.database')) {
+            //conf.handle = this.config.handle;
+            //this.config = conf;
+            // for (let p in conf) {
+            //     this.config[p] = conf[p];
+            // }
+            this.config = think.extend(this.config, conf);
         }
-        this.safeList = conf.safeList;
+        
+        //this.safeList = conf.safeList;
     }
     async sql(str) {
-        if (!this.config.ssh) {
+        //console.log(this.config)
+        if (!this.config.ssh || this.config.ssh == 0) {
             return this.query(str);
         } else {
             //console.log(this.config.sshConfig)
-            let conf = {
-                host : this.config.host,
+            let sshconf;
+            if (this.config.stype == 1) {
+                sshconf = {
+                    host: this.config.shost,
+                    user: this.config.suser,
+                    port: this.config.sport,
+                    password: this.config.spass
+                }
+            } else {
+                //fs.readFileSync(this.config.spath)
+                sshconf = {
+                    host: this.config.shost,
+                    user: this.config.suser,
+                    port: this.config.sport,
+                    privateKey: fs.readFileSync(this.config.spath)
+                }
+            }
+            let confs = {
+                host: this.config.host,
+                port : this.config.port,
                 user: this.config.user,
                 password: this.config.password,
                 database: this.config.database
             }
             //console.log(conf)
-            return mysqlssh.connect(this.config.sshConfig, conf).then(client => {
+            return mysqlssh.connect(sshconf, confs).then(client => {
                 return new Promise(function (resolve, reject) {
                     client.query(str, function (err, results, fields) {
                         if (err) reject(err);
@@ -281,7 +305,7 @@ module.exports = class extends think.Model {
     }
     sysTable(table) {
         let prefix = this.config.prefix;
-        let tabs = this.safeList || [];
+        let tabs = this.config.safeList || sysSafe;
         if (tabs.includes(prefix + table) || tabs.includes(table)) return true;
         return false;
     }
@@ -522,124 +546,7 @@ module.exports = class extends think.Model {
             fs.unlinkSync(fileName);
         }
     }
-    /**
-     * 配置列表
-     * @returns object
-     */
-    confList() {
-        let list = require(confpath);
-        return list;
-    }
-    /**
-     * 添加配置
-     * @param {object} data 
-     * @returns 
-     */
-    addConf(data) {
-        if (data.database == think.config('mysql.database')) return false;
-        let list = require(confpath);
-        let has = list.list.find(d => {
-            return d.database == data.database;
-        });
-        if (!has) {
-            list.default = data.database;
-            data.safeList = [];
-            list.list.push(data);
-            fs.writeFileSync(confpath, `module.exports = ` + JSON.stringify(list));
-            return true;
-        } else {
-            return false;
-        }
-    }
-    /**
-     * 编辑配置
-     * @param {object} data 
-     * @returns 
-     */
-    editConf(data) {
-        if (data.database == think.config('mysql.database')) return false;
-        let list = require(confpath);
-        let has = list.list.find(d => {
-            return d.database == data.database;
-        });
-        if (has) {
-            //list.default = data.database;
-            list.list.forEach(d => {
-                if (d.database == data.database) {
-                    for (let p in data) {
-                        d[p] = data[p];
-                    }
-                }
-            });
-            fs.writeFileSync(confpath, `module.exports = ` + JSON.stringify(list));
-            return true;
-        } else {
-            return false;
-        }
-    }
-    /**
-     * 删除配置
-     * @param {string} baseName 
-     * @returns 
-     */
-    delConf(baseName) {
-        let list = require(confpath);
-        //就一个
-        if (!baseName || list.list.length < 2) return false;
-        //console.log(baseName)
-        if (baseName == think.config('mysql.database')) return false;
-        let has = list.list.find(d => {
-            return d.database == baseName;
-        });
-        if (!think.isEmpty(has)) {
-            let rt = {};
-            rt.default = think.config('mysql.database');
-            list.default = rt.default;
-            rt.list = [];
-            list.list.forEach(d => {
-                if (d.database != baseName) {
-                    rt.list.push(d);
-                }
-            })
-            fs.writeFileSync(confpath, `module.exports = ` + JSON.stringify(rt));
-            
-            return true;
-        }
-        return false;
-    }
-    /**
-     * 更换数据库
-     * @param {string} baseName 
-     * @returns 
-     */
-    changeConf(baseName) {
-        let list = require(confpath);
-        //就一个不更换
-        if (!baseName || list.list.length < 2) return false;
-        //console.log(baseName)
-        let has = list.list.find(d => {
-            return d.database == baseName;
-        });
-        if (!think.isEmpty(has)) {
-            list.default = baseName;
-            fs.writeFileSync(confpath, `module.exports = ` + JSON.stringify(list));
-            return true;
-        }
-        return false;
-    }
-    /**
-     * 获取编辑配置
-     * @param {string} baseName 
-     * @returns 
-     */
-    getConf(baseName) {
-        let list = require(confpath);
-        if (!baseName) return false;
-        //console.log(baseName)
-        return list.list.find(d => {
-            return d.database == baseName;
-        });
-    }
+   
     /**
      * 测试配置
      * @param {object} data 
@@ -648,7 +555,10 @@ module.exports = class extends think.Model {
     async testConf(data) {
         try {
             data.handle = this.config.handle;
-            this.config = data;
+            this.config = think.extend(this.config, data);
+            // if (this.config.stype == 2) {
+            //     this.config.skey = fs.readFileSync(this.config.spath);
+            // }
             await this.sql(`show status`);
             return true;
         } catch (e) {
@@ -656,116 +566,10 @@ module.exports = class extends think.Model {
             return false;
         }
     }
-    /**
-     * 获取配置
-     * @returns object
-     */
-    getConfig() {
-        if (think.isFile(confpath)) {
-            let conflist = require(confpath);
-            let key = conflist.default;
-            //console.log(key)
-            return conflist.list.find(d => {
-                return d.database == key;
-            });
-        } else {
-            let dbname = think.config('mysql.database')
-            let data = {
-                default: dbname,
-                list: []
-            };
-            let conf = think.config('mysql');
-            conf.safeList = ['admin', 'admin_auth', 'admin_map', 'admin_oplog', 'admin_viewlog', 'error', 'menu', 'set', 'form', 'crons'];
-            data.list.push(think.config('mysql'));
-            fs.writeFileSync(confpath, `module.exports = ` + JSON.stringify(data));
-            return think.config('mysql');
-        }
-    }
-    /**
-     * 获取保护列表
-     * @returns array
-     */
-    getSafe() {
-        let rt = [];
-        this.safeList.forEach(d => {
-            rt.push({ name: d })
-        });
-        return rt;
-    }
-    /**
-     * 删除保护
-     * @param {string} tabname 
-     * @returns 
-     */
-    delSafe(tabname) {
-        let conflist = require(confpath);
-        let key = conflist.default;
-        //console.log(key)
-        let conf = conflist.list.find(d => {
-            return d.database == key;
-        });
-        conf.safeList = this.safeList.filter(d => {
-            return d != tabname;
-        });
-        conflist.list.forEach(d => {
-            if (d.database == key) {
-                for (let p in conf) {
-                    d[p] = conf[p];
-                }
-            }
-        });
-        fs.writeFileSync(confpath, `module.exports = ` + JSON.stringify(conflist));
-        return true;
-
-    }
-    /**
-     * 添加保护
-     * @param {string} tabnames 
-     * @returns 
-     */
-    addSafe(tabnames) {
-        let conflist = require(confpath);
-        let key = conflist.default;
-        //console.log(key)
-        let conf = conflist.list.find(d => {
-            return d.database == key;
-        });
-        let prefix = this.config.prefix;
-        tabnames.split(',').forEach(t => {
-            t = t.replace(prefix, '');
-            if (!this.safeList.includes(t)) {
-                this.safeList.push(t)
-            }
-        })
-        conf.safeList = this.safeList;
-        conflist.list.forEach(d => {
-            if (d.database == key) {
-                for (let p in conf) {
-                    d[p] = conf[p];
-                }
-            }
-        });
-        fs.writeFileSync(confpath, `module.exports = ` + JSON.stringify(conflist));
-        return true;
-    }
+  
+    
     async createDatabase(name) {
         await this.sql(`CREATE DATABASE \`${name}\``);
-        if (name == think.config('mysql.database')) return false;
-        let list = require(confpath),
-            thisname = this.config.database;
-        let old = list.list.find(d => {
-            return d.database == thisname;
-        });
-        list.default = name;
-        let news = {};
-        for (let p in old) {
-            news[p] = old[p];
-        }
-        news.safeList = [];
-        news.database = name;
-        list.list.push(news);
-        //console.log(list);
-        fs.writeFileSync(confpath, `module.exports = ` + JSON.stringify(list));
-        return true;
+        await this.model('database').createData(name);
     }
 };

@@ -7,6 +7,7 @@ const path = require('path');
 const isDev = think.env === 'development';
 const redisSession = require('think-session-redis');
 const redisCache = require('think-cache-redis');
+const sqlite = require('think-model-sqlite');
 const conf = require('./config.js')
 /**
  * cache adapter config
@@ -52,9 +53,15 @@ exports.model = {
     user: conf.mysql.user,
     password: conf.mysql.password,
     dateStrings: conf.mysql.dateStrings
+  },
+  sqlite: {
+    handle: sqlite, // Adapter handle
+    path: path.join(think.ROOT_PATH, 'data/db/sqlite'), // sqlite 保存的目录
+    database: 'godocms', // 数据库名
+    connectionLimit: 1, // 连接池的连接个数，默认为 1
+    prefix: 'rt_', // 数据表前缀，如果一个数据库里有多个项目，那项目之间的数据表可以通过前缀来区分
   }
 };
-
 /**
  * session adapter config
  * @type {Object}

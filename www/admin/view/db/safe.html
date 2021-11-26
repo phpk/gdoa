@@ -31,6 +31,11 @@
 				let cols = [
 					[
 						{
+							title: 'ID',
+							field: 'id',
+							align: 'center'
+						},
+						{
 							title: '名称',
 							field: 'name',
 							align: 'center'
@@ -79,7 +84,7 @@
 				window.remove = function(obj){
 		            layer.confirm('确定要删除该保护', {icon: 3, title:'提示'}, function(index){
 		                layer.close(index);
-		                _post(layui, 'db/safeDel',{name : obj.data.name}, res => {
+		                _post(layui, 'db/safeDel',{id : obj.data.id}, res => {
 							layer.msg('删除成功',{icon:1,time:1000},() => {
 								obj.del();
 							});
