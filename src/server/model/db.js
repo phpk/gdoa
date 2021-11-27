@@ -305,7 +305,7 @@ module.exports = class extends think.Model {
     }
     sysTable(table) {
         let prefix = this.config.prefix;
-        let tabs = this.config.safeList || sysSafe;
+        let tabs = this.config.safeList || [];
         if (tabs.includes(prefix + table) || tabs.includes(table)) return true;
         return false;
     }

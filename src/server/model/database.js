@@ -144,6 +144,7 @@ module.exports = class extends think.Model {
         if (think.isEmpty(data)) return false;
         await this.where({ isdef: 1 }).update({ isdef: 0 });
         await this.where({ id }).update({ isdef: 1 });
+        data.safeList = await this.model('datasafe').where({ data_id: id }).getField('name');
         this.service.setConfig(data);
     }
     async del(id) {
@@ -155,6 +156,7 @@ module.exports = class extends think.Model {
         await this.model('datasafe').where({ data_id: id }).delete();
         if (data.isdef == 1) {
             let data = await this.where({ id: 1 }).find();
+            data.safeList = await this.model('datasafe').where({ data_id: 1 }).getField('name');
             this.service.setConfig(data);
         }
         return true;
@@ -184,9 +186,17 @@ module.exports = class extends think.Model {
         })
         if (add.length > 0)
             await this.model('datasafe').addMany(add);
+        //更新主缓存
+        setConf.safeList = has.concat(add);
+        this.service.setConfig(setConf);
+
     }
     async safeDel(id) {
-        await this.model('datasafe').where({id}).delete()
+        await this.model('datasafe').where({ id }).delete();
+        //更新主缓存
+        let setConf = this.service.getConfig();
+        setConf.safeList = await this.model('datasafe').where({ data_id: setConf.id }).getField('name');
+        this.service.setConfig(setConf);
     }
 
 }
