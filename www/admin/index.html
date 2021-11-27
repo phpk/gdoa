@@ -34,14 +34,14 @@
 				<!-- 顶 部 右 侧 菜 单 -->
 				<ul class="layui-nav layui-layout-right">
 					<li class="layui-nav-item layui-hide-xs"><a href="#" class="fullScreen layui-icon layui-icon-screen-full"></a></li>
-					<li class="layui-nav-item layui-hide-xs"><a href="http://godo.im" class="layui-icon layui-icon-website"></a></li>
-					<li class="layui-nav-item layui-hide-xs message"></li>
+					<li class="layui-nav-item layui-hide-xs"><a href="#" class="layui-icon layui-icon-website" id="toolsTip"></a></li>
+					<!--li class="layui-nav-item layui-hide-xs message"></li-->
 					<li class="layui-nav-item user">
 						<!-- 头 像 -->
 						<a class="layui-icon layui-icon-username" href="javascript:;"></a>
 						<!-- 功 能 菜 单 -->
 						<dl class="layui-nav-child">
-							<dd><a user-menu-url="view/system/person.html" user-menu-id="5555" user-menu-title="基本资料">基本资料</a></dd>
+							<!--dd><a user-menu-url="view/system/person.html" user-menu-id="5555" user-menu-title="基本资料">基本资料</a></dd-->
 							<dd><a href="javascript:void(0);" class="logout">注销登录</a></dd>
 						</dl>
 					</li>
@@ -87,10 +87,11 @@
 		
 		<!-- 框 架 初 始 化 -->
 		<script>
-			layui.use(['admin','jquery','popup'], function() {
-				var $ = layui.jquery;
-				var admin = layui.admin;
-				var popup = layui.popup;
+			layui.use(['admin','jquery','popup','layer'], function() {
+				let $ = layui.jquery,
+				admin = layui.admin,
+				popup = layui.popup,
+				layer = layui.layer;
 				
 				//admin.setConfigType("yml");
 				//admin.setConfigPath("config/pear.config.yml");
@@ -99,12 +100,25 @@
 				admin.setConfigPath("config/setting.json");
 				
 				admin.render();
-				
+				$('#toolsTip').click(e => {
+					layer.open({
+						type: 2,
+						title: '工具集',
+						shade: 0.1,
+						offset: 'rt',
+						area: ['80%', '100%'],
+						anim: 1,
+						content: '/admin/tools/index.html'
+					});
+				})
 				// 登出逻辑 
 				admin.logout(function(){
-					popup.success("注销成功",function(){
-						location.href = "login.html";
+					_get(layui, 'admin/loginOut', res => {
+						popup.success("注销成功",function(){
+							location.href = "login.html";
+						})
 					})
+					
 					// 注销逻辑 返回 true / false
 					return true;
 				})

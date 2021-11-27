@@ -61,6 +61,10 @@ pre{
                     <i class="layui-icon ayui-icon-download-circle"></i>
                     下载PDF
             </button>
+            <button class="pear-btn pear-btn-primary pear-btn-md" lay-event="add" id="downword">
+                    <i class="layui-icon ayui-icon-download-circle"></i>
+                    下载WORD
+            </button>
         </div>
     <div class="layui-card">
             
@@ -74,10 +78,12 @@ pre{
         <script src="/docs/js/marked.min.js"></script>
         <script src="/docs/js/html2pdf.bundle.min.js"></script>
 		<script>
-			layui.use(['table', 'jquery','common'], function() {
+			layui.use(['table', 'jquery','common','FileSaver','wordexport'], function() {
 				let table = layui.table;
 				let $ = layui.jquery;
-				let common = layui.common;
+				let common = layui.common,
+                    FileSaver = layui.FileSaver,
+                    wordexport = layui.wordexport;
 
 				let MODULE_PATH = "./";
                 _get(layui, 'db/doc', res => {
@@ -87,6 +93,9 @@ pre{
                         //console.log(e)
                         let element = document.getElementById('content');
                         html2pdf().from(element).save();
+                    })
+                    $('#downword').click(e => {
+                        $("#content").wordExport("数据库设计文档");
                     })
                 })
 			})

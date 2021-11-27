@@ -238,4 +238,12 @@ module.exports = class extends Base {
         await this.adminOpLog('设置管理员可用');
         return this.success(rt)
     }
+    async loginOutAction() {
+        await this.session(null);
+        await this.cache('admin_' + this.adminId, null);
+        await this.session('adminId', null);
+        await this.session('salt', null);
+        await this.session('statusTime', null);
+        return this.success()
+    }
 };

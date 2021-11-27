@@ -43,7 +43,9 @@ layui.config({
 	cron: "cron",
 	selectN: 'selectN',
 	selectM: 'selectM',
-	soulTable: 'soulTable'
+	soulTable: 'soulTable',
+	FileSaver: 'FileSaver',
+	wordexport: 'wordexport'
 }).use(['layer', 'theme'], function () {
 	layui.theme.changeTheme(window, false);
 });

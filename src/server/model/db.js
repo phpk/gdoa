@@ -569,7 +569,7 @@ module.exports = class extends think.Model {
   
     
     async createDatabase(name) {
-        await this.sql(`CREATE DATABASE \`${name}\``);
+        await this.sql(`CREATE DATABASE ${name}`);
         await this.model('database').createData(name);
     }
 };

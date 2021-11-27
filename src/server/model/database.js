@@ -2,7 +2,8 @@ const fs = require('fs');
 module.exports = class extends think.Model {
     constructor(modelName, config) {
         super(modelName, config);
-        this.config = think.config('model.sqlite');
+        //this.config = think.config('model.sqlite');
+        this.config = think.config('model.mysql');
         this.service = think.service('db', 'server');
     }
     get pk() {
@@ -67,9 +68,9 @@ module.exports = class extends think.Model {
                 type: 'tinyint(2)',
                 default:1
             },
-            skey: {
-                type: 'text'
-            },
+            // skey: {
+            //     type: 'text'
+            // },
             spath: {
                 type: 'varchar(255)'
             },

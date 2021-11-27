@@ -18,12 +18,14 @@
 | 14 | rt_cate | 系统分类表 |
 | 15 | rt_category | 文章分类 |
 | 16 | rt_crons | 系统计划任务表 |
-| 17 | rt_error | 系统错误日志表 |
-| 18 | rt_form | 系统表单 |
-| 19 | rt_menu | 系统菜单 |
-| 20 | rt_mod | 系统模块表 |
-| 21 | rt_params | 全局常量表 |
-| 22 | rt_set | 系统配置表 |
+| 17 | rt_database | 数据库连接表 |
+| 18 | rt_datasafe | 数据库保护表 |
+| 19 | rt_error | 系统错误日志表 |
+| 20 | rt_form | 系统表单 |
+| 21 | rt_menu | 系统菜单 |
+| 22 | rt_mod | 系统模块表 |
+| 23 | rt_params | 全局常量表 |
+| 24 | rt_set | 系统配置表 |
 
 ---
 
@@ -187,7 +189,7 @@ DROP TABLE IF EXISTS `rt_admin_oplog`;
   `method` varchar(100) CHARACTER SET utf8 DEFAULT NULL COMMENT '方法',
   `addtime` int(10) unsigned DEFAULT '0' COMMENT '添加时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=285 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='管理操作日志'
+) ENGINE=InnoDB AUTO_INCREMENT=290 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='管理操作日志'
 ```
 
 ---
@@ -222,7 +224,7 @@ DROP TABLE IF EXISTS `rt_admin_viewlog`;
   `addtime` int(10) unsigned DEFAULT '0' COMMENT '添加时间',
   `leavetime` int(10) unsigned DEFAULT '0' COMMENT '离开时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=344 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='管理员查看日志'
+) ENGINE=InnoDB AUTO_INCREMENT=350 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='管理员查看日志'
 ```
 
 ---
@@ -502,6 +504,81 @@ DROP TABLE IF EXISTS `rt_crons`;
 
 ---
 
+#### rt_database-数据库连接表
+
+| 排序  | 字段名 | 名称  | 类型  | 是否为空 | 索引  | 默认值 |
+| --- | --- | --- | --- | ---- | --- | --- |
+| 1 | id |  | int(10) unsigned | NO | PRI | null |
+| 2 | database |  | varchar(255) | NO |  | null |
+| 3 | host |  | varchar(255) | YES |  | null |
+| 4 | port |  | int(10) unsigned | NO |  | 3306 |
+| 5 | user |  | varchar(255) | NO |  | null |
+| 6 | password |  | varchar(255) | NO |  | null |
+| 7 | dateStrings |  | tinyint(2) unsigned | YES |  | null |
+| 8 | encoding |  | varchar(255) | YES |  | null |
+| 9 | isdef |  | tinyint(2) unsigned | YES |  | 0 |
+| 10 | prefix |  | varchar(100) | YES |  | null |
+| 11 | ssh |  | tinyint(2) unsigned | YES |  | null |
+| 12 | shost |  | varchar(255) | YES |  | null |
+| 13 | sport |  | int(10) unsigned | YES |  | 22 |
+| 14 | suser |  | varchar(255) | YES |  | null |
+| 15 | stype |  | tinyint(2) unsigned | YES |  | 1 |
+| 16 | spass |  | varchar(255) | YES |  | null |
+| 17 | spath |  | varchar(255) | YES |  | null |
+
+
+创建代码
+
+```js
+DROP TABLE IF EXISTS `rt_database`;
+ CREATE TABLE `rt_database` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `database` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `host` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `port` int(10) unsigned NOT NULL DEFAULT '3306',
+  `user` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `dateStrings` tinyint(2) unsigned DEFAULT NULL,
+  `encoding` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `isdef` tinyint(2) unsigned DEFAULT '0',
+  `prefix` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ssh` tinyint(2) unsigned DEFAULT NULL,
+  `shost` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `sport` int(10) unsigned DEFAULT '22',
+  `suser` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `stype` tinyint(2) unsigned DEFAULT '1',
+  `spass` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `spath` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='数据库连接表'
+```
+
+---
+
+#### rt_datasafe-数据库保护表
+
+| 排序  | 字段名 | 名称  | 类型  | 是否为空 | 索引  | 默认值 |
+| --- | --- | --- | --- | ---- | --- | --- |
+| 1 | id |  | int(10) | NO | PRI | null |
+| 2 | data_id |  | int(10) | YES | MUL | null |
+| 3 | name |  | varchar(255) | YES |  | null |
+
+
+创建代码
+
+```js
+DROP TABLE IF EXISTS `rt_datasafe`;
+ CREATE TABLE `rt_datasafe` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `data_id` int(10) DEFAULT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `data_id` (`data_id`,`name`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='数据库保护表'
+```
+
+---
+
 #### rt_error-系统错误日志表
 
 | 排序  | 字段名 | 名称  | 类型  | 是否为空 | 索引  | 默认值 |
@@ -615,7 +692,7 @@ DROP TABLE IF EXISTS `rt_menu`;
   `ifshow` tinyint(3) unsigned DEFAULT '0' COMMENT '是否显示0显示1不显示',
   PRIMARY KEY (`id`) USING BTREE,
   KEY `url` (`route`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=142 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='系统菜单'
+) ENGINE=InnoDB AUTO_INCREMENT=143 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='系统菜单'
 ```
 
 ---
