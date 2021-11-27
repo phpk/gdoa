@@ -7,7 +7,7 @@
     "start": "node development.js",
     "test": "THINK_UNIT_TEST=1 nyc ava test/ && nyc report --reporter=html",
     "compile": "babel --no-babelrc src/ --presets think-node --out-dir app/",
-    "doc": "apidoc-markdown -i src -t www/docs/apidoctpl.md -o www/docs/doc --multi",
+    "doc": "apidoc-markdown -i src -t data/doc/tpl.md -o www/docs/doc --multi",
     "lint": "eslint src/",
     "lint-fix": "eslint --fix src/"
   },

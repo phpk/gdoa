@@ -1,6 +1,6 @@
 <!-- _coverpage.md -->
 
-![logo](_media/logo.png)
+![logo](img/logo.png)
 
 # godoCms <small>1.0</small>
 
