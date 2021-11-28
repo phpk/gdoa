@@ -1,12 +1,12 @@
 const prefix = think.config('mysql.prefix');
 module.exports = class extends think.Model {
     /**
-     * 前台渲染递归
+     * 前台渲染递归 表结构必须有id pid title
      * @param {array} tid 
      * @returns 
      */
-    async authTree() {
-        let data = await this.model('menu').select()
+    async getTree(tabName) {
+        let data = await this.model(tabName).select()
         //根据 id取出某一个分类的子集
         //console.log(tid)
         const findById = (id) => {

@@ -45,10 +45,10 @@ module.exports = class extends Base {
      *
      */
     async addBeforeAction() {
-        //let authTree = await this.model('mod').authTree();
+        let authTree = await this.model('mod').getTree('menu');
         let params = await this.model('params').select();
         let tableList = await this.model('mod').tableList();
-        return this.success({params,tableList});
+        return this.success({ params, tableList, authTree});
     }
     /**
      * @api {get} mod/add 添加模块
@@ -65,7 +65,7 @@ module.exports = class extends Base {
     async addAction() {
         let post = this.post();
         let key = post.key;
-        let sys = ['mod', 'admin', 'db', 'form', 'auth', 'admin', 'api', 'index', 'logs', 'set','base','demo','cate'];
+        let sys = ['mod', 'admin', 'db','database', 'form', 'auth', 'admin', 'api', 'doc','mind','index', 'logs', 'set','base','demo','cate'];
         if (sys.includes(key)) return this.fail('系统中存在相同模块');
         if (await this.hasData('mod', { key: key, type: post.type })) {
             return this.fail('系统中存在相同的模块');
@@ -76,6 +76,7 @@ module.exports = class extends Base {
                 .select();
         }
         //console.log(post);
+        await this.service('mod').createMod(post);
         let add = {
             name: post.name,
             key: post.key,
@@ -87,7 +88,7 @@ module.exports = class extends Base {
             remark : post.remark
         }
         let id = await this.model('mod').add(add);
-        this.service('mod').createModNone(post);
+        
         return this.success(id);
     }
     /**

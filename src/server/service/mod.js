@@ -9,14 +9,19 @@ const types = {
     4: 'logic'
 };
 module.exports = class extends think.Service {
-    createModNone(data) {
-        let obj = this.getParseData(data);
-        this.setParseData(obj);
-        if (data.type == 1) {
-            data.type = 4;
-            delete data.paramsList;
-            let logic = this.getParseData(data);
-            this.setParseData(logic);
+    async createMod(data) {
+        if (data.type > 4) {
+            await this.createModCurd(data);
+        }
+        else {
+            let obj = this.getParseData(data);
+            this.setParseData(obj);
+            if (data.type == 1) {
+                data.type = 4;
+                delete data.paramsList;
+                let logic = this.getParseData(data);
+                this.setParseData(logic);
+            }
         }
     }
     async del(data) {
@@ -27,6 +32,7 @@ module.exports = class extends think.Service {
         }
     }
     async delFile(data) {
+        return false;
         let jsonfile = cachePath + data.server_path + '/' + types[data.type] + '/' + data.key + '.json';
         console.log(jsonfile)
         let jsfile = srcPath + data.server_path + '/' + types[data.type] + '/' + data.key + '.js';
@@ -105,14 +111,12 @@ module.exports = class extends think.Service {
         return jsonData;
     }
     async createModCurd(data) {
-        /*
-        let path = srcPath + data.path,
+        let path = srcPath + data.server_path,
             name = data.name,
-            tags = data.tags,
+            tags = data.key,
             controllerFile = path + '/controller/' + tags + '.js',
             logicFile = path + '/logic/' + tags + '.js',
             listFile = viewPath + tags + '/list.html',
-            addFile = viewPath + tags + '/add.html',
             editFile = viewPath + tags + '/edit.html';
         let controllerTpl = curdTpl.controllerTpl.replace(/{{tags}}/g, tags).replace(/{{name}}/g, name),
             logicTpl = curdTpl.logicTpl;
@@ -122,6 +126,9 @@ module.exports = class extends think.Service {
         if (!think.isFile(logicTpl)) {
             fs.writeFileSync(logicFile, logicTpl);
         }
-        */
+        
+    }
+    replaceTpl(tpl, name, tags) {
+        return tpl.replace(/{{tags}}/g, tags).replace(/{{name}}/g, name);
     }
 }

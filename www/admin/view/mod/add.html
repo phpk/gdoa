@@ -37,12 +37,33 @@
                         <div class="layui-form-item">
                             <label class="layui-form-label">模块类型</label>
                             <div class="layui-input-block">
-                                <input type="radio" value="1" name="type" title="控制层" checked class="modck">
-                                <input type="radio" value="2" name="type" title="模型层">
-                                <input type="radio" value="3" name="type" title="服务层">
+                                <input type="radio" value="1" name="type" title="控制层" checked class="modck"  lay-filter="type">
+                                <input type="radio" value="2" name="type" title="模型层" lay-filter="type">
+                                <input type="radio" value="3" name="type" title="服务层" lay-filter="type">
+                                <input type="radio" value="5" name="type" title="通用curd" lay-filter="type">
                             </div>
                         </div>
-                        
+
+                         <div id="rule-area" style="display:none">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">上级权限</label>
+                                <div class="layui-input-block">
+                                <button class="layui-btn" id="chooseRule">
+                                    <span id="ruleText">选择权限</span>
+                                    <i class="layui-icon layui-icon-down layui-font-12"></i>
+                                </button>
+                                </div>
+                            </div>
+                             <div class="layui-form-item">
+                                <label class="layui-form-label">图标</label>
+                                <div class="layui-input-block">
+                                <input name="icon" id="icon" style="display:none;"        value="layui-icon-face-smile-fine" 
+                                class="layui-input" lay-filter="iconPicker">
+                                </div>
+                            </div>
+
+                        </div>
+
                         <div class="layui-form-item">
                             <label class="layui-form-label">主表</label>
                             <div class="layui-input-block">
@@ -53,12 +74,18 @@
                         </div>
                         <div class="layui-form-item">
                             <label class="layui-form-label">附加表</label>
-                            <div class="layui-input-block" id="tables"></div>
+                            <div class="layui-input-inline" id="tables"></div>
+                            <div class="layui-input-inline">
+                                <input type="checkbox" name="iscate" lay-skin="switch" lay-text="分类|不分类">
+                            </div>
+                            <div class="layui-form-mid layui-word-aux">分类表应包含id/pid/title</div>
                         </div>
+                        
                         <div class="layui-form-item">
                             <label class="layui-form-label">全局常量</label>
                             <div class="layui-input-block" id="params"></div>
                         </div>
+
                         <div class="layui-form-item layui-form-text">
                             <label class="layui-form-label">备注</label>
                             <div class="layui-input-block">
@@ -71,7 +98,7 @@
             </div>
             <div class="bottom">
                 <div class="button-container">
-                    <input type="hidden" name="pid" value="0" id="pid">
+                    <input type="hidden" name="pid" value="-1" id="pid">
                     <button type="submit" class="pear-btn pear-btn-primary pear-btn-sm" lay-submit="" lay-filter="user-save">
                         <i class="layui-icon layui-icon-ok"></i>
                 提交
@@ -90,19 +117,26 @@
                     layer = layui.layer,
                     $ = layui.$,
                     dropdown = layui.dropdown,
-                    selectM = layui.selectM;
-
-                /*
+                    selectM = layui.selectM,
+                    iconPicker = layui.iconPicker;
+                form.on('radio(type)', function(data){
+                    if(data.value == 5) {
+                        $('#rule-area').show();
+                    }else{
+                        $('#rule-area').hide();
+                    }
+                });
+                
                 iconPicker.render({
                     elem: "#icon",
                     type: "fontClass",
                     search: true,
                     page: true,
-                    limit: 12,
+                    limit: 16,
                     cellWidth: '43px',
                     click: function (data) {},
                     success: function (d) {}
-                });*/
+                });
 
                 _get(layui, 'mod/addBefore', res => {
                     console.log(res)
@@ -143,18 +177,18 @@
                         ,field: {idName:'id',titleName:'name'}
                     });
                     //console.log(moreBtn)
-                    /*
+                    
                     //渲染权限
                     dropdown.render({
                         elem: '#chooseRule',
                         data: res.authTree,
                         trigger: 'hover',
                         click: (d, el) => {
-                            //console.log(d)
+                            console.log(d)
                             $('#ruleText').text(d.title);
                             $('#pid').val(d.id);
                         }
-                    })*/
+                    })
                     //监听提交
                     form.on('submit(user-save)', function (data) {
                         data = data.field;
@@ -162,6 +196,23 @@
                             layer.msg('附表中不能包含主表！');
                             return false;
                         }
+                        //curd
+                        if(data.type == 5 && !data.tables_main) {
+                            layer.msg('curd必须选择主表！');
+                            return false;
+                        }
+                        if(data.iscate && data.iscate == 'on'){
+                            //console.log(data.tables_more)
+                            if(!data.tables_more) {
+                                layer.msg('请选择一个附加表！');
+                                return false;
+                            }
+                            if(data.tables_more.indexOf(',') !== -1) {
+                                layer.msg('附加表为分类时只能选择一个！');
+                                return false;
+                            }
+                        }
+                        //return false;
                         _post(layui, 'mod/add', data, rt => {
                             //console.log(res)
                             parent
