@@ -2,6 +2,8 @@ const path = require('path');
 const fs = require('fs');
 const cachePath = path.join(think.ROOT_PATH, 'data/mod/');
 const srcPath = path.join(think.ROOT_PATH, 'src/');
+const viewPath = path.join(think.ROOT_PATH, 'www/admin/view/');
+const tplFile = require(cachePath + 'tpl/curd.js');
 const types = {
     1: 'controller',
     2: 'model',
@@ -11,7 +13,13 @@ const types = {
 module.exports = class extends think.Service {
     async createMod(data) {
         if (data.type > 4) {
+            
             await this.createModCurd(data);
+            data.extra = JSON.stringify({
+                iscate: data.iscate,
+                topAuthId: data.pid,
+                topAuthIcon: data.icon
+            });
         }
         else {
             let obj = this.getParseData(data);
@@ -32,18 +40,22 @@ module.exports = class extends think.Service {
         }
     }
     async delFile(data) {
-        return false;
+        //return false;
         let jsonfile = cachePath + data.server_path + '/' + types[data.type] + '/' + data.key + '.json';
-        console.log(jsonfile)
+        //console.log(jsonfile)
         let jsfile = srcPath + data.server_path + '/' + types[data.type] + '/' + data.key + '.js';
-        console.log(jsfile)
+        //console.log(jsfile)
         if (think.isFile(jsfile)) {
             await fs.unlink(jsfile, res => {});
         }
         if (think.isFile(jsonfile)) {
             await fs.unlink(jsonfile, res => { });
         }
-        
+        if (data.type == 5) {
+            think.rmdir(viewPath + data.key, false).then(() => {
+                console.log('模版删除完成')
+            })
+        }
     }
     setParseData(data) {
         let str = ``;
@@ -59,6 +71,7 @@ module.exports = class extends think.Service {
         let comments = `/**\n* @${typesName}\n* @apiDefine ${data.key} ${data.name}\n*/\n`;
         let paramStr = ``;
         if (data.paramsList) {
+            //解析顶部常量
             data.paramsList.forEach(d => {
                 if (d.type == 1) {
                     paramStr += `const ${d.key} = require('${d.content}');\n`;
@@ -110,25 +123,81 @@ module.exports = class extends think.Service {
         }
         return jsonData;
     }
+    /**
+     * 不带分类的控制层模版
+     * @param {object} data 
+     * @returns 
+     */
+    getControllerTpl(data) {
+        let controllerTpl = tplFile.ctpl.start;
+        controllerTpl += tplFile.ctpl.list;
+        controllerTpl += tplFile.ctpl.add;
+        controllerTpl += tplFile.ctpl.edit;
+        controllerTpl += tplFile.ctpl.editBefore;
+        controllerTpl += tplFile.ctpl.del;
+        controllerTpl += tplFile.endTpl;
+        controllerTpl = this.replaceTpl(controllerTpl, data.name, data.tables_main);
+        return controllerTpl;
+    }
+    /**
+     * 不带分类的逻辑层模版
+     * @param {object} data
+     * @returns
+     */
+    getLogicTpl(data) {
+        let logicTpl = tplFile.ltpl.start;
+        logicTpl += tplFile.ltpl.list;
+        logicTpl += tplFile.ltpl.add;
+        logicTpl += tplFile.ltpl.edit;
+        logicTpl += tplFile.ltpl.editBefore;
+        logicTpl += tplFile.ltpl.del;
+        logicTpl += tplFile.endTpl;
+        return logicTpl;
+    }
+    /**
+     * 不带分类的试图层模版
+     * @param {object} data
+     * @returns
+     */
+    getHtmlTpl(data) {
+        //console.log(tplFile);
+        let list = this.replaceTpl(tplFile.htmlTpl.list, data.name, data.key),
+        edit = this.replaceTpl(tplFile.htmlTpl.edit, data.name, data.key);
+        return { list, edit}
+    }
     async createModCurd(data) {
-        let path = srcPath + data.server_path,
-            name = data.name,
-            tags = data.key,
+        let path = srcPath + data.server_path,//服务器端路径
+            name = data.name,//模块名字
+            tags = data.key,//模块标识
             controllerFile = path + '/controller/' + tags + '.js',
             logicFile = path + '/logic/' + tags + '.js',
-            listFile = viewPath + tags + '/list.html',
-            editFile = viewPath + tags + '/edit.html';
-        let controllerTpl = curdTpl.controllerTpl.replace(/{{tags}}/g, tags).replace(/{{name}}/g, name),
-            logicTpl = curdTpl.logicTpl;
-        if (!think.isFile(controllerFile)) {
+            vPath = viewPath + tags,
+            listFile = vPath + '/list.html',
+            editFile = vPath + '/edit.html',
+            controllerTpl = '',
+            logicTpl = '',
+            htmlTpl = {};
+        if (!think.isDirectory(vPath)) think.mkdir(vPath);
+        //不带分类的
+        if (!data.iscate) {
+            //控制器
+            controllerTpl = this.getControllerTpl(data);
             fs.writeFileSync(controllerFile, controllerTpl);
-        }
-        if (!think.isFile(logicTpl)) {
+            //逻辑层
+            logicTpl = this.getLogicTpl(data);
             fs.writeFileSync(logicFile, logicTpl);
+            //视图层
+            htmlTpl = this.getHtmlTpl(data);
+            fs.writeFileSync(listFile, htmlTpl.list);
+            fs.writeFileSync(editFile, htmlTpl.edit);
+        }
+        else {
+            
         }
         
     }
     replaceTpl(tpl, name, tags) {
         return tpl.replace(/{{tags}}/g, tags).replace(/{{name}}/g, name);
     }
+    
 }

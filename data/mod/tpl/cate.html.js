@@ -1,38 +1,15 @@
-<!DOCTYPE html>
+module.exports = `<!DOCTYPE html>
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>{{name}}管理</title>
+		<title>{{name}}分类管理</title>
 		<link rel="stylesheet" href="../../component/ui/css/ui.css" />
 	</head>
 	<body class="pear-container">
+		
 		<div class="layui-card">
 			<div class="layui-card-body">
-				<form class="layui-form" action="">
-					<div class="layui-form-item">
-						<div class="layui-form-item layui-inline">
-							<label class="layui-form-label">名称</label>
-							<div class="layui-input-inline">
-								<input type="text" name="title" placeholder="" class="layui-input">
-							</div>
-						</div>
-						<div class="layui-form-item layui-inline">
-							<button class="pear-btn pear-btn-md pear-btn-primary" lay-submit lay-filter="user-query">
-								<i class="layui-icon layui-icon-search"></i>
-								查询
-							</button>
-							<button type="reset" class="pear-btn pear-btn-md" lay-filter="user-reset" lay-submit>
-								<i class="layui-icon layui-icon-refresh"></i>
-								重置
-							</button>
-						</div>
-					</div>
-				</form>
-			</div>
-		</div>
-		<div class="layui-card">
-			<div class="layui-card-body">
-				<table id="{{tags}}-table" lay-filter="{{tags}}-table"></table>
+				<table id="{{tags}}-catetable" lay-filter="{{tags}}-catetable"></table>
 			</div>
 		</div>
 
@@ -46,9 +23,6 @@
 		<script type="text/html" id="{{tags}}-bar">
 			<button class="pear-btn pear-btn-primary pear-btn-sm" lay-event="edit"><i class="layui-icon layui-icon-edit"></i></button>
 		    <button class="pear-btn pear-btn-danger pear-btn-sm" lay-event="remove"><i class="layui-icon layui-icon-delete"></i></button>
-		</script>
-		<script type="text/html" id="{{tags}}-time">
-			{{layui.util.toDateString(d.add_time*1000, 'yyyy-MM-dd HH:mm:ss')}}
 		</script>
 		<script src="../../config/config.js"></script>
 		<script src="../../component/layui/layui.js"></script>
@@ -75,12 +49,6 @@
 							align: 'center'
 						},
 						{
-							title: '添加时间',
-							field: 'add_time',
-							align: 'center',
-							templet: '#{{tags}}-time'
-						},
-						{
 							title: '操作',
 							toolbar: '#{{tags}}-bar',
 							align: 'center',
@@ -90,7 +58,7 @@
 				]
 
 				table.render({
-					elem: '#{{tags}}-table',
+					elem: '#{{tags}}-catetable',
 					url: apiUrl + '{{tags}}/list',
 					headers : getHeader(),
 					parseData: function(res) {
@@ -132,7 +100,7 @@
 				// 监听搜索操作
 
 				form.on('submit({{tags}}-query)', function(data) {
-					table.reload('{{tags}}-table', {
+					table.reload('{{tags}}-catetable', {
 						where: {
 							param : $('form').serialize()
 						},
@@ -143,7 +111,7 @@
 					return false;
 				});
 				form.on('submit({{tags}}-reset)', function(data){
-					table.reload('{{tags}}-table', {
+					table.reload('{{tags}}-catetable', {
 						where: {
 							param : ''
 						},
@@ -194,9 +162,9 @@
 
 
 				window.refresh = function(param) {
-					table.reload('{{tags}}-table');
+					table.reload('{{tags}}-catetable');
 				}
 			})
 		</script>
 	</body>
-</html>
+</html>`

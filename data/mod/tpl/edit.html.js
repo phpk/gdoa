@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+module.exports = `<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
@@ -19,16 +19,6 @@
                     <input type="text" name="title" lay-verify="required|len" autocomplete="off" min="3" placeholder="请输入名称" class="layui-input">
                 </div>
             </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label">所属分类</label>
-                <div class="layui-input-block">
-                    <button class="layui-btn" id="chooseCate">
-                        <span id="cateText">选择分类</span>
-                        <i class="layui-icon layui-icon-down layui-font-12"></i>
-                    </button>
-                </div>
-            </div>
-
 			<div class="layui-form-item layui-form-text">
 				<label class="layui-form-label">备注</label>
 				<div class="layui-input-block">
@@ -41,7 +31,6 @@
     </div>
     <div class="bottom">
         <div class="button-container">
-            <input type="hidden" name="cid" value="0" id="cid">
             <button type="submit" class="pear-btn pear-btn-primary pear-btn-sm" lay-submit="" lay-filter="{{tags}}-save">
                 <i class="layui-icon layui-icon-ok"></i>
                 提交
@@ -53,11 +42,10 @@
 <script src="../../component/layui/layui.js"></script>
 <script src="../../component/ui/ui.js"></script>
 <script>
-    layui.use(['form','layer','dropdown'], function () {
+    layui.use(['form','layer','tree'], function () {
         let form = layui.form
             , layer = layui.layer
 			, $ = layui.$
-			, dropdown = layui.dropdown,
             , req = _req();
         form.verify({
             len : (val, item) => {
@@ -67,36 +55,12 @@
                 }
             }
         })
-        //渲染
         if(req.id) {
+            //渲染
             _get(layui, '{{tags}}/editBefore', res => {
-                dropdown.render({
-                    elem: '#chooseCate',
-                    data: res.cate,
-                    trigger: 'hover',
-                    click: (d, el) => {
-                        $('#cateText').text(d.title);
-                        $('#cid').val(d.id);
-                    }
-                });
-                form.val('editform', res.data);
-                $('#cateText').text(res.data.cateName);
-            });
-        } else {
-            _get(layui, '{{tags}}/addBefore', res => {
-                dropdown.render({
-                    elem: '#chooseCate',
-                    data: res.authTree,
-                    trigger: 'hover',
-                    click: (d, el) => {
-                        $('#cateText').text(d.title);
-                        $('#cid').val(d.id);
-                    }
-                })
+                form.val('editform', res)
             });
         }
-		
-
 
         //监听提交
         form.on('submit({{tags}}-save)', function (data) {
@@ -121,4 +85,4 @@
 </script>
 
 </body>
-</html>
+</html>`

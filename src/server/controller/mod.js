@@ -65,8 +65,8 @@ module.exports = class extends Base {
     async addAction() {
         let post = this.post();
         let key = post.key;
-        let sys = ['mod', 'admin', 'db','database', 'form', 'auth', 'admin', 'api', 'doc','mind','index', 'logs', 'set','base','demo','cate'];
-        if (sys.includes(key)) return this.fail('系统中存在相同模块');
+        let sys = ['mod', 'admin', 'db','database', 'form', 'auth', 'admin', 'api', 'doc','mind','index', 'logs', 'set','base','cate'];
+        if (sys.includes(key)) return this.fail('系统模块不允许添加');
         if (await this.hasData('mod', { key: key, type: post.type })) {
             return this.fail('系统中存在相同的模块');
         }
@@ -85,11 +85,51 @@ module.exports = class extends Base {
             type : post.type,
             tables_main: post.tables_main,
             tables_more : post.tables_more,
-            remark : post.remark
+            remark: post.remark,
+            extra : post.extra ? post.extra : ''
         }
         let id = await this.model('mod').add(add);
-        
+        if (post.type == 5) {
+            await this.addRule(post);
+        }
         return this.success(id);
+    }
+    async addRule(data) {
+        if (data.pid < 0) return;
+        let topData = {
+            pid: data.pid,
+            title: data.name,
+            href: 'view/' + data.key + '/list.html',
+            route: data.key + '/list',
+            icon: data.icon,
+            type: 1,
+            order_num: 0
+        }
+        let topId = await this.model('menu').add(topData),
+            adds = [],
+            name = data.name,
+            key = data.key,
+            arr = ['add', 'edit', 'del', 'editBefore'],
+            names = ['添加', '编辑', '删除', '编辑前'],
+            tpls = ['edit','edit','',''];
+        if (data.iscate && data.iscate == 'on') {
+            arr = arr.concat(['addBefore', 'cate', 'cateAdd', 'cateEdit', 'cateDel']);
+            names = names.concat(['添加前', '分类', '分类添加', '分类编辑', '分类删除']);
+            tpls = tpls.concat(['', 'cate', 'cateEdit', 'cateEdit', '']);
+        }
+        arr.forEach((k, i) => {
+            adds.push({
+                pid: topId,
+                title: name + names[i],
+                href: tpls[i] != '' ? 'view/' + key + '/' + tpls[i] + '.html' : '',
+                route: key + '/' + k,
+                icon: '',
+                type: 3,
+                order_num: 0
+            })
+        })
+        await this.model('menu').addMany(adds);
+
     }
     /**
      * @api {get} mod/editBefore 模块编辑前
@@ -148,8 +188,14 @@ module.exports = class extends Base {
         if (think.isEmpty(data))
             return this.fail('数据不存在')
         await this.service('mod').del(data);
-        await this.model('mod').where({ id }).delete()
-
+        await this.model('mod').where({ id }).delete();
+        let route = data.key + '/list';
+        let topRuleId = await this.model('menu').where({ route}).getField('id', true);
+        //删除权限
+        if (topRuleId) {
+            await this.model('menu').where({ pid: topRuleId }).delete();
+            await this.model('menu').where({ id: topRuleId }).delete();
+        }
         return this.success()
     }
     async paramsAction() {

@@ -1,15 +1,38 @@
-<!DOCTYPE html>
+module.exports = `<!DOCTYPE html>
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>{{name}}分类管理</title>
+		<title>{{name}}管理</title>
 		<link rel="stylesheet" href="../../component/ui/css/ui.css" />
 	</head>
 	<body class="pear-container">
-		
 		<div class="layui-card">
 			<div class="layui-card-body">
-				<table id="{{tags}}-catetable" lay-filter="{{tags}}-catetable"></table>
+				<form class="layui-form" action="">
+					<div class="layui-form-item">
+						<div class="layui-form-item layui-inline">
+							<label class="layui-form-label">名称</label>
+							<div class="layui-input-inline">
+								<input type="text" name="title" placeholder="" class="layui-input">
+							</div>
+						</div>
+						<div class="layui-form-item layui-inline">
+							<button class="pear-btn pear-btn-md pear-btn-primary" lay-submit lay-filter="user-query">
+								<i class="layui-icon layui-icon-search"></i>
+								查询
+							</button>
+							<button type="reset" class="pear-btn pear-btn-md" lay-filter="user-reset" lay-submit>
+								<i class="layui-icon layui-icon-refresh"></i>
+								重置
+							</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+		<div class="layui-card">
+			<div class="layui-card-body">
+				<table id="{{tags}}-table" lay-filter="{{tags}}-table"></table>
 			</div>
 		</div>
 
@@ -18,11 +41,18 @@
 		        <i class="layui-icon layui-icon-add-1"></i>
 		        新增
 		    </button>
+            <button class="layui-btn layui-btn-primary layui-border-blue layui-btn-sm" lay-event="opcate" id="opcate">
+				<i class="layui-icon layui-icon-cols"></i>
+				分类管理
+			</button>
 		</script>
 
 		<script type="text/html" id="{{tags}}-bar">
 			<button class="pear-btn pear-btn-primary pear-btn-sm" lay-event="edit"><i class="layui-icon layui-icon-edit"></i></button>
 		    <button class="pear-btn pear-btn-danger pear-btn-sm" lay-event="remove"><i class="layui-icon layui-icon-delete"></i></button>
+		</script>
+		<script type="text/html" id="{{tags}}-time">
+			{{layui.util.toDateString(d.add_time*1000, 'yyyy-MM-dd HH:mm:ss')}}
 		</script>
 		<script src="../../config/config.js"></script>
 		<script src="../../component/layui/layui.js"></script>
@@ -48,6 +78,17 @@
 							field: 'title',
 							align: 'center'
 						},
+                        {
+							title: '所属分类',
+							field: 'cateName',
+							align: 'center'
+						},
+						{
+							title: '添加时间',
+							field: 'add_time',
+							align: 'center',
+							templet: '#{{tags}}-time'
+						},
 						{
 							title: '操作',
 							toolbar: '#{{tags}}-bar',
@@ -58,7 +99,7 @@
 				]
 
 				table.render({
-					elem: '#{{tags}}-catetable',
+					elem: '#{{tags}}-table',
 					url: apiUrl + '{{tags}}/list',
 					headers : getHeader(),
 					parseData: function(res) {
@@ -96,11 +137,14 @@
 					} else if (obj.event === 'refresh') {
 						window.refresh();
 					}
+                     else if (obj.event === 'opcate') {
+						window.opcate();
+					}
 				});
 				// 监听搜索操作
 
 				form.on('submit({{tags}}-query)', function(data) {
-					table.reload('{{tags}}-catetable', {
+					table.reload('{{tags}}-table', {
 						where: {
 							param : $('form').serialize()
 						},
@@ -111,7 +155,7 @@
 					return false;
 				});
 				form.on('submit({{tags}}-reset)', function(data){
-					table.reload('{{tags}}-catetable', {
+					table.reload('{{tags}}-table', {
 						where: {
 							param : ''
 						},
@@ -134,7 +178,18 @@
 						content: MODULE_PATH + 'edit.html'
 					});
 				}
-
+                window.opcate = function() {
+					layer.open({
+						type: 2,
+						title: '分类管理',
+						shade: 0.1,
+						offset: 'rt',
+						area: ['80%', '100%'],
+						anim: 1,
+						maxmin: true,
+						content: MODULE_PATH + 'cate.html'
+					});
+				}
 				window.edit = function(obj) {
 					layer.open({
 						type: 2,
@@ -162,9 +217,9 @@
 
 
 				window.refresh = function(param) {
-					table.reload('{{tags}}-catetable');
+					table.reload('{{tags}}-table');
 				}
 			})
 		</script>
 	</body>
-</html>
+</html>`

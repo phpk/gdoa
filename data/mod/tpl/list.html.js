@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+module.exports = `<!DOCTYPE html>
 <html>
 	<head>
 		<meta charset="utf-8">
@@ -41,10 +41,6 @@
 		        <i class="layui-icon layui-icon-add-1"></i>
 		        新增
 		    </button>
-            <button class="layui-btn layui-btn-primary layui-border-blue layui-btn-sm" lay-event="opcate" id="opcate">
-				<i class="layui-icon layui-icon-cols"></i>
-				分类管理
-			</button>
 		</script>
 
 		<script type="text/html" id="{{tags}}-bar">
@@ -76,11 +72,6 @@
 						{
 							title: '名称',
 							field: 'title',
-							align: 'center'
-						},
-                        {
-							title: '所属分类',
-							field: 'cateName',
 							align: 'center'
 						},
 						{
@@ -137,9 +128,6 @@
 					} else if (obj.event === 'refresh') {
 						window.refresh();
 					}
-                     else if (obj.event === 'opcate') {
-						window.opcate();
-					}
 				});
 				// 监听搜索操作
 
@@ -178,18 +166,7 @@
 						content: MODULE_PATH + 'edit.html'
 					});
 				}
-                window.opcate = function() {
-					layer.open({
-						type: 2,
-						title: '分类管理',
-						shade: 0.1,
-						offset: 'rt',
-						area: ['80%', '100%'],
-						anim: 1,
-						maxmin: true,
-						content: MODULE_PATH + 'cate.html'
-					});
-				}
+
 				window.edit = function(obj) {
 					layer.open({
 						type: 2,
@@ -222,4 +199,4 @@
 			})
 		</script>
 	</body>
-</html>
+</html>`

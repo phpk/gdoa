@@ -1,3 +1,4 @@
+const fs = require('fs');
 let ctpl = {}, ltpl = {};
 
 ctpl.start = `const Base = require('./base.js');
@@ -33,6 +34,15 @@ ctpl.edit = `
         return this.success()
     }
 `;
+ctpl.editBefore = `
+    async editBeforeAction() {
+        let id = this.get('id');
+        let data = await this.model('{{tags}}').where({ id }).find()
+        if (think.isEmpty(data)) return this.fail('数据为空')
+        return this.success(data);
+    }
+`;
+
 ctpl.del = `
     async delAction() {
         let id = this.post('id');
@@ -60,14 +70,7 @@ ctpl.editBeforeCate = `
         return this.success({data,cate});
     }
 `;
-ctpl.editBefore = `
-    async editBeforeAction() {
-        let id = this.get('id');
-        let data = await this.model('{{tags}}').where({ id }).find()
-        if (think.isEmpty(data)) return this.fail('数据为空')
-        return this.success(data);
-    }
-`;
+
 ltpl.start = `module.exports = class extends think.Logic {`;
 ltpl.list = `
     listAction() {
@@ -148,11 +151,16 @@ ltpl.edit = `
 `;
 
 let endTpl = `}`;
-let listTpl = ``;
-let editTpl = ``;
-let addTpl = ``;
+let htmlTpl = {};
+//不带分类的模块
+htmlTpl.list = require('./list.html.js');
+htmlTpl.edit = require('./edit.html.js');
+//带分类的模版
+htmlTpl.listCate = require('./list-cate.html.js');;
+htmlTpl.editCate = require('./edit-cate.html.js');
 module.exports = {
     ctpl,
     ltpl,
-    endTpl
+    endTpl,
+    htmlTpl
 }
