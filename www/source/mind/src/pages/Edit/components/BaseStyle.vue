@@ -229,9 +229,7 @@ import ImgUpload from "@/components/ImgUpload";
 import { storeConfig } from "@/api";
 
 /**
- * @Author: 王林
- * @Date: 2021-06-24 22:52:56
- * @Desc: 基础样式
+ * 基础样式
  */
 export default {
   name: "BaseStyle",
@@ -282,9 +280,7 @@ export default {
   },
   methods: {
     /**
-     * @Author: 王林
-     * @Date: 2021-05-05 14:02:12
-     * @Desc: 初始样式
+     * 初始样式
      */
     initStyle() {
       [
@@ -308,9 +304,7 @@ export default {
     },
 
     /**
-     * @Author: 王林
-     * @Date: 2021-07-03 22:27:32
-     * @Desc: margin初始值
+     * margin初始值
      */
     initMarginStyle() {
       ["marginX", "marginY"].forEach((key) => {
@@ -320,9 +314,7 @@ export default {
     },
 
     /**
-     * @Author: 王林
-     * @Date: 2021-05-05 14:05:40
-     * @Desc: 更新配置
+     * 更新配置
      */
     update(key, value) {
       if (key === "backgroundImage" && value === "none") {
@@ -341,9 +333,7 @@ export default {
     },
 
     /**
-     * @Author: 王林
-     * @Date: 2021-07-03 22:08:12
-     * @Desc: 设置margin
+     * 设置margin
      */
     updateMargin(type, value) {
       this.style[type] = value;

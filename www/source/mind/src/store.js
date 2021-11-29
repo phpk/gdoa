@@ -10,9 +10,7 @@ const store = new Vuex.Store({
     },
     mutations: {
         /** 
-         * @Author: 王林 
-         * @Date: 2021-04-10 14:50:01 
-         * @Desc: 设置思维导图数据 
+         * 设置思维导图数据 
          */
         setMindMapData(state, data) {
             state.mindMapData = data
@@ -20,9 +18,7 @@ const store = new Vuex.Store({
     },
     actions: {
         /** 
-         * @Author: 王林 
-         * @Date: 2021-04-10 14:50:40 
-         * @Desc: 设置初始思维导图数据 
+         * 设置初始思维导图数据 
          */
         getUserMindMapData(ctx) {
             try {

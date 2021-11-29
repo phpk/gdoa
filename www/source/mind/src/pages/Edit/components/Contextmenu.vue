@@ -117,9 +117,7 @@ export default {
   },
   methods: {
     /**
-     * @Author: 王林
-     * @Date: 2021-07-14 21:38:50
-     * @Desc: 节点右键显示
+     * 节点右键显示
      */
     show(e, node) {
       this.type = "node";
@@ -130,9 +128,7 @@ export default {
     },
 
     /**
-     * @Author: 王林
-     * @Date: 2021-07-16 13:27:48
-     * @Desc: 鼠标按下事件
+     * 鼠标按下事件
      */
     onMousedown(e) {
       if (e.which !== 3) {
@@ -144,9 +140,7 @@ export default {
     },
 
     /**
-     * @Author: 王林
-     * @Date: 2021-07-16 13:27:53
-     * @Desc: 鼠标松开事件
+     * 鼠标松开事件
      */
     onMouseup(e) {
       if (!this.isMousedown) {
@@ -161,9 +155,7 @@ export default {
     },
 
     /**
-     * @Author: 王林
-     * @Date: 2021-07-15 22:54:08
-     * @Desc: 画布右键显示
+     * 画布右键显示
      */
     show2(e) {
       this.type = "svg";
@@ -173,9 +165,7 @@ export default {
     },
 
     /**
-     * @Author: 王林
-     * @Date: 2021-07-14 21:37:55
-     * @Desc: 隐藏
+     * 隐藏
      */
     hide() {
       this.isShow = false;
@@ -185,9 +175,7 @@ export default {
     },
 
     /**
-     * @Author: 王林
-     * @Date: 2021-07-14 23:27:54
-     * @Desc: 执行命令
+     * 执行命令
      */
     exec(key, disabled) {
       if (disabled) {

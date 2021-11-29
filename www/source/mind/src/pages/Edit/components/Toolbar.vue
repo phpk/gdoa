@@ -137,8 +137,8 @@
           <span class="icon iconfont icondaochu"></span>
           <span class="text">导出</span>
         </div>
-        <div class="toolbarBtn" @click="$bus.$emit('showExport')">
-          <span class="icon iconfont icondaochu"></span>
+        <div class="toolbarBtn" @click="$bus.$emit('showSave')">
+          <span class="icon iconfont iconquanxuan"></span>
           <span class="text">保存</span>
         </div>
         
@@ -151,6 +151,7 @@
     <NodeTag></NodeTag>
     <Export></Export>
     <Import></Import>
+    <Savedata></Savedata>
   </div>
 </template>
 
@@ -162,11 +163,9 @@ import NodeNote from "./NodeNote";
 import NodeTag from "./NodeTag";
 import Export from "./Export";
 import Import from './Import';
-
+import Savedata from './Savedata';
 /**
- * @Author: 王林
- * @Date: 2021-06-24 22:54:58
- * @Desc: 工具栏
+ * 工具栏
  */
 export default {
   name: "Toolbar",
@@ -177,7 +176,8 @@ export default {
     NodeNote,
     NodeTag,
     Export,
-    Import
+    Import,
+    Savedata
   },
   data() {
     return {

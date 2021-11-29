@@ -82,9 +82,7 @@ class Render {
     }
 
     /** 
-     * @Author: 王林 
-     * @Date: 2021-05-04 13:19:06 
-     * @Desc: 注册命令 
+     * 注册命令 
      */
     registerCommands() {
         // 全选
