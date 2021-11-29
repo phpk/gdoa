@@ -3,8 +3,8 @@ runtime/
 ./logs/
 .history/
 .vscode/
-source/ppt/node_modules/
-source/mind/web/node_modules/
-source/mind/simple-mind-map/node_modules/
+www/source/ppt/node_modules/
+www/source/mind/simple-mind-map/node_modules/
+www/source/mind/web/node_modules/
 app/
 todo.md
