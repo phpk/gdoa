@@ -172,7 +172,12 @@
 						area: ['90%', '100%'],
 						anim: 1,
 						maxmin: true,
-						content: '/admin/ppt/index.html'
+						content: '/admin/ppt/index.html',
+						cancel: function(index, layero){ 
+							table.reload('ppt-table');
+							layer.close(index);
+							return false; 
+						}    
 					});
 				}
 
@@ -185,7 +190,12 @@
 						area: ['80%', '100%'],
 						anim: 1,
 						maxmin: true,
-						content: '/admin/ppt/index.html?id=' + obj.data.id
+						content: '/admin/ppt/index.html?id=' + obj.data.id,
+						cancel: function(index, layero){ 
+							table.reload('ppt-table');
+							layer.close(index);
+							return false; 
+						} 
 					});
 				}
 				window.remove = function(obj){
