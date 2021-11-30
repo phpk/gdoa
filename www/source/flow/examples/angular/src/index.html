@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base href="/" />
+    <title i18n>乐吾乐 Topology - 开源免费绘图工具</title>
+    <meta charset="UTF-8" />
+    <meta name="keywords" content="乐吾乐,le5le,开源,架构图,拓扑图,流程图,类图,活动图,时序图,类图" />
+    <meta
+      name="description"
+      content="一个基于typescript + canvas的好用开源绘图工具和绘图引擎。易集成到自己的前端项目、还可以方便自定义图形库，支持微服务架构图、流程图、时序图、活动图、类图等"
+    />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <meta
+      name="viewport"
+      content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width"
+    />
+    <link href="/assets/img/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <link href="//at.alicdn.com/t/font_1113798_q7ukkvil4kl.css" rel="stylesheet" />
+    <link href="//at.alicdn.com/t/font_1331132_5lvbai88wkb.css" rel="stylesheet" />
+    <style>
+      html {
+        min-width: 800px;
+      }
+
+      @-webkit-keyframes line-scale-party {
+        0% {
+          transform: scale(1);
+        }
+
+        50% {
+          transform: scale(0.5);
+        }
+
+        100% {
+          transform: scale(1);
+        }
+      }
+
+      @keyframes line-scale-party {
+        0% {
+          transform: scale(1);
+        }
+
+        50% {
+          transform: scale(0.5);
+        }
+
+        100% {
+          transform: scale(1);
+        }
+      }
+
+      .line-scale-party > div:nth-child(1) {
+        animation-delay: 0.8s;
+        animation-duration: 0.35s;
+      }
+
+      .line-scale-party > div:nth-child(2) {
+        animation-delay: 0.68s;
+        animation-duration: 1.25s;
+      }
+
+      .line-scale-party > div:nth-child(3) {
+        animation-delay: 0.44s;
+        animation-duration: 0.39s;
+      }
+
+      .line-scale-party > div:nth-child(4) {
+        animation-delay: 0.17s;
+        animation-duration: 0.8s;
+      }
+
+      .line-scale-party > div {
+        background-color: #0288d1;
+        width: 3px;
+        height: 25px;
+        border-radius: 2px;
+        margin: 0;
+        animation-fill-mode: both;
+        display: inline-block;
+        animation-name: line-scale-party;
+        animation-iteration-count: infinite;
+      }
+    </style>
+  </head>
+
+  <body>
+    <script type="text/javascript">
+      if (!localStorage) location.href = '/browser.html';
+    </script>
+    <app-root>
+      <div style="position: fixed; top: 45%; left: 50%">
+        <div class="line-scale-party">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+        <div style="margin-left: -160px">访问太慢？个人云服务器资源小，人多可能慢，欢迎资助，请耐心等待...</div>
+      </div>
+    </app-root>
+    <div id="tip-demo" class="inline border p10 abs" style="left: -9999px; background: white">
+      这是测试引用外部提示框
+    </div>
+    <div id="css-font" class="topology topology-home" style="width: 0; height: 0; overflow: hidden"></div>
+  </body>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="/assets/js/777777.js"></script>
+  <script src="/assets/js/rg.js"></script>
+</html>

@@ -1,0 +1,34 @@
+{
+  "name": "@topology/flow-diagram",
+  "version": "0.3.0",
+  "description": "A flow diagram tool using le5le-topology.",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "scripts": {
+    "copy": "copyfiles  package.json ../../dist/flow-diagram/",
+    "build": "tsc && npm run copy"
+  },
+  "keywords": [
+    "topology",
+    "flow",
+    "diagram",
+    "canvas"
+  ],
+  "author": "alsmile123@qq.com",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/le5le-com/topology.git"
+  },
+  "bugs": {
+    "url": "https://github.com/le5le-com/topology/issues"
+  },
+  "homepage": "https://github.com/le5le-com/topology#readme",
+  "peerDependencies": {
+    "@topology/core": "^0.3.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "gitHead": "78f2a53ca1839c89b56e2e498d17ba4eb987ad14"
+}

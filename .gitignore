@@ -6,5 +6,9 @@ runtime/
 www/source/ppt/node_modules/
 www/source/mind/simple-mind-map/node_modules/
 www/source/mind/web/node_modules/
+www/source/excel/node_modules/
+www/source/excel/doc/
+www/source/excel/.github
+www/source/excel/.vs
 app/
 todo.md

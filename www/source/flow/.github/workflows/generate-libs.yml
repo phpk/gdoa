@@ -1,0 +1,53 @@
+name: generate-libs
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Setup Node.js
+        uses: actions/setup-node@v1.1.0
+        with:
+          node-version: "10.x"
+
+      - name: Git Clone
+        uses: actions/checkout@master
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Install core dependencies
+        working-directory: ./packages/core
+        run: npm install
+
+      - name: Generate libs doc
+        run: |
+          pwd
+          npm run docs
+      - name: Git Init
+        run: |
+          pwd
+          cd ./docs
+          git init
+      - name: Git Commit
+        env:
+          GITHUB_USER: ${{ secrets.GITHUB_USER }}
+          GITHUB_USER_EMAIL: ${{ secrets.GITHUB_USER_EMAIL }}
+        run: |
+          ls
+          cd ./docs
+          git add .
+          git config user.email "${GITHUB_USER_EMAIL}"
+          git config user.name "${GITHUB_USER}"
+          git commit -m "update github pages"
+      - name: Git Push
+        env:
+          ACCESS_TOKEN: ${{ secrets.ACTIONS_ACCESS_TOKEN }}
+        run: |
+          cd ./docs
+          git push --set-upstream --force --quiet "https://${ACCESS_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" master:gh-pages
