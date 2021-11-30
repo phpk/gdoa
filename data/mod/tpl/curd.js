@@ -13,7 +13,7 @@ ctpl.list = `
         let { page, limit, param } = this.get();
         let wsql = {};
         if (param) wsql = this.parseSearch(param, wsql);
-        let list = await this.model('{{tags}}').where(wsql).page(page, limit).select();
+        let list = await this.model('{{tags}}').where(wsql).page(page, limit).order('id desc').select();
         let count = await this.model('{{tags}}').where(wsql).count();
         return this.success({ list, count })
     }

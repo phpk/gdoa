@@ -471,7 +471,10 @@ module.exports = class extends think.Model {
         if(data.update_time) sql += ",`update_time` int(10) NOT NULL DEFAULT '0' COMMENT '更新时间'";
         if(data.user_id) sql += ",`user_id` int(10) NOT NULL DEFAULT '0' COMMENT '用户id'";
         if (data.admin_id) sql += ",`admin_id` int(10) NOT NULL DEFAULT '0' COMMENT '管理员id'";
-        if (data.title) sql += ",`title` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '名称'";
+        if (data.pid) sql += ",`pid` int(10) NOT NULL DEFAULT '0' COMMENT '上级id'";
+        if (data.name) sql += ",`name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '名称'";
+        if (data.title) sql += ",`title` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '标题'";
+        if (data.content) sql += ",`content` text CHARACTER SET utf8 NOT NULL COMMENT '内容'";
         sql += ",PRIMARY KEY (`id`)";
         sql += ") ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='"+data.comment+"'";
         await this.sql(sql);

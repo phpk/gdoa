@@ -136,7 +136,8 @@ module.exports = class extends think.Service {
         controllerTpl += tplFile.ctpl.editBefore;
         controllerTpl += tplFile.ctpl.del;
         controllerTpl += tplFile.endTpl;
-        controllerTpl = this.replaceTpl(controllerTpl, data.name, data.tables_main);
+        let prefix = think.config('mysql.prefix');
+        controllerTpl = this.replaceTpl(controllerTpl, data.name, data.tables_main.replace(prefix, ''));
         return controllerTpl;
     }
     /**

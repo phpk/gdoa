@@ -1,13 +1,28 @@
 <template>
   <div id="app">
-    <router-view></router-view>
+     <template>
+      <Toolbar></Toolbar>
+      <Edit></Edit>
+    </template>
   </div>
 </template>
 
 <script>
+import Toolbar from "./pages/Edit/components/Toolbar";
+import Edit from "./pages/Edit/components/Edit";
+import { mapActions } from "vuex";
 export default {
   name: "App",
-  components: {},
+  components: {
+    Toolbar,
+    Edit,
+  },
+  async created() {
+    await this.getUserMindMapData();
+  },
+  methods: {
+    ...mapActions(["getUserMindMapData"]),
+  }
 };
 </script>
 

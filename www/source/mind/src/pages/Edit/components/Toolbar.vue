@@ -10,8 +10,8 @@
           }"
           @click="$bus.$emit('execCommand', 'BACK')"
         >
-          <span class="icon iconfont iconhoutui-shi"></span>
-          <span class="text">回退</span>
+          <span class="icon iconfont iconhoutui-shi" title="回退"></span>
+          <!--span class="text">回退</span-->
         </div>
         <div
           class="toolbarBtn"
@@ -20,18 +20,18 @@
           }"
           @click="$bus.$emit('execCommand', 'FORWARD')"
         >
-          <span class="icon iconfont iconqianjin1"></span>
-          <span class="text">前进</span>
+          <span class="icon iconfont iconqianjin1" title="前进"></span>
+          <!--span class="text">前进</span-->
         </div>
         <div
           class="toolbarBtn"
           :class="{
-            disabled: activeNodes.length <= 0 || hasRoot,
+            disabled: activeNodes.length <= 0,
           }"
           @click="$bus.$emit('execCommand', 'INSERT_NODE')"
         >
-          <span class="icon iconfont iconjiedian"></span>
-          <span class="text">插入同级节点</span>
+          <span class="icon iconfont iconjiedian" title="插入同级节点"></span>
+          <!--span class="text">插入同级节点</span-->
         </div>
         <div
           class="toolbarBtn"
@@ -40,8 +40,8 @@
           }"
           @click="$bus.$emit('execCommand', 'INSERT_CHILD_NODE')"
         >
-          <span class="icon iconfont icontianjiazijiedian"></span>
-          <span class="text">插入子节点</span>
+          <span class="icon iconfont icontianjiazijiedian" title="插入子节点"></span>
+          <!--span class="text">插入子节点</span-->
         </div>
         <div
           class="toolbarBtn"
@@ -50,8 +50,8 @@
           }"
           @click="$bus.$emit('execCommand', 'REMOVE_NODE')"
         >
-          <span class="icon iconfont iconshanchu"></span>
-          <span class="text">删除节点</span>
+          <span class="icon iconfont iconshanchu" title="删除节点"></span>
+          <!--span class="text">删除节点</span-->
         </div>
         <div
           class="toolbarBtn"
@@ -60,8 +60,8 @@
           }"
           @click="$bus.$emit('showNodeImage')"
         >
-          <span class="icon iconfont iconimage"></span>
-          <span class="text">图片</span>
+          <span class="icon iconfont iconimage" title="图片"></span>
+          <!--span class="text">图片</span-->
         </div>
         <div
           class="toolbarBtn"
@@ -70,8 +70,8 @@
           }"
           @click="$bus.$emit('showNodeIcon')"
         >
-          <span class="icon iconfont iconxiaolian"></span>
-          <span class="text">图标</span>
+          <span class="icon iconfont iconxiaolian" title="图标"></span>
+          <!--span class="text">图标</span-->
         </div>
         <div
           class="toolbarBtn"
@@ -80,8 +80,8 @@
           }"
           @click="$bus.$emit('showNodeLink')"
         >
-          <span class="icon iconfont iconchaolianjie"></span>
-          <span class="text">超链接</span>
+          <span class="icon iconfont iconchaolianjie" title="超链接"></span>
+          <!--span class="text">超链接</span-->
         </div>
         <div
           class="toolbarBtn"
@@ -90,8 +90,8 @@
           }"
           @click="$bus.$emit('showNodeNote')"
         >
-          <span class="icon iconfont iconflow-Mark"></span>
-          <span class="text">备注</span>
+          <span class="icon iconfont iconflow-Mark" title="备注"></span>
+          <!--span class="text">备注</span-->
         </div>
         <div
           class="toolbarBtn"
@@ -100,47 +100,47 @@
           }"
           @click="$bus.$emit('showNodeTag')"
         >
-          <span class="icon iconfont iconbiaoqian"></span>
-          <span class="text">标签</span>
+          <span class="icon iconfont iconbiaoqian" title="标签"></span>
+          <!--span class="text">标签</span-->
         </div>
       </div>
       <!-- 通用操作 -->
       <div class="toolbarBlock">
         <div class="toolbarBtn" @click="$bus.$emit('showOutline')">
-          <span class="icon iconfont iconfuhao-dagangshu"></span>
-          <span class="text">显示大纲</span>
+          <span class="icon iconfont iconfuhao-dagangshu" title="显示大纲"></span>
+          <!--span class="text">显示大纲</span-->
         </div>
         <div class="toolbarBtn" @click="$bus.$emit('showBaseStyle')">
-          <span class="icon iconfont iconyangshi"></span>
-          <span class="text">基础样式</span>
+          <span class="icon iconfont iconyangshi" title="基础样式"></span>
+          <!--span class="text">基础样式</span-->
         </div>
         <div class="toolbarBtn" @click="$bus.$emit('showTheme')">
-          <span class="icon iconfont iconjingzi"></span>
-          <span class="text">主题</span>
+          <span class="icon iconfont iconjingzi" title="主题"></span>
+          <!--span class="text">主题</span-->
         </div>
         <div class="toolbarBtn" @click="$bus.$emit('showStructure')">
-          <span class="icon iconfont iconjiegou"></span>
-          <span class="text">结构</span>
+          <span class="icon iconfont iconjiegou" title="结构"></span>
+          <!--span class="text">结构</span-->
         </div>
       </div>
       <!-- 导出 -->
       <div class="toolbarBlock">
         <div class="toolbarBtn" @click="$bus.$emit('showShortcutKey')">
-          <span class="icon iconfont iconjianpan"></span>
-          <span class="text">快捷键</span>
+          <span class="icon iconfont iconjianpan" title="快捷键"></span>
+          <!--span class="text">快捷键</span-->
         </div>
         <div class="toolbarBtn" @click="$bus.$emit('showImport')">
-          <span class="icon iconfont icondaoru"></span>
-          <span class="text">导入</span>
+          <span class="icon iconfont icondaoru" title="导入"></span>
+          <!--span class="text">导入</span-->
         </div>
         <div class="toolbarBtn" @click="$bus.$emit('showExport')">
-          <span class="icon iconfont icondaochu"></span>
-          <span class="text">导出</span>
+          <span class="icon iconfont icondaochu" title="导出"></span>
+          <!--span class="text">导出</span-->
         </div>
-        <div class="toolbarBtn" @click="$bus.$emit('showSave')">
+        <!--div class="toolbarBtn" @click="$bus.$emit('showSave')">
           <span class="icon iconfont iconquanxuan"></span>
           <span class="text">保存</span>
-        </div>
+        </div-->
         
       </div>
     </div>
@@ -151,7 +151,7 @@
     <NodeTag></NodeTag>
     <Export></Export>
     <Import></Import>
-    <Savedata></Savedata>
+    <!--Savedata></Savedata-->
   </div>
 </template>
 
@@ -163,7 +163,7 @@ import NodeNote from "./NodeNote";
 import NodeTag from "./NodeTag";
 import Export from "./Export";
 import Import from './Import';
-import Savedata from './Savedata';
+//import Savedata from './Savedata';
 /**
  * 工具栏
  */
@@ -177,7 +177,7 @@ export default {
     NodeTag,
     Export,
     Import,
-    Savedata
+    //Savedata
   },
   data() {
     return {
@@ -187,11 +187,12 @@ export default {
     };
   },
   computed: {
-    hasRoot() {
-      return this.activeNodes.find((node) => {
-        return node.isRoot;
-      });
-    },
+    //hasRoot() {
+      // return this.activeNodes.find((node) => {
+      //   return node.isRoot;
+      // });
+     // return true;
+    //},
   },
   created() {
     this.$bus.$on("node_active", (...args) => {

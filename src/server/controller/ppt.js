@@ -9,7 +9,7 @@ module.exports = class extends Base {
         let { page, limit, param } = this.get();
         let wsql = {};
         if (param) wsql = this.parseSearch(param, wsql);
-        let list = await this.model('ppt').where(wsql).page(page, limit).select();
+        let list = await this.model('ppt').where(wsql).order('id desc').page(page, limit).select();
         let count = await this.model('ppt').where(wsql).count();
         return this.success({ list, count })
     }

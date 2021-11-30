@@ -57,8 +57,9 @@
                              <div class="layui-form-item">
                                 <label class="layui-form-label">图标</label>
                                 <div class="layui-input-block">
-                                <input name="icon" id="icon" style="display:none;"        value="layui-icon-face-smile-fine" 
-                                class="layui-input" lay-filter="iconPicker">
+                                <input type="text" name="icon" autocomplete="off" class="layui-input icon-selected"  value="layui-icon layui-icon-username"/>
+                                <!--input name="icon" id="icon" style="display:none;"        value="layui-icon-face-smile-fine" 
+                                class="layui-input" lay-filter="iconPicker"-->
                                 </div>
                             </div>
 
@@ -111,14 +112,14 @@
         <script src="../../component/ui/ui.js"></script>
         <script>
             layui.use([
-                'form', 'layer', 'dropdown', 'iconPicker','selectM'
+                'form', 'layer', 'dropdown', 'iconSelectedPlus','selectM'
             ], function () {
                 let form = layui.form,
                     layer = layui.layer,
                     $ = layui.$,
                     dropdown = layui.dropdown,
                     selectM = layui.selectM,
-                    iconPicker = layui.iconPicker;
+                    iconSelectedPlus = layui.iconSelectedPlus;
                 form.on('radio(type)', function(data){
                     if(data.value == 5) {
                         $('#rule-area').show();
@@ -126,7 +127,12 @@
                         $('#rule-area').hide();
                     }
                 });
-                
+                 iconSelectedPlus.render(".icon-selected", {
+                    //position : 'right',
+                    icons: iconSelectedPlus.icons.layui,
+                    simple : true
+                });
+                /*
                 iconPicker.render({
                     elem: "#icon",
                     type: "fontClass",
@@ -136,7 +142,7 @@
                     cellWidth: '43px',
                     click: function (data) {},
                     success: function (d) {}
-                });
+                });*/
 
                 _get(layui, 'mod/addBefore', res => {
                     console.log(res)
