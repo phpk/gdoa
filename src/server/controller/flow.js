@@ -13,7 +13,7 @@ module.exports = class extends Base {
         let count = await this.model('flow').where(wsql).count();
         return this.success({ list, count })
     }
-
+    
     async addAction() {
         let post = this.post();
         post.add_time = this.now();
