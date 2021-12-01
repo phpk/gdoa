@@ -1,61 +1,57 @@
 {
-  "name": "vue-flowchart-editor",
-  "version": "1.0.2",
-  "description": "A flowchart editor component base on Vue and G6",
-  "keywords": [
-    "vue",
-    "flowchart",
-    "editor",
-    "g6",
-    "workflow",
-    "graphics",
-    "graph"
-  ],
-  "author": {
-    "name": "jnoodle",
-    "email": "fullstack@126.com"
-  },
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "git@github.com:jnoodle/vue-flowchart-editor.git"
-  },
-  "files": [
-    "lib/*",
-    "src/*",
-    "public/*",
-    "*.json",
-    "*.js",
-    "*.md"
-  ],
-  "main": "dist/vue-flowchart-editor.common.js",
-  "unpkg": "dist/vue-flowchart-editor.umd.min.js",
-  "jsdelivr": "dist/vue-flowchart-editor.umd.min.js",
+  "name": "@oxoyo/xfc",
+  "version": "3.0.2",
+  "description": "A visual graph editor based on G6 and Vue.",
+  "main": "dist/xfc.umd.min.js",
   "scripts": {
-    "serve": "vue-cli-service serve src/demo/app.js",
-    "build:demo": "BUILD=demo vue-cli-service build src/demo/app.js",
-    "build:lib": "BUILD=lib vue-cli-service build --target lib --name vue-flowchart-editor src/index.js",
+    "serve": "vue-cli-service serve --mode development",
+    "example": "npx --max_old_space_size=4096 vue-cli-service serve --mode development ./example/main.js",
+    "build": "vue-cli-service build --mode production",
+    "build-lib": "vue-cli-service build --mode build-lib --target lib --name xfc ./src/xfc.js --dest ./dist",
     "lint": "vue-cli-service lint"
   },
+  "files": [
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OXOYO/X-Flowchart-Vue.git"
+  },
+  "keywords": [
+    "flowchart",
+    "vue-flowchart",
+    "g6",
+    "g6-editor",
+    "mind"
+  ],
+  "author": "OXOYO",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/OXOYO/X-Flowchart-Vue/issues"
+  },
+  "homepage": "https://github.com/OXOYO/X-Flowchart-Vue#readme",
   "dependencies": {
-    "@antv/g6": "^3.5.3",
-    "@antv/g6-plugins": "^1.0.9",
-    "gg-editor-core": "^1.3.4",
-    "lodash": "^4.17.15",
-    "vue": "^2.6.11"
+    "@antv/g6": "^3.5.6",
+    "axios": "^0.24.0",
+    "iview": "^3.4.2",
+    "mousetrap": "^1.6.3",
+    "register-service-worker": "^1.6.2",
+    "screenfull": "^4.2.1",
+    "v-click-outside": "^2.1.4",
+    "vue": "^2.6.10",
+    "vue-color": "^2.7.0",
+    "vue-i18n": "^8.14.0"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^4.4.1",
-    "@vue/cli-plugin-eslint": "^4.4.1",
-    "@vue/cli-service": "^4.4.1",
-    "@vue/eslint-config-prettier": "^6.0.0",
-    "babel-eslint": "^10.1.0",
-    "eslint": "^7.2.0",
-    "eslint-plugin-prettier": "^3.1.3",
-    "eslint-plugin-vue": "^6.2.2",
-    "less": "^3.11.3",
-    "less-loader": "^6.1.1",
-    "prettier": "^2.0.5",
-    "vue-template-compiler": "^2.6.11"
+    "@vue/cli-plugin-babel": "^3.11.0",
+    "@vue/cli-plugin-eslint": "^3.11.0",
+    "@vue/cli-service": "^3.11.0",
+    "@vue/eslint-config-standard": "^4.0.0",
+    "babel-eslint": "^8.2.2",
+    "eslint": "^5.16.0",
+    "eslint-plugin-vue": "^5.0.0",
+    "less": "^3.0.4",
+    "less-loader": "^5.0.0",
+    "vue-template-compiler": "^2.6.10"
   }
 }
