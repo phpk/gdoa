@@ -23,7 +23,8 @@ module.exports = class extends Base {
         let types = {
             1: '控制层',
             2: '模型层',
-            3: '服务层'
+            3: '服务层',
+            5 : 'curd'
         };
         list.forEach(d => {
             d.typeName = types[d.type];
@@ -65,7 +66,7 @@ module.exports = class extends Base {
     async addAction() {
         let post = this.post();
         let key = post.key;
-        let sys = ['mod', 'admin', 'db', 'database', 'form', 'auth', 'admin', 'api', 'doc', 'ppt', 'mind', 'index', 'logs', 'set','base','cate'];
+        let sys = ['mod', 'admin', 'db', 'database', 'form', 'auth', 'admin', 'api', 'doc', 'ppt', 'mind', 'flow', 'index', 'logs', 'set','base','cate'];
         if (sys.includes(key)) return this.fail('系统模块不允许添加');
         if (await this.hasData('mod', { key: key, type: post.type })) {
             return this.fail('系统中存在相同的模块');
