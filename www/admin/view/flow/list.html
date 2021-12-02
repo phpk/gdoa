@@ -37,9 +37,21 @@
 		</div>
 
 		<script type="text/html" id="flow-toolbar">
-			<button class="layui-btn layui-btn-primary layui-border-red layui-btn-sm" lay-event="add">
+			<button class="layui-btn layui-btn-primary layui-border-green layui-btn-sm" lay-event="add1">
 		        <i class="layui-icon layui-icon-add-1"></i>
-		        新增
+		    	图形编辑器
+		    </button>
+			<button class="layui-btn layui-btn-primary layui-border-blue layui-btn-sm" lay-event="add2">
+		        <i class="layui-icon layui-icon-add-1"></i>
+		    	图表编辑器
+		    </button>
+			<button class="layui-btn layui-btn-primary layui-border-orange layui-btn-sm"  lay-event="add3">
+		        <i class="layui-icon layui-icon-add-1"></i>
+		    	权限编辑器
+		    </button>
+			<button class="layui-btn layui-btn-primary layui-border-red layui-btn-sm"  lay-event="add4">
+		        <i class="layui-icon layui-icon-add-1"></i>
+		    	工作流编辑器
 		    </button>
 		</script>
 
@@ -75,6 +87,11 @@
 						{
 							title: '名称',
 							field: 'title',
+							align: 'center'
+						},
+						{
+							title: '类型',
+							field: 'typeName',
 							align: 'center'
 						},
 						{
@@ -132,10 +149,10 @@
 				});
 
 				table.on('toolbar(flow-table)', function(obj) {
-					if (obj.event === 'add') {
-						window.add();
-					} else if (obj.event === 'refresh') {
+					if (obj.event === 'refresh') {
 						window.refresh();
+					} else if (obj.event.indexOf('add') !== -1) {
+						window.add(obj.event);
 					}
 				});
 				// 监听搜索操作
@@ -162,30 +179,53 @@
 					});
 					return false;
 				})
-
-				window.add = function() {
+				const flowType = {
+						1: '图形编辑器',
+						2: '图表编辑器',
+						3: '权限编辑器',
+						4: '工作流编辑器'
+					}
+					const flowhtml = {
+						1 : '/admin/flow/graph/index.html',
+						2 : '/admin/flow/editors/diagrameditor.html',
+						3 : '/admin/flow/editors/processeditor.html',
+						4 : '/admin/flow/editors/workfloweditor.html'
+					}
+				window.add = function(objname) {
+					let id = objname.replace('add','')*1;
 					layer.open({
 						type: 2,
-						title: '新增',
+						title: '新增' + flowType[id],
 						shade: 0.1,
 						offset: 'rt',
 						area: ['95%', '100%'],
 						anim: 1,
 						maxmin: true,
-						content: '/admin/flow/index.html'
+						content: flowhtml[id],
+						cancel: function(index, layero){ 
+							table.reload('flow-table');
+							layer.close(index);
+							return false; 
+						} 
 					});
 				}
-
 				window.edit = function(obj) {
+					
+					let type = obj.data.type;
 					layer.open({
 						type: 2,
-						title: '修改',
+						title: '修改' + flowType[type],
 						shade: 0.1,
 						offset: 'rt',
 						area: ['95%', '100%'],
 						anim: 1,
 						maxmin: true,
-						content: '/admin/flow/index.html?id=' + obj.data.id
+						content: flowhtml[type] + '?id=' + obj.data.id,
+						cancel: function(index, layero){ 
+							table.reload('flow-table');
+							layer.close(index);
+							return false; 
+						} 
 					});
 				}
 				window.remove = function(obj){

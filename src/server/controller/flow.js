@@ -1,4 +1,11 @@
 const Base = require('./base.js');
+const flowType = {
+    1: '图形编辑器',
+    2: '图表编辑器',
+    3: '权限编辑器',
+    4: '工作流编辑器'
+
+}
 /**
  * @class
  * @apiDefine flow 流程图管理
@@ -10,6 +17,9 @@ module.exports = class extends Base {
         let wsql = {};
         if (param) wsql = this.parseSearch(param, wsql);
         let list = await this.model('flow').where(wsql).page(page, limit).order('id desc').select();
+        list.forEach(d => {
+            d.typeName = flowType[d.type]
+        })
         let count = await this.model('flow').where(wsql).count();
         return this.success({ list, count })
     }

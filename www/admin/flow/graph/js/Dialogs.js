@@ -1180,6 +1180,37 @@ ExportDialog.showGifOption = true;
  */
 ExportDialog.showXmlOption = true;
 
+
+const covertSVG2Image = (svg, name, width, height, type = 'png') => {
+	//let serializer = new XMLSerializer()
+	let source = '<?xml version="1.0" standalone="no"?>\r\n' + svg
+	let image = new Image()
+	image.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(source)
+	let canvas = document.createElement('canvas')
+	canvas.width = width
+	canvas.height = height
+	let context = canvas.getContext('2d')
+	context.fillStyle = '#fff'
+	context.fillRect(0, 0, 10000, 10000)
+	image.onload = function () {
+		context.drawImage(image, 0, 0)
+		
+		//console.log(type)
+		if (type == 'pdf') {
+			var imgData = canvas.toDataURL('image/jpeg');
+			var pdf = new jsPDF('landscape');
+			pdf.addImage(imgData, 'JPEG', 0, 0, width, height);
+			pdf.save(name);
+		} else {
+			let a = document.createElement('a')
+			a.download = name
+			a.href = canvas.toDataURL(`image/${type}`)
+			a.click()
+		}
+		
+		
+	}
+}
 /**
  * Hook for getting the export format. Returns null for the default
  * intermediate XML export format or a function that returns the
@@ -1199,43 +1230,17 @@ ExportDialog.exportFile = function(editorUi, name, format, bg, s, b, dpi)
 		ExportDialog.saveLocalFile(editorUi, mxUtils.getXml(graph.getSvg(bg, s, b)), name, format);
 	}
     else
-    {
+	{
+		//console.log(format)
     	var bounds = graph.getGraphBounds();
-    	
-		// New image export
-		var xmlDoc = mxUtils.createXmlDocument();
-		var root = xmlDoc.createElement('output');
-		xmlDoc.appendChild(root);
-		
-	    // Renders graph. Offset will be multiplied with state's scale when painting state.
-		var xmlCanvas = new mxXmlCanvas2D(root);
-		xmlCanvas.translate(Math.floor((b / s - bounds.x) / graph.view.scale),
-			Math.floor((b / s - bounds.y) / graph.view.scale));
-		xmlCanvas.scale(s / graph.view.scale);
-		
-		var imgExport = new mxImageExport()
-	    imgExport.drawState(graph.getView().getState(graph.model.root), xmlCanvas);
-	    
-		// Puts request data together
-		var param = 'xml=' + encodeURIComponent(mxUtils.getXml(root));
+    
+		var svgXml = mxUtils.getXml(graph.getSvg(bg, s, b));
 		var w = Math.ceil(bounds.width * s / graph.view.scale + 2 * b);
 		var h = Math.ceil(bounds.height * s / graph.view.scale + 2 * b);
-		
-		// Requests image if request is valid
-		if (param.length <= MAX_REQUEST_SIZE && w * h < MAX_AREA)
-		{
-			editorUi.hideDialog();
-			var req = new mxXmlRequest(EXPORT_URL, 'format=' + format +
-				'&filename=' + encodeURIComponent(name) +
-				'&bg=' + ((bg != null) ? bg : 'none') +
-				'&w=' + w + '&h=' + h + '&' + param +
-				'&dpi=' + dpi);
-			req.simulate(document, '_blank');
-		}
-		else
-		{
-			mxUtils.alert(mxResources.get('drawingTooLarge'));
-		}
+		editorUi.hideDialog();
+		//downloadPNG(name, w, svgXml);
+		covertSVG2Image(svgXml, name, w, h, format);
+
 	}
 };
 
@@ -1250,9 +1255,11 @@ ExportDialog.saveLocalFile = function(editorUi, data, filename, format)
 	if (data.length < MAX_REQUEST_SIZE)
 	{
 		editorUi.hideDialog();
-		var req = new mxXmlRequest(SAVE_URL, 'xml=' + encodeURIComponent(data) + '&filename=' +
-			encodeURIComponent(filename) + '&format=' + format);
-		req.simulate(document, '_blank');
+		var blob = new Blob([data], { type: "text/plain;charset=utf-8" });
+		saveAs(blob, filename);
+		//var req = new mxXmlRequest(SAVE_URL, 'xml=' + encodeURIComponent(data) + '&filename=' +
+		//	encodeURIComponent(filename) + '&format=' + format);
+		//req.simulate(document, '_blank');
 	}
 	else
 	{

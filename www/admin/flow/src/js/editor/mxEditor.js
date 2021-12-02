@@ -388,6 +388,29 @@ function mxEditor(config)
 				this.destroy();
 			}));
 		}
+		if (urlParams['id']) {
+			new mxXmlRequest('/server/flow/editBefore?id=' + urlParams['id'], '', 'get').send(res => {
+				//console.log(res)
+				let txt = JSON.parse(res.getText())
+				//console.log(txt)
+				var req = mxUtils.parseXml(txt.data.content);
+				//console.log(req)
+				var root = req.documentElement;
+				//console.log(root)
+				// eslint-disable-next-line new-cap
+				var dec = new mxCodec(root)
+				//console.log(dec)
+				this.graph.getModel().beginUpdate()
+				try {
+					dec.decode(root, this.graph.getModel())
+				} finally {
+					this.graph.getModel().endUpdate()
+				}
+
+				//this.graph.importGraphModel(doc.documentElement);
+			});
+
+		}
 	}
 };
 
@@ -2262,17 +2285,37 @@ mxEditor.prototype.readGraphModel = function (node)
 mxEditor.prototype.save = function (url, linefeed)
 {
 	// Gets the URL to post the data to
-	url = url || this.getUrlPost();
-
+	//url = url || this.getUrlPost();
+	//console.log(linefeed)
 	// Posts the data if the URL is not empty
-	if (url != null && url.length > 0)
-	{
-		var data = this.writeGraphModel(linefeed);
-		this.postDiagram(url, data);
+	//if (url != null && url.length > 0)
+	//{
+	
+	let name = this.getTitle();
+	//console.log(title)
+	let xml = this.writeGraphModel(linefeed);
+	//console.log(data)
+	//let flowId = urlParams['id'];
+	if (!urlParams['id']) {
+		new mxXmlRequest('/server/flow/add', 'title=' + encodeURIComponent(name) +
+			'&type=' + flowType +'&content=' + encodeURIComponent(xml)).send(res => {
+				//console.log(res)
+				let txt = JSON.parse(res.getText())
+				//console.log(txt)
+				urlParams['id'] = txt.data;
+			});
+	} else {
+		new mxXmlRequest('/server/flow/edit', 'title=' + encodeURIComponent(name) +
+			'&type=' + flowType +'&content=' + encodeURIComponent(xml) + '&id=' + urlParams['id']).send(res => {
+				//let txt = JSON.parse(res.getText())
+				//console.log(txt)
+			});
+	}
+		//this.postDiagram(url, data);
 
 		// Resets the modified flag
-		this.setModified(false);
-	}
+	this.setModified(false);
+	//}
 
 	// Dispatches a save event
 	this.fireEvent(new mxEventObject(mxEvent.SAVE, 'url', url));

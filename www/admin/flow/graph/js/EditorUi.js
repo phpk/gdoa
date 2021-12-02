@@ -4,17 +4,6 @@
 /**
  * Constructs a new graph editor
  */
-const getQuery = (val) => {
-	let query = window.location.search.substring(1);
-	let vars = query.split("&");
-	for (let i = 0; i < vars.length; i++) {
-		let pair = vars[i].split("=");
-		if (pair[0] == val) { return pair[1]; }
-	}
-	return (false);
-}
-let flowId = getQuery('id')
-
 EditorUi = function(editor, container, lightbox)
 {
 	mxEventSource.call(this);
@@ -4347,18 +4336,18 @@ EditorUi.prototype.save = function(name)
 					//console.log(flowId)
 					//new mxXmlRequest(SAVE_URL, 'filename=' + encodeURIComponent(name) +
 					///	'&xml=' + encodeURIComponent(xml)).simulate(document, '_blank');
-					if (!flowId) {
+					if (!urlParams['id']) {
 						new mxXmlRequest('/server/flow/add', 'title=' + encodeURIComponent(name) +
 							'&type=1&content=' + encodeURIComponent(xml)).send(res => {
 								//console.log(res)
 								let txt = JSON.parse(res.getText())
 								//console.log(txt)
-								flowId = txt.data;
+								urlParams['id'] = txt.data;
 							});
 					} else {
 						new mxXmlRequest('/server/flow/edit', 'title=' + encodeURIComponent(name) +
-							'&type=1&content=' + encodeURIComponent(xml) + '&id=' + flowId).send(res => {
-								let txt = JSON.parse(res.getText())
+							'&type=1&content=' + encodeURIComponent(xml) + '&id=' + urlParams['id']).send(res => {
+								//let txt = JSON.parse(res.getText())
 								//console.log(txt)
 							});
 					}
