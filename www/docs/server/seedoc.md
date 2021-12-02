@@ -17,3 +17,32 @@
 
 ### 表单设计参考
 [https://gitee.com/ayq947/ayq-layui-form-designer?_from=gitee_search](https://gitee.com/ayq947/ayq-layui-form-designer?_from=gitee_search)
+
+### 思维导图参考
+[https://github.com/wanglin2/mind-map](https://github.com/wanglin2/mind-map)
+
+### excel参考
+[https://github.com/mengshukeji/Luckysheet](https://github.com/mengshukeji/Luckysheet)
+
+### ppt参考
+[https://github.com/pipipi-pikachu/PPTist](https://github.com/pipipi-pikachu/PPTist)
+
+### 流程图参考
+[https://github.com/jgraph/mxgraph](https://github.com/jgraph/mxgraph)
+
+### markdown编辑器
+[https://github.com/Vanessa219/vditor](https://github.com/Vanessa219/vditor)
+[https://github.com/nhn/tui.editor](https://github.com/nhn/tui.editor)
+
+### 富文本编辑器
+[https://github.com/ianstormtaylor/slate](https://github.com/ianstormtaylor/slate)
+[https://textbus.tanboui.com/doc/start](https://textbus.tanboui.com/doc/start)
+[https://github.com/froala/wysiwyg-editor](https://github.com/froala/wysiwyg-editor)
+[https://github.com/quilljs/quill](https://github.com/quilljs/quill)
+[https://github.com/notadd/neditor](https://github.com/notadd/neditor)
+[https://github.com/mdnice/markdown-resume](https://github.com/mdnice/markdown-resume 简历)
+
+### 图片编辑
+[https://github.com/nhn/tui.image-editor](https://github.com/nhn/tui.image-editor)
+
+
