@@ -42,7 +42,8 @@ module.exports = class extends Base {
             return this.success({
                 name: file.name,
                 filename,
-                filepath
+                filepath,
+                path : rpath + name
             })
         }
         

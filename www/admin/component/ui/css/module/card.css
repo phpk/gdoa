@@ -39,10 +39,13 @@
 }
 
 .project-list-item .project-list-item-desc .time {
-	color: #999;
-	font-size: 12px;
+	/*color: #999;
+	font-size: 12px;*/
+	text-align: center;
 }
-
+.project-list-item .project-list-item-desc .time button{
+	margin-left: 10px;
+}
 .project-list-item .project-list-item-desc .ew-head-list {
 	position: absolute;
 	right: 0;
