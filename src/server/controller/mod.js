@@ -66,7 +66,7 @@ module.exports = class extends Base {
     async addAction() {
         let post = this.post();
         let key = post.key;
-        let sys = ['mod', 'admin', 'db', 'database', 'form', 'auth', 'admin', 'api', 'doc', 'ppt', 'mind', 'flow', 'index', 'logs', 'set','base','cate'];
+        let sys = ['mod', 'admin', 'db', 'database', 'form', 'auth', 'admin',  'doc','api', 'ppt', 'mind','excel', 'flow', 'index', 'logs', 'set','base','cate'];
         if (sys.includes(key)) return this.fail('系统模块不允许添加');
         if (await this.hasData('mod', { key: key, type: post.type })) {
             return this.fail('系统中存在相同的模块');
@@ -78,6 +78,9 @@ module.exports = class extends Base {
         }
         //console.log(post);
         await this.service('mod').createMod(post);
+        if (post.type == 4) {
+            post.type = 1;
+        }
         let add = {
             name: post.name,
             key: post.key,
@@ -90,6 +93,7 @@ module.exports = class extends Base {
             extra : post.extra ? post.extra : ''
         }
         let id = await this.model('mod').add(add);
+
         if (post.type == 5) {
             await this.addRule(post);
         }

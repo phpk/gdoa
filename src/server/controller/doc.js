@@ -1,8 +1,7 @@
 const Base = require('./base.js');
-
 /**
  * @class
- * @apiDefine doc 文档管理管理
+ * @apiDefine doc 文档管理
  */
 module.exports = class extends Base {
 

@@ -166,6 +166,7 @@ module.exports = class extends think.Service {
         edit = this.replaceTpl(tplFile.htmlTpl.edit, data.name, data.key);
         return { list, edit}
     }
+    //@todo 模型的多模版可以在这里扩展，第二期
     async createModCurd(data) {
         let path = srcPath + data.server_path,//服务器端路径
             name = data.name,//模块名字

@@ -2,56 +2,32 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>接口设计管理</title>
+		<title>接口参数管理</title>
 		<link rel="stylesheet" href="../../component/ui/css/ui.css" />
 	</head>
 	<body class="pear-container">
+		
 		<div class="layui-card">
 			<div class="layui-card-body">
-				<form class="layui-form" action="">
-					<div class="layui-form-item">
-						<div class="layui-form-item layui-inline">
-							<label class="layui-form-label">名称</label>
-							<div class="layui-input-inline">
-								<input type="text" name="title" placeholder="" class="layui-input">
-							</div>
-						</div>
-						<div class="layui-form-item layui-inline">
-							<button class="pear-btn pear-btn-md pear-btn-primary" lay-submit lay-filter="user-query">
-								<i class="layui-icon layui-icon-search"></i>
-								查询
-							</button>
-							<button type="reset" class="pear-btn pear-btn-md" lay-filter="user-reset" lay-submit>
-								<i class="layui-icon layui-icon-refresh"></i>
-								重置
-							</button>
-						</div>
-					</div>
-				</form>
-			</div>
-		</div>
-		<div class="layui-card">
-			<div class="layui-card-body">
-				<table id="api-table" lay-filter="api-table"></table>
+				<table id="apiparams-table" lay-filter="apiparams-table"></table>
 			</div>
 		</div>
 
-		<script type="text/html" id="api-toolbar">
-			<button class="layui-btn layui-btn-primary layui-border-red layui-btn-sm" lay-event="add">
+		<script type="text/html" id="apiparams-toolbar">
+			<button class="layui-btn layui-btn-primary layui-border-red layui-btn-sm" lay-event="addFromDb">
 		        <i class="layui-icon layui-icon-add-1"></i>
-		        新增
+		        从数据库新增
+		    </button>
+            <button class="layui-btn layui-btn-primary layui-border-red layui-btn-sm" lay-event="addFromManual">
+		        <i class="layui-icon layui-icon-add-1"></i>
+		        手工新增
 		    </button>
 		</script>
-		<script type="text/html" id="op-bar">
-			<button type="button" plain class="pear-btn pear-btn-primary pear-btn-xs" lay-event="params">参数</button>
-			<button type="button" plain class="pear-btn pear-btn-success pear-btn-xs"  lay-event="logic">逻辑</button>
-			<button type="button" plain class="pear-btn pear-btn-danger pear-btn-xs"  lay-event="test">测试</button>
-		</script>
-		<script type="text/html" id="api-bar">
+		<script type="text/html" id="apiparams-bar">
 			<button class="pear-btn pear-btn-primary pear-btn-sm" lay-event="edit"><i class="layui-icon layui-icon-edit"></i></button>
 		    <button class="pear-btn pear-btn-danger pear-btn-sm" lay-event="remove"><i class="layui-icon layui-icon-delete"></i></button>
 		</script>
-		<script type="text/html" id="api-time">
+		<script type="text/html" id="apiparams-time">
 			{{layui.util.toDateString(d.add_time*1000, 'yyyy-MM-dd HH:mm:ss')}}
 		</script>
 		<script src="../../config/config.js"></script>
@@ -84,23 +60,16 @@
 							align: 'center'
 						},
 						{
-							title: '模块',
-							field: 'modname',
+							title: '类型',
+							field: 'type',
 							align: 'center'
 						},
-						{
-							title: '添加时间',
-							field: 'add_time',
-							align: 'center',
-							templet: '#api-time'
+                        {
+							title: '是否必填',
+							field: 'reqired',
+							align: 'center'
 						},
 						
-						{
-							title: '操作',
-							toolbar: '#api-bar',
-							align: 'center',
-							width: 130
-						},
 						{
 							title: '管理',
 							align: 'center',
@@ -112,8 +81,8 @@
 				]
 
 				table.render({
-					elem: '#api-table',
-					url: apiUrl + 'api/list',
+					elem: '#apiparams-table',
+					url: apiUrl + 'apiparams/list',
 					headers : getHeader(),
 					parseData: function(res) {
 						//console.log(res)
@@ -128,7 +97,7 @@
 					cols: cols,
 					skin: 'line',
 
-					toolbar: '#api-toolbar',
+					toolbar: '#apiparams-toolbar',
 					defaultToolbar: [{
 						title: '刷新',
 						layEvent: 'refresh',
@@ -136,34 +105,25 @@
 					}, 'filter', 'print', 'exports']
 				});
 
-				table.on('tool(api-table)', function(obj) {
+				table.on('tool(apiparams-table)', function(obj) {
 					if (obj.event === 'remove') {
 						window.remove(obj);
 					} else if (obj.event === 'edit') {
 						window.edit(obj);
 					}
-					else if(obj.event === 'params') {
-						window.params(obj)
-					}
-					else if(obj.event === 'logic') {
-						window.logic(obj)
-					}
-					else if(obj.event === 'test') {
-						window.test(obj)
-					}
 				});
 
-				table.on('toolbar(api-table)', function(obj) {
-					if (obj.event === 'add') {
-						window.add();
+				table.on('toolbar(apiparams-table)', function(obj) {
+					if (obj.event === 'addFromDb') {
+						window.addFromDb();
 					} else if (obj.event === 'refresh') {
 						window.refresh();
 					}
 				});
 				// 监听搜索操作
 
-				form.on('submit(api-query)', function(data) {
-					table.reload('api-table', {
+				form.on('submit(apiparams-query)', function(data) {
+					table.reload('apiparams-table', {
 						where: {
 							param : $('form').serialize()
 						},
@@ -173,8 +133,8 @@
 					})
 					return false;
 				});
-				form.on('submit(api-reset)', function(data){
-					table.reload('api-table', {
+				form.on('submit(apiparams-reset)', function(data){
+					table.reload('apiparams-table', {
 						where: {
 							param : ''
 						},
@@ -185,7 +145,7 @@
 					return false;
 				})
 
-				window.add = function() {
+				window.addFromDb = function() {
 					layer.open({
 						type: 2,
 						title: '新增',
@@ -261,7 +221,7 @@
 
 
 				window.refresh = function(param) {
-					table.reload('api-table');
+					table.reload('apiparams-table');
 				}
 			})
 		</script>

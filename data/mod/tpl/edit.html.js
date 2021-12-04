@@ -57,7 +57,7 @@ module.exports = `<!DOCTYPE html>
         })
         if(req.id) {
             //渲染
-            _get(layui, '{{tags}}/editBefore', res => {
+            _get(layui, '{{tags}}/editBefore?id=' + req.id, res => {
                 form.val('editform', res)
             });
         }

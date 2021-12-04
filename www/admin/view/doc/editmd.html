@@ -15,6 +15,12 @@
                 <div class="main-container">
                     <div class="main-container">
                         <div class="layui-form-item">
+                            <div class="layui-input-inline" style="width:50px">
+                                <span class="layui-btn layui-btn-primary layui-border-blue layui-btn-xs" id="edit-btn">
+                                    <i class="layui-icon layui-icon-next"></i>
+                                </span>
+                            </div>
+                            <div id="edit-area" style="display:none">
                             <div class="layui-input-inline">
                                 <input type="text" name="title" lay-verify="required|len" autocomplete="off" min="1" placeholder="请输入标题" class="layui-input">
                             </div>
@@ -27,10 +33,12 @@
                                     
                                 </select>
                             </div>
-                            <div class="layui-input-inline">
-                                <input type="text" name="order_num" autocomplete="off" placeholder="排序" class="layui-input">
+                            <div class="layui-input-inline" style="width:80px">
+                                <input type="text" name="order_num" autocomplete="off" placeholder="排序" class="layui-input" >
                             </div>
-                            <div class="layui-input-inline">
+                            </div>
+                            
+                            <div class="layui-input-inline" style="float:right;text-align:right">
                                 <button type="submit" class="pear-btn pear-btn-primary pear-btn-sm" lay-submit="" lay-filter="doc-save">
                                     <i class="layui-icon layui-icon-ok"></i>
                                     保存
@@ -118,15 +126,26 @@
 
                             }
                         })
+
+                        $('#edit-btn').click(e=>{
+                            $('#edit-area').toggle()
+                            return false;
+                        })
                     });
                 }else{
                     layer.msg('请附加id')
                 }
                 
-
-                //监听提交
-                form.on('submit(doc-save)', function (data) {
-                    data = data.field;
+                //js监听键盘ctrl+s快捷键保存
+                document.addEventListener('keydown', (e) => {
+                    if (e.keyCode == 83 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)){
+                        e.preventDefault();
+                        let data = form.val('editform');
+                        saveData(data);
+                        //alert('saved');
+                    }
+                });
+                window.saveData = function (data) {
                     data.content = vditor.getValue();
                     data.did = req.did;
                     data.id = req.id;
@@ -135,12 +154,15 @@
                     _post(layui, 'doc/editmd', data, res => {
                         //console.log(res)
                         parent.render();
-                        parent.layer.close(parent.layer.getFrameIndex(window.name));//关闭当前页
-                        //return false;
-
+                        layer.msg('保存成功',{
+                            icon: 1, time: 1000
+                        });
                     })
-
                     return false;
+                }
+                //监听提交
+                form.on('submit(doc-save)', res => {
+                    saveData(res.field)
                 });
 
                 form.on('select(cate_select)', function (data) { //选择分类 赋值给input框

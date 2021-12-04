@@ -1,6 +1,7 @@
 * 开发前必读
-	* [安装说明](README.md)
 	* [变更日志](CHANGELOG.md)
+	* [安装说明](README.md)
+	* [要处理的](todo.md)
 	* [需求文档](start.md)
 	* [表设计](sql.md)
 	* [参考文档](seedoc.md)

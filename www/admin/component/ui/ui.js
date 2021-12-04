@@ -45,7 +45,8 @@ layui.config({
 	selectM: 'selectM',
 	soulTable: 'soulTable',
 	FileSaver: 'FileSaver',
-	wordexport: 'wordexport'
+	wordexport: 'wordexport',
+	transferTable: 'transferTable'
 }).use(['layer', 'theme'], function () {
 	layui.theme.changeTheme(window, false);
 });
