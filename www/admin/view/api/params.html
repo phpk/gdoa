@@ -6,15 +6,8 @@
 		<link rel="stylesheet" href="../../component/ui/css/ui.css" />
 	</head>
 	<body class="pear-container">
-		
-		<div class="layui-card">
-			<div class="layui-card-body">
-				<table id="apiparams-table" lay-filter="apiparams-table"></table>
-			</div>
-		</div>
-
-		<script type="text/html" id="apiparams-toolbar">
-			<button class="layui-btn layui-btn-primary layui-border-red layui-btn-sm" lay-event="addFromDb">
+        <blockquote class="layui-elem-quote">
+            <button class="layui-btn layui-btn-primary layui-border-red layui-btn-sm" lay-event="addFromDb" onclick="showtab()">
 		        <i class="layui-icon layui-icon-add-1"></i>
 		        从数据库新增
 		    </button>
@@ -22,190 +15,195 @@
 		        <i class="layui-icon layui-icon-add-1"></i>
 		        手工新增
 		    </button>
-		</script>
-		<script type="text/html" id="apiparams-bar">
-			<button class="pear-btn pear-btn-primary pear-btn-sm" lay-event="edit"><i class="layui-icon layui-icon-edit"></i></button>
-		    <button class="pear-btn pear-btn-danger pear-btn-sm" lay-event="remove"><i class="layui-icon layui-icon-delete"></i></button>
-		</script>
-		<script type="text/html" id="apiparams-time">
-			{{layui.util.toDateString(d.add_time*1000, 'yyyy-MM-dd HH:mm:ss')}}
-		</script>
+        </blockquote>
+        <div class="layui-card">
+			<div class="layui-card-body">
+				<table id="data-table" class="layui-table" lay-filter="data-table">
+                <thead>
+                    <tr>
+                    <th lay-data="{field:'id'}">Id</th>
+                    <th lay-data="{field:'name',edit:true}">名称</th>
+                    <th lay-data="{field:'key',edit:true}">标志</th>
+                    <th lay-data="{field:'type'}">类型</th>
+                    <th lay-data="{field:'format'}">格式</th>
+                    <th lay-data="{field:'required'}">是否必填</th>
+                    <th lay-data="{field:'tool',fixed : 'right'}">操作</th>
+                    </tr> 
+                </thead>
+                <tbody id="data-area"></tbody>
+                </table>
+			</div>
+		</div>
+        <div class="layui-tab layui-tab-card" id="tabs-area" style="display:none"></div>
+		
+     <script id="tabs-tpl" type="text/html">
+        <ul class="layui-tab-title">
+        {{#  layui.each(d, function(index, item){ }}
+            <li {{#  if(index == 0){ }}class="layui-this"{{#  }; }}>{{ item.comment ? item.comment : item.name  }}</li>
+        {{#  }); }}
+        </ul>
+        
+        <div class="layui-tab-content" style="height: 100px;" id="tabs-content">
+        {{#  layui.each(d, function(index, item){ }}
+        
+        <div class="layui-tab-item{{#  if(index == 0){ }} layui-show{{#  }; }}">
+        <form class="layui-form" action="">
+            <table id="{{ item.name }}-table" class="layui-table" lay-filter="{{ item.name }}-table">
+                  <colgroup>
+                    <col>
+                    <col>
+                    <col width="100">
+                    <col width="100">
+                    <col width="100">
+                    <col width="100">
+                </colgroup>
+                <thead>
+                    <tr style="text-align:center">
+                    <th>字段名</th>
+                    <th>中文名</th>
+                    <th>类型</th>
+                    <th>为空</th>
+                    <th>默认值</th>
+                    <th>选择</th>
+                    </tr> 
+                </thead>
+                <tbody>
+                    {{# layui.each(item.child, function(idx, el){ }}
+                    <tr>
+                        <td>{{el.name}}</td>
+                        <td>
+                            {{el.title}}
+                        </td>
+                        <td>
+                            {{el.type}}
+                        </td>
+                        <td>
+                            {{el.isnull}}
+                        </td>
+                        <td>
+                            {{el.def}}
+                        </td>
+                        <td>
+                            <input type="checkbox" name="isck" value="{{item.name}}.{{el.name}}"  lay-skin="primary" />
+                        </td>
+                    </tr>
+                    {{#  }); }}
+                </tbody>
+            </table>
+            </form>
+        </div>
+        
+        {{#  }); }}
+        </div>
+        <div class="bottom">
+                <div class="button-container">
+                    <button type="submit" class="pear-btn pear-btn-primary pear-btn-sm" id="saveDbFieldsBtn">
+                        <i class="layui-icon layui-icon-ok"></i>
+                    提交
+                    </button>
+                </div>
+        </div>
+        </script>
+        <script type="text/html" id="data-tpl">
+         {{# layui.each(d, function(index, el){ }}
+            <tr>
+                <td>{{el.id}}</td>
+                <td>{{el.name}}</td>
+                <td>{{el.key}}</td>
+                <td>{{el.type}}</td>
+                <td>{{el.format}}</td>
+                <td>{{el.required}}</td>
+                <td>
+                    <button class="pear-btn pear-btn-primary pear-btn-sm"><i class="layui-icon layui-icon-edit"></i></button>
+		            <button class="pear-btn pear-btn-danger pear-btn-sm"><i class="layui-icon layui-icon-delete"></i></button>
+                </td>
+            </tr>
+         {{#  }); }}
+        </script>
+		
+	
 		<script src="../../config/config.js"></script>
 		<script src="../../component/layui/layui.js"></script>
 		<script src="../../component/ui/ui.js"></script>
 		<script>
-			layui.use(['table', 'form', 'jquery','common'], function() {
-				let table = layui.table;
-				let form = layui.form;
-				let $ = layui.jquery;
-				let common = layui.common;
-
+			layui.use(['table', 'form', 'jquery','common','element','laytpl'], function() {
+				let table = layui.table,
+                    form = layui.form,
+                    $ = layui.jquery,
+                    common = layui.common,
+                    element = layui.element,
+                    laytpl = layui.laytpl,
+                    req = _req(),
+                    tabsBoxIndex;
+                //console.log(req)
 				let MODULE_PATH = "./";
+				
+                _get(layui, 'apiparams/list?aid=' + req.aid, res => {
+                    laytpl($('#data-tpl').html()).render(res.list, function(html){
+                        $('#data-area').html(html);
+                        table.init('data-table',{
+                            limit : 1000,
+                            page: false,
+                            skin: 'line'
+                        });
 
-				let cols = [
-					[
-						{
-							title: 'ID',
-							field: 'id',
-							align: 'center'
-						},
-						{
-							title: '名称',
-							field: 'name',
-							align: 'center'
-						},
-						{
-							title: '标志',
-							field: 'key',
-							align: 'center'
-						},
-						{
-							title: '类型',
-							field: 'type',
-							align: 'center'
-						},
-                        {
-							title: '是否必填',
-							field: 'reqired',
-							align: 'center'
-						},
-						
-						{
-							title: '管理',
-							align: 'center',
-							width : 220,
-							templet: '#op-bar',
-							fixed : 'right'
-						},
-					]
-				]
-
-				table.render({
-					elem: '#apiparams-table',
-					url: apiUrl + 'apiparams/list',
-					headers : getHeader(),
-					parseData: function(res) {
-						//console.log(res)
-						return {
-							"code": res.code, //解析接口状态
-							"msg": res.message, //解析提示文本
-							"count": res.data.count, //解析数据长度
-							"data": res.data.list //解析数据列表
-						};
-					},
-					page: true,
-					cols: cols,
-					skin: 'line',
-
-					toolbar: '#apiparams-toolbar',
-					defaultToolbar: [{
-						title: '刷新',
-						layEvent: 'refresh',
-						icon: 'layui-icon-refresh',
-					}, 'filter', 'print', 'exports']
-				});
-
-				table.on('tool(apiparams-table)', function(obj) {
-					if (obj.event === 'remove') {
-						window.remove(obj);
-					} else if (obj.event === 'edit') {
-						window.edit(obj);
-					}
-				});
-
-				table.on('toolbar(apiparams-table)', function(obj) {
-					if (obj.event === 'addFromDb') {
-						window.addFromDb();
-					} else if (obj.event === 'refresh') {
-						window.refresh();
-					}
-				});
-				// 监听搜索操作
-
-				form.on('submit(apiparams-query)', function(data) {
-					table.reload('apiparams-table', {
-						where: {
-							param : $('form').serialize()
-						},
-						page: {
-					        curr: 1
-					    }
-					})
-					return false;
-				});
-				form.on('submit(apiparams-reset)', function(data){
-					table.reload('apiparams-table', {
-						where: {
-							param : ''
-						},
-						page: {
-					        curr: 1
-					    }
-					});
-					return false;
-				})
-
-				window.addFromDb = function() {
-					layer.open({
-						type: 2,
-						title: '新增',
+                    })
+                    laytpl($('#tabs-tpl').html()).render(res.fields, function(html){
+                        $('#tabs-area').html(html);
+                        form.render();
+                        $('#tabs-content').on('click', e=> {
+                            if(e.target.tagName == 'TD') {
+                                let chk = $(e.target).parent().children().last().children();
+                                //console.log(chk)
+                                if(!chk.prop('checked')) {
+                                    chk.prop('checked', true);
+                                }else{
+                                    chk.prop('checked', false);
+                                }
+                                form.render('checkbox');
+                            }
+                        });
+                        $('#saveDbFieldsBtn').on('click', e => {
+                            let rt = [];
+                            $(":checkbox").each((id, el) =>{
+                                if($(el).prop('checked')) rt.push($(el).val())
+                            }); 
+                            //console.log(rt)
+                            if(rt.length > 0) {
+                                _post(layui, 'apiparams/addFromDb', {aid : req.aid, fields : rt.join(',')}, res => {
+                                    console.log(res)
+                                    layer.msg('添加成功', {icon : 1});
+                                    //把已选中的设为禁止
+                                    $(":checkbox").each((id, el) =>{
+                                        if($(el).prop('checked')) {
+                                            $(el).attr('disabled', true)
+                                        }
+                                    }); 
+                                    layer.close(tabsBoxIndex)
+                                },
+                                err => {
+                                
+                                })
+                                
+                            }else{
+                                layer.msg('请选择字段', {icon : 2})
+                            }
+                            
+                        })
+                    });
+                })
+                window.showtab = () => {
+                    tabsBoxIndex = layer.open({
+						type: 1,
+						title: '新增字段',
 						shade: 0.1,
 						offset: 'rt',
 						area: ['80%', '100%'],
 						anim: 1,
-						maxmin: true,
-						content: MODULE_PATH + 'add.html'
+						content: $('#tabs-area')
 					});
-				}
+                }
 
-				window.edit = function(obj) {
-					layer.open({
-						type: 2,
-						title: '修改',
-						shade: 0.1,
-						offset: 'rt',
-						area: ['80%', '100%'],
-						anim: 1,
-						maxmin: true,
-						content: MODULE_PATH + 'edit.html?id=' + obj.data.id
-					});
-				}
-				window.params = function(obj) {
-					layer.open({
-						type: 2,
-						title: '参数编辑',
-						shade: 0.1,
-						offset: 'rt',
-						area: ['80%', '100%'],
-						anim: 1,
-						maxmin: true,
-						content: MODULE_PATH + 'params.html?id=' + obj.data.id
-					});
-				}
-				window.logic = function(obj) {
-					layer.open({
-						type: 2,
-						title: '逻辑编辑',
-						shade: 0.1,
-						offset: 'rt',
-						area: ['80%', '100%'],
-						anim: 1,
-						maxmin: true,
-						content: MODULE_PATH + 'logic.html?id=' + obj.data.id
-					});
-				}
-				window.test = function(obj) {
-					layer.open({
-						type: 2,
-						title: '测试编辑',
-						shade: 0.1,
-						offset: 'rt',
-						area: ['80%', '100%'],
-						anim: 1,
-						maxmin: true,
-						content: MODULE_PATH + 'test.html?id=' + obj.data.id
-					});
-				}
 				window.remove = function(obj){
 		            layer.confirm('确定要删除', {icon: 3, title:'提示'}, function(index){
 		                layer.close(index);
@@ -218,11 +216,6 @@
 						})
 		            });
 		        }
-
-
-				window.refresh = function(param) {
-					table.reload('apiparams-table');
-				}
 			})
 		</script>
 	</body>

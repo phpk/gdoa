@@ -162,7 +162,8 @@
                 }
                 //监听提交
                 form.on('submit(doc-save)', res => {
-                    saveData(res.field)
+                    saveData(res.field);
+                    return false;
                 });
 
                 form.on('select(cate_select)', function (data) { //选择分类 赋值给input框
