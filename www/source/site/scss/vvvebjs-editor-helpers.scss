@@ -1,0 +1,74 @@
+@mixin webkit-scrollbar()
+{
+	&::-webkit-scrollbar {
+		width: 0.5rem;
+		background-color: rgba(255,255,255, 0.1);
+		-webkit-box-shadow:none;
+	}
+	 
+	&::-webkit-scrollbar-track {
+		-webkit-box-shadow: inset 0 0 1px rgba(0,0,0,0.05);
+	}
+	 
+	&::-webkit-scrollbar-thumb {
+	  background-color: rgba(0,0,0, 0.15);
+	  outline: 1px solid slategrey;
+	}
+}
+
+@mixin disabled-element() {
+	pointer-events:none;
+	position:relative;
+
+	&::after {
+		content:"Non-editable area";
+		position:absolute;
+		left:0px;
+		top:0px;
+		width:100%;
+		height:100%;
+		padding-top:5px;
+		font-weight:600;
+		font-size:12px;
+		text-align:center;
+		background:rgba(252, 252, 252, 0.85);
+		border:1px dashed #999;
+		overflow:hidden;
+		display: flex;		
+		align-items: center;
+		justify-content: center;
+	}
+}
+
+body
+{
+	scrollbar-color: rgba(0,0,0, 0.1) #fff;
+	scrollbar-width: thin;
+	@include webkit-scrollbar();
+}
+
+
+[data-vvveb-disabled] {
+	@include disabled-element();
+}
+
+//disable edit on all content except on edit-exception
+[data-vvveb-disabled-area] { 
+
+	& *:not([data-vvveb-edit-exception]) {
+		@include disabled-element();
+	}
+}
+
+
+[data-component-video] > iframe{
+	pointer-events:none;
+}
+
+[contenteditable="true"] {
+	outline:none;
+	
+	&:focus-visible {
+		outline:none;
+	}
+}
