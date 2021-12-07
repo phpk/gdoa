@@ -1,0 +1,62 @@
+body {
+  scrollbar-color: rgba(0, 0, 0, 0.1) #fff;
+  scrollbar-width: thin; }
+  body::-webkit-scrollbar {
+    width: 0.5rem;
+    background-color: rgba(255, 255, 255, 0.1);
+    -webkit-box-shadow: none; }
+  body::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.05); }
+  body::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.15);
+    outline: 1px solid slategrey; }
+
+[data-vvveb-disabled] {
+  pointer-events: none;
+  position: relative; }
+  [data-vvveb-disabled]::after {
+    content: "Non-editable area";
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    padding-top: 5px;
+    font-weight: 600;
+    font-size: 12px;
+    text-align: center;
+    background: rgba(252, 252, 252, 0.85);
+    border: 1px dashed #999;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center; }
+
+[data-vvveb-disabled-area] *:not([data-vvveb-edit-exception]) {
+  pointer-events: none;
+  position: relative; }
+  [data-vvveb-disabled-area] *:not([data-vvveb-edit-exception])::after {
+    content: "Non-editable area";
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    padding-top: 5px;
+    font-weight: 600;
+    font-size: 12px;
+    text-align: center;
+    background: rgba(252, 252, 252, 0.85);
+    border: 1px dashed #999;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center; }
+
+[data-component-video] > iframe {
+  pointer-events: none; }
+
+[contenteditable="true"] {
+  outline: none; }
+  [contenteditable="true"]:focus-visible {
+    outline: none; }
