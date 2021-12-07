@@ -80,9 +80,10 @@ module.exports = class extends Base {
 
     async delAction() {
         let id = this.post('id');
-        if (!await this.hasData('api', { id }))
-            return this.fail('数据不存在')
-        await this.model('api').where({ id }).delete()
+        let data = await this.model('api').del(id);
+        console.log(data)
+        let mod = await this.model('mod').where({ id: data.mod_id }).find();
+        this.service('api').delApi(mod, data.key);
         return this.success()
     }
 }

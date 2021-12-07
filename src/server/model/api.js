@@ -80,6 +80,7 @@ module.exports = class extends think.Model {
                         key: f.name,
                         name: f.title,
                         type: f.type,
+                        def : f.def,
                         required: f.isnull === 'YES' ? 1 : 0,
                         isdb: 1,
                         tablename: d.name,
@@ -97,6 +98,16 @@ module.exports = class extends think.Model {
                 }
             })
         })
+        return rt;
+    }
+    async del(id) {
+        let data = await this.model('api').where({ id }).find();
+        if (think.isEmpty(data)) return;
+        let rt = think.extend({}, data);
+        //console.log(rt)
+        await this.model('api').where({ id }).delete();
+        await this.model('api_params').where({ aid: id }).delete();
+        //await this.model('api_')
         return rt;
     }
 }

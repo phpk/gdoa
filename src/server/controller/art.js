@@ -7,13 +7,6 @@ module.exports = class extends Base {
 	/**
 	* @name 文章列表
 	*/
-	async listAction(){}
-	/**
-	* @name 添加文章
-	*/
-	async addAction(){}
-	/**
-	* @name 编辑文章
-	*/
-	async editAction(){}
+	async listAction(){
+	}
 };

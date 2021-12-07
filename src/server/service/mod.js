@@ -114,7 +114,7 @@ module.exports = class extends think.Service {
                 params: paramStr,
                 comments: comments,
                 start: start[data.type],
-                content: ``,
+                content: {},
                 funcs: {},
                 end : end
             };

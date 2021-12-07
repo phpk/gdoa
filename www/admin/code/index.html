@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="google" value="notranslate">
+  <title>代码</title>
+  <link rel="stylesheet" href="style.css">
+  <!--script src="/admin/code/js/blockly_compressed.js"></script>
+  <script src="/admin/code/js/blocks_compressed.js"></script-->
+  <script src="/admin/code/js/blockly_uncompressed.js"></script>
+  <script src="/admin/code/js/blocks/colour.js"></script>
+  <script src="/admin/code/js/blocks/lists.js"></script>
+  <script src="/admin/code/js/blocks/logic.js"></script>
+  <script src="/admin/code/js/blocks/loops.js"></script>
+  <script src="/admin/code/js/blocks/math.js"></script>
+  <script src="/admin/code/js/blocks/procedures.js"></script>
+  <script src="/admin/code/js/blocks/text.js"></script>
+  <script src="/admin/code/js/blocks/variables.js"></script>
+  <!--script src="/admin/code/js/javascript_compressed.js"></script-->
+  <script src="/admin/code/js/javascript.js"></script>
+  <script src="/admin/code/js/javascript/colour.js"></script>
+  <script src="/admin/code/js/javascript/lists.js"></script>
+  <script src="/admin/code/js/javascript/logic.js"></script>
+  <script src="/admin/code/js/javascript/loops.js"></script>
+  <script src="/admin/code/js/javascript/math.js"></script>
+  <script src="/admin/code/js/javascript/procedures.js"></script>
+  <script src="/admin/code/js/javascript/text.js"></script>
+  <script src="/admin/code/js/javascript/variables.js"></script>
+  <script src="/admin/code/js/javascript/variables_dynamic.js"></script>
+  <script src="/admin/code/js/run_prettify.js"></script>
+  <script src="/admin/code/code.js"></script>
+  <script src="/admin/code/defined.js"></script>
+
+  <!--script src="/admin/code/js/sql/aggregates.js"></script>
+    <script src="/admin/code/js/sql/allchooser.js"></script>
+    <script src="/admin/code/js/sql/and.js"></script>
+    <script src="/admin/code/js/sql/as.js"></script>
+    <script src="/admin/code/js/sql/between.js"></script>
+    <script src="/admin/code/js/sql/boolean.js"></script>
+    <script src="/admin/code/js/sql/compare.js"></script>
+    <script src="/admin/code/js/sql/conditionchooser.js"></script>
+    <script src="/admin/code/js/sql/datepicker.js"></script>
+    <script src="/admin/code/js/sql/free_input.js"></script>
+    <script src="/admin/code/js/sql/from.js"></script>
+    <script src="/admin/code/js/sql/group_by.js"></script>
+    <script src="/admin/code/js/sql/having.js"></script>
+    <script src="/admin/code/js/sql/innifier.js"></script>
+    <script src="/admin/code/js/sql/join.js"></script>
+    <script src="/admin/code/js/sql/limit.js"></script>
+    <script src="/admin/code/js/sql/math.js"></script>
+    <script src="/admin/code/js/sql/lists_from.js"></script>
+    <script src="/admin/code/js/sql/lists_select.js"></script>
+    <script src="/admin/code/js/sql/not.js"></script>
+    <script src="/admin/code/js/sql/number.js"></script>
+    <script src="/admin/code/js/sql/or.js"></script>
+    <script src="/admin/code/js/sql/order_by.js"></script>
+    <script src="/admin/code/js/sql/select.js"></script>
+    <script src="/admin/code/js/sql/table.js"></script>
+    <script src="/admin/code/js/sql/where.js"></script>
+
+    <script src="js/scripts_functions.js"></script-->
+
+</head>
+<body>
+  <table width="100%" height="100%">
+    
+    <tr>
+      <td colspan=2>
+        <table width="100%">
+          <tr id="tabRow" height="1em">
+            <td id="tab_blocks" class="tabon">...</td>
+            <td class="tabmin tab_collapse">&nbsp;</td>
+            <td id="tab_javascript" class="taboff tab_collapse">code</td>
+            <td class="tabmin tab_collapse">&nbsp;</td>
+            <td id="tab_xml" class="taboff tab_collapse">xml</td>
+            <td class="tabmin">&nbsp;</td>
+            <td id="tab_code" class="taboff">
+              <select id="code_menu"></select>
+            </td>
+            <td class="tabmax">
+              <button id="trashButton" class="notext" title="...">
+                <img src='/admin/code/media/1x1.gif' class="trash icon21">
+              </button>
+              <button id="linkButton" class="notext" title="...">
+                <img src='/admin/code/media/1x1.gif' class="link icon21">
+              </button>
+              <button id="runButton" class="notext primary" title="...">
+                <img src='/admin/code/media/1x1.gif' class="run icon21">
+              </button>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td height="99%" colspan=2 id="content_area">
+      </td>
+    </tr>
+  </table>
+  <div id="content_blocks" class="content"></div>
+  <pre id="content_javascript" class="content prettyprint lang-js"></pre>
+  <textarea id="content_xml" class="content" wrap="off"></textarea>
+
+  <xml xmlns="https://developers.google.com/blockly/xml" id="toolbox" style="display: none">
+   <category name="数据" colour="%{BKY_PROCEDURES_HUE}">
+    <block type="gd_var"></block>
+    
+    <block type="gd_try_catch"></block>
+    <block type="gd_function"></block>
+    <block type="gd_awaits"></block>
+   </category>
+    <category name="%{BKY_CATLOGIC}" colour="%{BKY_LOGIC_HUE}">
+    
+      <block type="controls_if"></block>
+      <block type="logic_compare"></block>
+      <block type="logic_operation"></block>
+      <block type="logic_negate"></block>
+      <block type="logic_boolean"></block>
+      <block type="logic_null"></block>
+      <block type="logic_ternary"></block>
+    </category>
+    <category name="%{BKY_CATLOOPS}" colour="%{BKY_LOOPS_HUE}">
+      <block type="controls_repeat_ext">
+        <value name="TIMES">
+          <shadow type="math_number">
+            <field name="NUM">10</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="controls_whileUntil"></block>
+      <block type="controls_for">
+        <value name="FROM">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+        <value name="TO">
+          <shadow type="math_number">
+            <field name="NUM">10</field>
+          </shadow>
+        </value>
+        <value name="BY">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="controls_forEach"></block>
+      <block type="controls_flow_statements"></block>
+    </category>
+    <category name="%{BKY_CATMATH}" colour="%{BKY_MATH_HUE}">
+      <block type="math_number">
+        <field name="NUM">123</field>
+      </block>
+      <block type="math_arithmetic">
+        <value name="A">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+        <value name="B">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="math_single">
+        <value name="NUM">
+          <shadow type="math_number">
+            <field name="NUM">9</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="math_trig">
+        <value name="NUM">
+          <shadow type="math_number">
+            <field name="NUM">45</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="math_constant"></block>
+      <block type="math_number_property">
+        <value name="NUMBER_TO_CHECK">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="math_round">
+        <value name="NUM">
+          <shadow type="math_number">
+            <field name="NUM">3.1</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="math_on_list"></block>
+      <block type="math_modulo">
+        <value name="DIVIDEND">
+          <shadow type="math_number">
+            <field name="NUM">64</field>
+          </shadow>
+        </value>
+        <value name="DIVISOR">
+          <shadow type="math_number">
+            <field name="NUM">10</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="math_constrain">
+        <value name="VALUE">
+          <shadow type="math_number">
+            <field name="NUM">50</field>
+          </shadow>
+        </value>
+        <value name="LOW">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+        <value name="HIGH">
+          <shadow type="math_number">
+            <field name="NUM">100</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="math_random_int">
+        <value name="FROM">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+        <value name="TO">
+          <shadow type="math_number">
+            <field name="NUM">100</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="math_random_float"></block>
+      <block type="math_atan2">
+        <value name="X">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+        <value name="Y">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+      </block>
+    </category>
+    <category name="%{BKY_CATTEXT}" colour="%{BKY_TEXTS_HUE}">
+      <block type="text"></block>
+      <block type="text_join"></block>
+      <block type="text_append">
+        <value name="TEXT">
+          <shadow type="text"></shadow>
+        </value>
+      </block>
+      <block type="text_length">
+        <value name="VALUE">
+          <shadow type="text">
+            <field name="TEXT">abc</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="text_isEmpty">
+        <value name="VALUE">
+          <shadow type="text">
+            <field name="TEXT"></field>
+          </shadow>
+        </value>
+      </block>
+      <block type="text_indexOf">
+        <value name="VALUE">
+          <block type="variables_get">
+            <field name="VAR">{textVariable}</field>
+          </block>
+        </value>
+        <value name="FIND">
+          <shadow type="text">
+            <field name="TEXT">abc</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="text_charAt">
+        <value name="VALUE">
+          <block type="variables_get">
+            <field name="VAR">{textVariable}</field>
+          </block>
+        </value>
+      </block>
+      <block type="text_getSubstring">
+        <value name="STRING">
+          <block type="variables_get">
+            <field name="VAR">{textVariable}</field>
+          </block>
+        </value>
+      </block>
+      <block type="text_changeCase">
+        <value name="TEXT">
+          <shadow type="text">
+            <field name="TEXT">abc</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="text_trim">
+        <value name="TEXT">
+          <shadow type="text">
+            <field name="TEXT">abc</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="text_print">
+        <value name="TEXT">
+          <shadow type="text">
+            <field name="TEXT">abc</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="text_prompt_ext">
+        <value name="TEXT">
+          <shadow type="text">
+            <field name="TEXT">abc</field>
+          </shadow>
+        </value>
+      </block>
+    </category>
+    <category name="%{BKY_CATLISTS}" colour="%{BKY_LISTS_HUE}">
+      <block type="lists_create_with">
+        <mutation items="0"></mutation>
+      </block>
+      <block type="lists_create_with"></block>
+      <block type="lists_repeat">
+        <value name="NUM">
+          <shadow type="math_number">
+            <field name="NUM">5</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="lists_length"></block>
+      <block type="lists_isEmpty"></block>
+      <block type="lists_indexOf">
+        <value name="VALUE">
+          <block type="variables_get">
+            <field name="VAR">{listVariable}</field>
+          </block>
+        </value>
+      </block>
+      <block type="lists_getIndex">
+        <value name="VALUE">
+          <block type="variables_get">
+            <field name="VAR">{listVariable}</field>
+          </block>
+        </value>
+      </block>
+      <block type="lists_setIndex">
+        <value name="LIST">
+          <block type="variables_get">
+            <field name="VAR">{listVariable}</field>
+          </block>
+        </value>
+      </block>
+      <block type="lists_getSublist">
+        <value name="LIST">
+          <block type="variables_get">
+            <field name="VAR">{listVariable}</field>
+          </block>
+        </value>
+      </block>
+      <block type="lists_split">
+        <value name="DELIM">
+          <shadow type="text">
+            <field name="TEXT">,</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="lists_sort"></block>
+      
+    </category>
+   
+    <sep></sep>
+    <category name="%{BKY_CATVARIABLES}" colour="%{BKY_VARIABLES_HUE}" custom="VARIABLE">
+      <!--block type="gd_var"></block-->
+    </category>
+    <category name="%{BKY_CATFUNCTIONS}" colour="%{BKY_PROCEDURES_HUE}" custom="PROCEDURE"></category>
+
+    <sep></sep>
+   
+    <!--category name="Statements & clauses" colour="#8007f2">
+            <label text="Statements & clauses:" web-class="befehle_commandStyle"></label>
+            <block type="lists_select"></block>
+            <sep gap="50"></sep>
+            <label text="Clauses:" web-class="tabellen_tablesStyle"></label>
+            <block type="lists_from"></block>
+            <block type="all_join"></block>
+            <block type="select_where"></block>
+            <block type="select_groupby"></block>
+            <block type="select_having"></block>
+            <block type="select_orderby"></block>
+        </category>
+        <category name="Tables & attributes" colour="#f1bf06">
+            <label text="Tables:" web-class="tabellen_tablesStyle"></label>
+            <block type="table"></block>
+            <label text="Attributes:" web-class="tabellen_attributStyle"></label>
+            <block type="allchooser"></block>
+            <block type="conditionchooser"></block>
+        </category>
+        <category name="Aliases" colour="#0ddb69">
+            <label text="Alias:" web-class="tabellen_aliasesStyle"></label>
+            <block type="tablename_as"></block>
+        </category>
+        <category name="Operators" colour="#4B5ED4">
+            <category name="Logical operators" colour="#4B5ED4">
+                <label text="Logical operators:" web-class="operatoren_logicStyle"></label>
+                <block type="and"></block>
+                <block type="or"></block>
+                <block type="not"></block>
+                <block type="between"></block>
+                <block type="innifier"></block>
+            </category>
+            <category name="Mathematical operators" colour="#3ED9D9">
+                <label text="Mathematical operators:" web-class="operatoren_mathsStyle"></label>
+                <block type="compare"></block>
+                <block type="math"></block>
+            </category>
+        </category>
+        <category name="Value inputs" colour="#CC0037">
+            <label text="Logical:" web-class="werte_logicStyle"></label>
+            <block type="boolean"></block>
+            <label text="Numerical:" web-class="werte_numberStyle"></label>
+            <block type="number"></block>
+            <label text="Date:" web-class="werte_dateStyle"></label>
+            <block type="datepicker"></block>
+            <label text="Free inputs:" web-class="werte_freesStyle"></label>
+            <block type="freeinput"></block>
+        </category>
+        <category name="Aggregate functions" colour="#C440C4">
+            <label text="Aggregate functions:" web-class="aggLabelStyle"></label>
+            <block type="aggregate_min"></block>
+            <block type="aggregate_avg"></block>
+            <block type="aggregate_max"></block>
+            <block type="aggregate_sum"></block>
+            <block type="aggregate_count"></block>
+        </category>
+         -->
+  </xml>
+
+</body>
+</html>
