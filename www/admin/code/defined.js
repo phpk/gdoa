@@ -1,27 +1,20 @@
-Blockly.Blocks['gd_awaits'] = {
+Blockly.Blocks['gd_await'] = {
     init: function () {
         this.appendValueInput('VALUE')
-            .setCheck(null)
             .appendField('await');
-        this.setPreviousStatement(true, null);
+        this.setOutput(true);
         this.setNextStatement(true, null);
-        //this.setOutput(true, null);
+        this.setOutput(true, null);
         this.setColour(90);
-        this.setTooltip('');
         this.setTooltip('异步指令');
-        // this.appendValueInput('VALUE')
-        //     .setCheck('String')
-        //     .appendField('await');
-        // this.setOutput(true, 'Number');
-        // this.setColour(160);
-        // this.setPreviousStatement(true, null);
-        // this.setNextStatement(true, null);
-        // this.setTooltip('异步指令');
+        //this.setOutput(true);
     }
 };
-Blockly.JavaScript['gd_awaits'] = function (block) {
+Blockly.JavaScript['gd_await'] = function (block) {
     //return [code, Blockly.JavaScript.ORDER_NONE];
-    return ' await ';
+    console.log(block)
+    var code = ' await ';
+    return code;
 };
 Blockly.Blocks['gd_var'] = {
     init: function () {
