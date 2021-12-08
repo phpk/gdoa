@@ -289,7 +289,7 @@ Blockly.Msg["PROCEDURES_CREATE_DO"] = "创建“%1”";
 Blockly.Msg["PROCEDURES_DEFNORETURN_COMMENT"] = "描述该功能...";
 Blockly.Msg["PROCEDURES_DEFNORETURN_DO"] = "-";
 Blockly.Msg["PROCEDURES_DEFNORETURN_HELPURL"] = "https://zh.wikipedia.org/wiki/子程序";
-Blockly.Msg["PROCEDURES_DEFNORETURN_PROCEDURE"] = "做点什么";
+Blockly.Msg["PROCEDURES_DEFNORETURN_PROCEDURE"] = "输入函数名";
 Blockly.Msg["PROCEDURES_DEFNORETURN_TITLE"] = "至";
 Blockly.Msg["PROCEDURES_DEFNORETURN_TOOLTIP"] = "创建一个不带输出值的函数。";
 Blockly.Msg["PROCEDURES_DEFRETURN_HELPURL"] = "https://zh.wikipedia.org/wiki/子程序";
@@ -421,3 +421,29 @@ Blockly.Msg["TEXTS_HUE"] = "160";
 Blockly.Msg["PROCEDURES_HUE"] = "290";
 Blockly.Msg["COLOUR_HUE"] = "20";
 Blockly.Msg["VARIABLES_DYNAMIC_HUE"] = "310";
+
+Blockly.Msg.CONTROLS_SWITCH = '分支 ';
+/// Controls Case
+Blockly.Msg.CONTROLS_SWITCH_CASE = '逻辑';
+/// Controls Break Warning
+Blockly.Msg.CONTROLS_SWITCH_BREAK_WARNING = 'WARNING : This block must be in switch block.';
+/// Controls Switch break
+Blockly.Msg.CONTROLS_SWITCH_BREAK = '停止';
+/// tooltip - Switch break
+Blockly.Msg.CONTROLS_SWITCH_BREAK_TOOLTIP = 'break the statement and leave the switch block.';
+/// Controls default
+Blockly.Msg.CONTROLS_SWITCH_DEFAULT = '如果没有正确的值';
+/// tooltip default
+Blockly.Msg.CONTROLS_SWITCH_DEFAULT_TOOLTIP = 'only one default statement can use in switch';
+///  Controls do
+Blockly.Msg.CONTROLS_SWITCH_DO = '执行';
+/// tooltip - switch tooltip 1
+Blockly.Msg.CONTROLS_SWITCH_TOOLTIP_1 = 'if there are no corresponding value, do first block statement and if value correspond with second value, do second block statement.';
+/// tooltip  - switch tooltip 2
+Blockly.Msg.CONTROLS_SWITCH_TOOLTIP_2 = 'if there are no corresponding value, do first block statement, if value correspond with second value, do second block statement, and if value correspond with third value, do third block statement.';
+/// tooltip  - switch tooltip 3
+Blockly.Msg.CONTROLS_SWITCH_TOOLTIP_3 = 'if there are no corresponding value, do first block statement and if value correspond with second value, do second block statement, .... , and if value correspond with last value, do last block statement.';
+/// tooltip  - switch tooltip 4
+Blockly.Msg.CONTROLS_SWITCH_TOOLTIP_4 = 'if there are no corresponding value, do first block statement and if value correspond with second value, do second block statement, .... , and if value correspond with last value, do last block statement.';
+/// tooltip - add case.
+Blockly.Msg.CONTROLS_SWITCH_CASE_TOOLTIP = 'Add case.';

@@ -17,6 +17,7 @@
   <script src="/admin/code/js/blocks/procedures.js"></script>
   <script src="/admin/code/js/blocks/text.js"></script>
   <script src="/admin/code/js/blocks/variables.js"></script>
+  
   <!--script src="/admin/code/js/javascript_compressed.js"></script-->
   <script src="/admin/code/js/javascript.js"></script>
   <script src="/admin/code/js/javascript/colour.js"></script>
@@ -30,36 +31,12 @@
   <script src="/admin/code/js/javascript/variables_dynamic.js"></script>
   <script src="/admin/code/js/run_prettify.js"></script>
   <script src="/admin/code/code.js"></script>
+  <script src="/admin/code/defined_txt.js"></script>
+  <script src="/admin/code/defined_sql.js"></script>
+  <script src="/admin/code/defined_block.js"></script>
+  <script src="/admin/code/defined_logic.js"></script>
+  <script src="/admin/code/defined_obj.js"></script>
   <script src="/admin/code/defined.js"></script>
-
-  <!--script src="/admin/code/js/sql/aggregates.js"></script>
-    <script src="/admin/code/js/sql/allchooser.js"></script>
-    <script src="/admin/code/js/sql/and.js"></script>
-    <script src="/admin/code/js/sql/as.js"></script>
-    <script src="/admin/code/js/sql/between.js"></script>
-    <script src="/admin/code/js/sql/boolean.js"></script>
-    <script src="/admin/code/js/sql/compare.js"></script>
-    <script src="/admin/code/js/sql/conditionchooser.js"></script>
-    <script src="/admin/code/js/sql/datepicker.js"></script>
-    <script src="/admin/code/js/sql/free_input.js"></script>
-    <script src="/admin/code/js/sql/from.js"></script>
-    <script src="/admin/code/js/sql/group_by.js"></script>
-    <script src="/admin/code/js/sql/having.js"></script>
-    <script src="/admin/code/js/sql/innifier.js"></script>
-    <script src="/admin/code/js/sql/join.js"></script>
-    <script src="/admin/code/js/sql/limit.js"></script>
-    <script src="/admin/code/js/sql/math.js"></script>
-    <script src="/admin/code/js/sql/lists_from.js"></script>
-    <script src="/admin/code/js/sql/lists_select.js"></script>
-    <script src="/admin/code/js/sql/not.js"></script>
-    <script src="/admin/code/js/sql/number.js"></script>
-    <script src="/admin/code/js/sql/or.js"></script>
-    <script src="/admin/code/js/sql/order_by.js"></script>
-    <script src="/admin/code/js/sql/select.js"></script>
-    <script src="/admin/code/js/sql/table.js"></script>
-    <script src="/admin/code/js/sql/where.js"></script>
-
-    <script src="js/scripts_functions.js"></script-->
 
 </head>
 <body>
@@ -103,16 +80,46 @@
   <textarea id="content_xml" class="content" wrap="off"></textarea>
 
   <xml xmlns="https://developers.google.com/blockly/xml" id="toolbox" style="display: none">
-   <category name="数据" colour="%{BKY_PROCEDURES_HUE}">
+   <category name="语句" colour="%{BKY_PROCEDURES_HUE}">
     <block type="gd_var"></block>
+    <block type="create_obj"></block>
+    <block type="gd_inline"></block>
+    <block type="gd_text"></block>
+    <block type="gd_plain"></block>
+    <block type="gd_true"></block>
+    <block type="gd_false"></block>
     
-    <block type="gd_try_catch"></block>
-    <block type="gd_function"></block>
-    <block type="gd_await"></block>
    </category>
-    <category name="%{BKY_CATLOGIC}" colour="%{BKY_LOGIC_HUE}">
-    
+   <category name="内部" colour="%{BKY_PROCEDURES_HUE}">
+    <block type="gd_post"></block>
+    <block type="gd_get"></block>
+    <block type="gd_file"></block>
+    <block type="gd_success"></block>
+    <block type="gd_fail"></block>
+    <block type="gd_return"></block>
+   </category>
+   <category name="语块" colour="%{BKY_PROCEDURES_HUE}">
+    <block type="gd_foreach"></block>
+    <block type="gd_function"></block>
+    <block type="gd_try_catch"></block>
+   </category>
+  <category name="数据" colour="%{BKY_PROCEDURES_HUE}">
+    <block type="gd_await"></block>
+    <block type="gd_awaits"></block>
+    <block type="gd_model"></block>
+    <block type="gd_where"></block>
+    <block type="gd_select"></block>
+    <block type="gd_find"></block>
+    <block type="gd_add"></block>
+    <block type="gd_addmany"></block>
+    <block type="gd_delete"></block>
+   </category>
+   <category name="%{BKY_CATLOGIC}" colour="%{BKY_LOGIC_HUE}">
+      
       <block type="controls_if"></block>
+      
+      <block type="controls_switch"></block>
+      <block type="controls_switch_break"></block>
       <block type="logic_compare"></block>
       <block type="logic_operation"></block>
       <block type="logic_negate"></block>
@@ -120,6 +127,62 @@
       <block type="logic_null"></block>
       <block type="logic_ternary"></block>
     </category>
+
+    <category name="%{BKY_CATLISTS}" colour="%{BKY_LISTS_HUE}">
+      <block type="lists_create_with">
+        <mutation items="0"></mutation>
+      </block>
+      <block type="lists_create_with"></block>
+      <block type="lists_repeat">
+        <value name="NUM">
+          <shadow type="math_number">
+            <field name="NUM">5</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="lists_length"></block>
+      <block type="lists_isEmpty"></block>
+      <block type="lists_indexOf">
+        <value name="VALUE">
+          <block type="variables_get">
+            <field name="VAR">{listVariable}</field>
+          </block>
+        </value>
+      </block>
+      <block type="lists_getIndex">
+        <value name="VALUE">
+          <block type="variables_get">
+            <field name="VAR">{listVariable}</field>
+          </block>
+        </value>
+      </block>
+      <block type="lists_setIndex">
+        <value name="LIST">
+          <block type="variables_get">
+            <field name="VAR">{listVariable}</field>
+          </block>
+        </value>
+      </block>
+      <block type="lists_getSublist">
+        <value name="LIST">
+          <block type="variables_get">
+            <field name="VAR">{listVariable}</field>
+          </block>
+        </value>
+      </block>
+      <block type="lists_split">
+        <value name="DELIM">
+          <shadow type="text">
+            <field name="TEXT">,</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="lists_sort"></block>
+      
+    </category>
+   
+
+    
     <category name="%{BKY_CATLOOPS}" colour="%{BKY_LOOPS_HUE}">
       <block type="controls_repeat_ext">
         <value name="TIMES">
@@ -327,59 +390,7 @@
         </value>
       </block>
     </category>
-    <category name="%{BKY_CATLISTS}" colour="%{BKY_LISTS_HUE}">
-      <block type="lists_create_with">
-        <mutation items="0"></mutation>
-      </block>
-      <block type="lists_create_with"></block>
-      <block type="lists_repeat">
-        <value name="NUM">
-          <shadow type="math_number">
-            <field name="NUM">5</field>
-          </shadow>
-        </value>
-      </block>
-      <block type="lists_length"></block>
-      <block type="lists_isEmpty"></block>
-      <block type="lists_indexOf">
-        <value name="VALUE">
-          <block type="variables_get">
-            <field name="VAR">{listVariable}</field>
-          </block>
-        </value>
-      </block>
-      <block type="lists_getIndex">
-        <value name="VALUE">
-          <block type="variables_get">
-            <field name="VAR">{listVariable}</field>
-          </block>
-        </value>
-      </block>
-      <block type="lists_setIndex">
-        <value name="LIST">
-          <block type="variables_get">
-            <field name="VAR">{listVariable}</field>
-          </block>
-        </value>
-      </block>
-      <block type="lists_getSublist">
-        <value name="LIST">
-          <block type="variables_get">
-            <field name="VAR">{listVariable}</field>
-          </block>
-        </value>
-      </block>
-      <block type="lists_split">
-        <value name="DELIM">
-          <shadow type="text">
-            <field name="TEXT">,</field>
-          </shadow>
-        </value>
-      </block>
-      <block type="lists_sort"></block>
-      
-    </category>
-   
+    
     <sep></sep>
     <category name="%{BKY_CATVARIABLES}" colour="%{BKY_VARIABLES_HUE}" custom="VARIABLE">
       <!--block type="gd_var"></block-->

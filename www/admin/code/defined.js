@@ -1,99 +1,99 @@
-Blockly.Blocks['gd_await'] = {
-    init: function () {
-        this.appendValueInput('VALUE')
-            .appendField('await');
-        this.setOutput(true);
-        this.setNextStatement(true, null);
-        this.setOutput(true, null);
-        this.setColour(90);
-        this.setTooltip('异步指令');
-        //this.setOutput(true);
-    }
-};
-Blockly.JavaScript['gd_await'] = function (block) {
-    //return [code, Blockly.JavaScript.ORDER_NONE];
-    console.log(block)
-    var code = ' await ';
-    return code;
-};
-Blockly.Blocks['gd_var'] = {
-    init: function () {
-        this.appendValueInput('val')
-            .setCheck(null)
-            .appendField(new Blockly.FieldDropdown([['let', 'let'], ['var', 'var'], ['const', 'const']]), 'var_type')
-            .appendField(new Blockly.FieldTextInput('data'), 'var');
-        this.setPreviousStatement(true, null);
-        this.setNextStatement(true, null);
-        this.setColour(90);
-        this.setTooltip('');
-        this.setHelpUrl('http://www.godo.im/');
-    }
-};
-Blockly.JavaScript['gd_var'] = function (block) {
-    var var_type = block.getFieldValue('var_type');
-    var text_var = block.getFieldValue('var');
-    var value_val = Blockly.JavaScript.valueToCode(block, 'val', Blockly.JavaScript.ORDER_ATOMIC);
-    var code = var_type + ' ' + text_var;
-    if (value_val === '') {
-        code += '\n';
-    } else {
-        code += ' = ' + value_val + ';\n';
-    }
-    //return [code, Blockly.JavaScript.ORDER_NONE];
-    return code;
-};
-Blockly.Blocks['gd_try_catch'] = {
-    init: function () {
-        this.appendStatementInput('try')
-            .setCheck(null)
-            .appendField('try');
-        this.appendStatementInput('catch')
-            .setCheck(null)
-            .appendField('catch')
-            .appendField(new Blockly.FieldTextInput('e'), 'parameter');
-        this.setPreviousStatement(true, null);
-        this.setNextStatement(true, null);
-        this.setColour(290);
-        this.setTooltip('');
-        this.setHelpUrl('http://www.example.com/');
-    }
-};
-Blockly.JavaScript['gd_try_catch'] = function (block) {
-    var statement_try = Blockly.JavaScript.statementToCode(block, 'try');
-    var statement_catch = Blockly.JavaScript.statementToCode(block, 'catch');
-    //var statement_finally = Blockly.JavaScript.statementToCode(block, 'finally');
-    var text_parameter = block.getFieldValue('parameter');
-    var code = 'try{\n' + statement_try + '\n} catch(' + text_parameter + '){\n' + statement_catch + '\n} \n';
-    return code;
-};
 
 
-Blockly.Blocks['gd_function'] = {
+Blockly.Blocks['gd_post'] = {
     init: function () {
         this.appendDummyInput()
-            .appendField(new Blockly.FieldDropdown([['let', 'let'], ['var', 'var'], ['const', 'const']]), 'var_type')
-            .appendField(new Blockly.FieldTextInput('name'), 'name')
-            .appendField('=(')
-            .appendField(new Blockly.FieldTextInput('arg1, arg2, etc'), 'args')
-            .appendField(')=>');
-        this.appendStatementInput('chain')
-            .setCheck(null);
-        //this.setOutput(true, null);
-        this.setPreviousStatement(true, null);
-        this.setNextStatement(true, null);
-        this.setColour(290);
-        this.setTooltip('');
-        this.setHelpUrl('http://www.example.com/');
+            .appendField("this.post(")
+            .appendField(new Blockly.FieldTextInput(''), 'var')
+            .appendField(")");
+        this.setOutput(true, 'String');
+        this.setColour(90);
+        this.setTooltip('查询单个数据');
     }
 };
-Blockly.JavaScript['gd_function'] = function (block) {
-    var text_name = block.getFieldValue('name');
-    var var_type = block.getFieldValue('var_type');
-    var function_type = block.getFieldValue('function_type');
-    var text_args = block.getFieldValue('args');
-    var statements_chain = Blockly.JavaScript.statementToCode(block, 'chain');
-    var chain = statements_chain;
-    var code = var_type + ' ' + text_name + ' = (';
-    code += text_args + ') => {\n' + chain + '}\n';
-    return code;
+Blockly.JavaScript['gd_post'] = function (block) {
+    var text_var = block.getFieldValue('var');
+    if (text_var !== '') {
+        return ["this.post('" + text_var+"')", 0];
+    } else {
+        return ["this.post()", 0];
+    } 
+};
+Blockly.Blocks['gd_get'] = {
+    init: function () {
+        this.appendDummyInput()
+            .appendField("this.get(")
+            .appendField(new Blockly.FieldTextInput(''), 'var')
+            .appendField(")");
+        this.setOutput(true, 'String');
+        this.setColour(90);
+        this.setTooltip('查询单个数据');
+    }
+};
+Blockly.JavaScript['gd_get'] = function (block) {
+    var text_var = block.getFieldValue('var');
+    if (text_var !== '') {
+        return ["this.get('" + text_var + "')", 0];
+    } else {
+        return ["this.get()", 0];
+    }
+};
+Blockly.Blocks['gd_success'] = {
+    init: function () {
+        this.appendDummyInput()
+            .appendField("return this.success(")
+            .appendField(new Blockly.FieldTextInput(''), 'var')
+            .appendField(")");
+        //this.setOutput(true, 'String');
+        this.setPreviousStatement(true, null);
+        this.setColour(90);
+        this.setTooltip('查询单个数据');
+    }
+};
+Blockly.JavaScript['gd_success'] = function (block) {
+    var text_var = block.getFieldValue('var');
+    if (text_var !== '') {
+        return "return this.success(" + text_var + ");\n";
+    } else {
+        return "return this.success();\n";
+    }
+};
+Blockly.Blocks['gd_fail'] = {
+    init: function () {
+        this.appendDummyInput()
+            .appendField("return this.fail(")
+            .appendField(new Blockly.FieldTextInput(''), 'var')
+            .appendField(")");
+        //this.setOutput(true, 'String');
+        this.setPreviousStatement(true, null);
+        this.setColour(90);
+        this.setTooltip('查询单个数据');
+    }
+};
+Blockly.JavaScript['gd_fail'] = function (block) {
+    var text_var = block.getFieldValue('var');
+    if (text_var !== '') {
+        return "return this.fail(" + text_var + ");\n";
+    } else {
+        return "return this.fail();\n";
+    }
+};
+Blockly.Blocks['gd_file'] = {
+    init: function () {
+        this.appendDummyInput()
+            .appendField("this.file(")
+            .appendField(new Blockly.FieldTextInput(''), 'var')
+            .appendField(")");
+        this.setOutput(true, 'String');
+        this.setColour(90);
+        this.setTooltip('查询单个数据');
+    }
+};
+Blockly.JavaScript['gd_file'] = function (block) {
+    var text_var = block.getFieldValue('var');
+    if (text_var !== '') {
+        return ["this.file('" + text_var + "')", 0];
+    } else {
+        return ["this.file()", 0];
+    }
 };

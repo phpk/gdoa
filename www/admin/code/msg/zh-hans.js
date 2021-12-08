@@ -10,7 +10,7 @@ var MSG = {
   catLoops: "循环",
   catMath: "数学",
   catText: "文本",
-  catLists: "列表",
+  catLists: "数组",
   catColour: "颜色",
   catVariables: "变量",
   catFunctions: "函数",
