@@ -82,12 +82,15 @@
   <xml xmlns="https://developers.google.com/blockly/xml" id="toolbox" style="display: none">
    <category name="语句" colour="%{BKY_PROCEDURES_HUE}">
     <block type="gd_var"></block>
-    <block type="create_obj"></block>
+    <block type="text"></block>
+    
     <block type="gd_inline"></block>
     <block type="gd_text"></block>
     <block type="gd_plain"></block>
     <block type="gd_true"></block>
     <block type="gd_false"></block>
+    <block type="create_obj"></block>
+    <block type="lists_create_with"></block>
     
    </category>
    <category name="内部" colour="%{BKY_PROCEDURES_HUE}">
@@ -132,7 +135,7 @@
       <block type="lists_create_with">
         <mutation items="0"></mutation>
       </block>
-      <block type="lists_create_with"></block>
+      
       <block type="lists_repeat">
         <value name="NUM">
           <shadow type="math_number">
@@ -314,7 +317,7 @@
       </block>
     </category>
     <category name="%{BKY_CATTEXT}" colour="%{BKY_TEXTS_HUE}">
-      <block type="text"></block>
+      
       <block type="text_join"></block>
       <block type="text_append">
         <value name="TEXT">

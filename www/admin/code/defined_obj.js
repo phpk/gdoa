@@ -5,8 +5,8 @@ Blockly.Blocks['create_obj'] = {
      * @this {Blockly.Block}
      */
     init: function () {
-        this.setStyle('yellow1_blocks');
-        // this.setStyle('blue2_blocks');
+        // this.setStyle('yellow1_blocks');
+        this.setColour(90);
         this.itemCount_ = 2;
         this.updateShape_();
         this.setOutput(true, 'Object');
@@ -106,6 +106,8 @@ Blockly.Blocks['create_obj'] = {
             this.appendDummyInput('EMPTY')
                 .appendField(Blockly.Msg['LISTS_CREATE_EMPTY_TITLE']);
         }
+    
+        //this.appendField('创建空对象');
         // Add new inputs.
         for (var i = 0; i < this.itemCount_; i++) {
             if (!this.getInput('item_value' + i)) {
