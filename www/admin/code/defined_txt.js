@@ -15,7 +15,7 @@ Blockly.Blocks['gd_text'] = {
     init: function () {
         this.appendValueInput('val')
             .appendField(new Blockly.FieldTextInput('test'), 'var');
-        this.setOutput(true, 'String');
+        this.setOutput(true, null);
         this.setColour(90);
         this.setTooltip('查询');
     }
@@ -172,3 +172,62 @@ Blockly.JavaScript['gd_return'] = function (block) {
     //return [code, Blockly.JavaScript.ORDER_ATOMIC];
     return code;
 };
+Blockly.Blocks['gd_abc'] = {
+    init: function () {
+        let options = [
+            ["=", "="],
+            ["==", "=="],
+            ["===", "==="],
+            ["!=", "!="],
+            ["!==", "!=="],
+            ["<", "<"],
+            [">", ">"],
+            ["<=", "<="],
+            [">=", ">="],
+            ["||", "||"],
+            ["&&", "&&"],
+            ["|", "|"],
+            ["&", "&"]
+          ];
+        this.appendDummyInput()
+        .appendField(new Blockly.FieldTextInput('var1'), 'var1')
+        .appendField(new Blockly.FieldDropdown(options), 'var_type')
+        .appendField(new Blockly.FieldTextInput('var2'), 'var2');
+        this.setOutput(true, null);
+        //this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setColour(90);
+        this.setTooltip('多数判断');
+    }
+};
+
+Blockly.JavaScript['gd_abc'] = function(block) {
+    var var1 = block.getFieldValue('var1');
+    var var2 = block.getFieldValue('var2');
+    var var_type = block.getFieldValue('var_type');
+    var code = var1 + ' ' + var_type + ' ' + var2;
+    //return [code, Blockly.JavaScript.ORDER_NONE];
+    return code;
+  };
+
+  Blockly.Blocks['gd_val'] = {
+    init: function () {
+        this.appendDummyInput()
+        .appendField(new Blockly.FieldTextInput('var1'), 'var1')
+        .appendField("=")
+        .appendField(new Blockly.FieldTextInput('var2'), 'var2');
+        //this.setOutput(true, null);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setColour(90);
+        this.setTooltip('查询');
+    }
+};
+
+Blockly.JavaScript['gd_val'] = function(block) {
+    var var1 = block.getFieldValue('var1');
+    var var2 = block.getFieldValue('var2');
+    var code = var1 + ' = ' + var2 + '\n';
+    //return [code, Blockly.JavaScript.ORDER_NONE];
+    return code;
+  };
