@@ -145,8 +145,11 @@ Code.bindClick = function(el, func) {
   if (typeof el == 'string') {
     el = document.getElementById(el);
   }
+  //console.log(el);
   el.addEventListener('click', func, true);
   el.addEventListener('touchend', func, true);
+  //el.addEventListener('mousemove', func, true);
+  //el.addEventListener('mousedown', func, true);
 };
 
 /**
@@ -410,7 +413,7 @@ Code.init = function() {
 
   Code.bindClick('trashButton',
       function() {Code.discard(); Code.renderContent();});
-  Code.bindClick('runButton', Code.runJS);
+  //Code.bindClick('runButton', Code.runJS);
   // Disable the link button if page isn't backed by App Engine storage.
   var linkButton = document.getElementById('linkButton');
   if ('BlocklyStorage' in window) {
@@ -421,11 +424,12 @@ Code.init = function() {
     Code.bindClick(linkButton,
         function() {BlocklyStorage.link(Code.workspace);});
   } else if (linkButton) {
-    linkButton.className = 'disabled';
+    //linkButton.className = 'disabled';
   }
 
   for (var i = 0; i < Code.TABS_.length; i++) {
     var name = Code.TABS_[i];
+    //console.log(name)
     Code.bindClick('tab_' + name,
         function(name_) {return function() {Code.tabClick(name_);};}(name));
   }
@@ -494,7 +498,7 @@ Code.initLanguage = function() {
   document.getElementById('tab_blocks').textContent = MSG['blocks'];
 
   document.getElementById('linkButton').title = MSG['linkTooltip'];
-  document.getElementById('runButton').title = MSG['runTooltip'];
+  //document.getElementById('runButton').title = MSG['runTooltip'];
   document.getElementById('trashButton').title = MSG['trashTooltip'];
 };
 
@@ -502,6 +506,7 @@ Code.initLanguage = function() {
  * Execute the user's code.
  * Just a quick and dirty eval.  Catch infinite loops.
  */
+/*
 Code.runJS = function() {
   Blockly.JavaScript.INFINITE_LOOP_TRAP = 'checkTimeout();\n';
   var timeouts = 0;
@@ -518,7 +523,7 @@ Code.runJS = function() {
     alert(MSG['badCode'].replace('%1', e));
   }
 };
-
+*/
 /**
  * Discard all blocks from the workspace.
  */

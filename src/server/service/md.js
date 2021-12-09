@@ -51,8 +51,8 @@ module.exports = class extends think.Service {
         
         let res = json2md(rt);
         //写入到开发文档 后期可注释掉
-        let sqlmdFile = path.join(think.ROOT_PATH, 'www/docs/server/doc/sql.md');
-        fs.writeFileSync(sqlmdFile, res);
+        //let sqlmdFile = path.join(think.ROOT_PATH, 'www/docs/server/doc/sql.md');
+        //fs.writeFileSync(sqlmdFile, res);
         //
         return res;
     }

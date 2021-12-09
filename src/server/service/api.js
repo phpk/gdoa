@@ -55,7 +55,13 @@ module.exports = class extends think.Service {
                 let item = clist[p];
                 if (item.start) str += item.start;
                 if (item.list && item.list.length > 0) {
+                    
                     item.list.forEach(d => {
+                        if (data.typesName == 'controller') {
+                            d = "\t\t" + d.replace(/\n/g, "\n\t\t")
+                            //d = d.replace(/(.*)}/, "\n}")
+                            //d = d.replace("(.*)}", "$1\n}")
+                        }
                         str += d;
                     })
                 }
@@ -134,5 +140,13 @@ module.exports = class extends think.Service {
         //lData.content += `${comments}${post.key}Action(){\n\t\tthis.allowMethods = '${post.method}';\n\t}\n`;
         fs.writeFileSync(lPath, JSON.stringify(lData));
         this.setParseData(lData);
+    }
+    //更新接口层代码
+    updateCode(mod, api, str) {
+        let cPath = cachePath + mod.server_path + '/controller/' + mod.key + '.json';
+        let cData = require(cPath);
+        cData.content[api.key]['list'] = [str];
+        fs.writeFileSync(cPath, JSON.stringify(cData));
+        this.setParseData(cData);
     }
 }

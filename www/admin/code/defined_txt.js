@@ -2,9 +2,9 @@ Blockly.Blocks['gd_inline'] = {
     init: function () {
         this.appendDummyInput()
             .appendField(new Blockly.FieldTextInput(''), 'var');
-        this.setOutput(true, 'String');
+        this.setOutput(true, null);
         this.setColour(90);
-        this.setTooltip('查询');
+        this.setTooltip('结果赋值');
     }
 };
 Blockly.JavaScript['gd_inline'] = function (block) {
@@ -14,10 +14,10 @@ Blockly.JavaScript['gd_inline'] = function (block) {
 Blockly.Blocks['gd_text'] = {
     init: function () {
         this.appendValueInput('val')
-            .appendField(new Blockly.FieldTextInput('test'), 'var');
+            .appendField(new Blockly.FieldTextInput(''), 'var');
         this.setOutput(true, null);
         this.setColour(90);
-        this.setTooltip('查询');
+        this.setTooltip('承左启右');
     }
 };
 Blockly.JavaScript['gd_text'] = function (block) {
@@ -40,14 +40,64 @@ Blockly.Blocks['gd_plain'] = {
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setColour(90);
-        this.setTooltip('查询');
+        this.setTooltip('承上启下');
     }
 };
 Blockly.JavaScript['gd_plain'] = function (block) {
     var val = block.getFieldValue('var');
     return val + '\n';
 };
-
+Blockly.Blocks['gd_console'] = {
+    init: function () {
+        this.appendDummyInput()
+            .appendField('console.log(')
+            .appendField(new Blockly.FieldTextInput(''), 'var')
+            .appendField(')');
+        //this.setOutput(true, 'String');
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setColour(90);
+        this.setTooltip('打印');
+    }
+};
+Blockly.JavaScript['gd_console'] = function (block) {
+    var val = block.getFieldValue('var');
+    return 'console.log(' + val + ');\n';
+};
+Blockly.Blocks['gd_new'] = {
+    init: function () {
+        this.appendValueInput('chain')
+            .appendField('new')
+            .setCheck(null);
+        //this.setPreviousStatement(true, null);
+        this.setOutput(true, null);
+        this.setColour(90);
+        this.setTooltip('新');
+    }
+};
+Blockly.JavaScript['gd_new'] = function (block) {
+    var value_val = Blockly.JavaScript.valueToCode(block, 'chain', Blockly.JavaScript.ORDER_ATOMIC);
+    if (value_val === '') {
+        return ['new ', 0];
+    } else {
+        return ['new ' + value_val, 0];
+    }
+};
+Blockly.Blocks['gd_require'] = {
+    init: function () {
+        this.appendDummyInput()
+            .appendField('require("')
+            .appendField(new Blockly.FieldTextInput(''), 'var')
+            .appendField('")');
+        this.setOutput(true, 'String');
+        this.setColour(90);
+        this.setTooltip('包含');
+    }
+};
+Blockly.JavaScript['gd_require'] = function (block) {
+    var val = block.getFieldValue('var');
+    return ['require("'+ val + '");\n',0];
+};
 Blockly.JavaScript['gd_await'] = function (block) {
     var value_val = Blockly.JavaScript.valueToCode(block, 'val', Blockly.JavaScript.ORDER_ATOMIC);
     if (value_val === '') {
@@ -230,4 +280,43 @@ Blockly.JavaScript['gd_val'] = function(block) {
     var code = var1 + ' = ' + var2 + '\n';
     //return [code, Blockly.JavaScript.ORDER_NONE];
     return code;
-  };
+};
+
+
+Blockly.Blocks['gd_lets'] = {
+    init: function () {
+        let options = [
+            ['let', 'let'],
+            ['const', 'const'],
+            ['var', 'var']
+        ];
+        this.appendDummyInput()
+            .appendField('多定义')
+            .appendField(new Blockly.FieldDropdown(options), 'var_type')
+            .appendField(new Blockly.FieldTextInput(''), 'letsname');
+        this.appendStatementInput('chain')
+            .appendField('chain')
+            .setCheck(null);
+        this.setColour(90);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setTooltip('');
+    }
+};
+Blockly.JavaScript['gd_lets'] = function (block) {
+    var var_type = block.getFieldValue('var_type');
+    var letsname = block.getFieldValue('letsname');
+    var value_val = Blockly.JavaScript.statementToCode(block, 'chain');
+    let arr = value_val.split('\n');
+    let rt = [];
+    arr.forEach(d => {
+        d = d.trim()
+        if (d) {
+            rt.push(d)
+        }
+    })
+    let str = rt.join(',');
+    //console.log(str)
+    let code = `${var_type} {${str}} = ${letsname};\n`;
+    return code;
+}

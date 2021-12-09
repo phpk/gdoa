@@ -81,9 +81,44 @@ module.exports = class extends Base {
     async delAction() {
         let id = this.post('id');
         let data = await this.model('api').del(id);
-        console.log(data)
+        //console.log(data)
         let mod = await this.model('mod').where({ id: data.mod_id }).find();
         this.service('api').delApi(mod, data.key);
         return this.success()
+    }
+    async addLogicAction() {
+        let { id, code, str } = this.post();
+        try {
+            let data = await this.model('api_logic').where({ id }).find()
+            if (!think.isEmpty(data)) {
+                let up = {
+                    id,
+                    code,
+                    update_time: this.now()
+                }
+                await this.model('api_logic').where({ id }).update(up)
+            } else {
+                let add = {
+                    id,
+                    code,
+                    add_time: this.now(),
+                    update_time: 0
+                }
+                await this.model('api_logic').add(add)
+            }
+            let api = await this.model('api').where({ id }).find()
+            let mod = await this.model('mod').where({ id: api.mod_id }).find()
+            this.service('api').updateCode(mod, api, str);
+            return this.success()
+        } catch (e) {
+            return this.fail(e.message)
+        }
+        
+    }
+    async getLogicAction() {
+        let id = this.get('id');
+        let data = await this.model('api_logic').where({ id }).find()
+        if (think.isEmpty(data)) return this.fail('数据不存在')
+        return this.success(data)
     }
 }

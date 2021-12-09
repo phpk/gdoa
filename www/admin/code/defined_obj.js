@@ -5,7 +5,6 @@ Blockly.Blocks['create_obj'] = {
      * @this {Blockly.Block}
      */
     init: function () {
-        // this.setStyle('yellow1_blocks');
         this.setColour(90);
         this.itemCount_ = 2;
         this.updateShape_();

@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>接口设计管理</title>
+		<title>程序设计器管理</title>
 		<link rel="stylesheet" href="../../component/ui/css/ui.css" />
 	</head>
 	<body class="pear-container">
@@ -32,27 +32,28 @@
 		</div>
 		<div class="layui-card">
 			<div class="layui-card-body">
-				<table id="api-table" lay-filter="api-table"></table>
+				<table id="code-table" lay-filter="code-table"></table>
 			</div>
 		</div>
 
-		<script type="text/html" id="api-toolbar">
+		<script type="text/html" id="code-toolbar">
 			<button class="layui-btn layui-btn-primary layui-border-red layui-btn-sm" lay-event="add">
 		        <i class="layui-icon layui-icon-add-1"></i>
 		        新增
 		    </button>
 		</script>
 		<script type="text/html" id="op-bar">
-			<button type="button" plain class="pear-btn pear-btn-primary pear-btn-xs" lay-event="params">参数</button>
-			<button type="button" plain class="pear-btn pear-btn-success pear-btn-xs"  lay-event="logic">逻辑</button>
-			<button type="button" plain class="pear-btn pear-btn-danger pear-btn-xs"  lay-event="test">测试</button>
+			<button type="button" plain class="pear-btn pear-btn-primary pear-btn-xs" lay-event="opcode">设计</button>
 		</script>
-		<script type="text/html" id="api-bar">
+		<script type="text/html" id="code-bar">
 			<button class="pear-btn pear-btn-primary pear-btn-sm" lay-event="edit"><i class="layui-icon layui-icon-edit"></i></button>
 		    <button class="pear-btn pear-btn-danger pear-btn-sm" lay-event="remove"><i class="layui-icon layui-icon-delete"></i></button>
 		</script>
-		<script type="text/html" id="api-time">
+		<script type="text/html" id="code-time">
 			{{layui.util.toDateString(d.add_time*1000, 'yyyy-MM-dd HH:mm:ss')}}
+		</script>
+		<script type="text/html" id="op-time">
+			{{layui.util.toDateString(d.update_time*1000, 'yyyy-MM-dd HH:mm:ss')}}
 		</script>
 		<script src="../../config/config.js"></script>
 		<script src="../../component/layui/layui.js"></script>
@@ -75,45 +76,49 @@
 						},
 						{
 							title: '名称',
-							field: 'name',
+							field: 'title',
+							align: 'center'
+						},
+						{
+							title: '类型',
+							field: 'type',
 							align: 'center'
 						},
 						{
 							title: '标志',
-							field: 'key',
-							align: 'center'
-						},
-						{
-							title: '模块',
-							field: 'modname',
+							field: 'name',
 							align: 'center'
 						},
 						{
 							title: '添加时间',
 							field: 'add_time',
 							align: 'center',
-							templet: '#api-time'
+							templet: '#code-time'
 						},
-						
 						{
-							title: '操作',
-							toolbar: '#api-bar',
+							title: '修改时间',
+							field: 'update_time',
+							align: 'center',
+							templet: '#op-time'
+						},
+						{
+							title: '设计',
+							toolbar: '#op-bar',
 							align: 'center',
 							width: 130
 						},
 						{
-							title: '管理',
+							title: '操作',
+							toolbar: '#code-bar',
 							align: 'center',
-							width : 220,
-							templet: '#op-bar',
-							fixed : 'right'
-						},
+							width: 130
+						}
 					]
 				]
 
 				table.render({
-					elem: '#api-table',
-					url: apiUrl + 'api/list',
+					elem: '#code-table',
+					url: apiUrl + 'code/list',
 					headers : getHeader(),
 					parseData: function(res) {
 						//console.log(res)
@@ -128,7 +133,7 @@
 					cols: cols,
 					skin: 'line',
 
-					toolbar: '#api-toolbar',
+					toolbar: '#code-toolbar',
 					defaultToolbar: [{
 						title: '刷新',
 						layEvent: 'refresh',
@@ -136,24 +141,17 @@
 					}, 'filter', 'print', 'exports']
 				});
 
-				table.on('tool(api-table)', function(obj) {
+				table.on('tool(code-table)', function(obj) {
 					if (obj.event === 'remove') {
 						window.remove(obj);
 					} else if (obj.event === 'edit') {
 						window.edit(obj);
-					}
-					else if(obj.event === 'params') {
-						window.params(obj)
-					}
-					else if(obj.event === 'logic') {
-						window.logic(obj)
-					}
-					else if(obj.event === 'test') {
-						window.test(obj)
+					} else if(obj.event === 'opcode') {
+						window.opcode(obj);
 					}
 				});
 
-				table.on('toolbar(api-table)', function(obj) {
+				table.on('toolbar(code-table)', function(obj) {
 					if (obj.event === 'add') {
 						window.add();
 					} else if (obj.event === 'refresh') {
@@ -162,8 +160,8 @@
 				});
 				// 监听搜索操作
 
-				form.on('submit(api-query)', function(data) {
-					table.reload('api-table', {
+				form.on('submit(code-query)', function(data) {
+					table.reload('code-table', {
 						where: {
 							param : $('form').serialize()
 						},
@@ -173,8 +171,8 @@
 					})
 					return false;
 				});
-				form.on('submit(api-reset)', function(data){
-					table.reload('api-table', {
+				form.on('submit(code-reset)', function(data){
+					table.reload('code-table', {
 						where: {
 							param : ''
 						},
@@ -184,7 +182,11 @@
 					});
 					return false;
 				})
-
+				window.opcode = function(obj) {
+					parent.layui.admin.addTab(obj.data.id+9000,
+					obj.data.title + '程序',
+					'/admin/code/index.html?id=' + obj.data.id)
+				}
 				window.add = function() {
 					layer.open({
 						type: 2,
@@ -210,54 +212,10 @@
 						content: MODULE_PATH + 'edit.html?id=' + obj.data.id
 					});
 				}
-				window.params = function(obj) {
-					parent.layui.admin.addTab(obj.data.id+1000,
-					obj.data.name + '参数',
-					'/admin/view/api/params.html?aid=' + obj.data.id)
-					/*
-					layer.open({
-						type: 2,
-						title: '参数编辑',
-						shade: 0.1,
-						offset: 'rt',
-						area: ['90%', '100%'],
-						anim: 1,
-						maxmin: true,
-						content: MODULE_PATH + 'params.html?aid=' + obj.data.id
-					});*/
-				}
-				window.logic = function(obj) {
-					parent.layui.admin.addTab(obj.data.id+2000,
-					obj.data.name + '接口',
-					'/admin/code/api.html?id=' + obj.data.id)
-					/*
-					layer.open({
-						type: 2,
-						title: '逻辑编辑',
-						shade: 0.1,
-						offset: 'rt',
-						area: ['90%', '100%'],
-						anim: 1,
-						maxmin: true,
-						content: '/admin/code/api.html?id=' + obj.data.id
-					});*/
-				}
-				window.test = function(obj) {
-					layer.open({
-						type: 2,
-						title: '测试编辑',
-						shade: 0.1,
-						offset: 'rt',
-						area: ['80%', '100%'],
-						anim: 1,
-						maxmin: true,
-						content: MODULE_PATH + 'test.html?id=' + obj.data.id
-					});
-				}
 				window.remove = function(obj){
 		            layer.confirm('确定要删除', {icon: 3, title:'提示'}, function(index){
 		                layer.close(index);
-		                _post(layui, 'api/del',{id : obj.data.id}, res => {
+		                _post(layui, 'code/del',{id : obj.data.id}, res => {
 							layer.msg('删除成功',{icon:1,time:1000},() => {
 								obj.del();
 							});
@@ -269,7 +227,7 @@
 
 
 				window.refresh = function(param) {
-					table.reload('api-table');
+					table.reload('code-table');
 				}
 			})
 		</script>

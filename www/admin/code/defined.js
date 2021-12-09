@@ -73,7 +73,7 @@ Blockly.Blocks['gd_fail'] = {
 Blockly.JavaScript['gd_fail'] = function (block) {
     var text_var = block.getFieldValue('var');
     if (text_var !== '') {
-        return "return this.fail(" + text_var + ");\n";
+        return "return this.fail('" + text_var + "');\n";
     } else {
         return "return this.fail();\n";
     }
@@ -166,11 +166,61 @@ Blockly.JavaScript['gd_datetime'] = function (block) {
     return ["think.datetime(" + text_var1 + ",'"+text_var2+"')", 0];
 };
 
+Blockly.Blocks['gd_md5'] = {
+    init: function () {
+        let options = [
+            ['md5', 'md5'],
+            ['timeout', 'timeout'],
+            ['escapeHtml', 'escapeHtml'],
+            ['omit', 'omit'],
+            ['defer', 'defer'],
+            ['uuid', 'uuid'],
+            ['ms', 'ms'],
+            ['getdirFiles', 'getdirFiles'],
+            ['config', 'config']
+        ]
+        this.appendDummyInput()
+            .appendField("think.")
+            .appendField(new Blockly.FieldDropdown(options), 'var_type')
+            .appendField("(")
+            .appendField(new Blockly.FieldTextInput('params'), 'var')
+            .appendField(")");
+        this.setOutput(true, 'String');
+        this.setColour(90);
+        this.setTooltip('获取服务');
+    }
+};
+Blockly.JavaScript['gd_md5'] = function (block) {
+    var var_type = block.getFieldValue('var_type');
+    var text_var = block.getFieldValue('var');
+    return ["think." + var_type + "(" + text_var + ")", 0];
+};
+
+
 Blockly.Blocks['gd_service'] = {
     init: function () {
+        let options = [
+            ['service', 'service'],
+            ['session', 'session'],
+            ['cache', 'cache'],
+            ['assign', 'assign'],
+            ['display', 'display'],
+            ['render','render'],
+            ['model', 'model'],
+            ['cookie', 'cookie'],
+            ['header', 'header'],
+            ['redirect', 'redirect'],
+            ['download', 'download'],
+            ['controller', 'controller'],
+            ['action', 'action'],
+            ['json', 'json'],
+            ['jsonp','jsonp'],
+        ]
         this.appendDummyInput()
-            .appendField("this.service(")
-            .appendField(new Blockly.FieldTextInput(''), 'var')
+            .appendField("this.")
+            .appendField(new Blockly.FieldDropdown(options), 'var_type')
+            .appendField("(")
+            .appendField(new Blockly.FieldTextInput('params'), 'var')
             .appendField(")");
         this.setOutput(true, 'String');
         this.setColour(90);
@@ -178,55 +228,62 @@ Blockly.Blocks['gd_service'] = {
     }
 };
 Blockly.JavaScript['gd_service'] = function (block) {
+    var var_type = block.getFieldValue('var_type');
     var text_var = block.getFieldValue('var');
-    return ["this.service('" + text_var + "')", 0];
-};
-Blockly.Blocks['gd_session'] = {
-    init: function () {
-        this.appendDummyInput()
-            .appendField("session(")
-            .appendField(new Blockly.FieldTextInput('name'), 'var1')
-            .appendField(",")
-            .appendField(new Blockly.FieldTextInput(''), 'var2')
-            .appendField(")");
-        this.setOutput(true, 'String');
-        this.setColour(90);
-        this.setTooltip('session');
-    }
-};
-Blockly.JavaScript['gd_session'] = function (block) {
-    var text_var1 = block.getFieldValue('var1');
-    var text_var2 = block.getFieldValue('var2');
-    if(text_var2 !== '') {
-        return ["this.session(" + text_var1 + ","+text_var2+")", 0];
-    }else {
-        return ["this.session(" + text_var1 + ")", 0];
-    }
-    
+    return ["this."+var_type+"(" + text_var + ")", 0];
 };
 
-Blockly.Blocks['gd_cache'] = {
+
+Blockly.Blocks['gd_chmod'] = {
     init: function () {
+        let options = [
+            ['chmod', 'chmod'],
+            ['mkdir', 'mkdir'],
+            ['rmdir', 'rmdir']
+        ]
         this.appendDummyInput()
-            .appendField("cache(")
-            .appendField(new Blockly.FieldTextInput('name'), 'var1')
-            .appendField(",")
-            .appendField(new Blockly.FieldTextInput(''), 'var2')
+            .appendField("think.")
+            .appendField(new Blockly.FieldDropdown(options), 'var_type')
+            .appendField("(")
+            .appendField(new Blockly.FieldTextInput('params1,params2'), 'var')
             .appendField(")");
-        this.setOutput(true, 'String');
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
         this.setColour(90);
-        this.setTooltip('缓存');
+        this.setTooltip('获取服务');
     }
 };
-Blockly.JavaScript['gd_cache'] = function (block) {
-    var text_var1 = block.getFieldValue('var1');
-    var text_var2 = block.getFieldValue('var2');
-    if(text_var2 !== '') {
-        return ["this.cache(" + text_var1 + ","+text_var2+")", 0];
-    }else {
-        return ["this.cache(" + text_var1 + ")", 0];
-    }
-    
+Blockly.JavaScript['gd_chmod'] = function (block) {
+    var var_type = block.getFieldValue('var_type');
+    var text_var = block.getFieldValue('var');
+    return "think." + var_type + "(" + text_var + ")\n";
 };
+
+Blockly.Blocks['gd_ip'] = {
+    init: function () {
+        let options = [
+            ['ip', 'ip'],
+            ['ips', 'ips'],
+            ['ctx','ctx'],
+            ['body', 'body'],
+            ['method', 'method'],
+            ['isGet', 'isGet'],
+            ['isPost', 'isPost'],
+            ['isCli', 'isCli'],
+            ['userAgent','userAgent']
+        ]
+        this.appendDummyInput()
+            .appendField("this.")
+            .appendField(new Blockly.FieldDropdown(options), 'var_type');
+        this.setOutput(true, null);
+        this.setColour(90);
+        this.setTooltip('获取上传数据');
+    }
+};
+Blockly.JavaScript['gd_ip'] = function (block) {
+    var var_type = block.getFieldValue('var_type');
+    return ["this." + var_type, 0];
+};
+
 
 

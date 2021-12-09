@@ -8,5 +8,16 @@ module.exports = class extends Base {
 	* @name 文章列表
 	*/
 	async listAction(){
-	}
+		let data = this.post()
+		if (think.isEmpty(data)) {
+		  console.log(data);
+		  return this.fail("数据为空");
+		}
+		switch (this.post()) {
+		  case this.get() :
+		      let data = 'ddd'
+		
+		    break;
+		}
+			}
 };

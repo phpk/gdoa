@@ -90,11 +90,13 @@
 					};
 					_post(layui, 'login/do', postData, res => {
 						layer.close(index);
+						//console.log(res)
 						setToken(res);
 						location.href = 'index.html';
 					}, err => {
 						layer.close(index);
-						if(err.code == 202) {
+						//console.log(err)
+						if(err.code == 201) {
 							changeImg();
 						}
 					})

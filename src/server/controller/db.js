@@ -69,7 +69,7 @@ module.exports = class extends Base {
      */
     async docAction() {
         let data = await this.model('db').allList();
-        console.log(data)
+        //console.log(data)
         let rt = await this.service('md').db(data);
         return this.success(rt)
     }
