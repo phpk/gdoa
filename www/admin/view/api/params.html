@@ -28,11 +28,15 @@
         <blockquote class="layui-elem-quote">
             <button class="layui-btn layui-btn-primary layui-border-red layui-btn-sm" lay-event="addFromDb" onclick="showtab()">
 		        <i class="layui-icon layui-icon-add-1"></i>
-		        从数据库新增
+		        数据库新增
 		    </button>
-            <button class="layui-btn layui-btn-primary layui-border-red layui-btn-sm" lay-event="addFromManual" onclick="add()">
+            <button class="layui-btn layui-btn-primary layui-border-blue layui-btn-sm" lay-event="addPage" onclick="addPage()">
 		        <i class="layui-icon layui-icon-add-1"></i>
-		        手工新增
+		        分页新增
+		    </button>
+            <button class="layui-btn layui-btn-primary layui-border-block layui-btn-sm" lay-event="addFromManual" onclick="add()">
+		        <i class="layui-icon layui-icon-add-1"></i>
+		        新增单条
 		    </button>
         </blockquote>
         <div class="layui-card">
@@ -59,6 +63,7 @@
         <div class="layui-tab layui-tab-card" id="tabs-area" style="display:none"></div>
 		
      <script id="tabs-tpl" type="text/html">
+        
         <ul class="layui-tab-title">
         {{#  layui.each(d, function(index, item){ }}
             <li {{#  if(index == 0){ }}class="layui-this"{{#  }; }}>{{ item.comment ? item.comment : item.name  }}</li>
@@ -117,8 +122,10 @@
         
         {{#  }); }}
         </div>
+        
         <div class="bottom">
                 <div class="button-container">
+                    <span class="layui-elem-quote">根据模型取表，如需多表可在模型中新增附加表</span>
                     <button type="submit" class="pear-btn pear-btn-primary pear-btn-sm" id="saveDbFieldsBtn">
                         <i class="layui-icon layui-icon-ok"></i>
                     提交
@@ -372,6 +379,13 @@
                         })
                     });
                 } 
+                window.addPage = () => {
+                    _post(layui, 'apiparams/addPage', {aid : req.aid}, res => {
+                        layer.msg('添加成功',{icon:1,time:1000},() => {
+                                location.reload()
+                            });
+                    })
+                }
 
 				
 			})

@@ -48,6 +48,20 @@ module.exports = class extends think.Logic {
 				string : true,
 				aliasName : '作者:id:name'
 			},
+			 limit : {
+				int : true,
+				defalut: 20,
+				aliasName : '每页数据量'
+			},
+			 param : {
+				string : true,
+				aliasName : '分页参数'
+			},
+			 page : {
+				int : true,
+				defalut: 1,
+				aliasName : '分页页数'
+			},
 		}
 	}
 };

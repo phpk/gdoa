@@ -74,8 +74,13 @@ module.exports = class extends Base {
 
     async delAction() {
         let id = this.post('id');
-        if (!await this.hasData('code', { id }))
+        let has = await this.model('code').where({ id }).find();
+        if (!think.isEmpty(has))
             return this.fail('数据不存在')
+        let filepath = srcPath + has.path + '/' + has.type + '/' + has.name + '.js';
+        if (think.isFile(filepath)) {
+            fs.unlink(filepath, res => { })
+        }
         await this.model('code').where({ id }).delete()
         return this.success()
     }

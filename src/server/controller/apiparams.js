@@ -82,6 +82,51 @@ module.exports = class extends Base {
         await this.updateFile(post.aid);
         return this.success()
     }
+    async addPageAction() {
+        let aid = this.post('aid');
+        let keys = ['page', 'limit', 'param'];
+        let list = await this.model('api_params').where({ aid }).getField('key');
+        let add = [];
+        keys.forEach(d => {
+            if (!list.includes(d)) add.push(d)
+        });
+        if (add.length > 0) {
+            let adds = [];
+            let keysname = {
+                'page': {
+                    name: '分页页数',
+                    type: 'number',
+                    def : 1
+                },
+                'limit': {
+                    name: '每页数据量',
+                    type: 'number',
+                    def : 20
+                },
+                'param': {
+                    name: '分页参数',
+                    type: 'string',
+                    def : ''
+                }
+            }
+            add.forEach(d => {
+                adds.push({
+                    aid,
+                    key: d,
+                    name: keysname[d].name,
+                    type: keysname[d].type,
+                    def: keysname[d].def,
+                    required: 0,
+                    isdb: 0,
+                    tablename: '',
+                    tablefield: ''
+                })
+            })
+            await this.model('api_params').addMany(adds);
+            await this.updateFile(aid);
+        }
+        return this.success()
+    }
     async editAction() {
         let post = this.post();
         let has = await this.model('api_params').where({ id: post.id }).find();
