@@ -1,41 +1,38 @@
-layui.use(['jquery', 'layer'], function () {
+layui.use(['jquery', 'layer','dropdown'], function () {
     let $ = layui.jquery,
         layer = layui.layer,
+        dropdown = layui.dropdown,
         req = _req(),
         id = req.id;
-    $('body').on('mouseover', '.blocklyTreeRow', e => {
-        e.target.click()
-    })
-    let loadXML = (xmlString) => {
-        let xmlDoc = null;
-        //判断浏览器的类型
-        //支持IE浏览器 
-        if (!window.DOMParser && window.ActiveXObject) {   //window.DOMParser 判断是否是非ie浏览器
-            var xmlDomVersions = ['MSXML.2.DOMDocument.6.0', 'MSXML.2.DOMDocument.3.0', 'Microsoft.XMLDOM'];
-            for (let i = 0; i < xmlDomVersions.length; i++) {
-                try {
-                    xmlDoc = new ActiveXObject(xmlDomVersions[i]);
-                    xmlDoc.async = false;
-                    xmlDoc.loadXML(xmlString); //loadXML方法载入xml字符串
-                    break;
-                } catch (e) {
-                }
-            }
+    //$('body').on('mouseover', '.blocklyTreeRow', e => {
+    //    e.target.click()
+    //})
+    dropdown.render({
+        elem: '.demobtn'
+        ,data: [{
+          title: '控制层'
+          ,id: 1
+        },{
+          title: '模型层'
+          ,id: 2
+        },{
+          title: '逻辑层'
+          ,id: 3
+        },{
+            title: '服务层'
+            ,id: 4
+          }]
+        ,click: function(obj){
+          //layer.tips('点击了：'+ obj.title + obj.id, this.elem, {tips: [1, '#5FB878']})
+          $.get('/admin/code/demo/' + obj.id + '.xml', res =>{
+              //console.log(res)
+              let xml = Blockly.Xml.textToDom(res);
+              Blockly.mainWorkspace.clear();
+               Blockly.Xml.domToWorkspace(xml, Blockly.mainWorkspace);
+          },'text')
         }
-        //支持Mozilla浏览器
-        else if (window.DOMParser && document.implementation && document.implementation.createDocument) {
-            try {
-                domParser = new DOMParser();
-                xmlDoc = domParser.parseFromString(xmlString, 'text/xml');
-            } catch (e) {
-            }
-        }
-        else {
-            return null;
-        }
-
-        return xmlDoc;
-    }
+      });
+    
     _get(layui, 'code/editBefore?id=' + id, res => {
         //console.log(res)
         if (res && res.content && res.content != '') {

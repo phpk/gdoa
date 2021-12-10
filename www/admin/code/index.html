@@ -6,10 +6,10 @@
   <meta name="google" value="notranslate">
   <title>代码</title>
   <link rel="stylesheet" href="style.css">
-
-  <script src="/admin/code/js/blockly_compressed.js"></script>
-  <script src="/admin/code/js/blocks_compressed.js"></script>
-  <!--script src="/admin/code/js/blockly_uncompressed.js"></script>
+  <link rel="stylesheet" href="/admin/component/ui/css/ui.css" />
+  <!--script src="/admin/code/js/blockly_compressed.js"></script>
+  <script src="/admin/code/js/blocks_compressed.js"></script-->
+  <script src="/admin/code/js/blockly_uncompressed.js"></script>
   <script src="/admin/code/js/blocks/colour.js"></script>
   <script src="/admin/code/js/blocks/lists.js"></script>
   <script src="/admin/code/js/blocks/logic.js"></script>
@@ -17,10 +17,10 @@
   <script src="/admin/code/js/blocks/math.js"></script>
   <script src="/admin/code/js/blocks/procedures.js"></script>
   <script src="/admin/code/js/blocks/text.js"></script>
-  <script src="/admin/code/js/blocks/variables.js"></script-->
+  <script src="/admin/code/js/blocks/variables.js"></script>
   
-  <script src="/admin/code/js/javascript_compressed.js"></script>
-  <!--script src="/admin/code/js/javascript.js"></script>
+  <!--script src="/admin/code/js/javascript_compressed.js"></script-->
+  <script src="/admin/code/js/javascript.js"></script>
   <script src="/admin/code/js/javascript/colour.js"></script>
   <script src="/admin/code/js/javascript/lists.js"></script>
   <script src="/admin/code/js/javascript/logic.js"></script>
@@ -29,7 +29,7 @@
   <script src="/admin/code/js/javascript/procedures.js"></script>
   <script src="/admin/code/js/javascript/text.js"></script>
   <script src="/admin/code/js/javascript/variables.js"></script>
-  <script src="/admin/code/js/javascript/variables_dynamic.js"></script-->
+  <script src="/admin/code/js/javascript/variables_dynamic.js"></script>
   <script src="/admin/code/js/run_prettify.js"></script>
   <script src="/admin/code/js/custom-dialog.js"></script>
   <script src="/admin/code/code.js"></script>
@@ -52,19 +52,31 @@
             <td id="tab_blocks" class="tabon">...</td>
             <td class="tabmin tab_collapse">&nbsp;</td>
             <td id="tab_javascript" class="taboff tab_collapse">code</td>
-            <td class="tabmin tab_collapse">&nbsp;</td>
-            <td id="tab_xml" class="taboff tab_collapse">xml</td>
+            <!--td class="tabmin tab_collapse">&nbsp;</td>
+            <td id="tab_xml" class="taboff tab_collapse">xml</td-->
             <td class="tabmin">&nbsp;</td>
             <td id="tab_code" class="taboff">
               <select id="code_menu"></select>
             </td>
             <td class="tabmax">
-              <button id="trashButton" class="notext" title="...">
+              <button class="layui-btn layui-btn-primary layui-border-orange layui-btn-xs demobtn">
+                <i class="layui-icon layui-icon-down layui-font-12"></i>
+                用例
+              </button>
+              <button  id="trashButton" class="layui-btn layui-btn-primary layui-border-red layui-btn-xs">
+                <i class="layui-icon layui-icon-delete layui-font-12"></i>
+                清空
+              </button>
+              <button  id="linkButton" class="layui-btn layui-btn-primary layui-border-black layui-btn-xs">
+                <i class="layui-icon layui-icon-tabs layui-font-12"></i>
+                保存
+              </button>
+              <!--button id="trashButton" class="notext" title="...">
                 <img src='/admin/code/media/1x1.gif' class="trash icon21">
-              </button>
-              <button id="linkButton" class="notext" title="...">
+              </button-->
+              <!--button id="linkButton" class="notext" title="...">
                 <img src='/admin/code/media/1x1.gif' class="link icon21">
-              </button>
+              </button-->
               <!--button id="runButton" class="notext primary" title="...">
                 <img src='/admin/code/media/1x1.gif' class="run icon21">
               </button-->

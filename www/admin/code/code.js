@@ -195,14 +195,14 @@ Code.LANG = Code.getLang();
  * List of tab names.
  * @private
  */
-Code.TABS_ = ['blocks', 'javascript', 'xml'];
+Code.TABS_ = ['blocks', 'javascript'];
 
 /**
  * List of tab names with casing, for display in the UI.
  * @private
  */
 Code.TABS_DISPLAY_ = [
-  'Blocks', 'JavaScript', 'XML',
+  'Blocks', 'JavaScript'
 ];
 
 Code.selected = 'blocks';
@@ -213,6 +213,7 @@ Code.selected = 'blocks';
  */
 Code.tabClick = function(clickedName) {
   // If the XML tab was open, save and render the content.
+  /*
   if (document.getElementById('tab_xml').classList.contains('tabon')) {
     var xmlTextarea = document.getElementById('content_xml');
     var xmlText = xmlTextarea.value;
@@ -231,7 +232,7 @@ Code.tabClick = function(clickedName) {
       Code.workspace.clear();
       Blockly.Xml.domToWorkspace(xmlDom, Code.workspace);
     }
-  }
+  }*/
 
   if (document.getElementById('tab_blocks').classList.contains('tabon')) {
     Code.workspace.setVisible(false);
