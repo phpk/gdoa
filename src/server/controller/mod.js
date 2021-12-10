@@ -189,6 +189,7 @@ module.exports = class extends Base {
      */
     async deleteAction() {
         let id = this.post('id');
+        if(id < 50) return this.fail('系统模块禁止删除')
         let data = await this.model('mod').where({id}).find()
         if (think.isEmpty(data))
             return this.fail('数据不存在')

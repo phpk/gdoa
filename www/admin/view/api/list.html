@@ -248,6 +248,10 @@
 					});*/
 				}
 				window.test = function(obj) {
+					parent.layui.admin.addTab(obj.data.id+3000,
+					obj.data.name + '测试',
+					'/admin/view/api/test.html?aid=' + obj.data.id)
+					/*
 					layer.open({
 						type: 2,
 						title: '测试编辑',
@@ -257,7 +261,7 @@
 						anim: 1,
 						maxmin: true,
 						content: MODULE_PATH + 'test.html?id=' + obj.data.id
-					});
+					});*/
 				}
 				window.remove = function(obj){
 		            layer.confirm('确定要删除', {icon: 3, title:'提示'}, function(index){
