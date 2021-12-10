@@ -36,7 +36,7 @@ Blockly.JavaScript['controls_repeat_ext'] = function(block) {
         'repeat_end', Blockly.VARIABLE_CATEGORY_NAME);
     code += 'var ' + endVar + ' = ' + repeats + ';\n';
   }
-  code += 'for (var ' + loopVar + ' = 0; ' +
+  code += 'for (let ' + loopVar + ' = 0; ' +
       loopVar + ' < ' + endVar + '; ' +
       loopVar + '++) {\n' +
       branch + '}\n';
@@ -106,7 +106,7 @@ Blockly.JavaScript['controls_for'] = function(block) {
     // changes during loop execution.
     var incVar = Blockly.JavaScript.nameDB_.getDistinctName(
         variable0 + '_inc', Blockly.VARIABLE_CATEGORY_NAME);
-    code += 'var ' + incVar + ' = ';
+    code += 'let ' + incVar + ' = ';
     if (Blockly.isNumber(increment)) {
       code += Math.abs(increment) + ';\n';
     } else {
@@ -145,7 +145,7 @@ Blockly.JavaScript['controls_forEach'] = function(block) {
       variable0 + '_index', Blockly.VARIABLE_CATEGORY_NAME);
   branch = Blockly.JavaScript.INDENT + variable0 + ' = ' +
       listVar + '[' + indexVar + '];\n' + branch;
-  code += 'for (var ' + indexVar + ' in ' + listVar + ') {\n' + branch + '}\n';
+  code += 'for (let ' + indexVar + ' in ' + listVar + ') {\n' + branch + '}\n';
   return code;
 };
 
