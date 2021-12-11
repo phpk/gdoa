@@ -35,6 +35,7 @@ module.exports = class extends think.Model {
             data.forEach((value) => {
                 //前台是否显示
                 if (value.pid == id && value.ifshow < 1) {
+                    //value.href = '/admin/' + value.href;
                     child.push(value);
                 }
             });
@@ -83,6 +84,7 @@ module.exports = class extends think.Model {
                 if (value.pid == id) {
                     value.name = value.title;
                     value.field = 'id';
+                    
                     value.spread = false;
 
                     child.push(value);

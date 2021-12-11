@@ -1,6 +1,6 @@
 layui.define(['table', 'jquery', 'element'], function (exports) {
 	"use strict";
-
+	//const adminPath = '/admin/';
 	var MOD_NAME = 'menu',
 		$ = layui.jquery,
 		element = layui.element;

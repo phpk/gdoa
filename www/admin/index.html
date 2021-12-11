@@ -34,19 +34,19 @@
 				<!-- 顶 部 右 侧 菜 单 -->
 				<ul class="layui-nav layui-layout-right">
 					<li class="layui-nav-item layui-hide-xs"><a href="#" class="fullScreen layui-icon layui-icon-screen-full"></a></li>
-					<li class="layui-nav-item layui-hide-xs"><a href="#" class="layui-icon layui-icon-website" id="toolsTip"></a></li>
+					<li class="layui-nav-item layui-hide-xs"><a href="#" class="layui-icon layui-icon-util" id="toolsTip"></a></li>
+					<!-- 主 题 配 置 -->
+					<li class="layui-nav-item setting"><a href="#" class="layui-icon layui-icon-template"></a></li>
+					<li class="layui-nav-item layui-hide-xs logout"><a href="#" class="layui-icon layui-icon-logout" id="loginout"></a></li>
 					<!--li class="layui-nav-item layui-hide-xs message"></li-->
-					<li class="layui-nav-item user">
-						<!-- 头 像 -->
+					<!--li class="layui-nav-item user">
 						<a class="layui-icon layui-icon-username" href="javascript:;"></a>
-						<!-- 功 能 菜 单 -->
 						<dl class="layui-nav-child">
-							<!--dd><a user-menu-url="view/system/person.html" user-menu-id="5555" user-menu-title="基本资料">基本资料</a></dd-->
+							<dd><a user-menu-url="view/system/person.html" user-menu-id="5555" user-menu-title="基本资料">基本资料</a></dd>
 							<dd><a href="javascript:void(0);" class="logout">注销登录</a></dd>
 						</dl>
-					</li>
-					<!-- 主 题 配 置 -->
-					<li class="layui-nav-item setting"><a href="#" class="layui-icon layui-icon-more-vertical"></a></li>
+					</li-->
+					
 				</ul>
 			</div>
 			<!-- 侧 边 区 域 -->
@@ -113,18 +113,22 @@
 				})
 				// 登出逻辑 
 				admin.logout(function(){
-					_get(layui, 'admin/loginOut', res => {
-						popup.success("注销成功",function(){
-							location.href = "login.html";
+					layer.confirm('确定要退出系统吗', {icon: 3, title:'提示'}, function(index){
+		                layer.close(index);
+		                _get(layui, 'admin/loginOut', res => {
+							popup.success("退出成功",function(){
+								location.href = "/admin/login.html";
+							})
 						})
-					})
+		            });
+					
 					
 					// 注销逻辑 返回 true / false
 					return true;
 				})
 				
 				// 初始化消息回调
-				admin.message();
+				//admin.message();
 				//let h = getHeader();
 				//console.log(h)
 				//$.ajax({

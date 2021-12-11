@@ -1,90 +1,434 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <title>添加接口测试</title>
-        <meta name="renderer" content="webkit">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-        <link rel="stylesheet" href="../../component/ui/css/ui.css"/>
-    </head>
-    <body>
-        <form class="layui-form" action="" lay-filter="editform">
-            <div class="mainBox">
-                <div class="main-container">
-                    <div class="main-container">
-                        <div class="layui-form-item">
-                            
-                            <div class="layui-input-inline">
-                                <button type="submit" class="pear-btn pear-btn-primary pear-btn-sm" lay-submit="" lay-filter="api-save">
-                                    <i class="layui-icon layui-icon-ok"></i>
-                                发送
-                                </button>
-                            </div>
-                            <div class="layui-input-inline">
-                                <input type="text" name="name" lay-verify="required|len" autocomplete="off" min="2" placeholder="名称" class="layui-input">
-                            </div>
-                             <div class="layui-input-inline">
-                                <button type="submit" class="pear-btn pear-btn-primary pear-btn-sm" lay-submit="" lay-filter="api-save">
-                                    <i class="layui-icon layui-icon-ok"></i>
-                                保存
-                                </button>
-                            </div>
-                        </div>
 
-                        <div class="layui-form-item layui-form-text">
-                            <label class="layui-form-label">备注</label>
+<head>
+    <meta charset="utf-8">
+    <title>添加接口测试</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="/admin/component/ui/css/ui.css" />
+</head>
+<style>
+    .layui-table-cell {
+        overflow: visible;
+    }
+    
+    .layui-table-box {
+        overflow: visible;
+    }
+    
+    .layui-table-body {
+        overflow: visible;
+    }
+    /* 设置下拉框的高度与表格单元相同 */
+    td .layui-form-select{
+        margin-top: -3px;
+        margin-left: -15px;
+        margin-right: -15px;
+    }
+    .layui-tab-content{
+        padding: 0;
+    }
+    /*
+    .layui-tab-left li{
+        display: block;
+    }
+    .layui-tab-left{
+        float: left;
+        width: 100px;
+    }
+    .layui-tab-left-content{
+        float: left;
+        width: 500px;
+    }*/
+</style>
+<body>
+
+    <div class="mainBox">
+        <div class="main-container">
+            <div class="layui-form-item">
+                <form class="layui-form" action="" lay-filter="testform">
+                    <div class="layui-input-inline" style="width: 80px;">
+                        <select name="method" class="layui-select">
+                            <option value="post">POST</option>
+                            <option value="get">GET</option>
+                        </select>
+                    </div>
+                    <div class="layui-input-inline" style="width: 200px;">
+                        <input type="text" class="layui-input" name="test_path">
+                    </div>
+                    <div class="layui-input-inline">
+                        <span class="pear-btn pear-btn-primary pear-btn-sm" lay-submit="" lay-filter="api-save">
+                            <i class="layui-icon layui-icon-ok"></i>
+                            发送
+                        </span>
+                    </div>
+                </form>
+
+            </div>
+            <div class="layui-tab">
+                <ul class="layui-tab-title">
+                    <li class="layui-this">发送参数</li>
+                    <li>Headers</li>
+                    <li>预想</li>
+                    <li>结果</li>
+                    <li>备注</li>
+                </ul>
+                <div class="layui-tab-content">
+                    <div class="layui-tab-item layui-show">
+<!-- 参数开始--->
+
+<script type="text/html" id="data-toolbar">
+    <span class="layui-btn layui-btn-primary layui-border-red layui-btn-sm" lay-event="add">
+        <i class="layui-icon layui-icon-add-1"></i>
+        新增
+    </span>
+    <span class="layui-btn layui-btn-primary layui-border-cyan layui-btn-sm" lay-event="init">
+        <i class="layui-icon layui-icon-refresh-3"></i>
+        初始化
+    </span>
+</script>
+<script type="text/html" id="data-editbar">
+    <span class="pear-btn pear-btn-danger pear-btn-sm"  lay-event="del">
+        <i class="layui-icon layui-icon-delete"></i>
+    </span>
+</script>
+<div class="layui-card">
+    <div class="layui-card-body">
+        <table id="data-table" class="layui-table" lay-filter="data-table">
+        <thead>
+            <tr>
+            <th lay-data="{field:'key',edit:true}">标志</th>
+            <th lay-data="{field:'def',edit:true}">输入</th>
+            <th lay-data="{templet: '#data-editbar'}">操作</th>
+            </tr> 
+        </thead>
+        <tbody id="data-area"></tbody>
+        </table>
+    </div>
+</div>
+<script type="text/html" id="data-tpl">
+    {{# layui.each(d, function(index, el){ }}
+       <tr>
+           <td>{{el.key}}</td>
+           <td>{{el.def}}</td>
+           <td></td>
+       </tr>
+    {{#  }); }}
+   </script>
+<!-- 参数结束--->
+
+                    </div>
+                    <div class="layui-tab-item">
+<!-- header开始--->
+
+<script type="text/html" id="head-toolbar">
+    <span class="layui-btn layui-btn-primary layui-border-red layui-btn-sm" lay-event="addhead">
+        <i class="layui-icon layui-icon-add-1"></i>
+        新增
+    </span>
+    <span class="layui-btn layui-btn-primary layui-border-cyan layui-btn-sm" lay-event="inithead">
+        <i class="layui-icon layui-icon-refresh-3"></i>
+        初始化
+    </span>
+</script>
+<script type="text/html" id="head-editbar">
+    <span class="pear-btn pear-btn-danger pear-btn-sm"  lay-event="delhead">
+        <i class="layui-icon layui-icon-delete"></i>
+    </span>
+</script>
+<div class="layui-card">
+    <div class="layui-card-body">
+    <form class="layui-form" action="" lay-filter="headform">
+        <table id="head-table" class="layui-table" lay-filter="head-table">
+        <thead>
+            <tr>
+            <th lay-data="{field:'key',edit:true}">标志</th>
+            <th lay-data="{field:'val',edit:true}">输入</th>
+            <th lay-data="{templet: '#head-editbar'}">操作</th>
+            </tr> 
+        </thead>
+        <tbody id="head-area"></tbody>
+        </table>
+    
+    <div class="layui-form-item">
+        <label class="layui-form-label">携带cookie</label>
+        <div class="layui-input-inline">
+            <input type="checkbox" checked="" name="withCredentials" lay-skin="switch" lay-filter="switchTest" lay-text="ON|OFF">
+        </div>
+    </div>
+</form>
+    </div>
+</div>
+<script type="text/html" id="head-tpl">
+    {{# layui.each(d, function(index, el){ }}
+       <tr>
+           <td>{{el.key}}</td>
+           <td>{{el.val}}</td>
+           <td></td>
+       </tr>
+    {{#  }); }}
+   </script>
+<!-- header结束--->
+                    </div>
+                    <div class="layui-tab-item">
+<!-- 预想开始--->
+<!-- 预想top开始--->
+<form class="layui-form" action="">
+    <div class="layui-form-item">
+      <label class="layui-form-label">状态Status</label>
+      <div class="layui-input-inline" style="width: 200px;">
+        <input type="text" name="status" value="200" lay-verify="status" autocomplete="off" placeholder="请输入status" class="layui-input">
+      </div>
+    </div>
+</form>
+<!-- 预想top结束--->
+<!-- 预想body开始--->
+<script type="text/html" id="restop-toolbar">
+    <span class="layui-btn layui-btn-primary layui-border-red layui-btn-sm" lay-event="addrestop">
+        <i class="layui-icon layui-icon-add-1"></i>
+        新增
+    </span>
+</script>
+<script type="text/html" id="restop-editbar">
+    <span class="pear-btn pear-btn-danger pear-btn-sm"  lay-event="delrestop">
+        <i class="layui-icon layui-icon-delete"></i>
+    </span>
+</script>
+<script type="text/html" id="restop-type">
+    <select class="layui-select">
+        <option value="string">字符串</option>
+        <option value="number">数字</option>
+        <option value="array">数组</option>
+        <option value="object">对象</option>
+        <option value="json">json</option>
+    </select>
+</script>
+<div class="layui-card">
+    <div class="layui-card-body">
+    <form class="layui-form" action="" lay-filter="restopform">
+        <table id="restop-table" class="layui-table" lay-filter="restop-table">
+        <thead>
+            <tr>
+            <th lay-data="{field:'key',edit:true}">标志</th>
+            <th lay-data="{field:'val',edit:true}">默认</th>
+            <th lay-data="{templet: '#restop-type'}">类型</th>
+            <th lay-data="{templet: '#restop-editbar',fixed : 'right'}">操作</th>
+            </tr> 
+        </thead>
+        <tbody id="restop-area"></tbody>
+        </table>
+</form>
+    </div>
+</div>
+<script type="text/html" id="restop-tpl">
+    {{# layui.each(d, function(index, el){ }}
+       <tr>
+           <td>{{el.key}}</td>
+           <td>{{el.val}}</td>
+           <td></td>
+       </tr>
+    {{#  }); }}
+   </script>
+<!-- 预想body结束--->
+<!-- 预想结束--->
+                    </div>
+                    <div class="layui-tab-item">
+<!-- 结果开始--->
+<!-- 结果结束--->
+                    </div>
+                    <div class="layui-tab-item">
+<!-- 保存开始--->
+                        <form class="layui-form" action="" lay-filter="editform">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">用例名称</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="name" lay-verify="required|len" autocomplete="off" min="2"
+                                        placeholder="用例名称" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item layui-form-text">
+                                <label class="layui-form-label">备注</label>
+                                <div class="layui-input-block">
+                                    <textarea name="remark" placeholder="请输入内容" class="layui-textarea"></textarea>
+                                </div>
+                            </div>
                             <div class="layui-input-block">
-                                <textarea name="remark" placeholder="请输入内容" class="layui-textarea"></textarea>
+                                <button type="submit" class="pear-btn pear-btn-primary pear-btn-sm" lay-submit=""
+                                    lay-filter="api-save">
+                                    <i class="layui-icon layui-icon-ok"></i>
+                                    保存
+                                </button>
                             </div>
-                        </div>
-
+                        </form>
+<!-- 保存结束--->
                     </div>
                 </div>
             </div>
-        </form>
-        <script src="../../config/config.js"></script>
-        <script src="../../component/layui/layui.js"></script>
-        <script src="../../component/ui/ui.js"></script>
-        <script>
-            layui.use([
-                'form', 'layer', 'dropdown'
-            ], function () {
-                let form = layui.form,
-                    layer = layui.layer,
-                    $ = layui.$,
-                    dropdown = layui.dropdown;
-                form.verify({
-                    len: (val, item) => {
-                        let min = item.getAttribute("min")
-                        if (val.length < min) {
-                            return '长度不能小于' + min;
-                        }
+
+
+        </div>
+    </div>
+
+
+    <script src="../../config/config.js"></script>
+    <script src="../../component/layui/layui.js"></script>
+    <script src="../../component/ui/ui.js"></script>
+    <script>
+        layui.use([
+            'form', 'layer', 'dropdown','element','laytpl','table'
+        ], function () {
+            let form = layui.form,
+                layer = layui.layer,
+                $ = layui.$,
+                element = layui.element,
+                table = layui.table,
+                laytpl = layui.laytpl,
+                dropdown = layui.dropdown,
+                req = _req();
+            form.verify({
+                len: (val, item) => {
+                    let min = item.getAttribute("min")
+                    if (val.length < min) {
+                        return '长度不能小于' + min;
                     }
+                }
+            })
+            _get(layui, 'apitest/addBefore?aid=' + req.aid, res => {
+                console.log(res)
+                //顶部表单渲染
+                form.val('testform', res.api)
+                //参数开始
+                laytpl($('#data-tpl').html()).render(res.params, function(html){
+                    $('#data-area').html(html);
                 })
-                 _get(layui, 'apitest/addBefore?aid=' + req.aid, res => {
-                    
-                });
-                //监听提交
-                form.on('submit(api-save)', function (data) {
-                    data = data.field;
-                    _post(layui, 'apitest/add', data, res => {
-                        //console.log(res)
-                        parent
-                            .layui
-                            .table
-                            .reload("api-table");
-                        parent
-                            .layer
-                            .close(parent.layer.getFrameIndex(window.name)); //关闭当前页
-
-                    })
-
-                    return false;
-                });
-
+                table.init('data-table',{
+                    limit : 1000,
+                    page: false,
+                    skin: 'line',
+                    toolbar: '#data-toolbar',
+                    defaultToolbar: []
+                 });
+                 table.on('tool(data-table)', function(obj) {
+                    if (obj.event === 'del') {
+						obj.del();
+					}
+                 })
+                 table.on('toolbar(data-table)', function(obj) {
+					if (obj.event === 'add') {
+						window.addData();
+					} else if (obj.event === 'init') {
+						window.initData();
+					}
+				});
+                window.addData = () => {
+                    let d = $.extend([],table.cache['data-table']);
+                    //console.log(d)
+                    let add = $.extend({},d[0])
+                    add.key = '';
+                    add.def = '';
+                    d.unshift(add);
+                    //console.log(d)
+                    table.reload('data-table',{data : d})
+                }
+                window.initData = () => {
+                    table.reload('data-table',{data : res.params})
+                }
+                //参数结束
+                //headers开始
+                laytpl($('#head-tpl').html()).render(res.headers, function(html){
+                    $('#head-area').html(html);
+                })
+                table.init('head-table',{
+                    limit : 1000,
+                    page: false,
+                    skin: 'line',
+                    toolbar: '#head-toolbar',
+                    defaultToolbar: []
+                 });
+                 table.on('tool(head-table)', function(obj) {
+                    if (obj.event === 'delhead') {
+						obj.del();
+					}
+                 })
+                 table.on('toolbar(head-table)', function(obj) {
+					if (obj.event === 'addhead') {
+						window.addheadData();
+					} else if (obj.event === 'inithead') {
+						window.initheadData();
+					}
+				});
+                window.addheadData = () => {
+                    let d = $.extend([],table.cache['head-table']);
+                    //console.log(d)
+                    let add = $.extend({},d[0])
+                    add.key = '';
+                    add.val = '';
+                    d.unshift(add);
+                    //console.log(d)
+                    table.reload('head-table',{data : d})
+                }
+                window.initheadData = () => {
+                    table.reload('head-table',{data : res.headers})
+                }
+                //headers结束
+                //预想开始
+                //预想body开始
+                laytpl($('#restop-tpl').html()).render(res.restop, function(html){
+                    $('#restop-area').html(html);
+                })
+                table.init('restop-table',{
+                    limit : 1000,
+                    page: false,
+                    skin: 'line',
+                    toolbar: '#restop-toolbar',
+                    defaultToolbar: []
+                 });
+                 table.on('tool(restop-table)', function(obj) {
+                    if (obj.event === 'delrestop') {
+						obj.del();
+					}
+                 })
+                 table.on('toolbar(restop-table)', function(obj) {
+					if (obj.event === 'addrestop') {
+						window.addrestopData();
+					}
+				});
+                window.addrestopData = () => {
+                    let d = $.extend([],table.cache['restop-table']);
+                    //console.log(d)
+                    let add = $.extend({},d[0])
+                    add.key = '';
+                    add.val = '';
+                    d.unshift(add);
+                    //console.log(d)
+                    table.reload('restop-table',{data : d})
+                }
+                //预想body结束
+                //预想结束
             });
-        </script>
+            //监听提交
+            form.on('submit(api-save)', function (data) {
+                data = data.field;
+                _post(layui, 'apitest/add', data, res => {
+                    //console.log(res)
+                    parent
+                        .layui
+                        .table
+                        .reload("api-table");
+                    parent
+                        .layer
+                        .close(parent.layer.getFrameIndex(window.name)); //关闭当前页
 
-    </body>
+                })
+
+                return false;
+            });
+
+        });
+    </script>
+
+</body>
+
 </html>

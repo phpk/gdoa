@@ -15,7 +15,7 @@ const getHeader = () => {
     return rt;
 }
 const errorStatus = (xhr, layui) => {
-    console.log(xhr)
+    //console.log(xhr)
     if (xhr.status === 400) {
         layui.layer.msg('未授权访问！', {
             icon: 2, time: 2000
@@ -101,8 +101,8 @@ const _get = (layui, url, suc, err) => {
             errorStatus(xhr, layui)
         },
         complete :(xhr, ts) => {
-            console.log(xhr)
-            console.log(ts)
+            //console.log(xhr)
+            //console.log(ts)
         } 
     });
 }
