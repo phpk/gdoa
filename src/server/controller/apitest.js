@@ -29,11 +29,21 @@ module.exports = class extends Base {
         let restop = [
             {
                 key : 'code',
-                val : 0
+                val: 0,
+                stype: 'number',
+                isdata : 0
+            },
+            {
+                key: 'message',
+                val: '',
+                stype: 'exist',
+                isdata: 0
             },
             {
                 key : 'data',
-                val : ''
+                val: '',
+                stype: 'object',
+                isdata : 1
             }
         ]
         return this.success({api, mod, params, headers, restop})
