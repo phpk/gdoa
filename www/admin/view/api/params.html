@@ -74,7 +74,7 @@
         {{#  layui.each(d, function(index, item){ }}
         
         <div class="layui-tab-item{{#  if(index == 0){ }} layui-show{{#  }; }}">
-        <form class="layui-form" action="">
+        <form class="layui-form" action="" lay-filter="dataformlist">
             <table id="{{ item.name }}-table" class="layui-table" lay-filter="{{ item.name }}-table">
                   <colgroup>
                     <col>
@@ -91,7 +91,7 @@
                     <th>类型</th>
                     <th>为空</th>
                     <th>默认值</th>
-                    <th>选择</th>
+                    <th><input type="checkbox" name="chkall" class="chkall" lay-skin="primary"></th>
                     </tr> 
                 </thead>
                 <tbody>
@@ -111,7 +111,7 @@
                             {{el.def}}
                         </td>
                         <td>
-                            <input type="checkbox" name="isck" value="{{item.name}}.{{el.name}}"  lay-skin="primary" {{ el.hasck ? 'checked disabled' : '' }} />
+                            <input type="checkbox" name="isck" value="{{item.name}}.{{el.name}}"  lay-skin="primary" {{ el.hasck ? 'checked disabled' : '' }} class="isck"/>
                         </td>
                     </tr>
                     {{#  }); }}
@@ -297,6 +297,22 @@
                                     chk.prop('checked', true);
                                 }else{
                                     chk.prop('checked', false);
+                                }
+                                form.render('checkbox');
+                            }
+                            if(e.target.tagName == 'I' && e.target.parentNode.parentNode.tagName == 'TH') {
+                                let cks = $(e.target).parentsUntil("#tabs-content").find('.isck');
+                                //console.log(cks)
+                                
+                                if(!form.val('dataformlist').chkall) {
+                                    cks.each((i, el) => {
+                                        $(el).prop("checked",true);  
+                                    })
+                                }else{
+                                    //console.log(cks)
+                                    cks.each((i, el) => {
+                                        $(el).removeAttr("checked")
+                                    })
                                 }
                                 form.render('checkbox');
                             }

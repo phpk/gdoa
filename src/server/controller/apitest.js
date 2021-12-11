@@ -28,10 +28,10 @@ module.exports = class extends Base {
         ];
         let restop = [
             {
-                key : 'code',
+                key: 'code',
                 val: 0,
                 stype: 'number',
-                isdata : 0
+                isdata: 0
             },
             {
                 key: 'message',
@@ -40,12 +40,15 @@ module.exports = class extends Base {
                 isdata: 0
             },
             {
-                key : 'data',
+                key: 'data',
                 val: '',
                 stype: 'object',
-                isdata : 1
+                isdata: 1
             }
-        ]
-        return this.success({api, mod, params, headers, restop})
+        ];
+        let tabs = await this.model('api').getTables(aid);
+        let fields = await this.model('api').getFields(tabs);
+
+        return this.success({ api, mod, params, headers, restop, fields})
     }
 }
