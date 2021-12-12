@@ -54,7 +54,32 @@
     color: #fff;
     font-family: Arial, Helvetica, sans-serif;
 }
-
+.winui-from {
+    width: 288px;
+    margin: 0 auto;
+    
+}
+.winui-from input {
+    width: 288px;
+    height: 36px;
+    color: #fff;
+    border: none;
+    background: rgba(0, 0, 0, 0.30);
+    float: left;
+    padding-left: 5px;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.winui-from input.codes{
+    display: inline-block;
+    width : 185px;
+}
+.codeImage {
+    width: 100px;
+	height: 38px;
+    display: inline-block;
+}
 .winui-from-group {
     display: inline-block;
     width: 288px;

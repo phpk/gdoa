@@ -8,6 +8,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link rel="stylesheet" href="/admin/component/ui/css/ui.css" />
+    <link rel="stylesheet" href="/admin/component/vditor/index.css"/>
 </head>
 <style>
     .layui-table-cell {
@@ -72,6 +73,7 @@
                     <li class="layui-this">发送参数</li>
                     <li>Headers</li>
                     <li>预想</li>
+                    <li>回写</li>
                     <li>结果</li>
                     <li>备注</li>
                 </ul>
@@ -254,11 +256,15 @@
     <script type="text/html" id="resdata-toolbar">
     <span class="layui-btn layui-btn-primary layui-border-red layui-btn-sm" lay-event="addresDataOne">
         <i class="layui-icon layui-icon-add-1"></i>
-        新增单项
+        单项
     </span>
     <span class="layui-btn layui-btn-primary layui-border-cyan layui-btn-sm" lay-event="addresDataDb">
         <i class="layui-icon layui-icon-add-1"></i>
-        从数据库新增
+        从数据库
+    </span>
+    <span class="layui-btn layui-btn-primary layui-border-orange layui-btn-sm" lay-event="clearResData">
+        <i class="layui-icon layui-icon-delete"></i>
+        清空
     </span>
 </script>
 <script type="text/html" id="resdata-editbar">
@@ -294,33 +300,16 @@
 <!-- 预想结束-->
                     </div>
                     <div class="layui-tab-item">
+<!-- 回写开始-->
+<!-- 回写结束-->
+                    </div>
+                    <div class="layui-tab-item">
 <!-- 结果开始-->
 <!-- 结果结束-->
                     </div>
                     <div class="layui-tab-item">
 <!-- 保存开始-->
-                        <form class="layui-form" action="" lay-filter="editform">
-                            <div class="layui-form-item">
-                                <label class="layui-form-label">用例名称</label>
-                                <div class="layui-input-block">
-                                    <input type="text" name="name" lay-verify="required|len" autocomplete="off" min="2"
-                                        placeholder="用例名称" class="layui-input">
-                                </div>
-                            </div>
-                            <div class="layui-form-item layui-form-text">
-                                <label class="layui-form-label">备注</label>
-                                <div class="layui-input-block">
-                                    <textarea name="remark" placeholder="请输入内容" class="layui-textarea"></textarea>
-                                </div>
-                            </div>
-                            <div class="layui-input-block">
-                                <button type="submit" class="pear-btn pear-btn-primary pear-btn-sm" lay-submit=""
-                                    lay-filter="api-save">
-                                    <i class="layui-icon layui-icon-ok"></i>
-                                    保存
-                                </button>
-                            </div>
-                        </form>
+<div id="veditor"></div>
 <!-- 保存结束-->
                     </div>
                 </div>
@@ -404,10 +393,22 @@
         </div>
         </script>
 <!--数据库结束-->
-
+<div class="bottom">
+    <div class="button-container">
+        <div class="layui-input-inline">
+            <input type="text" name="name" lay-verify="required|len" autocomplete="off" id="name"
+                placeholder="用例名称" class="layui-input">
+        </div>
+        <span type="button" class="pear-btn pear-btn-primary pear-btn-sm" id="saveData">
+            <i class="layui-icon layui-icon-ok"></i>
+        保存
+        </span>
+    </div>
+</div>
     <script src="../../config/config.js"></script>
     <script src="../../component/layui/layui.js"></script>
     <script src="../../component/ui/ui.js"></script>
+    <script src="../../component/vditor/index.min.js"></script>
     <script>
         layui.use([
             'form', 'layer', 'dropdown','element','laytpl','table'
@@ -419,7 +420,9 @@
                 table = layui.table,
                 laytpl = layui.laytpl,
                 dropdown = layui.dropdown,
-                req = _req();
+                req = _req(),
+                dk,
+                dataTableIndex;
             form.verify({
                 len: (val, item) => {
                     let min = item.getAttribute("min")
@@ -615,8 +618,11 @@
                                 window.addresDataOne(deepKey);
                             } else if (obj.event === 'addresDataDb') {
                                 window.addresDataDb(deepKey);
+                            } else if(obj.event === 'clearResData') {
+                                window.clearResData(deepKey);
                             }
                         });
+                        //添加单项
                         window.addresDataOne = (deepKey) => {
                             let d = $.extend([],table.cache['deeptable_' + deepKey]);
                             let add = {
@@ -629,8 +635,10 @@
                             //console.log(d)
                             table.reload('deeptable_' + deepKey,{data : d})
                         }
+                        //从数据库
                         window.addresDataDb = (deepKey) => {
-                            layer.open({
+                            dk = deepKey;
+                            dataTableIndex = layer.open({
                                 type: 1,
                                 title: '新增字段',
                                 shade: 0.1,
@@ -639,6 +647,16 @@
                                 anim: 1,
                                 content: $('#tabs-area')
                             });
+                            $("#tabs-content").find(":checkbox").each((id, el) =>{
+                                if($(el).prop('checked')) {
+                                    $(el).prop('checked',false)
+                                }
+                                form.render('checkbox');
+                            });
+                        }
+                        //清空
+                        window.clearResData = (deepKey) => {
+                            table.reload('deeptable_' + deepKey,{data : []})
                         }
 
                     })
@@ -656,8 +674,7 @@
                 //预想数据结束
                 //预想结束
                 //数据库处理
-
-                    laytpl($('#tabs-tpl').html()).render(res.fields, function(html){
+                laytpl($('#tabs-tpl').html()).render(res.fields, function(html){
                         $('#tabs-area').html(html);
                         form.render();
                         $('#tabs-content').on('click', e=> {
@@ -690,24 +707,77 @@
                         });
                         $('#saveDbFieldsBtn').on('click', e => {
                             let rt = [];
-                            $(":checkbox").each((id, el) =>{
+                            $("#tabs-content").find(":checkbox").each((id, el) =>{
                                 if($(el).prop('checked')) rt.push($(el).val())
                             }); 
                             //console.log(rt)
                             if(rt.length > 0) {
-                                
+                                let d = $.extend([],table.cache['deeptable_' + dk]);
+
+                                let ks = []
+                                d.forEach(dd => {
+                                    ks.push(dd.key)
+                                })
+                                rt.forEach(ck => {
+                                    let kk = ck.indexOf('.') !== -1 ? ck.split('.')[1] : ck;
+                                    if(!ks.includes(kk)) {
+                                        d.push({
+                                            key : kk,
+                                            val : '',
+                                            dtype : 'exist',
+                                            dataId : dk
+                                        });
+                                    }
+                                    
+                                })
+                                //console.log(d)
+                                table.reload('deeptable_' + dk,{data : d})
+                                layer.close(dataTableIndex)
                                 
                             }else{
                                 layer.msg('请选择字段', {icon : 2})
                             }
                             
                         })
-                    });
+                });
                 //数据库处理结束
 
 
 
             });
+            //备注
+            const vditor = new Vditor('veditor', {
+                    height: 560,
+                    placeholder: '请输入内容',
+                    value : '',
+                    cache : {
+                        enable : false
+                    },
+                    upload : {
+                        url : apiUrl + 'apitest/upload',
+                        headers : getHeader(),
+                        withCredentials : true,
+                        format : (file, res) => {
+                            //console.log(res)
+                            let rt = JSON.parse(res);
+                            let r = {
+                                "msg": rt.message,
+                                "code": rt.code,
+                                "data": {
+                                    "errFiles": [],
+                                    "succMap": {}
+                                }
+                            }
+                            if(rt.code != 0) {
+                                layer.msg(rt.message);
+                            }else{
+                                r.data.succMap[rt.data.name] = rt.data.filename;
+                            }
+                            return JSON.stringify(r)
+                        } 
+
+                    }
+                })
             //监听提交
             form.on('submit(api-save)', function (data) {
                 data = data.field;

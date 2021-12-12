@@ -581,17 +581,70 @@
                             }
                             $(document).on('mouseup', docMouseup);
                             $(document).on('keydown', docKeydown);
+                            let changeImg = () => {
+                                $('#codeImage').attr('src','/server/login/captcha?t='+ Math.random());
+                            };
+                            changeImg();
+                            $('#codeImage').click(() => {
+                                changeImg();
+                            });
+                            let localusername = localStorage.getItem('godocms_username'),
+                                localpassword = localStorage.getItem('godocms_password');
+                            if(localusername) {
+                                $('#username').val(localusername);
+                            }
+                            if(localpassword) {
+                                $('#password').val(localpassword);
+                            }
+                            $('#password').on('keydown', (e) => {
+                                if (e.keyCode == 13) {
+                                    $("#unlock").trigger("click");
+                                    return false
+                                }
+                            });
                             //解锁点击
                             form.on('submit(unlock)', function (data) {
-                                try {
-                                    if (typeof callback === 'function' && callback.call(this, data.field.password)) {
-                                        layer.close(layerindex);
-                                        window.localStorage.setItem("lockscreen", false);
-                                    }
-                                } catch (e) {
-                                    console.error(e);
+                                data = data.field;
+                                //console.log(data);
+                                if (data.username == '') {
+                                    layer.msg('用户名不能为空');
                                     return false;
                                 }
+                                if (data.password == '') {
+                                    layer.msg('密码不能为空');
+                                    return false;
+                                }
+                                if (data.captcha == '') {
+                                    layer.msg('验证码不能为空');
+                                    return false;
+                                }
+                                /// 登录
+                                let postData = {
+                                    password: data.password,
+                                    username: data.username,
+                                    captcha: data.captcha
+                                };
+                                _post(layui, 'login/do', postData, res => {
+                                    layer.close(layerindex);
+                                    //console.log(res)
+                                    setToken(res);
+                                    window.localStorage.setItem("godocms_username", postData.username);
+                                    window.localStorage.setItem("godocms_password", postData.password);
+                                    window.localStorage.setItem("lockscreen", false);
+                                }, err => {
+                                    if(err.code == 201) {
+                                        changeImg();
+                                    }
+                                })
+                                // try {
+                                //     if (typeof callback === 'function' && callback.call(this, data.field.password)) {
+                                //         layer.close(layerindex);
+                                //         window.localStorage.setItem("lockscreen", false);
+                                //     }
+                                // } catch (e) {
+                                //     console.error(e);
+                                //     return false;
+                                // }
                                 return false;
                             });
                         }

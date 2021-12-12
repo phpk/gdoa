@@ -11,6 +11,12 @@
         layer = layui.layer;
 
     $(function () {
+        // console.log(localStorage.getItem('lockscreen'))
+        // if(localStorage.getItem('lockscreen')) {
+        //     winui.lockScreen();
+        // }
+        
+        /*
         winui.window.msg('Welcome To GodoCms', {
             time: 4500,
             offset: '40px',
@@ -20,7 +26,7 @@
                 winui.fullScreen(document.documentElement);
                 layer.close(index);
             }
-        });
+        });*/
 
         //winui.window.open({
         //    id: '公告',
@@ -41,16 +47,17 @@
             desktop: {
                 options: {},    //可以为{}  默认 请求 json/desktopmenu.json
                 done: function (desktopApp) {
-                    desktopApp.ondblclick(function (id, elem) {
+                    //desktopApp.ondblclick(function (id, elem) {
+                    desktopApp.onclick(function (id, elem) {
                         OpenWindow(elem);
                     });
                     desktopApp.contextmenu({
-                        item: ["打开", "删除", '右键菜单可自定义'],
+                        item: ["打开", "删除"],
                         item1: function (id, elem) {
                             OpenWindow(elem);
                         },
                         item2: function (id, elem, events) {
-                            winui.window.msg('删除回调');
+                            //winui.window.msg('删除回调');
                             $(elem).remove();
                             //从新排列桌面app
                             events.reLocaApp();
@@ -81,7 +88,7 @@
                             , text: '关闭'
                         }, {
                             icon: 'fa-qq'
-                            , text: '右键菜单可自定义'
+                            , text: '右键菜单'
                         }],
                         item1: function (id, elem) {
                             //设置回调
@@ -202,50 +209,62 @@
             //, refresh:true
         });
     }
-
+    let loginOut = () => {
+        winui.window.confirm('确认注销吗?', { icon: 3, title: '提示' }, function (index) {
+            //winui.window.msg('执行注销操作，返回登录界面');
+            layer.close(index);
+            _get(layui, 'admin/loginOut', res => {
+                localStorage.setItem('lockscreen',true);
+                winui.lockScreen();
+            })
+        });
+    }
     //注销登录
     $('.logout').on('click', function () {
         winui.hideStartMenu();
-        winui.window.confirm('确认注销吗?', { icon: 3, title: '提示' }, function (index) {
-            winui.window.msg('执行注销操作，返回登录界面');
-            layer.close(index);
-        });
+        loginOut();
     });
 
 
     // 判断是否显示锁屏（这个要放在最后执行）
     if (window.localStorage.getItem("lockscreen") == "true") {
-        winui.lockScreen(function (password) {
-            //模拟解锁验证
-            if (password === 'winadmin') {
-                return true;
-            } else {
-                winui.window.msg('密码错误', { shift: 6 });
-                return false;
-            }
-        });
+        winui.lockScreen();
     }
 
     //扩展桌面助手工具
     winui.helper.addTool([{
-        tips: '锁屏',
+        tips: '注销登录',
         icon: 'fa-power-off',
         click: function (e) {
-            winui.lockScreen(function (password) {
-                //模拟解锁验证
-                if (password === 'winadmin') {
-                    return true;
-                } else {
-                    winui.window.msg('密码错误', { shift: 6 });
-                    return false;
-                }
-            });
+            loginOut();
         }
     }, {
         tips: '切换壁纸',
         icon: 'fa-television',
         click: function (e) {
-            layer.msg('这个是自定义的工具栏', { zIndex: layer.zIndex });
+            //layer.msg('这个是自定义的工具栏', { zIndex: layer.zIndex });
+        }
+    }, {
+        tips: '全屏',
+        icon: 'fa-clone',
+        click: function (e) {
+            winui.fullScreen(document.documentElement);
+        }
+    }, {
+        tips: '工具',
+        icon: 'fa-gavel',
+        click: function (e) {
+            //winui.fullScreen(document.documentElement);
+            layer.open({
+                type: 2,
+                title: '工具集',
+                shade: 0.1,
+                moveOut: true,
+                area: ['80%', '80%'],
+                skin: 'winui-window',
+                anim: 1,
+                content: '/admin/tools/index.html'
+            });
         }
     }]);
 
