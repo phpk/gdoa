@@ -1,0 +1,75 @@
+/* sorry QuantumByteStudios this loads lots of resources
+.resizableWindow{
+  width: 50%;
+  height: 50%;  
+  border: none;
+  margin: 0px;
+}
+.frameresizableWindow{
+  width: 100%;
+  height: 100%;  
+  border: none;
+  margin: 0px;
+}
+.tittleWindow{
+  background-color: whitesmoke;
+}
+/* IconShell CSS */
+/*
+.Iconshell{
+  background-color: transparent;
+  width: 80px;
+  height: 80px;
+  border: solid 0px white;
+  align-items: center;
+  padding: 0px;
+  cursor: pointer;
+}
+
+.Iconshell:hover{
+  background-color: transparent;
+}
+
+
+/* ID CSS FOR JS */
+
+/*
+#browser{
+  display: none;
+  position: absolute;
+}
+
+/* *for apps other than winver and run* */
+.window {
+  min-width: 50vw;
+  min-height: 50vh;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 30px 1fr;
+  resize: both;
+}
+.window .windowBody {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+}
+.window .windowBody iframe {
+  border: none;
+  height: 100% !important;
+  width: 100% !important;
+}
+
+.window[data-id="About Windows1"] {
+  min-height: auto;
+  min-width: auto;
+  resize: none;
+}
+
+.window[data-id="About Windows1"] .windowBody {
+  width: 460px;
+  height: 390px;
+}
+
+.runDialog {
+  display: none;
+}

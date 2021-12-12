@@ -1,0 +1,99 @@
+@keyframes window {
+    0% {
+        transform: translateZ(700px) translateY(600px) scale(0)
+    }
+
+    to {
+        transform: translateZ(0) translateY(0) scale(1)
+    }
+}
+
+@keyframes minimize {
+    0% {
+        transform: translateZ(0) translateY(0) scale(1)
+    }
+
+    to {
+        transform: translateZ(700px) translateY(600px) scale(0)
+    }
+}
+
+@keyframes run-window {
+    0% {
+        transform: translateZ(700px) translateX(-600px) scale(0)
+    }
+
+    to {
+        transform: translateZ(0) translateX(0) scale(1)
+    }
+}
+
+@keyframes line-animation {
+
+    0%,
+    to {
+        transform: translateY(0);
+    }
+
+    10%,
+    85% {
+        transform: translateY(10px);
+    }
+
+    40%,
+    60% {
+        transform: translateY(-25px);
+    }
+}
+
+@keyframes click-animation {
+
+    0%,
+    to {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(0.9);
+    }
+}
+
+body {
+    transition: background-image 2s linear 0s;
+}
+
+.start figure,img {
+    transition: all .3s
+}
+
+.taskbar .center img:focus,.taskbar .center img:hover {
+    transform: scale(1.2)
+}
+
+.start figure:focus,.start figure:hover {
+    transform: scale(1.1)
+}
+
+.window {
+    animation: window .4s
+}
+
+.runDialog {
+    animation: run-window .4s
+}
+
+.minimized {
+    animation: minimize .4s forwards
+}
+
+.brightness-overlay {
+    transition: background-color 0.3s linear;
+}
+
+.center img:active, figure:active img {
+    transform: scale(0.8) !important;
+}
+
+.notification {
+    transition: all 0.4s ease;
+}

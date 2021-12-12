@@ -64,4 +64,10 @@ module.exports = class extends think.Logic {
 			},
 		}
 	}
+	/**
+	* @name 文章分类列表
+	*/
+	artcateAction(){
+		this.allowMethods = 'get';
+	}
 };

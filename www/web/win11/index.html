@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>godocms</title>
+    <meta name="description" content="A simple Windows 11 experience within browser.">
+    <link rel="shortcut icon" href="/web/icons/favicon.png" sizes="152x152">
+    <link rel="apple-touch-icon" href="/web/icons/favicon.png">
+    <meta name="theme-color" content="#000"/>
+    <link rel="manifest" href="manifest.json" />
+    <link rel="preload" href="/web/wallpaper/img100.webp" as="image">
+    <link rel="preload" href="/web/wallpaper/img18.webp" as="image">
+    <!-- For Boot Screen -->
+    <style>
+        * {
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .boot,
+        .boot-animation {
+            width: 100vw;
+            height: 100vh;
+            background-color: black;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+            align-items: center;
+            cursor: none;
+        }
+
+        .boot-animation {
+            display: none;
+            filter: brightness(1.34) contrast(1.06);
+            background-color: white;
+        }
+    </style>
+    <link rel="stylesheet" href="/web/css/style.css">
+
+</head>
+
+<body>
+    <!-- password dialog -->
+    <div class="passwordDialog">
+        <div class="userProfile"><img src="/web/icons/user.svg" alt="User Profile"></div>
+        <div class="username">用户名</div>
+        <div class="sign-in-content">
+            <div class="sign-in-method active" id="method_1" data-tab-info>
+                <input type="password" placeholder="PIN" id="passwordField">
+                <span class="hint">Your password is: 12345</span>
+                <div class="forgotOption">I forgot my pin</div>
+            </div>
+            <div class="sign-in-method" id="method_2" data-tab-info>
+                <img src="/web/others/helloSearching.webp" width="50" style="margin-block-end: 10px;filter:blur(.5px)">
+            </div>
+        </div>
+        <div class="otherSignInOptions">Sign-in options
+            <div class="sign-in-methods">
+                <img data-tab-value="#method_1" src="/web/icons/dialpad.svg">
+                <img data-tab-value="#method_2" src="/web/icons/eye.svg">
+            </div>
+        </div>
+        <script>
+            var sIMethods = document.querySelectorAll('[data-tab-value]')
+            var sIContents = document.querySelectorAll('[data-tab-info]')
+
+            sIMethods.forEach(m => {
+                m.addEventListener('click', () => {
+                    var sITarget = document.querySelector(m.dataset.tabValue);
+
+                    sIContents.forEach(p => {
+                        p.classList.remove('active')
+                    })
+                    sITarget.classList.add('active');
+                })
+            })
+        </script>
+    </div>
+    <!-- Lock Screen Box -->
+    <div id="lockScreen">
+        <div id="timeBox">
+            <span class="time">02:55</span>
+            <span class="date">Thursday, June 2017</span>
+        </div>
+    </div>
+
+    <!-- making a power on div and make user click a button so that we can autoplay videos -->
+    <div class="powerOnBox">
+        <div class="power-switch" id="powerOnBtn">
+            <input type="checkbox" />
+            <div class="button">
+                <svg class="power-off">
+                    <use xlink:href="#a" class="a" />
+                    <use xlink:href="#b" class="b" />
+                </svg>
+                <svg class="power-on">
+                    <use xlink:href="#a" class="a" />
+                    <use xlink:href="#b" class="b" />
+                </svg>
+            </div>
+        </div>
+        <span style="color: lavender">登录</span>
+        <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+            <symbol xmlns="http://www.w3.org/2000/svg" id="a" viewBox="0 0 150 150">
+                <path d="M75 34v24" />
+            </symbol>
+            <symbol xmlns="http://www.w3.org/2000/svg" id="b" viewBox="0 0 150 150">
+                <circle cx="75" cy="80" r="35" />
+            </symbol>
+        </svg>
+    </div>
+    <!-- Boot Elements -->
+    <div class="boot">
+        <img src="/web/others/windowsLogo.svg" alt="Windows Logo" width="70" />
+        <picture>
+            <source srcset="/web/others/bootLoader.svg">
+            <img src="/web/others/bootLoader.gif" alt="Windows boot loader" width="50" height="50">
+        </picture>
+    </div>
+    <div class="boot-animation">
+        <!-- does not work in google chrome if the video is not muted.
+        works in firefox if autoplay permission for the site is granted.
+    works even on chrome with certain criteria fulfilled:
+    For more details: 
+    https://developers.google.com/web/updates/2017/09/autoplay-policy-changes -->
+        <audio preload="auto" width="150" height="150" id="startupAudio">
+            <source src="/web/sounds/Windows Startup.webm" type="audio/webm">
+            <source src="/web/sounds/Windows Startup.mp3" type="audio/mp3">
+        </audio>
+    </div>
+
+    <!-- EDGE BROWSER -->
+    <!--
+    <div id = "browser" class="resizableWindow resizable">
+        <div class="tittleWindow">
+            <p>Edge</p>
+        </div>
+        <iframe class="frameresizableWindow" src="https://www.bing.com/"></iframe>
+    </div>
+    -->
+    <!-- EDGE BROWSER -->
+    <div class="desktop">
+        <div class="desktopIcons">
+            <!-- desktop icon 1 -->
+            <figure id="deskcomp">
+                <img src="/web/icons/Computer.png" alt="Windows 11 This PC icon">
+                <figcaption class="iconName">This PC</figcaption>
+            </figure>
+            <!-- desktop icon 2 -->
+            <figure id="deskvscode" onclick="executeProgram('vscode')">
+                <img src="/web/icons/vscode.png" alt="Visual Studio Code Icon">
+                <figcaption class="iconName">Visual Studio Code</figcaption>
+            </figure>
+            <!-- desktop icon 3 -->
+            <figure id="deskbrowser" onclick="executeProgram('msedge')">
+                <!-- <button onclick = "OCBROWSER()" id = "browserbtn" class = "Iconshell"> -->
+                <img src="/web/icons/edge.svg" alt="Microsoft Edge Icon">
+                <figcaption class="iconName">Microsoft Edge</figcaption>
+                <!-- </button> -->
+            </figure>
+        </div>
+    </div>
+
+    <div class="start">
+        <div class="search">
+            <label>
+                <input type="text" placeholder="Type here to search" id="searchBar">
+            </label>
+        </div>
+        <div class="pinned">
+            <div class="start-top-elements">
+                <span>Pinned</span>
+                <button class="openAll" id="allapps">All apps <img src="/web/icons/right.svg" alt="open all apps"
+                        class="smallRight"></button>
+            </div>
+            <div class="start-icons">
+                <figure id="startEdge" onclick="executeProgram('msedge')">
+                    <img src="/web/icons/edge.svg" alt="Windows 11 Edge icon">
+                    <figcaption>Edge</figcaption>
+                </figure>
+                <figure id="startWord">
+                    <img src="/web/icons/word.svg" alt="MS Word icon">
+                    <figcaption>Word</figcaption>
+                </figure>
+                <figure id="startExcel" onclick="executeProgram('excel')">
+                    <img src="/web/icons/excel.svg" alt="MS Excel icon">
+                    <figcaption>Excel</figcaption>
+                </figure>
+                <figure id="startPowerPoint" onclick="executeProgram('powerpoint')">
+                    <img src="/web/icons/powerPoint.svg" alt="PowerPoint icon">
+                    <figcaption>PowerPoint</figcaption>
+                </figure>
+                <figure id="startMail">
+                    <img src="/web/icons/mail.svg" alt="Windows Mail icon">
+                    <figcaption>Mail</figcaption>
+                </figure>
+                <figure id="startCalendar">
+                    <img src="/web/icons/calender.svg" alt="Windows Calender icon">
+                    <figcaption>Calender</figcaption>
+                </figure>
+                <figure id="startStore">
+                    <img src="/web/icons/store.png" alt="Windows 11 Microsoft Store icon">
+                    <figcaption>MS Store</figcaption>
+                </figure>
+                <figure id="startPhotos">
+                    <img src="/web/icons/photos.svg" alt="Windows Photos icon">
+                    <figcaption>Photos</figcaption>
+                </figure>
+                <figure id="startOneNote">
+                    <img src="/web/icons/oneNote.svg" alt="OneNote icon">
+                    <figcaption>OneNote</figcaption>
+                </figure>
+                <figure id="startYourPhone">
+                    <img src="/web/icons/yourPhone.svg" alt="Windows Your Phone icon">
+                    <figcaption>Your Phone</figcaption>
+                </figure>
+                <figure id="startToDo">
+                    <img src="/web/icons/toDo.svg" alt="Microsoft To DO icon">
+                    <figcaption>To Do</figcaption>
+                </figure>
+                <figure id="startLinkedIn">
+                    <img src="/web/icons/linkedIn.svg" alt="LinkedIn icon">
+                    <figcaption>LinkedIn</figcaption>
+                </figure>
+                <figure id="startSettings" onclick="executeProgram('settings')">
+                    <img src="/web/icons/settings.svg" alt="Windows 11 Settings icon">
+                    <figcaption>Settings</figcaption>
+                </figure>
+                <figure id="startCalci">
+                    <img src="/web/icons/calculator.svg" alt="Windows Calculator icon">
+                    <figcaption>Calculator</figcaption>
+                </figure>
+                <figure id="startWhiteboard">
+                    <img src="/web/icons/whiteboard.png" alt="Windows Whiteboard icon">
+                    <figcaption>Whiteboard</figcaption>
+                </figure>
+                <figure id="startSnip">
+                    <img src="/web/icons/snipSketch.svg" alt="Windows Snipping Tool icon">
+                    <figcaption>Snipping Tool</figcaption>
+                </figure>
+                <figure id="startMovies">
+                    <img src="/web/icons/movies.svg" alt="Windows Movies & TV icon">
+                    <figcaption>Movies & TV</figcaption>
+                </figure>
+                <figure id="startClock">
+                    <img src="/web/icons/clock.svg" alt="Windows Clock icon">
+                    <figcaption>Clock</figcaption>
+                </figure>
+            </div>
+        </div>
+        <div class="recommended">
+            <div class="start-top-elements">
+                <span>Recommended</span>
+                <button class="openAll">More<img src="/web/icons/right.svg" alt="open all apps"
+                        class="smallRight"></button>
+            </div>
+        </div>
+        <div class="others">
+            <div class="user">
+                <img src="/web/icons/user.png" alt="Windows 11 User icon">
+                <span>Rajaniraiyn</span>
+            </div>
+            <a href="/web/redirects/shutdown/logoff.html"><img src="/web/icons/shutdown.svg" alt="Windows 11 Shutdown icon" id="shutdown"></a>
+        </div>
+    </div>
+    <div class="taskbar">
+        <div class="center">
+            <img src="/web/icons/startButton.png" alt="Windows 11 start icon" id="starticon">
+            <img src="/web/icons/search.svg" alt="Windows 11 Search icon" id="searchIcon">
+            <img src="/web/icons/taskView.svg" alt="Windows 11 Task View icon" id="taskviewIcon">
+            <img src="/web/icons/widgets.svg" alt="Windows 11 widgets" id="widgetsIcon">
+            <img src="/web/icons/teams.svg" alt="Microsoft Teams icon" id="teamsIcon">
+            <img src="/web/icons/fileExplorer.png" alt="Windows 11 File Explorer icon" id="filesIcon">
+            <img src="/web/icons/edge.svg" alt="Windows 11 Edge icon" onclick="executeProgram('msedge')" id="edgeIcon">
+            <img src="/web/icons/store.png" alt="Windows 11 Store icon" id="storeIcon">
+        </div>
+        <div class="right">
+            <img src="/web/icons/up.svg" alt="Up arrow">
+            <img src="/web/icons/keyboard.svg" alt="Keyboard Meta Keys" id="keyboardOpener">
+            <div class="action-center-button" onclick="document.getElementById('acCheck').click()">
+                <input type="checkbox" name="acCheck" id="acCheck" style="display: none;" checked>
+                <img src="/web/icons/wifi.svg" alt="WiFi" id="wifi">
+                <img src="/web/icons/speaker.svg" alt="Speaker">
+                <img src="/web/icons/batteryFull.svg" alt="Battery Full">
+            </div>
+            <div class="time-date">
+                <span></span>
+                <span></span>
+                <input type="checkbox" name="ncCheck" id="ncCheck" style="display: none;" checked>
+            </div>
+        </div>
+    </div>
+    <link rel="stylesheet" href="/web/css/actionCenter.css">
+    <div class="action-center">
+        <div class="buttons">
+            <figure>
+                <div>
+                    <img src="/web/icons/wifi.svg" alt="WiFi Icon">
+                    <img src="/web/icons/right.svg" alt="Right Icon">
+                </div>
+                <figcaption>WiFi</figcaption>
+            </figure>
+            <figure>
+                <img src="/web//icons/bluetooth.svg" alt="Bluetooth Icon">
+                <figcaption>Bluetooth</figcaption>
+            </figure>
+            <figure>
+                <img src="/web/icons/airplane.svg" alt="Airplane Icon">
+                <figcaption>Airplane Mode</figcaption>
+            </figure>
+            <figure>
+                <img src="/web/icons/batterySaver.svg" alt="Battery Saver Icon">
+                <figcaption>Battery Saver</figcaption>
+            </figure>
+            <figure>
+                <img src="/web/icons/focusAssist.svg" alt="Focus Assist Icon">
+                <figcaption>Focus Assist</figcaption>
+            </figure>
+            <figure>
+                <div>
+                    <img src="/web/icons/accessability.svg" alt="Accessability Icon">
+                    <img src="/web/icons/right.svg" alt="Right Icon">
+                </div>
+                <figcaption>Accessability</figcaption>
+            </figure>
+        </div>
+        <div class="sliders">
+            <div class="brightness">
+                <img src="/web/icons/brightness.svg" alt="Brightness Icon">
+                <input type="range" min="0" max="100" step="1" value="100">
+            </div>
+            <div class="volume">
+                <img src="/web/icons/speaker.svg" alt="Speaker Icon">
+                <input type="range" min="0" max="100" step="1" value="100">
+                <img src="/web/icons/right.svg" alt="Right Icon">
+            </div>
+        </div>
+        <div class="ac-bottom">
+            <div class="battery">
+                <img src="/web/icons/batteryFull.svg" alt="Battery Icon">
+                <span></span>
+            </div>
+            <div class="options">
+                <img src="/web/icons/edit.svg" alt="Edit Icon">
+                <img src="/web/icons/options.svg" alt="Options Icon">
+            </div>
+        </div>
+    </div>
+    <div class="notification-center">
+        <div class="notifications">
+        </div>
+        <div class="calender">
+            <div class="calender-top">
+                <span>Calender</span>
+                <img src="/web/icons/down.svg" alt="Down Icon" width="20" height="20">
+            </div>
+        </div>
+    </div>
+    <div id="context-menu">
+        <div class="item"><img src="/web/icons/view.svg" alt="View"> View <img src="/web/icons/right.svg" alt="Right arrow"></div>
+        <div class="item"><img src="/web/icons/sort.svg" alt="Sort"> Sort by <img src="/web/icons/right.svg" alt="Right arrow"></div>
+        <hr>
+        <div class="item">Refresh</div>
+        <div class="item"><img src="/web/icons/new.svg" alt="New"> New item <img src="/web/icons/right.svg" alt="Right arrow"></div>
+        <hr>
+        <div class="item"><img src="/web/icons/display.svg" alt="Display"> Display settings</div>
+        <div class="item"><img src="/web/icons/personalize.png" alt="Personalize"> Personalize</div>
+        <hr>
+        <div class="item"><img src="/web/icons/terminal.png" alt="Terminal"> Open in Windows Terminal</div>
+        <hr>
+        <div class="item"><img src="/web/icons/more.svg" alt="More"> Show more options <img src="/web/icons/right.svg" alt="Right arrow"></div>
+    </div>
+    <!-- making run dialog -->
+    <div class="runDialog window">
+        <div class="runHeader"> <img src="/web/icons/runicon.png" alt="run icon" class="runIconSmall"> <span>Run</span>
+            <div class="optionsWrapper"><img src="/web/icons/cross.svg" alt="close" class="windowOptions windowCrosser"></div>
+        </div>
+        <div class="runBody">
+            <div class="runBodyMessage"><img src="/web/icons/runicon.png" alt="run Icon" id="runIconBody"><span>Type the name of the program, folder, document or internet resources, and windows will open it for you.</span></div>
+            <label for="runInputField">Open: </label><input type="text" id="runInputField" autocomplete="off">
+        </div>
+        <div class="runFooter">
+            <button class="disabledButton" id="runOkBtn">Ok</button>
+            <button>Cancel</button>
+            <button>Browse...</button>
+        </div>
+    </div>
+    <div class="brightness-overlay"></div>
+    <div id="keyboard">
+        <div class="keys" id="keyboardHider">
+            <img src="/web/icons/right.svg" alt="Hide the keyboard" style="transform: rotate(90deg);">
+        </div>
+        <div class="keys" data-value="Win" id="winkey">
+            <img src="/web/icons/winkey.svg" alt="" style="filter: invert(1);width: 70%;">
+        </div>
+        <div class="keys" data-value="Alt" id="altKey">Alt</div>
+        <div class="keys" data-value="Ctrl" id="ctrlKey">Ctrl</div>
+    </div>
+    <div class="imagesToBePreloaded" style="display: none;"></div>
+    <script src="/web/js/boot.js"></script>
+    <script src="/web/js/start.js"></script>
+    <script src="/web/js/desktop.js"></script>
+    <script src="/web/js/window.js"></script>
+    <script src="/web/js/run.js"></script>
+    <script src="/web/js/keyboard.js"></script>
+    <script src="/web/js/taskbar.js"></script>
+    <script src="/web/js/notification.js"></script>
+    <link rel="stylesheet" type="text/css" href="/web/css/webapps.css">
+    <link rel="stylesheet" type="text/css" href="/web/css/animations.css">
+    <script src="/web/js/tutorial.js"></script>
+    <script src="/web/js/popper.min.js"></script>
+    <script src="/web/js/tippy-bundle.umd.min.js"></script>
+    <link rel="stylesheet" href="/web/css/scale.css">
+    <script src="/web/js/tooltip.js"></script>
+
+</body>
+
+</html>

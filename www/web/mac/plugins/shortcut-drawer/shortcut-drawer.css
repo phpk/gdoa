@@ -1,0 +1,84 @@
+.win10-drawer-box{
+    height:0;
+    overflow: hidden;
+}
+
+.shortcut-drawer{
+    width: 80px;
+    overflow: hidden;
+    cursor: pointer;
+    padding: 0;
+    transition: all 0.5s;
+    display: inline-block;
+}
+
+.shortcut-drawer:hover {
+    background-color: rgba(255, 255, 255, 0.11);
+}
+
+.shortcut-drawer>.icon {
+    width: 50px;
+    height: 50px;
+    overflow: hidden;
+    margin: 0 auto;
+    color: white;
+    box-sizing: border-box;
+    margin-bottom: 5px;
+    margin-top: 5px;
+    text-align: center;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    display: block;
+    font-size: 37px;
+    line-height: 50px;
+}
+
+.shortcut-drawer .title {
+    color: white;
+    font-size: 12px;
+    text-align: center;
+    line-height: 18px;
+    margin-bottom: 5px;
+    height: 36px;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    display:-webkit-box;
+    -webkit-box-orient:vertical;
+    -webkit-line-clamp:2;
+}
+.drawer.layui-layer{
+    border-radius: 0.5em;
+    overflow: auto;
+    background: transparent;
+}
+.drawer.layui-layer>.layui-layer-title{
+    background:0 0;
+    text-align: center;
+    padding: 0;
+    color: #fff;
+	font-size: 20px;
+    height: 30px;
+    line-height: 30px;
+    border-radius: 4px 4px 0px 0px;
+    border: 0;
+}
+.drawer.layui-layer{
+	box-shadow:none;
+}
+
+.drawer.layui-layer>.layui-layer-content{
+    background-color: rgba(255, 255, 255, 0.5);
+    padding: 1em;
+	border-radius:1em;
+}
+
+
+.drawer .black-green{background:#009688!important;}
+.drawer .green{background:#5FB878!important;}
+.drawer .black{background:#393D49!important;}
+.drawer .blue{background:#1E9FFF!important;}
+.drawer .orange{background:#F7B824!important;}
+.drawer .red{background:#FF5722!important;}
+.drawer .dark{background:#2F4056!important;}
+.drawer .purple{background:#b074e6!important;}

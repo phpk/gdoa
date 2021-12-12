@@ -20,4 +20,9 @@ module.exports = class extends Base {
 		    break;
 		}
 			}
+	/**
+	* @name 文章分类列表
+	*/
+	async artcateAction(){
+	}
 };

@@ -1,0 +1,758 @@
+* {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    font-family: sans-serif;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+body {
+    width: 100vw;
+    height: 100vh;
+    /* background: #fff url(wallpaper/img18.webp) center center/cover no-repeat; */
+    background: none;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 40px;
+}
+
+.taskbar {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: 40px;
+    position: sticky;
+    z-index: 100;
+}
+
+.center,
+.right {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    align-content: center;
+}
+
+.center {
+    grid-area: 1/2/2/3;
+    justify-content: center;
+}
+
+.right {
+    grid-area: 1/3/2/4;
+    justify-content: flex-end;
+    margin-right: 10px;
+    column-gap: 5px;
+}
+
+.taskbar {
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    background-color: rgba(255, 255, 255, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.125);
+}
+
+.center img,
+.start-icons img {
+    display: inline-block;
+    width: 25px;
+    /*cursor: pointer;*/
+    margin: 4px;
+    padding: 3px;
+}
+
+.action-center-button:focus,
+.action-center-button:hover,
+.center img:focus,
+.center img:hover,
+.right>img:focus,
+.right>img:hover,
+.start-icons figure:focus,
+.start-icons figure:hover {
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 5px;
+}
+
+#context-menu {
+    position: fixed;
+    z-index: 1000;
+    width: -webkit-max-content;
+    width: max-content;
+    background-color: rgba(255, 255, 255, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.125);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-radius: 7px;
+    transform: scale(0);
+    transform-origin: top left;
+    padding: 5px;
+    /*display: none;*/
+}
+
+#context-menu.visible {
+    transform: scale(0.75);
+    transition: transform 100ms ease-in-out;
+}
+
+#context-menu .item {
+    display: flex;
+    padding: 5px;
+    /*cursor: pointer;*/
+    border-radius: 5px;
+}
+
+#context-menu .item:hover {
+    background: rgba(255, 255, 255, 0.5);
+}
+
+#context-menu img {
+    width: 16px;
+    height: 16px;
+}
+
+#context-menu>div:nth-child(4) {
+    padding-left: 31px;
+}
+
+#context-menu>div>img:nth-child(1) {
+    margin-right: 10px;
+}
+
+#context-menu>div>img:nth-child(2) {
+    position: absolute;
+    right: 5px;
+}
+
+.start {
+    height: 600px;
+    width: 530.63px;
+    margin-left: calc(50% - 265.315px);
+    position: absolute;
+    bottom: 50px;
+    z-index: 90;
+    background-color: rgb(255, 255, 255, 0.5);
+    border: 2px solid rgba(255, 255, 255, 0.25);
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+    border-radius: 7px;
+    transform: translateY(660px);
+    opacity: 0.5;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.show-start {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.start .search {
+    text-align: center;
+    padding: 30px 30px 0;
+}
+
+.start .search input {
+    padding: 10px 0 10px 25px;
+    border: 0;
+    border-radius: 3px;
+    border-bottom: 2.5px solid #2184e2;
+    width: 450px;
+    outline: 0;
+}
+
+.others {
+    position: absolute;
+    padding: 10px 50px;
+    width: 450px;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: rgb(255 255 255 / 20%);
+    border-top: 1.5px solid grey;
+}
+
+.user img {
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+}
+
+.user {
+    display: flex;
+}
+
+.user span {
+    padding: 8.5px;
+    font-size: small;
+}
+
+.others #shutdown {
+    width: 25px;
+}
+
+.pinned .start-icons {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    justify-items: center;
+    padding: 20px 30px;
+    align-items: end;
+    grid-gap: 5px;
+}
+
+.desktopIcons {
+    display: grid;
+    padding: 5px;
+    justify-content: start;
+    grid-gap: 10px;
+}
+
+.desktopIcons img {
+    width: 40px;
+}
+
+.desktopIcons figure {
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.desktopIcons figure:hover,
+.desktopIcons figure:focus {
+    background: #ffffff4d;
+}
+
+figure {
+    text-align: center;
+    font: status-bar;
+    width: 71.9px;
+    /*cursor: pointer;*/
+    margin: 0px 0px 5px 0px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.iconName {
+    color: white;
+    text-shadow: 0 0 4px black, 0 0 3px black;
+    font-size: 12px;
+    text-align: center;
+    margin-top: 5px;
+}
+
+.start-top-elements {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    margin: 20px 40px 0;
+}
+
+.start-top-elements span {
+    font-size: smaller;
+    font-weight: 700;
+}
+
+.search label {
+    position: relative;
+}
+
+.search label:before {
+    content: "";
+    position: absolute;
+    left: 7px;
+    top: 2px;
+    opacity: 0.7;
+    bottom: 0;
+    width: 50px;
+    background: url(../icons/search.svg) no-repeat;
+}
+
+.search input {
+    padding: 10px 30px;
+}
+
+.right img {
+    width: 20px;
+    padding: 5px;
+}
+
+.right .action-center-button {
+    height: 30px;
+    width: 80px;
+    display: flex;
+    justify-content: center;
+}
+
+.time-date {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: flex-end;
+    font: status-bar;
+}
+
+
+/* styling open all apps button */
+
+.openAll {
+    background-color: #fff;
+    padding: 2px 5px;
+    border: none;
+    outline: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: smaller;
+    /*cursor: pointer;*/
+}
+
+.smallRight {
+    width: 15px;
+}
+
+
+/* styling power on box */
+
+.powerOnBox {
+    background: #1b1a23;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.power-switch, .power-switch .button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: visible;
+}
+
+.power-switch {
+    --color-invert: #ffffff;
+    --width: 150px;
+    --height: 150px;
+    width: var(--width);
+    height: var(--height);
+}
+
+.power-switch .button {
+    width: 100%;
+    height: 100%;
+}
+
+.power-switch .button:after, .power-switch input {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    opacity: 0;
+}
+
+.power-switch .button:after {
+    content: "";
+    background: radial-gradient(circle closest-side, var(--color-invert), transparent);
+    filter: blur(20px);
+    transition: opacity 1s ease, transform 1s ease;
+    transform: perspective(1px) translateZ(0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+}
+
+.power-switch .button .power-off, .power-switch .button .power-on {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    z-index: 1;
+    fill: none;
+    stroke: var(--color-invert);
+    stroke-width: 8px;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.power-switch .button .power-off .a {
+    opacity: 0.2;
+}
+
+.power-switch .button .power-off .b, .power-switch .button .power-on .b {
+    transform: rotate(-58deg);
+    transform-origin: center 80px;
+    stroke-dasharray: 220;
+}
+
+.power-switch .button .power-off .b {
+    opacity: 0.2;
+    stroke-dashoffset: 40;
+}
+
+.power-switch .button .power-on {
+    filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.8));
+}
+
+.power-switch .button .power-on .a {
+    opacity: 0;
+    transition: opacity 0.3s ease 1s;
+}
+
+.power-switch .button .power-on .b {
+    opacity: 1;
+    stroke-dashoffset: 220;
+    transition: transform 0s ease, stroke-dashoffset 1s ease 0s;
+}
+
+.power-switch input {
+    z-index: 2;
+    cursor: pointer;
+}
+
+.power-switch input:checked+.button:after {
+    opacity: 0.15;
+    transform: scale(2) perspective(1px) translateZ(0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.power-switch input:checked+.button .power-off, .power-switch input:checked+.button .power-on {
+    -webkit-animation: click-animation 0.3s ease forwards;
+    animation: click-animation 0.3s ease forwards;
+    transform: scale(1);
+}
+
+.power-switch input:checked+.button .power-off .a, .power-switch input:checked+.button .power-on .a {
+    -webkit-animation: line-animation 0.8s ease-in forwards;
+    animation: line-animation 0.8s ease-in forwards;
+}
+
+.power-switch input:checked+.button .power-off .b {
+    transform: rotate(302deg);
+}
+
+.power-switch input:checked+.button .power-on .a {
+    opacity: 1;
+    transition: opacity 0.05s ease-in 0.55s;
+}
+
+.power-switch input:checked+.button .power-on .b {
+    transform: rotate(302deg);
+    stroke-dashoffset: 40;
+    transition: transform 0.4s ease 0.2s, stroke-dashoffset 0.4s ease 0.2s;
+}
+
+.boot {
+    display: none;
+}
+
+
+/* nothing is displayed when the computed is not turned on */
+
+.desktop,
+.start,
+.taskbar {
+    display: none;
+}
+
+#lockScreen {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+    background: #fff url("../wallpaper/img100.webp") center center/cover no-repeat;
+    position: relative;
+    display: none;
+}
+
+#timeBox {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    font-size: 40px;
+    line-height: 60px;
+    position: absolute;
+    bottom: 5%;
+    left: 2%;
+    color: #fff;
+}
+
+#timeBox>.time {
+    font-size: 76px;
+}
+
+#timeBox>.date {
+    font-weight: 10;
+}
+
+
+/* designing password dialog */
+
+.passwordDialog {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /* background-color: lightcyan; */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    color: #fff;
+    display: none;
+    transition: 2s;
+}
+
+.userProfile {
+    border-radius: 50%;
+    margin: 10px;
+    background-color: lavender;
+}
+
+.userProfile>img {
+    width: 100px;
+}
+
+.username {
+    margin: 10px 10px 15px 10px;
+}
+
+.passwordDialog input {
+    font-size: 0.9rem;
+    width: 150px;
+    padding: 5px;
+    outline: none;
+    border: none;
+    border-radius: 5px;
+}
+
+.forgotOption {
+    margin: 10px;
+    font-size: 0.9rem;
+}
+
+.otherSignInOption {
+    margin-top: 15px;
+}
+
+.hint {
+    color: #fafa00;
+    margin: 2px;
+    font-size: 0.8rem;
+}
+
+.window {
+    position: absolute;
+    z-index: 50;
+    background: rgb(255, 255, 255, .5);
+    -webkit-backdrop-filter: blur(15px);
+    backdrop-filter: blur(15px);
+    border-radius: 10px;
+    box-shadow: 0 2.8px 2.2px rgb(0,0,0,.2), 0 6.7px 5.3px rgb(0 0 0 / 3%), 0 12.5px 10px rgb(0 0 0 / 4%), 0 22.3px 17.9px rgb(0 0 0 / 4%), 0 41.8px 33.4px rgb(0 0 0 / 5%), 0 100px 80px rgb(0 0 0 / 7%);
+}
+
+.runDialog {
+    min-width: auto !important;
+    min-height: auto !important;
+    width: 360px;
+    position: absolute;
+    bottom: 50px;
+    left: 10px;
+    display: none;
+}
+
+.runIconSmall {
+    width: 25px;
+    margin: 5px;
+}
+
+.runHeader {
+    /* background-color: orange; */
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+#runCloser {
+    position: absolute;
+    right: 5px;
+}
+
+.runBody {
+    /* background-color: lightcyan; */
+    padding: 10px 5px;
+}
+
+.runBodyMessage {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.runBodyMessage>span {
+    font-size: 13px;
+}
+
+#runIconBody {
+    width: 60px;
+    margin: 10px 10px 5px 5px;
+}
+
+label[for="runInputField"] {
+    font-size: 14px;
+}
+
+#runInputField {
+    width: 80%;
+    height: 17px;
+    padding: 5px;
+    border: 1px solid lightgray;
+    outline: none;
+}
+
+#runInputField:focus {
+    border: 1px solid #FBFFFF;
+    outline: 1px solid blue;
+    ;
+}
+
+.runFooter {
+    background-color: #F1F0F1;
+    margin-top: 30px;
+    height: 50px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.runFooter>button {
+    font-size: 15px;
+    padding: 5px 9px;
+    background-color: #fff;
+    border: 1px solid lightgray;
+    outline: none;
+    margin: 0px 5px;
+    width: 80px;
+    border-radius: 2px;
+    cursor: pointer;
+}
+
+.disabledButton {
+    background-color: #F2F3F2;
+    color: #A5A2A2;
+    border: 1px solid lightgray;
+}
+
+.windowTitleBar {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.smallTitleIcon {
+    width: 21px;
+    margin: 5px;
+}
+
+.windowTitle {
+    font-size: 15px;
+    margin-left: 5px;
+    margin-right: 100px;
+}
+
+.optionsWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    right: 5px;
+}
+
+.windowOptions {
+    cursor: pointer;
+    align-self: center;
+    margin: 2px 5px 0px 0px;
+    padding: 3px 3px;
+    width: 18px;
+}
+
+.windowOptions:hover {
+    background-color: #F5F5F5;
+}
+
+
+/* styling keyboard */
+
+#keyboard {
+    position: absolute;
+    bottom: 50px;
+    right: 10px;
+    border-radius: 5px;
+    background-color: #333231;
+    padding: 5px;
+    transform: translateY(120px);
+    transition: 0.5s;
+    display: flex;
+}
+
+.keys {
+    border: 1px solid black;
+    background-color: #727AA0;
+    border-radius: 5px;
+    height: 50px;
+    width: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    cursor: pointer;
+}
+
+.keys:hover {
+    background-color: #000;
+    color: #fff;
+}
+
+#keyboardHider {
+    background-color: lightcoral;
+}
+
+#keyboardHider:hover {
+    background-color: #f16c3c;
+}
+
+.activeKey {
+    background-color: darkseagreen;
+}
+
+iframe {
+    border: none;
+}
+
+.otherSignInOptions {
+    font-size: 0.9rem;
+}
+
+[data-tab-info] {
+    display: none;
+}
+
+.active[data-tab-info] {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.sign-in-methods {
+    display: flex;
+    justify-content: center;
+    filter: invert(1);
+}
+
+.sign-in-methods img {
+    width: 2rem;
+    margin-block: 10px;
+}

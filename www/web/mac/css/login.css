@@ -1,0 +1,25 @@
+.cm-tab-wrap-hack::after { content: ""; }
+.com-user { position: fixed; display: flex; justify-content: center; align-items: center; background: rgb(255, 255, 255) none repeat scroll 0% 0%; }
+.com-user, .com-user::after { top: 0px; left: 0px; bottom: 0px; right: 0px; z-index: 1000; }
+.com-user::after { position: absolute; content: ""; background: rgba(0, 0, 0, 0) url('../img/wallpapers/main.jpg') no-repeat scroll 0% 0% / cover ; margin: -50px; filter: blur(20px); opacity: 0.8; }
+.com-user .login-box { width: 200px; }
+.com-user .login-box img { width: 50px; height: 50px; border-radius: 50%; margin-bottom: 10px; }
+.com-user .login-box .login { position: absolute; padding: 0px; right: -50px; top: 90px; border-radius: 15px; border: medium none; background: rgba(255, 255, 255, 0.3) none repeat scroll 0% 0%; width: 30px; color: rgb(255, 255, 255); font-size: 18px; outline: medium none; height: 30px; cursor: pointer; }
+.com-user .login-box .login:active { background: rgba(255, 255, 255, 0.4) none repeat scroll 0% 0%; }
+.com-user .box { z-index: 1001; display: flex; flex-direction: column; position: relative; justify-content: center; align-items: center; }
+.com-user .third img { width: 32px; height: 32px; cursor: pointer; margin: 10px; }
+.com-user input { width: 150px; background: rgba(255, 255, 255, 0.3) none repeat scroll 0% 0%; border: medium none rgba(0, 0, 0, 0.3); border-radius: 5px; height: 25px; margin: 10px 0px; outline: medium none; color: rgb(255, 255, 255); text-align: center; }
+.com-user .cancel { position: absolute; z-index: 1001; bottom: 22%; background: rgba(0, 0, 0, 0) none repeat scroll 0% 0%; border: medium none; text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center; outline: medium none; cursor: pointer; }
+.com-user .cancel img { opacity: 0.8; }
+.com-user .cancel span { color: rgb(255, 255, 255); font-size: 12px; margin-top: 10px; }
+body, html { margin: 0px; padding: 0px; font-family: sans-serif; height: 100%; width: 100%; overflow: hidden; }
+button { -moz-user-select: none; cursor: default; background-color: rgb(255, 255, 255); outline: medium none; border-width: 1px; border-style: solid; border-radius: 5px; border-color: rgb(200, 200, 200) rgb(194, 194, 194) rgb(172, 172, 172); box-shadow: 0px 1px rgba(0, 0, 0, 0.04); padding: 0px 13px; line-height: 19px; font-family: -apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif; font-size: 13px; }
+button:active { border-color: rgb(36, 127, 255) rgb(18, 94, 237) rgb(0, 61, 219); background-image: -webkit-linear-gradient(top, rgb(76, 152, 254), rgb(5, 100, 227)); color: rgba(255, 255, 255, 0.9); }
+* { box-sizing: border-box; }
+#root, .layout-desktop { height: 100%; width: 100%; }
+.layout-desktop { background-image: url('../img/wallpapers/main.jpg'); background-size: cover; display: flex; flex-direction: column; }
+.layout-desktop .content { position: relative; height: 100%; width: 100%; flex: 1 1 0%; }
+.layout-desktop .icons { padding: 30px; }
+.layout-desktop .icons > div { display: flex; width: 150px; height: 150px; justify-content: center; align-items: center; flex-direction: column; }
+.layout-desktop .icons > div img { max-width: 60px; max-height: 60px; }
+.layout-desktop .icons > div span { margin-top: 10px; color: rgb(255, 255, 255); font-size: 12px; }

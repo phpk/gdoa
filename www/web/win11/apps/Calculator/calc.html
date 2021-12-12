@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <title>Calculator</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <link rel="stylesheet" href="myProjects/webProject/icofont/css/icofont.min.css">
+          <link rel="stylesheet" type="text/css" href="../../redirects/shutdown/Bootstrap/css/font-awesome.css">
+          <link rel="stylesheet" type="text/css" href="../../redirects/shutdown/Bootstrap/css/font-awesome.min.css">
+          <link rel="stylesheet" type="text/css" href="../../redirects/shutdown/Bootstrap/bootstrap.css">
+          <link rel="stylesheet" type="text/css" href="../../redirects/shutdown/Bootstrap/style.css">
+        <style>
+            body{
+                overflow: hidden;
+                font-family: sans-serif;
+            }
+            .container{
+                background-color: rgba(31,31,31,255);
+                padding: none;
+                margin: none;
+            }
+            h2{
+                color: white;
+                font-family: sans-serif;
+            }
+            h3{
+                color: white;
+            }
+            h5{
+                color: white;
+                padding-top: 8px;
+            }
+            p{
+                color: white;
+            }
+
+            .row{
+                margin: none;
+                padding: none;
+            }
+
+            .function-buttons{
+                background-color: rgba(19,19,19,255);
+                font-family: consolas;
+                font-size: 22px;
+                text-decoration: bold;
+                text-align: center;
+                margin-bottom: 5px;
+                padding: 15px;
+                width: 24%;
+                height: 60px;
+                color: white;
+            }
+            .function-calc-buttons{
+                background-color: rgba(31,31,31,255);
+                font-family: consolas;
+                font-size: 22px;
+                text-decoration: bold;
+                text-align: center;
+                margin-bottom: 5px;
+                padding: 15px;
+                width: 15%;
+                height: 60px;
+            }
+            .function-buttons-keys{
+                background-color: black;
+                font-family: consolas;
+                font-size: 22px;
+                text-decoration: bold;
+                text-align: center;
+                margin-bottom: 5px;
+                padding: 15px;
+                width: 24%;
+                height: 60px;
+                color: white;
+            }
+
+            .function-buttons:hover,
+            .function-calc-buttons:hover,
+            .function-buttons-keys:hover{
+                background-color: rgba(242, 242, 242, 0.2);
+            }            
+
+
+            /*effects to header buttos*/
+            #CalcBtn-Close:hover {
+                background-color: red;
+            }
+            #CalcBtn-Max:hover {
+                background-color: rgba(242, 242, 242, 0.2);
+            }
+            #CalcBtn-Min:hover {
+                background-color: rgba(242, 242, 242, 0.2);
+            }
+
+            #nav-btns{
+                padding: 0px;
+                color: white;
+                font-size: 20px;
+                text-decoration: none;
+                text-align: right;
+            }
+            #nav-btns button{
+                background-color: rgba(31,31,31,255);
+                border: none;
+                border-radius: 0px;
+                margin-right: -5px; 
+                margin-top: -8px;
+
+            }
+
+        </style>
+    </head>
+
+    <body>
+        <div class="container" id="cont">
+
+            <div class="row">
+                <div class="col-10">
+                    <h5>Calculator</h5>
+                </div>
+                <div style="padding: 0px; margin: 0px; display: flex; justify-content: flex-end;" class="col-2">
+                    <div class="btn-group me-2" role="group" aria-label="Second group" id="nav-btns">
+                        <div id="CalcBtn-Min" type="button" class="btn btn-secondary">&nbsp;_&nbsp;</div>
+                        <div id="CalcBtn-Max" type="button" class="btn btn-secondary">&nbsp;🗖&nbsp;</div>
+                        <div id="CalcBtn-Close" type="button" class="btn btn-secondary">&nbsp;X&nbsp;</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <h2><i class="fa fa-bars" aria-hidden="true"></i> Standard</h2>
+            </div>
+
+            <div class="row">
+                <div class="col-7">
+                    <div class="row">
+                        <h2 style="font-size: 55px; text-align: right; padding: 30px;">0</h2>
+                    </div>
+                    <div class="row">
+                        <div style="color: #494949;" class="function-calc-buttons">MC</div>
+                        <div style="color: #494949;" class="function-calc-buttons">MR</div>
+                        <div style="color: white;" class="function-calc-buttons">M+</div>
+                        <div style="color: white;" class="function-calc-buttons">M-</div>
+                        <div style="color: white;" class="function-calc-buttons">MS</div>
+                    </div>
+                    <div class="row">
+                        <div class="function-buttons">%</div>&nbsp;
+                        <div class="function-buttons">CE</div>&nbsp;
+                        <div class="function-buttons">C</div>&nbsp;
+                        <div class="function-buttons">⌫</div>&nbsp;
+                    </div>
+                    <div class="row">
+                        <div class="function-buttons">1/x</div>&nbsp;
+                        <div class="function-buttons">x<sup>2</sup></div>&nbsp;
+                        <div class="function-buttons"><sup>2</sup>√x</div>&nbsp;
+                        <div class="function-buttons">÷</div>&nbsp;
+                    </div>
+                    <div class="row">
+                        <div class="function-buttons-keys">7</div>&nbsp;
+                        <div class="function-buttons-keys">8</div>&nbsp;
+                        <div class="function-buttons-keys">9</div>&nbsp;
+                        <div class="function-buttons">X</div>&nbsp;
+                    </div>
+                    <div class="row">
+                        <div class="function-buttons-keys">4</div>&nbsp;
+                        <div class="function-buttons-keys">5</div>&nbsp;
+                        <div class="function-buttons-keys">6</div>&nbsp;
+                        <div class="function-buttons">-</div>&nbsp;
+                    </div>
+                    <div class="row">
+                        <div class="function-buttons-keys">7</div>&nbsp;
+                        <div class="function-buttons-keys">8</div>&nbsp;
+                        <div class="function-buttons-keys">9</div>&nbsp;
+                        <div class="function-buttons">+</div>&nbsp;
+                    </div>
+                    <div class="row">
+                        <div class="function-buttons-keys">+/-</div>&nbsp;
+                        <div class="function-buttons-keys">0</div>&nbsp;
+                        <div class="function-buttons-keys">.</div>&nbsp;
+                        <div class="function-buttons">=</div>&nbsp;
+                    </div>
+                </div>
+                <div class="col-5">
+                    <div class="row">
+                        <div class="col-3"><h3>History</h3></div>
+                        <div class="col-3"><h3>Memory</h3></div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-12">
+
+                            <p>There's no history yet.</p>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </body>
+
+</html>
