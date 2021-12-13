@@ -1,0 +1,175 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>万年历</title>
+	<script  type="text/javascript">
+		var userAgent = navigator.userAgent.toLowerCase();  
+		if(userAgent.indexOf("iphone") != -1
+				|| userAgent.indexOf("ipad") != -1
+				|| userAgent.indexOf("android") != -1
+				|| userAgent.indexOf("ios") != -1){
+			location.href="/admin/tools/rili/m/index.html"
+		}
+	</script>
+<meta name="keywords" content="鲁虺万年历，鲁虺日历，鲁虺日历查询，鲁虺农历，鲁虺日历表，鲁虺阴历" />
+<meta name="description" content="万年历，最适合中国人的日历，为您提供日历查询、农历查询、黄历查询、日历表等功能。" />
+<link rel="stylesheet" href="/admin/tools/rili/css/reset.css" />
+<link rel="stylesheet" href="/admin/tools/rili/css/layout.css" />
+<link rel="stylesheet" href="/admin/tools/rili/css/module.css" />
+<link rel="stylesheet" href="/admin/tools/rili/css/wnlImprove.css" />
+<link rel="stylesheet" href="/admin/tools/rili/css/index.css" />
+<link rel="stylesheet" href="/admin/tools/rili/css/wnl.css" />
+<link rel="stylesheet" href="/admin/tools/rili/css/city.css" />
+<script type="text/javascript" src="/admin/tools/rili/js/jquery.js"></script>
+
+<!--[if IE]><![endif]-->
+<script src="/admin/tools/rili/js/jquery.placeholder.js"></script>
+
+<script type="text/javascript" src="/admin/tools/rili/js/common_util.js"></script>
+<script type="text/javascript" src="/admin/tools/rili/js/json2.js"></script>
+</head>
+<body>
+				<div id="indexWindow" class='indexW' style="visibility:hidden;">
+						<div class="black"></div>
+						<div class="demo">
+	                          <input type="text" class="cityinput" id="citySelect" value="城市名">
+                        </div>
+						<div class="blackone"></div>
+					<div class='content clearfix' id="content">
+						<div class="cont_left">
+							<div style="margin-right:310px;height:100%;">
+							<div class="c_top clear" style="background:#fff;">
+								<div class="ct_content">
+								  <!--div class="toleft"><img src="/admin/tools/rili/img/dayPrev.jpg" alt=""></div-->
+									<div class='selectleftPrev fll' id='prev_button_a' style=""></div>
+									<div class='yearmonth fll'>
+										<div class='year jp-dropdown fll' id='dropdownYear'>
+											<div class='numberCal fll '>
+												<span id='yearValue'></span>											</div>
+											<div class='selectdown fll' id="select0"></div>
+											<ul class='jp-dropdown-menu jp-ddmH-extend' id='yearjpDDM'>
+											</ul>
+										</div>
+										<div class='month jp-dropdown fll' id='dropdownMonth'>
+											<div class='numberCal fll '>
+												<span id='monthValue'></span>											</div>
+											<div class='selectdown fll' id="select1"></div>
+											<ul class='jp-dropdown-menu w59'>
+												<li><a>01月</a></li>
+												<li><a>02月</a></li>
+												<li><a>03月</a></li>
+												<li><a>04月</a></li>
+												<li><a>05月</a></li>
+												<li><a>06月</a></li>
+												<li><a>07月</a></li>
+												<li><a>08月</a></li>
+												<li><a>09月</a></li>
+												<li><a>10月</a></li>
+												<li><a>11月</a></li>
+												<li><a>12月</a></li>
+											</ul>
+										</div>
+									</div>
+									<div class='selectright fll' id='next_button_a'></div>
+									<div class="shit fll">
+										<div class="chinaDayM fll tac" id="china_Dt"></div>
+										<div class="toright fll"></div>
+
+										<div class='fll jp-dropdown allvacation' id='allVacation'>
+											<div class='fll jieri' id='vacationValue'>节日放假</div>
+											<div class="selectdown" id="select2"></div>
+											<ul class='jp-dropdown-menu'>
+											</ul>
+										</div>
+										<div class="jintian1 fll">
+											<div class='todayCal' id='today_button'
+												style="display: none;">今天</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class='calendar' id='mainCal' style="background:#fff;"></div>
+							</div>
+						</div>
+						<div class='everydayinfo'>
+							<div class="Infotop">
+								<div class="worlDay"></div>
+								<div class="NumberDay"></div>
+								<div id='chinaDay' class='lMonthDay'></div>
+								<div class="tactwo">
+									<span id='chinaDay2' class='tac'></span> <span id='chinaDay3'
+										class='tac'></span>								</div>
+								<div id="yjlist" class='yjlist'>
+									<div class='ylist'>
+										<nobr>
+											<span class='ylistName'>宜</span><span id='ylist'></span>										</nobr>									</div>
+									<div class='jlist'>
+										<nobr>
+											<span class='jlistName'>忌</span><span id='jlist'></span>										</nobr>									</div>
+								</div>
+
+								<div class='tac'>
+									<span id='av_action'>距&nbsp;<span class='av-jrt'
+										id='fname'></span>&nbsp;还有&nbsp;<span class='av-czt'
+										id='vaCount'></span>&nbsp;天									</span>								</div>
+							</div>
+							<div class="Infobottom">
+								<div class="top" id="city">
+									<span class="city">上海</span> <span class="change">[切换]</span> <span class="airquality">获取中</span> <span class="air">空气质量:&nbsp;</span>								</div>
+								<div class="clear"></div>
+								<div class="mid" id="weather">
+									<div class="m_left">
+										<ul class="one_day" id="day0">
+											<li></li>
+											<li><img id="today_icon" src="" alt=""></li>
+											<li id="today_tem"></li>
+											<li></li>
+											<li></li>
+											<li><span></span>&nbsp;<span></span></li>
+										</ul>
+									</div>
+									<div class="m_mid">
+										<ul class="two_day" id="day1">
+											<li></li>
+											<li><img src="" alt=""></li>
+											<li></li>
+											<li></li>
+											<li></li>
+											<li><span></span>&nbsp;<span></span></li>
+										</ul>
+									</div>
+									<div class="m_right">
+										<ul class="third_day" id="day2">
+											<li></li>
+											<li><img src="" alt=""></li>
+											<li></li>
+											<li></li>
+											<li></li>
+											<li><span></span>&nbsp;<span></span></li>
+										</ul>
+									</div>
+								</div>
+								<div class="clear"></div>
+								<div class="bottom" id="warning"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+	<script type="text/javascript" src="/admin/tools/rili/js/common.js"></script>
+	<script type="text/javascript" src="/admin/tools/rili/js/wnl.js"></script>
+	<script type="text/javascript" src="/admin/tools/rili/js/lunarjson.js"></script>
+	<script type="text/javascript" src="/admin/tools/rili/js/makeCal.js"></script>
+	<script type="text/javascript" src="/admin/tools/rili/js/index.js"></script>
+	<script type="text/javascript" src="/admin/tools/rili/js/jquery.artDialog.source.js"></script>
+	<script type="text/javascript" src="/admin/tools/rili/js/module.js"></script>
+	<script type="text/javascript" src="/admin/tools/rili/js/jquery.uploadify-3.1.min.js"></script>
+	<script type="text/javascript" src="/admin/tools/rili/js/city.js"></script>
+	<script src="/admin/tools/rili/js/bdwnl.js"></script>
+<div style="display:none;">
+
+</div>
+
+
+</body>
+</html>
