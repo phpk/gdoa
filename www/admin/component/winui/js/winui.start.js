@@ -23,6 +23,7 @@ layui.define(['jquery', 'element', 'layer', 'winui'], function (exports) {
     //渲染HTML
     Menu.prototype.render = function (callback) {
         if (!this.data) {
+            winui.lockScreen();
             return;
         };
         var html = '';

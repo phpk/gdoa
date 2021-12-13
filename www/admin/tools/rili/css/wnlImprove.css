@@ -1,0 +1,155 @@
+
+#mainCal table{
+	
+	border-collapse: collapse;
+	border-cellspacin:0;
+    margin:0 auto;
+    width:100%;
+}
+#mainCal table td{
+	vertical-align: middle;
+	width:14%;
+	color:#888;
+	border:1px solid #e5e5e5;
+	background:#fff;
+}
+.calendar table { position:relative; }
+.tablehead{
+	font-size: 14px;
+	font-family:Microsoft YaHei;
+	margin-bottom:5px;
+}
+.thead{
+  
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+}
+.first td { border-top:solid 1px #e5e5e5; }
+#mainCal .block{
+	cursor: pointer;
+	font-family:"Microsoft YaHei";
+	display:table-cell;
+	/*vertical-align: bottom;*/
+}
+#mainCal .block a .tdhover{
+	border: 0px solid #FFF;
+	color:#999; 
+	font-size:12px;
+}
+#mainCal .block_content{
+	height:100%;
+	line-height:100%;
+	display:block;
+	color:#444444;
+	position:relative;
+	*z-index:0;
+}
+#mainCal a.block_content:hover .tdhover{
+	border:2px solid #54a024;
+}
+#mainCal .block_click a.block_content .tdhover{
+	border:2px solid #2aabff;
+}
+#mainCal .today {background-color:#2aabff;}
+#mainCal .today .block_content ..tdhover{
+	color:#fff;
+	border:2px solid #2aabff;
+}
+#mainCal .today a.block_content:hover .tdhover{
+	color:#000;
+	border:2px solid #2aabff;
+}
+.tdhover { position:absolute;width:100%;height:100%;;top:-2px;left:-2px; }
+.jprestWork {
+	    background-color: #FF7800;
+    color: #FFFFFF;
+    height: 12px;
+    padding: 2px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 12px;
+}
+.jprestWorkw{
+	color:#fff;
+	background-color:#aeaeae;
+}
+.block5 .jprestWork {
+}
+.number{
+	text-align: center;
+	color:#666;
+	font-size:26px;
+	height:27px;
+	line-height:27px;
+
+}
+.block5 .number {
+	height: 24px;
+    line-height: 24px;
+}
+.lnumber{
+	font-size:13px;
+	text-align: center;
+	color:#999;
+	height:16px;
+	line-height:16px;
+	margin-top:4px;
+}
+.today .lnumber,.today .number{color:#fff;}
+.block5 .lnumber {
+	height: 18px;
+    line-height: 18px;
+}
+
+#mainCal a,a:hover { text-decoration:none; }
+.ymd-w{
+	height:33px;
+	line-height:33px;
+	position:relative;
+	padding-left:5px;
+	*padding-left:10px;
+}
+.prev_button{
+	background:url(../img/wnl-list.png) no-repeat 4px -89px;
+	_background-image: url(../img/wnl-list-8.png);
+}
+.next_button
+{
+	background:url(../img/wnl-list.png) no-repeat -44px -89px;
+	_background-image: url(../img/wnl-list-8.png);
+}
+a { outline: medium none; }
+
+#year_func, #month_func
+{
+	color: #2A4564;
+    display: inline-block;
+    font-size: 20px;
+    line-height: 26px;
+    text-align: center;
+}
+
+#year_func, #month_func, #prev_button, #next_button
+{
+	display:inline-block;
+	font-family: "Microsoft Yahei";
+}
+#month_num
+{
+	margin-left: 5px;
+}
+.more_events {
+    border-color: #999 transparent transparent;
+    border-right: 4px dashed transparent;
+    border-style: solid dashed dashed;
+    border-width: 4px 4px 0;
+}
+.more_events:hover {
+	border-color: #000 transparent transparent;
+}
+
+#cal_down { position:relative; width:100%; }
+
+

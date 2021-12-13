@@ -1,0 +1,305 @@
+.jp_bodyCeng { height:100%; width:100%; position:absolute; z-index:1; top:0; left:0; }
+.jp_content{
+	border:1px solid #6ac5ff;
+	width:425px;
+	position:fixed;
+	_position:absolute;
+	z-index:9999;
+	background:#FFFFFF;
+	display:none;
+}
+.jp_content .cla_head_layout{
+    float:left;
+	margin:-1px 0 0 42px; 
+	-moz-user-select:none;
+}
+.jp_content .inlineblock { display:inline-block; *zoom:1; *display:inline; }
+.jp_content .ymd-w{
+	float:left;
+	height:auto;
+	line-height:12px;
+}
+
+.jp_content .dropdown{
+	*margin-left:10px;
+	position:relative;
+}
+
+.jp_content .solarBtn,.jp_content .lodarBtn{
+	padding:0;
+	border:solid 1px #6EC5FF;
+    color:#333;
+    cursor:pointer;
+    background:none;
+    line-height:12px;
+    *line-height:12px;
+    padding:4px;
+    *padding-bottom:2px;
+    font-size:12px;
+    *margin-left:-1px;
+    *margin-top:-3px;
+    margin-right:10px;
+}
+.jp_content .solarBtn { 
+	border-right:none; 
+	margin-right:0; 
+}
+.jp_content .active {
+	color: #1DA2FF;
+	background: #B8E2FF;
+}
+.jp_content #jptoday_button {
+	float:left;
+	cursor:pointer;
+	font-size:12px;
+	line-height:26px;
+	margin-left:2px;
+}
+.jp_content #year_func,.jp_content #month_func{
+	display:inline-block;
+	font-family:"Microsoft Yahei";
+}
+.jp_content #year_func span,.jp_content #month_func span { 
+	font-size:12px;
+	font-weight:bold;
+	color:#333;
+}
+.jp_content #year_func{
+	*margin-left:0px;
+	text-align:center;
+} 
+.jp_content #month_func{
+	text-align:center;
+}
+
+.jp_content #year_func,.jp_content #month_func
+{
+	color: #2A4564;
+    display: inline-block;
+    font-size: 14px;
+    line-height: 26px;
+    text-align: center;
+}
+
+.jp_content .open .dropdown-menu { 
+	display: block;
+}
+.jp_content .nong { color:#F89406; line-height:22px; }
+.jp_content .dropdown-menu a { padding:3px 5px; color:#B0B0B0; display:block; text-align:center; }
+.jp_content a.pl9IE7 { *padding-left:9px; }
+.jp_content a.pl13IE7 { *padding-left:13px; }
+.jp_content .dropdown-menu a:hover { background:#B6D2EA; }
+.jp_content .dropdown-menu { min-width:0;
+	background-clip: padding-box;
+    background-color: #FFFFFF;
+    border: 1px solid #D2D2D2;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 5px 5px 5px 5px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    display: none;
+    left:0;
+    list-style: none outside none;
+    margin: 1px 0 0;
+    min-width: 40px;
+    text-align:center;
+    padding:0;
+    position: absolute;
+    top: 100%;
+    z-index: 1000;
+}
+.jp_content #month_num { margin-left:3px; *margin-left:0; text-align: center; }
+
+.jp_content .jpcontent { }
+
+.jp_content #cal_downleft{
+    height: 100%;
+	float: left;
+}
+
+.jp_content #jp_mainCal {
+   padding:4px 6px 6px;
+   color:#939698;
+}
+
+#jp_mainCal table, #jp_mainCal td{
+	border-collapse:collapse;
+	border-spacing:0;
+	padding: 0px;
+}
+
+#jp_mainCal .block
+{
+	text-align: left;
+	vertical-align: top;
+	cursor: pointer;
+	display: table-cell;
+	font-famlily:Microsoft YaHei;
+}
+#jp_mainCal .tablehead{
+	font-size:12px;
+	font-family:Microsoft YaHei;
+	color:#333;
+}
+
+#jp_mainCal .thead {
+    border-right: 0 none;
+    height: 20px;
+    text-align: center;
+}
+#jp_mainCal .block_content{
+	padding:0;
+	margin:1px 3px;
+}
+.jp_content .today_button {
+	color:#54ac1d;
+}
+#jp_mainCal .block:hover .block_content,#jp_mainCal .clickBlock .block_content{
+	box-shadow: 0 0 2px 1px #32a7f9 inset;
+	background: #32a7f9;
+}
+#jp_mainCal .today .block_content {
+	background: #e7ffde;
+}
+#jp_mainCal .number,#jp_mainCal .weekendNum{
+	font-size:12px;
+	font-family:Arial;
+	width:30px;
+	overflow: hidden;
+	height:18px;
+	line-height:18px;
+	color:#B1BABF;
+	padding:0;
+	text-align:center;
+	margin:0;
+	font-weight:normal;
+}
+#jp_mainCal .clickBlock .number,#jp_mainCal .block:hover .number,
+#jp_mainCal .clickBlock .weekendNum,#jp_mainCal .block:hover .weekendNum{ color:#FFF; }
+#jp_mainCal .today .number { width:28px;
+height:16px;
+line-height:16px;
+border:solid 1px #93da67;
+color:#B1BABF;
+}
+
+#jp_mainCal .none{
+    display:none;
+}
+.clearfloat { 
+	clear:both; margin:0; padding:0;
+}
+
+.jp_content #cal_rightboard{
+	width: 140px;
+	margin-top: 12px;
+}
+.jp_content #gregorianDayStr{
+	font-size: 14px;
+	text-align: center;
+}
+
+.jp_content .chinaDay{
+	width:100%; 
+	text-align:center; 
+	font-size:12px;
+	margin-top:22px;
+	line-height:12px;
+	height:12px;
+}
+
+.jp_content .time { 
+	text-align:center; margin-top:10px;
+}
+.jp_content .time span {
+	font-size:16px;
+}
+.jp_content .timeInput {
+	width:40px;
+	height:26px;
+	line-height:26px;
+	font-size:18px;
+	padding:0;
+	margin:0;
+	border:solid 1px #d2d2d2;
+	text-align:center;
+}
+.jp_content .year_funcless,.jp_content .year_funcmore,.jp_content .month_funcless,.jp_content .month_funcmore
+ { position:relative; height:15px; line-height:15px; width:100%; cursor:pointer; *dispaly:inline; *overflow:hidden; }
+.jp_content a.up{
+	cursor: pointer;
+    display: inline-block;
+    font-size: 0;
+    height: 0;
+    line-height: 0;
+    width: 0;
+    border-bottom-color: #999999;
+    padding:0;
+    position:absolute;
+    left:40%;
+    top:5px;
+}.jp_content a.up{
+	border-color: transparent transparent #000000;
+    border-style: dashed dashed solid;
+    border-width: 0 4px 4px;
+}
+.jp_content a.down{
+	cursor: pointer;
+    display: inline-block;
+    font-size: 0;
+    height: 0;
+    line-height: 0;
+    width: 0;
+    border-top-color: #999999;
+    padding:0;
+    position:absolute;
+    left:40%;
+    bottom:5px
+}
+.jp_content a.down{
+	border-color: #000000 transparent transparent;
+    border-style: solid dashed dashed;
+    border-width: 4px 4px 0;
+}
+
+.jp_content .cal_btn_w {
+	margin-top:13px;
+	text-align:center
+}
+
+.jp_content .prevBtn,.jp_content .nextBtn{
+	display: inline-block;
+	height: 20px;
+	margin-bottom: -5px;
+	padding-left: 20px;
+	background: url(../img/sl-time-btns.png) no-repeat 8px -195px;
+	cursor:pointer;
+}
+.jp_content .prevBtn { *margin-right:-9px }
+.jp_content .nextBtn{
+	background-position:8px -245px;
+}
+
+.jp_content .button_ok, .jp_content .button_cancel {
+	background: url(../img/sl-time-btns.png) no-repeat 0 0;
+	height: 20px;
+	width: 46px;
+	cursor: pointer;
+	padding: 0;
+	margin: 0;
+	border: 0;
+}
+.jp_content .button_cancel {
+   	background-position: 0 -50px;
+}
+
+.jp_content .can_right{
+	float:left;
+}
+.jp_content .can_haedw {
+	padding-top:2px;
+	height:30px;
+	line-height:30px;
+	background-color:#f0f0f0;
+	position:relative;
+	z-index:100;
+}

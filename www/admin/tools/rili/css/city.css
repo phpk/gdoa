@@ -1,0 +1,27 @@
+.demo{display:none;position: absolute;z-index:500;font:"Microsoft Yahei";color:#999;}
+.blackone{display:none;position:absolute;z-index:499;height:100%;width:100%;background:none;}
+.citySelector{font:12px/1.5 arial;background:#fff;text-align:left;border-bottom:1px solid #e5e5e5;box-shadow:2px 2px 3px #e5e5e5;_margin-top:-5px;*margin-top:-5px;}
+.cityslide{width:293px;max-height:150px;overflow:auto;list-style:none;margin:0;padding:0;border:1px solid #85BEE5;border-right-color:#3485C0;border-bottom-color:#3485C0;box-shadow:2px 2px 3px rgba(0,0,0,0.3);margin-top:2px;}
+.cityslide li{list-style:none;overflow:hidden;height:16px;padding:4px 5px;cursor:pointer;}
+.cityslide li.on{background:#9CD9FF;color:#fff;}
+.cityslide li b{font-weight:normal;}
+.cityslide li.empty{background:#fff2e8;color:#666;}
+.cityslide li.empty em{color:red;font-style:normal;}
+.cityname{float:left;}
+.cityspell{float:right;}
+.cityBox{width:293px;height:169px;margin-top:4px;color:#666;border-bottom:2px solid #fff;overflow: hidden;padding:0 1px 2px 1px;background-color: #fff;}
+.cityBox ul{margin:0;padding:0;overflow:hidden;margin-bottom:-4px;}
+.cityBox ul li{float:left;list-style:none;padding:2px 3px 2px 4px;cursor:pointer;margin-right:35px;margin-left:3px;display:inline;font-size:14px;font-weight:bolder;color:#666;font-family:"Microsoft Yahei"}
+
+.cityBox ul li.on{position:relative;color:#009aff;font-family:"Microsoft Yahei"}
+.hide{display:none;}
+p.tip{color:#666;line-height:20px;padding:5px;margin:0;text-indent:3px;}
+.hotCity{height:110px;margin-top:-1px;clear:left;overflow:auto;padding-bottom:5px;_margin-bottom:8px;}
+.cityTab{overflow:hidden;}
+.cityTab dl{margin:0;padding:0;overflow:hidden;}
+.cityTab dl dt{float:left;padding-left:3px;color:#F30;text-indent:5px;font-family:"Lucida console","consolas","courier new";line-height:22px;font-size:14px;width:20px;}
+.cityTab dl dd{margin-left:2px;float:left;width:290px;}
+.cityTab dl dd a{padding-left:8px;width:62px;line-height:22px;display:inline-block;text-decoration:none;color:#999;}
+.cityTab dl dd a:hover{text-decoration:underline;color:red}
+.cityinput{border:2px solid #fff;background-color:#f6f6f6;border-radius:5px;
+-moz-border-radius:5px;height:22px;line-height:22px;width:144px;margin-left:3px;padding-left:6px;font-size:12px;color:#666;outline: none;_margin-top:-10px;*margin-top:-10px;}
