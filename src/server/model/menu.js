@@ -56,7 +56,11 @@ module.exports = class extends think.Model {
             return dataArr;
         };
         let menus = deeploop(0);
-        return { perms, menus };
+        let desktops = [];
+        data.forEach(el => {
+            el.desktop > 0 && desktops.push(el);
+        });
+        return { perms, menus, desktops };
     }
     /**
      * 设置缓存
@@ -68,6 +72,7 @@ module.exports = class extends think.Model {
         await think.cache('perms_' + adminId, routeData.perms);
         //设置菜单缓存
         await think.cache('menus_' + adminId, routeData.menus);
+        return routeData;
     }
     /**
      * 前台渲染递归

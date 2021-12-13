@@ -93,10 +93,12 @@ layui.define(['message', 'table', 'jquery', 'element', 'yaml', 'form', 'tab', 'm
 						compatible();
 					},
 					done: function() {
-						sideMenu.selectItem(param.menu.select);
-						pearAdmin.collaspe(param);
+						//sideMenu.selectItem(param.menu.select);
+						//pearAdmin.collaspe(param);
 					}
 				});
+				sideMenu.selectItem(param.menu.select);
+				pearAdmin.collaspe(param);
 			}
 
 			this.bodyRender = function(param) {

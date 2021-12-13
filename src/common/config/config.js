@@ -15,6 +15,7 @@ module.exports = {
         enable: true,
         interval: 1 * 60 * 1000, // 1 minutes
         max: 100,
+        prefixKey: 'server/login/captcha'
     },
     cache: {
         type: 'redis', //or 'file'

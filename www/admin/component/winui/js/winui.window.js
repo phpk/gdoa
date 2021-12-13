@@ -129,13 +129,14 @@ layui.define(['layer', 'winui'], function (exports) {
             //拉伸回调
             resizing: function (window) {
                 common.setWindowBody(window);
-            }
+            },
+            refresh : true
         });
 
         //重新获取window
         var windowDom = common.getWindow(options.id);
         if (((options.type || this.settings.type) == 2) && (options.refresh === undefined ? this.settings.refresh : options.refresh)) {
-            $(windowDom).find('.layui-layer-setwin').prepend('<a class="layui-layer-ico layui-layer-refresh"><i class="layui-icon" style="font-size:14px;left:17px;font-weight:600;">&#x1002;<i></a>');
+            $(windowDom).find('.layui-layer-setwin').prepend('<a class="layui-layer-ico layui-layer-refresh"><i class="layui-icon layui-icon-refresh" style="font-size:14px;left:17px;font-weight:600;"><i></a>');
             $(windowDom).find('.layui-layer-refresh').on('click', function (e) {
                 var $iframe = $(windowDom).find('iframe');
                 try {

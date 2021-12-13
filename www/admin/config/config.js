@@ -1,7 +1,19 @@
 const apiUrl = '/server/';
 const TOKEN_NAME = 'rttoken';
-const setToken = (str) => {
-    localStorage.setItem(TOKEN_NAME, str);
+const setToken = (res) => {
+    localStorage.setItem(TOKEN_NAME, res.token);
+    localStorage.setItem('_godocmsRoute', JSON.stringify(res.routeData))
+}
+const getRoute = () => {
+    let data = localStorage.getItem('_godocmsRoute');
+    if (data) {
+        return JSON.parse(data)
+    }
+    return false;
+}
+const loginOutToken = () => {
+    localStorage.removeItem("_godocmsRoute");
+    localStorage.removeItem(TOKEN_NAME);
 }
 const getToken = () => {
     return localStorage.getItem(TOKEN_NAME);

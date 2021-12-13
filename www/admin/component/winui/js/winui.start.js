@@ -22,8 +22,56 @@ layui.define(['jquery', 'element', 'layer', 'winui'], function (exports) {
 
     //渲染HTML
     Menu.prototype.render = function (callback) {
-        if (this.data === null) return;
+        if (!this.data) {
+            return;
+        };
         var html = '';
+        //console.log(this.data)
+        let leftHtml = '',
+            chtml = '';
+        this.data.forEach((d, i) => {
+            if (d.type < 2) {
+                leftHtml += `<div class="winui-start-item bottom startmenu" data-text="${d.title}" data-id="${i}""><i class="layui-icon ${d.icon}"></i></div>`;
+                //let chtml = '';
+                if (d.children && d.children.length > 0) {
+                    d.children.forEach(el => {
+                        if (el.type < 2) {
+                            let isParent = (el.children && el.children.length > 0) ? 'parent' : '';
+                            let display = i === 0 ? '' : 'style="display: none"';
+                            chtml += `<li class="layui-nav-item startareali_${i} ${isParent}" ${display}>`;
+                            chtml += `<a win-id="${el.id}" win-title="${el.title}" win-url="${el.href}" win-opentype="2" win-maxopen="-1"' win-icon="${el.icon}"><div class="winui-menu-icon"><i class="layui-icon ${el.icon} fa-fw"></i></div>`;
+                            chtml += `<span class="winui-menu-name">${el.title}</span></a>`;
+                            let chl = '', has = false;
+                            if (isParent !== '') {
+                                chl += '<dl class="layui-nav-child">';
+                                el.children.forEach(cl => {
+                                    if (cl.type < 2) {
+                                        has = true;
+                                        chl += `<dd class="layui-nav-item">`;
+                                        chl += `<a win-id="${cl.id}" win-title="${cl.title}" win-url="${cl.href}" win-opentype="2" win-maxopen="-1"' win-icon="${cl.icon}"><div class="winui-menu-icon"><i class="layui-icon ${cl.icon} fa-fw"></i></div>`;
+                                        chl += `<span class="winui-menu-name">${cl.title}</span></a></dd>`;
+                                    }
+                                })
+                                chl += '</dl>';
+                            }
+                            if (has) {
+                                chtml += chl;
+                            }
+                            chtml += '</li>';
+                        }
+                        
+                    })
+                }
+            }
+            
+        });
+        $('#leftTop').prepend(leftHtml);
+        $('.winui-menu').html(chtml);
+        //console.log(chtml)
+        if (chtml !== '') {
+            $("startareali_0").css("display",'');
+        }
+        /*
         $(this.data).each(function (index, item) {
             var id = (item.id == '' || item.id == undefined) ? '' : 'win-id="' + item.id + '"',
                 url = (item.pageURL == '' || item.pageURL == undefined) ? '' : 'win-url="' + item.pageURL + '"',
@@ -61,6 +109,8 @@ layui.define(['jquery', 'element', 'layer', 'winui'], function (exports) {
             html += '</li>';
         });
         $('.winui-menu').html(html);
+        */
+        
 
         //初始化layui的element（可以从新监听点击事件）
         layui.element.init('nav', 'winuimenu');
@@ -72,6 +122,11 @@ layui.define(['jquery', 'element', 'layer', 'winui'], function (exports) {
 
     //设置数据
     Menu.prototype.setData = function (callback) {
+        let obj = this,
+            res = getRoute();
+        obj.data = res.menus;
+        callback.call(obj);
+        /*
         var obj = this
             , currOptions = obj.options;
 
@@ -109,7 +164,7 @@ layui.define(['jquery', 'element', 'layer', 'winui'], function (exports) {
                     });
                 }
             }
-        });
+        });*/
     };
 
     //开始菜单项构造函数

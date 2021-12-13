@@ -35,7 +35,8 @@
         //    content: '<p style="padding:20px;">半成品仅供参观，多数设置本地存储，清除浏览器缓存即失效。<br/><br/>慢工出细活，如有需要的朋友请耐心等待。<br/><br/>望社区案例多多点赞，谢谢各位！<br/><br/>特色很多，如：<span style="color:#FF5722">桌面助手，主题设置</span>，大家慢慢参观</p>',
         //    area: ['400px', '400px']
         //});
-
+        // 判断是否显示锁屏（这个要放在最后执行）
+        
         winui.config({
             settings: layui.data('winui').settings || {
                 color: 32,
@@ -109,9 +110,10 @@
             renderBg: true //是否渲染背景图 （由于js是写在页面底部，所以不太推荐使用这个来渲染，背景图应写在css或者页面头部的时候就开始加载）
         }, function () {
             //初始化完毕回调
+            //this.render()
         });
     });
-
+    
     //开始菜单磁贴点击
     $('.winui-tile').on('click', function () {
         OpenWindow(this);
@@ -121,11 +123,22 @@
     $('.winui-start-item.winui-start-individuation').on('click', function () {
         winui.window.openTheme();
     });
-
+    $('.startmenu').on('click', e => {
+        //console.log($(e.target).parent())
+        let id = $(e.target).parent().attr('data-id');
+        //console.log(id)
+        $('.winui-menu li').each((i, d) => {
+            //console.log(d)
+            $(d).hide();
+        })
+        $('.startareali_' + id).each((i, d) => {
+            $(d).show();
+        })
+    })
     //打开窗口的方法（可自己根据需求来写）
     function OpenWindow(menuItem) {
         var $this = $(menuItem);
-
+        //console.log($this)
         var url = $this.attr('win-url');
         var title = $this.attr('win-title');
         var id = $this.attr('win-id');
@@ -135,8 +148,9 @@
             winui.window.openTheme();
             return;
         }
+        //console.log(url, title, id)
         if (!url || !title || !id) {
-            winui.window.msg('菜单配置错误（菜单链接、标题、id缺一不可）');
+            //winui.window.msg('菜单配置错误（菜单链接、标题、id缺一不可）');
             return;
         }
 
@@ -176,7 +190,7 @@
                     }
                     $.ajax({
                         type: 'get',
-                        url: 'views/error/' + page,
+                        url: '/admin/views/error/' + page,
                         async: false,
                         success: function (data) {
                             content = data;
@@ -206,14 +220,16 @@
             , maxOpen: maxOpen
             //, max: false
             //, min: false
-            //, refresh:true
+            , refresh:true
         });
     }
     let loginOut = () => {
         winui.window.confirm('确认注销吗?', { icon: 3, title: '提示' }, function (index) {
             //winui.window.msg('执行注销操作，返回登录界面');
             layer.close(index);
+            
             _get(layui, 'admin/loginOut', res => {
+                loginOutToken();
                 localStorage.setItem('lockscreen',true);
                 winui.lockScreen();
             })
@@ -225,48 +241,75 @@
         loginOut();
     });
 
-
-    // 判断是否显示锁屏（这个要放在最后执行）
     if (window.localStorage.getItem("lockscreen") == "true") {
         winui.lockScreen();
     }
+    
 
     //扩展桌面助手工具
-    winui.helper.addTool([{
-        tips: '注销登录',
-        icon: 'fa-power-off',
-        click: function (e) {
-            loginOut();
-        }
-    }, {
-        tips: '切换壁纸',
-        icon: 'fa-television',
-        click: function (e) {
-            //layer.msg('这个是自定义的工具栏', { zIndex: layer.zIndex });
-        }
-    }, {
+    winui.helper.addTool([
+    // {
+    //     tips: '切换壁纸',
+    //     icon: 'fa-television',
+    //     click: function (e) {
+    //         //layer.msg('这个是自定义的工具栏', { zIndex: layer.zIndex });
+
+    //     }
+    // },
+    {
         tips: '全屏',
         icon: 'fa-clone',
         click: function (e) {
             winui.fullScreen(document.documentElement);
         }
-    }, {
+    },
+    {
         tips: '工具',
         icon: 'fa-gavel',
         click: function (e) {
             //winui.fullScreen(document.documentElement);
-            layer.open({
+            winui.window.open({
+                id : 'godocmstools',
                 type: 2,
                 title: '工具集',
                 shade: 0.1,
                 moveOut: true,
                 area: ['80%', '80%'],
-                skin: 'winui-window',
                 anim: 1,
-                content: '/admin/tools/index.html'
+                content: '/admin/tools/index.html',
+                offset: 'auto'  //居中
+                , min: true  //显示最小化按钮
+                , max: true  //显示最大化按钮
+                , refresh: true    //显示刷新按钮
             });
         }
-    }]);
-
+    },
+    {
+        tips: '注销登录',
+        icon: 'fa-power-off',
+        click: function (e) {
+            loginOut();
+        }
+    }
+    ]);
+    layui.admin = {};
+    layui.admin.addTab = (id, title, content) => {
+        //console.log(id)
+        winui.window.open({
+            id: id.toString(),
+            type: 2,
+            title: title,
+            content: content,
+            shade: 0,
+            offset: 'auto',
+            area: ['90%', '90%'],
+            anim: 1,
+            moveOut : true,
+            maxmin: true,
+            refresh: true
+            //zIndex: layer.zIndex + 10
+            
+        });
+    }
     exports('index', {});
 });

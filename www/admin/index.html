@@ -116,6 +116,7 @@
 					layer.confirm('确定要退出系统吗', {icon: 3, title:'提示'}, function(index){
 		                layer.close(index);
 		                _get(layui, 'admin/loginOut', res => {
+							loginOutToken();
 							popup.success("退出成功",function(){
 								location.href = "/admin/login.html";
 							})

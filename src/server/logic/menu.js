@@ -37,6 +37,11 @@ module.exports = class extends think.Logic {
                 int: true,
                 aliasName : '菜单类型'
             },
+            desktop: {
+                required: true,
+                int: true,
+                aliasName: '桌面推荐'
+            },
             order_num: {
                 int: true,
                 aliasName: '菜单排序'
@@ -78,6 +83,11 @@ module.exports = class extends think.Logic {
                 required: true,
                 int: true,
                 aliasName: '菜单类型'
+            },
+            desktop: {
+                required: true,
+                int: true,
+                aliasName: '桌面推荐'
             },
             order_num: {
                 int: true,

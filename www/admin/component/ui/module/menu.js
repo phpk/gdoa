@@ -10,7 +10,7 @@ layui.define(['table', 'jquery', 'element'], function (exports) {
 	};
 
 	pearMenu.prototype.render = function (opt) {
-
+		
 		var option = {
 			elem: opt.elem,
 			async: opt.async,
@@ -26,13 +26,28 @@ layui.define(['table', 'jquery', 'element'], function (exports) {
 			height: opt.height,
 			theme: opt.theme,
 			data: opt.data ? opt.data : [],
+			//data: route.menus,
 			change: opt.change ? opt.change : function () { },
-			done: opt.done ? opt.done : function () { }
+			done: opt.done ? opt.done : function () {
+				return this;
+			}
 		}
+		renderMenu(option);
+		//window.setTimeout(function () { renderMenu(option); }, 500);
+		// option.done = () => {
+		// 	return renderMenu(option);
+		// }
+		/*
 		if (option.async) {
 			if (option.method === "GET") {
+				let route = getRoute();
+				option.data = route.menus;
+				console.log(option)
+				renderMenu(option);
+				
 				getData(option.url).then(function (data) {
 					option.data = data;
+					console.log(data)
 					renderMenu(option);
 				});
 			} else {
@@ -44,7 +59,7 @@ layui.define(['table', 'jquery', 'element'], function (exports) {
 		} else {
 			//renderMenu中需要调用done事件，done事件中需要menu对象，但是此时还未返回menu对象，做个延时提前返回对象
 			window.setTimeout(function () { renderMenu(option); }, 500);
-		}
+		}*/
 
 		// 处理高度
 		$("#" + opt.elem).height(option.height)
@@ -193,23 +208,23 @@ layui.define(['table', 'jquery', 'element'], function (exports) {
 	}
 
 	function getData(url) {
+		/*
 		var defer = $.Deferred();
-		// $.get(url + "?fresh=" + Math.random(), function(result) {
-		// 	defer.resolve(result)
-		// });
 		_get(layui, url, (res) => {
-			console.log(res)
+			//console.log(res)
 			defer.resolve(res)
 		})
-		// $.ajax({
-		// 	url: url + "?fresh=" + Math.random(),
-		// 	method: "get",
-		// 	headers: getHeader(),
-		// 	success: res => {
-		// 		defer.resolve(res.data)
-		// 	}
-		// })
 		return defer.promise();
+		*/
+		//_get(layui, url, (res) => {
+		//	console.log(res)
+			//defer.resolve(res)
+		//})
+		//var defer = $.Deferred();
+		let route = getRoute();
+		//defer.resolve(route.menus);
+		//return defer.promise();
+		return route.menus;
 	}
 
 	function postData(url) {
@@ -224,6 +239,12 @@ layui.define(['table', 'jquery', 'element'], function (exports) {
 		if (option.parseData != false) {
 			option.parseData(option.data);
 		}
+		let route = getRoute();
+		if (!route) {
+			location.href = '/admin/login.html';
+		}
+		option.data = route.menus;
+		//console.log(route)
 		if (option.data.length > 0) {
 			if (option.control != false) {
 				createMenuAndControl(option);
@@ -233,6 +254,7 @@ layui.define(['table', 'jquery', 'element'], function (exports) {
 		}
 		element.init();
 		downShow(option);
+		//selectItem(0);
 		option.done();
 	}
 
@@ -283,6 +305,7 @@ layui.define(['table', 'jquery', 'element'], function (exports) {
 		// 开 启 同 步 操 作
 		var index = 0;
 		var controlItemPe = '<dl class="layui-nav-child">';
+		//console.log(option.data)
 		$.each(option.data, function (i, item) {
 			var menuItem = '';
 			var controlItem = '';

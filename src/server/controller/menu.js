@@ -104,6 +104,7 @@ module.exports = class extends Base {
      * @apiParam  {String} route 后端路由
      * @apiParam  {String} icon 菜单icon
      * @apiParam  {Number} type 类型 0 1 2 3
+     * @apiParam  {Number} desktop 桌面推荐 0 1
      * @apiParam  {Number} order_num 排序
      * @apiSuccess (200) {type} name description
      *
@@ -144,6 +145,7 @@ module.exports = class extends Base {
      * @apiParam  {String} route 后端路由
      * @apiParam  {String} icon 菜单icon
      * @apiParam  {Number} type 类型 0 1 2 3
+     * @apiParam  {Number} desktop 桌面推荐 0 1
      * @apiParam  {Number} order_num 排序
      * 
      * @apiSuccess (200) {type} name description

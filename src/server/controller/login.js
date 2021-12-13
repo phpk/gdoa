@@ -81,7 +81,7 @@ module.exports = class extends think.Controller {
         //只允许一个帐号在一个端下登录
         await this.cache('admin_' + adminId, md5Salt);
         //设置路由缓存
-        await this.model('menu').cacheData(adminId);
+        let routeData = await this.model('menu').cacheData(adminId);
         //console.log(routeData)
         //jwt校验用
         await this.session('salt', md5Salt);
@@ -100,7 +100,7 @@ module.exports = class extends think.Controller {
             addtime: this.now()
         };
         await think.model('admin_oplog').add(logData);
-        return this.success(token);
+        return this.success({ token, routeData });
     }
     /**
      * 

@@ -563,7 +563,7 @@ body {
     }
 
     .winui-start.winui-start-size-sm {
-        width: 640px;
+        width: 332px;
     }
 
         .winui-start.winui-start-size-sm .winui-start-right {
@@ -694,6 +694,7 @@ body {
 .winui-start-center {
     width: 260px;
     height: 100%;
+    padding-top: 1rem;
     position: relative;
 }
 
@@ -1026,6 +1027,11 @@ body {
 
         .winui-window .layui-layer-setwin .layui-layer-min:hover cite {
             background-color: #fff;
+        }
+
+        .winui-window .layui-layer-setwin  .layui-layer-refresh  .layui-icon{
+            font-size: 26px;
+            top:-1px;
         }
 
     .winui-window .layui-layer-ico {

@@ -151,7 +151,7 @@
                 if (options.renderBg) {
                     othis.renderBg();
                 }
-                console.log(options)
+                //console.log(options)
                 //播放声音
                 if (options.audioPlay && !layui.sessionData('winuiSession').audio) {
                 
@@ -631,6 +631,10 @@
                                     window.localStorage.setItem("godocms_username", postData.username);
                                     window.localStorage.setItem("godocms_password", postData.password);
                                     window.localStorage.setItem("lockscreen", false);
+                                    //console.log(winui)
+                                    winui.desktop.data = res.routeData.desktops;
+                                    winui.desktop.init()
+                                    //winui.start.init()
                                 }, err => {
                                     if(err.code == 201) {
                                         changeImg();

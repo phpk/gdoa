@@ -21,22 +21,31 @@ layui.define(['jquery', 'layer', 'winui'], function (exports) {
 
     //渲染HTML
     Desktop.prototype.render = function (callback) {
-        if (this.data === null) return;
+        if (!this.data) {
+            let res = getRoute();
+            this.data = res.desktops;
+        };
         var html = '';
+        //console.log($(this.data))
         $(this.data).each(function (index, item) {
+            //console.log(item)
             var id = (item.id == '' || item.id == undefined) ? '' : 'win-id="' + item.id + '"',
-                url = (item.pageURL == '' || item.pageURL == undefined) ? '' : 'win-url="' + item.pageURL + '"',
+                url = (item.href == '' || item.href == undefined) ? '' : 'win-url="' + item.href + '"',
                 title = (item.title == '' || item.title == undefined) ? '' : 'win-title="' + item.title + '"',
-                opentype = (item.openType == '' || item.openType == undefined) ? '' : 'win-opentype="' + item.openType + '"',
-                maxOpen = (item.maxOpen == '' || item.maxOpen == undefined) ? '' : 'win-maxOpen="' + item.maxOpen + '"',
+                //opentype = (item.openType == '' || item.openType == undefined) ? '' : 'win-opentype="' + item.openType + '"',
+                opentype = 'win-opentype="2"',
+                //maxOpen = (item.maxOpen == '' || item.maxOpen == undefined) ? '' : 'win-maxOpen="' + item.maxOpen + '"',
+                maxOpen = 'win-maxOpen="-1"',
                 //icon的算法存在纰漏，但出现错误几率较小
-                isFaIcon = (item.icon.indexOf('fa-') != -1 && item.icon.indexOf('.') == -1),
-                icon = isFaIcon ? '<i class="fa ' + item.icon + ' fa-fw"></i>' : '<img src="' + item.icon + '" />';
+                //isFaIcon = (item.icon.indexOf('fa-') != -1 && item.icon.indexOf('.') == -1),
+                //icon = isFaIcon ? '<i class="fa ' + item.icon + ' fa-fw"></i>' : '<img src="' + item.icon + '" />'
+                icon = '<i class="layui-icon ' + item.icon + ' fa-fw"></i>';
             html += '<div class="winui-desktop-item" ' + id + ' ' + url + ' ' + title + ' ' + opentype + ' ' + maxOpen + '>';
-            html += '<div class="winui-icon ' + (isFaIcon ? 'winui-icon-font' : 'winui-icon-img') + '">';
+            //html += '<div class="winui-icon ' + (isFaIcon ? 'winui-icon-font' : 'winui-icon-img') + '">';
+            html += '<div class="winui-icon winui-icon-font">';
             html += icon;
             html += '</div>';
-            html += '<p>' + item.name + '</p>';
+            html += '<p>' + item.title + '</p>';
             html += '</div>';
         });
         $('.winui-desktop').html(html);
@@ -49,9 +58,17 @@ layui.define(['jquery', 'layer', 'winui'], function (exports) {
 
     //设置数据
     Desktop.prototype.setData = function (callback) {
-        var obj = this
+        let obj = this,
+            res = getRoute();
+        // if (!res) {
+        //     winui.lockScreen();
+        // }
+        obj.data = res.desktops;
+        callback.call(obj);
+        /*var obj = this
             , currOptions = obj.options;
-
+        
+        
         if (!currOptions.url || !currOptions.method)
             return
         $.ajax({
@@ -86,7 +103,7 @@ layui.define(['jquery', 'layer', 'winui'], function (exports) {
                     });
                 }
             }
-        });
+        });*/
     };
 
     //桌面应用构造函数

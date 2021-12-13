@@ -1,9 +1,5 @@
 ﻿/**
-
- @Name：主题设置
- @Author：Leo
- @License：MIT
-    
+ @Name：主题设置 
  */
 layui.use(['layer', 'form'], function (exports) {
     var $ = layui.jquery, form = layui.form, unfinished = '暂未实现';
