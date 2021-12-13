@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script type="text/javascript">
+        function S4() {
+           return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
+        }
+        function guid() {
+           return (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4());
+        }
+        var myID = "static" + guid();
+        console.log(myID);
+    </script>
+</body>
+</html>
