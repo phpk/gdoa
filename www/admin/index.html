@@ -37,6 +37,7 @@
 					<li class="layui-nav-item layui-hide-xs"><a href="#" class="layui-icon layui-icon-util" id="toolsTip"></a></li>
 					<!-- 主 题 配 置 -->
 					<li class="layui-nav-item setting"><a href="#" class="layui-icon layui-icon-template"></a></li>
+					<li class="layui-nav-item layui-hide-xs"><a href="#" class="layui-icon layui-icon-release" id="changeTheme"></a></li>
 					<li class="layui-nav-item layui-hide-xs logout"><a href="#" class="layui-icon layui-icon-logout" id="loginout"></a></li>
 					<!--li class="layui-nav-item layui-hide-xs message"></li-->
 					<!--li class="layui-nav-item user">
@@ -110,6 +111,9 @@
 						anim: 1,
 						content: '/admin/tools/index.html'
 					});
+				});
+				$('#changeTheme').click(e => {
+					location.href = "win.html";
 				})
 				// 登出逻辑 
 				admin.logout(function(){

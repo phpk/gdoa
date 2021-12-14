@@ -12,10 +12,10 @@ module.exports = {
         enable: true
     },
     ratelimit: {
-        enable: true,
+        enable: false,
         interval: 1 * 60 * 1000, // 1 minutes
         max: 100,
-        prefixKey: 'server/login/captcha'
+        prefixKey: 'login/captcha'
     },
     cache: {
         type: 'redis', //or 'file'

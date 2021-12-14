@@ -38,17 +38,11 @@
   <script src="ganttZoom.js"></script>
   <script src="ganttGridEditor.js"></script>
   <script src="ganttMaster.js"></script>  
-
-
-  <!--<script src="libs/profiling.js"></script>-->
-  <!--<script type="text/javascript" src="ganttTestSuite.js"></script>-->
+  <script src="showtips.js"></script>  
+  <script src="/admin/config/config.js"></script>
 </head>
 <body style="background-color: #fff;">
 
-
-<!--div id="ndo" style="position:absolute;right:5px;top:5px;width:378px;padding:5px;background-color: #FFF5E6; border:1px solid #F9A22F; font-size:12px" class="noprint">
-  This Gantt editor is free thanks to <a href="http://twproject.com" target="_blank">Twproject</a> where it can be used on a complete and flexible project management solution.<br> Get your projects done! Give <a href="http://twproject.com" target="_blank">Twproject a try now</a>.
-</div-->
 <div id="workSpace" style="padding:0px; overflow-y:auto; overflow-x:hidden;border:1px solid #e5e5e5;position:relative;margin:0 5px"></div>
 
 <style>
@@ -74,13 +68,37 @@
     margin-left: 10px;
   }
 
-</style>
+  .show_msg{
+				width:100%;
+				height:35px;
+				text-align:center;
+				position:fixed;
+				left: 0;
+				z-index: 999;
+			}
+			.show_span{
+					display: inline-block;
+					height: 35px;
+					padding: 0 15px;
+					line-height: 35px;
+					background:rgba(0,0,0,0.8);
+					border-radius: 50px;
+					color: #fff;
+					font-size: 1em;
+			}
 
-<form id="gimmeBack" style="display:none;" action="../gimmeBack.jsp" method="post" target="_blank"><input type="hidden" name="prj" id="gimBaPrj"></form>
+</style>
 
 <script type="text/javascript">
 
 var ge;
+let req = _req();
+let gantId = req.id;
+$.ajaxSetup({
+        xhrFields: {
+            withCredentials: true
+        }
+});
 $(function() {
   var canWrite=true; //this is the default for test purposes
 
@@ -95,23 +113,35 @@ $(function() {
 
   //in order to force compute the best-fitting zoom level
   delete ge.gantt.zoom;
+  if(gantId) {
+    $.ajax({
+        type: "get",
+        url: apiUrl + 'gant/editBefore?id=' + gantId,
+        headers: getHeader(),
+        success: (res) => {
+            console.log(res)
+            ge.loadProject(JSON.parse(res.data.content));
+            ge.checkpoint(); //empty the undo stack
+            initializeHistoryManagement(ge.tasks[0].id);
+        }
+    });
+  }else{
+    var project=loadFromLocalStorage();
+    if (!project.canWrite)
+      $(".ganttButtonBar button.requireWrite").attr("disabled","true");
 
-  var project=loadFromLocalStorage();
-
-  if (!project.canWrite)
-    $(".ganttButtonBar button.requireWrite").attr("disabled","true");
-
-  ge.loadProject(project);
-  ge.checkpoint(); //empty the undo stack
-
-  initializeHistoryManagement(ge.tasks[0].id);
+    ge.loadProject(project);
+    ge.checkpoint(); //empty the undo stack
+    initializeHistoryManagement(ge.tasks[0].id);
+  }
+  
 });
 
 
 
 function getDemoProject(){
   //console.debug("getDemoProject")
-ret= {
+  let ret= {
     "tasks": [{
         "id": -1,
         "name": "XXX项目",
@@ -239,8 +269,56 @@ function saveGanttOnServer() {
   //saveInLocalStorage();
 
   var prj = ge.saveProject();
+  //console.log(prj)
+  let title;
+  if(prj && prj.tasks && prj.tasks[0] && prj.tasks[0].name) {
+    title = prj.tasks[0].name;
+  }else{
+    //console.log(layui.modules.layer)
+    showMsg('内容不能为空');
+    return;
+  }
+  //console.log(title)
+  let saveData = {
+    title,
+    content : JSON.stringify(prj, null, '\t')
+  }
+  
+  if(!gantId) {
+    $.ajax({
+        type: "post",
+        url: apiUrl + 'gant/add',
+        headers: getHeader(),
+        data : saveData,
+        success: (res) => {
+            //console.log(res)
+            if (res.code === 0) {
+                showMsg('保存成功')
+                gantId = res.data;
+            } else {
+                showMsg('保存失败')
+            }
+        }
+    });
+  }else{
+    saveData.id = gantId;
+    $.ajax({
+        type: "post",
+        url: apiUrl + 'gant/edit',
+        headers: getHeader(),
+        data : saveData,
+        success: (res) => {
+            //console.log(res)
+            if (res.code === 0) {
+                showMsg('保存成功')
+            } else {
+                showMsg('保存失败')
+            }
+        }
+    });
+  }
 
-  download(JSON.stringify(prj, null, '\t'), "MyProject.json", "application/json");
+  //download(JSON.stringify(prj, null, '\t'), "MyProject.json", "application/json");
 
   /*
 
@@ -315,15 +393,6 @@ function clearGantt() {
   ge.reset();
 }
 
-//-------------------------------------------  Get project file as JSON (used for migrate project from gantt to Teamwork) ------------------------------------------------------
-function getFile() {
-  $("#gimBaPrj").val(JSON.stringify(ge.saveProject()));
-  $("#gimmeBack").submit();
-  $("#gimBaPrj").val("");
-
-  /*  var uriContent = "data:text/html;charset=utf-8," + encodeURIComponent(JSON.stringify(prj));
-   neww=window.open(uriContent,"dl");*/
-}
 
 
 function loadFromLocalStorage() {
@@ -595,6 +664,7 @@ function showBaselineInfo (event,element){
     $(element).hideBalloon();
   })
 }
+
 
 </script>
 

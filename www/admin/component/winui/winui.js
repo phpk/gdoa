@@ -632,6 +632,13 @@
                                 _post(layui, 'login/do', postData, res => {
                                     layer.close(layerindex);
                                     //console.log(res)
+                                    let au = document.createElement("audio");
+                                    au.preload = "auto";
+                                    //au.autoplay = "autoplay";
+                                    au.src = './component/winui/audio/login.mp3';
+                                    //au.muted = true;
+                                    au.play();
+
                                     setToken(res);
                                     window.localStorage.setItem("godocms_username", postData.username);
                                     window.localStorage.setItem("godocms_password", postData.password);

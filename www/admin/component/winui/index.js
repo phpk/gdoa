@@ -245,6 +245,10 @@
             layer.close(index);
             
             _get(layui, 'admin/loginOut', res => {
+                let au = document.createElement("audio");
+                au.preload = "auto";
+                au.src = './component/winui/audio/out.mp3';
+                au.play();
                 loginOutToken();
                 localStorage.setItem('lockscreen',true);
                 winui.lockScreen();
@@ -361,6 +365,14 @@
                 , max: true  //显示最大化按钮
                 , refresh: true    //显示刷新按钮
             });
+        }
+    },
+    {
+        tips: '切换风格',
+        icon: 'fa-paper-plane-o',
+        click: function (e) {
+            //loginOut();
+            location.href = 'index.html';
         }
     },
     {
