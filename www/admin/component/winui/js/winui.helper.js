@@ -382,7 +382,13 @@ layui.define(['jquery', 'layer', 'winui'], function (exports) {
         that.dblHideSet();
         async();
     }
-
+    helper.isSupportWebp = function () {
+        try {
+            return document.createElement('canvas').toDataURL('image/webp', 0.5).indexOf('data:image/webp') === 0;
+        } catch (err) {
+            return false;
+        }
+    }
     //自动创建
     helper.creat();
 

@@ -44,11 +44,11 @@ layui.use(['layer', 'form'], function (exports) {
         input.on('change', function () {
             var src = $(this).val();
             if (src) {
-                layer.msg('选择了路径【' + src + '】下的图片，返回一张性感的Girl给你')
+                layer.msg('选择了路径【' + src + '】下的图片')
                 //改变预览背景
-                $('.background-preview').css('background-image', 'url(images/sexy_girl.jpg)');
+                $('.background-preview').css('background-image', 'url('+src+')');
                 //改变父页面背景
-                winui.resetBg('images/sexy_girl.jpg');
+                winui.resetBg(src);
 
                 $(this).val('').off('change');
             }

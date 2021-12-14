@@ -485,7 +485,7 @@ window.onload = function () {
 		 	console.count();
 	 		timekeeper = setTimeout(function () {
 		 		SetTime(obj);
-		 	}, 1000*60);
+		 	}, 1000);
 	 	}
 	}
 

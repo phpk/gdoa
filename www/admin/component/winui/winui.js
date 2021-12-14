@@ -79,9 +79,6 @@
             this.settings = layui.data('winui').settings || {
                 color: 31,
                 taskbarMode: 'bottom',
-                bgSrc: this.path + 'images/bg_01.jpg',
-                lockBgSrc: this.path + 'images/bg_01.jpg',
-                audioSrc: this.path + 'audio/startup',
                 startSize: 'sm'
             }; //设置
             this.configs = {}; //配置
@@ -152,9 +149,15 @@
                     othis.renderBg();
                 }
                 //console.log(options)
-                //播放声音
-                if (options.audioPlay && !layui.sessionData('winuiSession').audio) {
+                //console.log(settings.audioSrc)
+                /* 播放提示音 */
                 
+                //播放声音
+                //if (options.audioPlay){
+                //if (options.audioPlay && !layui.sessionData('winuiSession').audio) {
+                    
+                    
+                    /*
                     var audio = document.createElement("audio"), format = undefined;
                     audio.onended = function () {
                         audio = null;
@@ -165,12 +168,13 @@
                     else if (audio.canPlayType("audio/ogg"))
                         format = ".wav";
                     if (format) {
-                        audio.src = settings.audioSrc + format;
+                        //audio.src = settings.audioSrc + format;
+                        audio.src = '/admin/component/winui/audio/startup.mp3'
                         audio.play();
                         //播放过后 刷新页面不再播放
                         layui.sessionData('winuiSession', { key: 'audio', value: true });
-                    }
-                }
+                    }*/
+                //}
                 //任务栏模式渲染
                 othis.renderTaskbar();
                 //开始菜单尺寸设置
@@ -331,7 +335,8 @@
 
             //渲染背景图
             , renderBg: function () {
-                var bgSrc = this.settings.bgSrc;
+                let bgSrc = this.settings.bgSrc;
+                //let bgSrc = '/admin/component/winui/images/bg/img1.webp'
                 if (bgSrc)
                     $('body').css('background-image', 'url(' + bgSrc + ')');
             }

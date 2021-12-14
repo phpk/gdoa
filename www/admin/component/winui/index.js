@@ -32,86 +32,113 @@
         //    id: '公告',
         //    type: 1,
         //    title: '演示公告',
-        //    content: '<p style="padding:20px;">半成品仅供参观，多数设置本地存储，清除浏览器缓存即失效。<br/><br/>慢工出细活，如有需要的朋友请耐心等待。<br/><br/>望社区案例多多点赞，谢谢各位！<br/><br/>特色很多，如：<span style="color:#FF5722">桌面助手，主题设置</span>，大家慢慢参观</p>',
+        //    content: '<p style="padding:20px;"></p>',
         //    area: ['400px', '400px']
         //});
         // 判断是否显示锁屏（这个要放在最后执行）
-        
-        winui.config({
-            settings: layui.data('winui').settings || {
-                color: 32,
-                taskbarMode: 'bottom',
-                startSize: 'sm',
-                bgSrc: '/admin/component/winui/images/bg_01.jpg',
-                lockBgSrc: '/admin/component/winui/images/bg_04.jpg'
-            },  //如果本地配置为空则给默认值
-            desktop: {
-                options: {},    //可以为{}  默认 请求 json/desktopmenu.json
-                done: function (desktopApp) {
-                    //desktopApp.ondblclick(function (id, elem) {
-                    desktopApp.onclick(function (id, elem) {
-                        OpenWindow(elem);
-                    });
-                    desktopApp.contextmenu({
-                        item: ["打开", "删除"],
-                        item1: function (id, elem) {
+        let powerOnBox = document.querySelector(".powerOnBox");
+        powerOnBtn.addEventListener("mousedown", _ => {
+            let au = document.createElement("audio");
+            au.preload = "auto";
+            //au.autoplay = "autoplay";
+            au.src = './component/winui/audio/startup.mp3';
+            //au.muted = true;
+            au.play();
+            setTimeout(() => {
+                powerOnBox.remove();
+            }, 2000);
+            
+            winui.config({
+                settings: layui.data('winui').settings || {
+                    color: 32,
+                    taskbarMode: 'bottom',
+                    startSize: 'sm',
+                    bgSrc: '/admin/component/winui/images/bg/img1.webp',
+                    lockBgSrc: '/admin/component/winui/images/bg/img2.webp'
+                },  //如果本地配置为空则给默认值
+                desktop: {
+                    options: {},    //可以为{}  默认 请求 json/desktopmenu.json
+                    done: function (desktopApp) {
+                        //desktopApp.ondblclick(function (id, elem) {
+                        desktopApp.onclick(function (id, elem) {
                             OpenWindow(elem);
-                        },
-                        item2: function (id, elem, events) {
-                            //winui.window.msg('删除回调');
-                            $(elem).remove();
-                            //从新排列桌面app
-                            events.reLocaApp();
-                        },
-                        item3: function (id, elem, events) {
-                            winui.window.msg('自定义回调');
-                        }
-                    });
-                }
-            },
-            menu: {
-                options: {
-                    url: '/admin/component/winui/json/allmenu.json',
-                    method: 'get',
-                    data: { nihaoa: '' }
+                        });
+                        desktopApp.contextmenu({
+                            item: ["打开", "删除"],
+                            item1: function (id, elem) {
+                                OpenWindow(elem);
+                            },
+                            item2: function (id, elem, events) {
+                                //winui.window.msg('删除回调');
+                                $(elem).remove();
+                                //从新排列桌面app
+                                events.reLocaApp();
+                            },
+                            item3: function (id, elem, events) {
+                                winui.window.msg('自定义回调');
+                            }
+                        });
+                    }
                 },
-                done: function (menuItem) {
-                    //监听开始菜单点击
-                    menuItem.onclick(function (elem) {
-                        OpenWindow(elem);
-                    });
-                    menuItem.contextmenu({
-                        item: [{
-                            icon: 'fa-cog'
-                            , text: '设置'
-                        }, {
-                            icon: 'fa-close'
-                            , text: '关闭'
-                        }, {
-                            icon: 'fa-qq'
-                            , text: '右键菜单'
-                        }],
-                        item1: function (id, elem) {
-                            //设置回调
-                            console.log(id);
-                            console.log(elem);
-                        },
-                        item2: function (id, elem) {
-                            //关闭回调
-                        },
-                        item3: function (id, elem) {
-                            winui.window.msg('自定义回调');
-                        }
-                    });
+                menu: {
+                    options: {
+                        url: '/admin/component/winui/json/allmenu.json',
+                        method: 'get',
+                        data: { nihaoa: '' }
+                    },
+                    done: function (menuItem) {
+                        //监听开始菜单点击
+                        menuItem.onclick(function (elem) {
+                            OpenWindow(elem);
+                        });
+                        menuItem.contextmenu({
+                            item: [{
+                                icon: 'fa-cog'
+                                , text: '设置'
+                            }, {
+                                icon: 'fa-close'
+                                , text: '关闭'
+                            }, {
+                                icon: 'fa-qq'
+                                , text: '右键菜单'
+                            }],
+                            item1: function (id, elem) {
+                                //设置回调
+                                console.log(id);
+                                console.log(elem);
+                            },
+                            item2: function (id, elem) {
+                                //关闭回调
+                            },
+                            item3: function (id, elem) {
+                                winui.window.msg('自定义回调');
+                            }
+                        });
+                    }
                 }
-            }
-        }).init({
-            audioPlay: false, //是否播放音乐（开机音乐只会播放一次，第二次播放需要关闭当前页面从新打开，刷新无用）
-            renderBg: true //是否渲染背景图 （由于js是写在页面底部，所以不太推荐使用这个来渲染，背景图应写在css或者页面头部的时候就开始加载）
-        }, function () {
-            //初始化完毕回调
-            //this.render()
-        });
+            }).init({
+                audioPlay: true, //是否播放音乐（开机音乐只会播放一次，第二次播放需要关闭当前页面从新打开，刷新无用）
+                renderBg: true //是否渲染背景图 （由于js是写在页面底部，所以不太推荐使用这个来渲染，背景图应写在css或者页面头部的时候就开始加载）
+            }, function () {
+                //初始化完毕回调
+                //this.render()
+            });
+
+            $('.startmenu').on('click', e => {
+                //console.log($(e.target).parent())
+                let id = $(e.target).parent().attr('data-id');
+                //console.log(id)
+                $('.winui-menu li').each((i, d) => {
+                    //console.log(d)
+                    $(d).hide();
+                })
+                $('.startareali_' + id).each((i, d) => {
+                    $(d).show();
+                })
+            })
+            
+        })
+        
     });
     
     //开始菜单磁贴点击
@@ -123,18 +150,7 @@
     $('.winui-start-item.winui-start-individuation').on('click', function () {
         winui.window.openTheme();
     });
-    $('.startmenu').on('click', e => {
-        //console.log($(e.target).parent())
-        let id = $(e.target).parent().attr('data-id');
-        //console.log(id)
-        $('.winui-menu li').each((i, d) => {
-            //console.log(d)
-            $(d).hide();
-        })
-        $('.startareali_' + id).each((i, d) => {
-            $(d).show();
-        })
-    })
+    
     //打开窗口的方法（可自己根据需求来写）
     function OpenWindow(menuItem) {
         var $this = $(menuItem);
@@ -248,14 +264,16 @@
 
     //扩展桌面助手工具
     winui.helper.addTool([
-    // {
-    //     tips: '切换壁纸',
-    //     icon: 'fa-television',
-    //     click: function (e) {
-    //         //layer.msg('这个是自定义的工具栏', { zIndex: layer.zIndex });
-
-    //     }
-    // },
+    {
+        tips: '切换壁纸',
+        icon: 'fa-television',
+        click: function (e) {
+            //layer.msg('这个是自定义的工具栏', { zIndex: layer.zIndex });
+            let id = parseInt(Math.random() * 21 + 1, 10);
+            let bgSrc = '/admin/component/winui/images/bg/img'+id+'.webp';
+            winui.resetBg(bgSrc);
+        }
+    },
     {
         tips: '全屏',
         icon: 'fa-clone',
