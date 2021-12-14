@@ -272,7 +272,7 @@
                 id : 'godocmstools',
                 type: 2,
                 title: '工具集',
-                shade: 0.1,
+                shade: 0,
                 moveOut: true,
                 area: ['80%', '80%'],
                 anim: 1,
@@ -293,11 +293,51 @@
                 id : 'godocmsclocks',
                 type: 2,
                 title: '番茄时钟',
-                shade: 0.1,
+                shade: 0,
                 moveOut: true,
                 area: ['80%', '80%'],
                 anim: 1,
                 content: '/admin/tools/clock/index.html',
+                offset: 'auto'  //居中
+                , min: true  //显示最小化按钮
+                , max: true  //显示最大化按钮
+                , refresh: true    //显示刷新按钮
+            });
+        }
+    },
+    {
+        tips: '计算器',
+        icon: 'fa-calculator',
+        click: function (e) {
+            winui.window.open({
+                id : 'godocmscalculater',
+                type: 2,
+                title: '计算器',
+                shade: 0,
+                moveOut: true,
+                area: ['380px', '600px'],
+                anim: 1,
+                content: '/admin/tools/calculater/index.html',
+                offset: 'auto'  //居中
+                , min: true  //显示最小化按钮
+                , max: true  //显示最大化按钮
+                , refresh: true    //显示刷新按钮
+            });
+        }
+    },
+    {
+        tips: '日历',
+        icon: 'fa-calendar',
+        click: function (e) {
+            winui.window.open({
+                id : 'godocmsrilis',
+                type: 2,
+                title: '日历',
+                shade: 0,
+                moveOut: true,
+                area: ['750px', '520px'],
+                anim: 1,
+                content: '/admin/tools/rili/index.html',
                 offset: 'auto'  //居中
                 , min: true  //显示最小化按钮
                 , max: true  //显示最大化按钮
