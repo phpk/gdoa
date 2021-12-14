@@ -196,11 +196,12 @@
 					layer.open({
 						type: 2,
 						title: '新增' + flowType[id],
-						shade: 0.1,
+						shade: 0,
 						offset: 'rt',
 						area: ['95%', '100%'],
 						anim: 1,
 						maxmin: true,
+						moveOut : true,
 						content: flowhtml[id],
 						cancel: function(index, layero){ 
 							table.reload('flow-table');
@@ -215,11 +216,12 @@
 					layer.open({
 						type: 2,
 						title: '修改' + flowType[type],
-						shade: 0.1,
+						shade: 0,
 						offset: 'rt',
 						area: ['95%', '100%'],
 						anim: 1,
 						maxmin: true,
+						moveOut : true,
 						content: flowhtml[type] + '?id=' + obj.data.id,
 						cancel: function(index, layero){ 
 							table.reload('flow-table');
