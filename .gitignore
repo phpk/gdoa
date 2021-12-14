@@ -12,5 +12,9 @@ www/source/excel/.github
 www/source/excel/.vs
 www/source/flow/node_modules
 www/source/flow/dist
+www/source/svg/node_modules
+www/source/svg/dist
+www/source/draw/node_modules
+www/source/draw/dist
 app/
 todo.md
