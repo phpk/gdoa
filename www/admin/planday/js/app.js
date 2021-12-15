@@ -368,8 +368,17 @@
         }
         console.log(schedule)
         cal.createSchedules([schedule]);
-
         refreshScheduleVisibility();
+        //console.log(window)
+        _ajax('planday/add','post',schedule,
+            res => {
+                console.log(res)
+        })
+        
+        
+        
+        
+
     }
 
     function onChangeCalendars(e) {

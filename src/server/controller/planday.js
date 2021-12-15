@@ -17,8 +17,11 @@ module.exports = class extends Base {
     async addAction() {
         let post = this.post();
         let data = {
+            id: post.id,
             title: post.title,
-            content: post.content,
+            content: JSON.stringify(post),
+            start: post.start / 1000,
+            end : post.end/1000,
             user_id: this.adminId,
             add_time: this.now(),
             update_time: this.now()

@@ -1,0 +1,180 @@
+.bbit-window {
+	Z-INDEX: 999; POSITION: absolute; ZOOM: 1; DISPLAY: block; TOP: 0px; LEFT: 0px
+}
+.bbit-window .bbit-resizable-handle {
+	FILTER: alpha(opacity=0); opacity: 0; -moz-opacity: 0
+}
+.bbit-window-proxy {
+	Z-INDEX: 12000; BORDER-BOTTOM: 1px solid; POSITION: absolute; FILTER: alpha(opacity=50); BORDER-LEFT: 1px solid; DISPLAY: none; OVERFLOW: hidden; BORDER-TOP: 1px solid; TOP: 0px; BORDER-RIGHT: 1px solid; LEFT: 0px; opacity: .5; -moz-opacity: .5
+}
+.bbit-window-header {
+	ZOOM: 1; OVERFLOW: hidden
+}
+.bbit-window-bwrap {
+	Z-INDEX: 1; POSITION: relative; ZOOM: 1; TOP: 0px; LEFT: 0px
+}
+.bbit-window-tl .bbit-window-header {
+	PADDING-BOTTOM: 4px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; PADDING-TOP: 5px
+}
+.bbit-window-header-text {
+	PADDING-LEFT: 20px; BACKGROUND: url(../images/app-form.png) no-repeat 3px center; COLOR: #15428b; FONT-WEIGHT: bold
+}
+.bbit-window-tc {
+	ZOOM: 1; BACKGROUND: repeat-x 0px 0px; OVERFLOW: hidden
+}
+.bbit-window-tl {
+	Z-INDEX: 1; POSITION: relative; PADDING-LEFT: 6px; ZOOM: 1; BACKGROUND: no-repeat 0px 0px
+}
+.bbit-window-tr {
+	PADDING-RIGHT: 6px; BACKGROUND: no-repeat right 0px
+}
+.bbit-window-bc {
+	ZOOM: 1; BACKGROUND: repeat-x 0px bottom
+}
+.bbit-window-bc .bbit-window-footer {
+	PADDING-BOTTOM: 6px; LINE-HEIGHT: 0; ZOOM: 1; FONT-SIZE: 0px
+}
+.bbit-window-bl {
+	PADDING-LEFT: 6px; ZOOM: 1; BACKGROUND: no-repeat 0px bottom
+}
+.bbit-window-br {
+	PADDING-RIGHT: 6px; ZOOM: 1; BACKGROUND: no-repeat right bottom
+}
+.bbit-window-mc {
+	BORDER-BOTTOM: 1px solid; BORDER-LEFT: 1px solid; PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; BORDER-TOP: 1px solid; BORDER-RIGHT: 1px solid; PADDING-TOP: 0px
+}
+.bbit-window-ml {
+	PADDING-LEFT: 6px; ZOOM: 1; BACKGROUND: repeat-y 0px 0px
+}
+.bbit-window-mr {
+	PADDING-RIGHT: 6px; ZOOM: 1; BACKGROUND: repeat-y right 0px
+}
+.bbit-window-body {
+	OVERFLOW: hidden
+}
+.bbit-window-bwrap {
+	OVERFLOW: hidden
+}
+.bbit-window-maximized .bbit-window-bl {
+	PADDING-BOTTOM: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; PADDING-TOP: 0px
+}
+.bbit-window-maximized .bbit-window-br {
+	PADDING-BOTTOM: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; PADDING-TOP: 0px
+}
+.bbit-window-maximized .bbit-window-ml {
+	PADDING-BOTTOM: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; PADDING-TOP: 0px
+}
+.bbit-window-maximized .bbit-window-mr {
+	PADDING-BOTTOM: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; PADDING-TOP: 0px
+}
+.bbit-window-maximized .bbit-window-tl {
+	PADDING-BOTTOM: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; PADDING-TOP: 0px
+}
+.bbit-window-maximized .bbit-window-tr {
+	PADDING-BOTTOM: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; PADDING-TOP: 0px
+}
+.bbit-window-maximized .bbit-window-footer {
+	PADDING-BOTTOM: 0px
+}
+.bbit-window-maximized .bbit-window-tc {
+	PADDING-LEFT: 3px; PADDING-RIGHT: 3px
+}
+.bbit-window-maximized .bbit-window-mc {
+	BORDER-LEFT: 0px; BORDER-RIGHT: 0px
+}
+.bbit-window-tbar .bbit-toolbar {
+	BORDER-LEFT: 0px; BORDER-RIGHT: 0px
+}
+.bbit-window-bbar .bbit-toolbar {
+	BORDER-LEFT: 0px; BORDER-RIGHT: 0px
+}
+.bbit-window-bbar .bbit-toolbar {
+	BORDER-BOTTOM: 0px; BORDER-TOP: 1px solid
+}
+.bbit-window-draggable {
+	CURSOR: move
+}
+.bbit-window-draggable .bbit-window-header-text {
+	CURSOR: move
+}
+.bbit-window-maximized .bbit-window-draggable {
+	CURSOR: default
+}
+.bbit-window-maximized .bbit-window-draggable .bbit-window-header-text {
+	CURSOR: default
+}
+.bbit-window-body {
+	BACKGROUND: none transparent scroll repeat 0% 0%
+}
+.bbit-panel-ghost .bbit-window-tl {
+	BORDER-BOTTOM: 1px solid
+}
+.bbit-panel-collapsed .bbit-window-tl {
+	BORDER-BOTTOM: 1px solid
+}
+.bbit-window-maximized-ct {
+	OVERFLOW: hidden
+}
+.bbit-window-maximized .bbit-resizable-handle {
+	DISPLAY: none
+}
+.bbit-window-sizing-ghost UL {
+	BORDER-BOTTOM: 0px; BORDER-LEFT: 0px; BORDER-TOP: 0px; BORDER-RIGHT: 0px
+}
+.bbit-dlg-focus {
+	POSITION: absolute; OUTLINE-STYLE: none; OUTLINE-COLOR: invert; OUTLINE-WIDTH: 0px; WIDTH: 0px; HEIGHT: 0px; OVERFLOW: hidden; TOP: 0px; LEFT: 0px; -moz-outline: 0 none
+}
+.ext-webkit .bbit-dlg-focus {
+	WIDTH: 1px; HEIGHT: 1px
+}
+.bbit-dlg-mask {
+	Z-INDEX: 10000; POSITION: absolute; FILTER: alpha(opacity=50); DISPLAY: none; TOP: 0px; LEFT: 0px; opacity: .50; -moz-opacity: 0.5
+}
+BODY.bbit-body-masked.ie6 SELECT {
+	VISIBILITY: hidden
+}
+BODY.bbit-body-masked.ext-ie6 .bbit-window SELECT {
+	VISIBILITY: visible
+}
+.bbit-window-plain .bbit-window-mc {
+	BORDER-BOTTOM: medium none; BORDER-LEFT: medium none; BORDER-TOP: medium none; BORDER-RIGHT: medium none
+}
+.bbit-window-plain .bbit-window-body {
+	BORDER-BOTTOM: #a3bae9 1px solid; BORDER-LEFT: #a3bae9 1px solid; BACKGROUND: none transparent scroll repeat 0% 0%; BORDER-TOP: #a3bae9 1px solid; BORDER-RIGHT: #a3bae9 1px solid
+}
+.bbit-window-tc {
+	BACKGROUND-IMAGE: url(../images/top-bottom.png)
+}
+.bbit-window-tl {
+	BACKGROUND-IMAGE: url(../images/left-corners.png)
+}
+.bbit-window-tr {
+	BACKGROUND-IMAGE: url(../images/right-corners.png)
+}
+.bbit-window-bc {
+	BACKGROUND-IMAGE: url(../images/top-bottom.png)
+}
+.bbit-window-bl {
+	BACKGROUND-IMAGE: url(../images/left-corners.png)
+}
+.bbit-window-br {
+	BACKGROUND-IMAGE: url(../images/right-corners.png)
+}
+.bbit-window-mc {
+	BORDER-BOTTOM-COLOR: #99bbe8; BACKGROUND-COLOR: #c6d4e4; BORDER-TOP-COLOR: #99bbe8; FONT: 11px tahoma, arial, helvetica, sans-serif; BORDER-RIGHT-COLOR: #99bbe8; BORDER-LEFT-COLOR: #99bbe8
+}
+.bbit-window-ml {
+	BACKGROUND-IMAGE: url(../images/left-right.png)
+}
+.bbit-window-mr {
+	BACKGROUND-IMAGE: url(../images/left-right.png)
+}
+DIV.bbit-tool {
+	BACKGROUND: url(../images/tool-sprites.gif) no-repeat; FONT-SIZE: 1px
+}
+DIV.bbit-tool-close {
+	WIDTH: 15px; BACKGROUND-POSITION: 0px 0px; FLOAT: right; HEIGHT: 15px; CURSOR: pointer
+}
+DIV.bbit-tool-close.hover {
+	BACKGROUND-POSITION: -15px 0px
+}

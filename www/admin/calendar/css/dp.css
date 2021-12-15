@@ -1,0 +1,174 @@
+.bbit-dp {
+	BORDER-BOTTOM: #718bb7 1px solid; POSITION: absolute; BORDER-LEFT: #718bb7 1px solid; PADDING-BOTTOM: 0px; PADDING-LEFT: 0px; WIDTH: 175px; PADDING-RIGHT: 0px; ZOOM: 1; FONT-FAMILY: tahoma, verdana, sans-serif; BACKGROUND: #fff; VISIBILITY: hidden; FONT-SIZE: 11px; OVERFLOW: hidden; BORDER-TOP: #718bb7 1px solid; TOP: 0px; BORDER-RIGHT: #718bb7 1px solid; PADDING-TOP: 0px; LEFT: 0px
+}
+.bbit-dp EM {
+	FONT-STYLE: normal; FONT-WEIGHT: normal
+}
+.bbit-dp TABLE {
+	WIDTH: 100%; BORDER-COLLAPSE: separate; TABLE-LAYOUT: fixed
+}
+.bbit-dp TD TH {
+	MARGIN: 0px
+}
+.bbit-dp-top-center {
+	TEXT-ALIGN: center; FONT: 11px tahoma, verdana, helvetica; WHITE-SPACE: nowrap; COLOR: #fff; CURSOR: pointer
+}
+.bbit-dp-top-center BUTTON {
+	BORDER-BOTTOM: 0px; BORDER-LEFT: 0px; MARGIN: 0px; OUTLINE-STYLE: none; OUTLINE-COLOR: invert; PADDING-LEFT: 3px; OUTLINE-WIDTH: 0px; WIDTH: auto; PADDING-RIGHT: 10px; FONT: 11px tahoma, verdana, helvetica; BACKGROUND: url(../images/btn-arrow-light.gif) no-repeat right top; COLOR: #fff; OVERFLOW: visible; BORDER-TOP: 0px; CURSOR: pointer; BORDER-RIGHT: 0px; -moz-outline: 0 none
+}
+.ie .bbit-dp-top-center BUTTON {
+	
+}
+.bbit-dp-top-right {
+	HEIGHT: 21px
+}
+.bbit-dp .bbit-dp-top {
+	BACKGROUND: url(../images/hd-sprite.gif) repeat-x 0px -83px
+}
+.bbit-dp-top-right {
+	WIDTH: 18px
+}
+.bbit-dp-top-left {
+	WIDTH: 18px
+}
+.bbit-dp-top-right {
+	TEXT-ALIGN: right
+}
+.bbit-dp-top-right A {
+	FILTER: alpha(opacity=60); WIDTH: 16px; DISPLAY: block; BACKGROUND-REPEAT: no-repeat; BACKGROUND-POSITION: center 50%; HEIGHT: 16px; CURSOR: pointer; opacity: 0.6; -moz-opacity: 0.6
+}
+.bbit-dp-top-left A {
+	FILTER: alpha(opacity=60); WIDTH: 16px; DISPLAY: block; BACKGROUND-REPEAT: no-repeat; BACKGROUND-POSITION: center 50%; HEIGHT: 16px; CURSOR: pointer; opacity: 0.6; -moz-opacity: 0.6
+}
+.bbit-dp-top-right A:hover {
+	FILTER: alpha(opacity=100); opacity: 1; -moz-opacity: 1
+}
+.bbit-dp-top-left A:hover {
+	FILTER: alpha(opacity=100); opacity: 1; -moz-opacity: 1
+}
+.bbit-dp-top-left A {
+	BACKGROUND: url(../images/left-btn.gif); MARGIN-LEFT: 2px
+}
+.bbit-dp-top-right A {
+	BACKGROUND: url(../images/right-btn.gif); MARGIN-LEFT: 2px
+}
+.bbit-dp-inner TH {
+	BORDER-COLLAPSE: separate
+}
+.bbit-dp-inner TD {
+	BORDER-COLLAPSE: separate
+}
+.bbit-dp-inner TH {
+	BORDER-BOTTOM: #a3bad9 1px solid; TEXT-ALIGN: right !important; PADDING-BOTTOM: 0px; PADDING-LEFT: 0px; WIDTH: 25px; PADDING-RIGHT: 0px; BORDER-COLLAPSE: separate; BACKGROUND: url(../images/glass-bg.gif) #dfecfb repeat-x left top; COLOR: #233d6d; CURSOR: default; PADDING-TOP: 0px
+}
+.bbit-dp-inner TH SPAN {
+	PADDING-BOTTOM: 2px; PADDING-LEFT: 2px; PADDING-RIGHT: 7px; DISPLAY: block; FONT: 10px arial, helvetica, tahoma, sans-serif; PADDING-TOP: 2px
+}
+.bbit-dp-inner TD {
+	BORDER-BOTTOM: #fff 1px solid; TEXT-ALIGN: right; BORDER-LEFT: #fff 1px solid; PADDING-BOTTOM: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; BORDER-COLLAPSE: separate; COLOR: black; BORDER-TOP: #fff 1px solid; BORDER-RIGHT: #fff 1px solid; PADDING-TOP: 0px
+}
+.bbit-dp A {
+	ZOOM: 1; COLOR: black; TEXT-DECORATION: none
+}
+.bbit-dp-inner TD A {
+	TEXT-ALIGN: right; PADDING-BOTTOM: 2px; PADDING-LEFT: 5px; PADDING-RIGHT: 5px; DISPLAY: block; FONT: 11px arial, helvetica, tahoma, sans-serif; PADDING-TOP: 2px
+}
+.picker {
+	BORDER-BOTTOM: medium none; BORDER-LEFT: medium none; WIDTH: 16px; BACKGROUND: url(../images/cal.gif) no-repeat left top; HEIGHT: 16px; MARGIN-LEFT: -19px; BORDER-TOP: medium none; CURSOR: pointer; BORDER-RIGHT: medium none
+}
+.bbit-dp-inner .bbit-dp-active {
+	COLOR: black; CURSOR: pointer
+}
+.bbit-dp-inner .bbit-dp-selected A {
+	BORDER-BOTTOM: #8db2e3 1px solid; BORDER-LEFT: #8db2e3 1px solid; PADDING-BOTTOM: 1px; PADDING-LEFT: 4px; PADDING-RIGHT: 4px; BACKGROUND: url(../images/default/shared/glass-bg.gif) #dfecfb repeat-x left top; BORDER-TOP: #8db2e3 1px solid; BORDER-RIGHT: #8db2e3 1px solid; PADDING-TOP: 1px
+}
+.bbit-dp-inner .bbit-dp-today A {
+	BORDER-BOTTOM: darkred 1px solid; BORDER-LEFT: darkred 1px solid; PADDING-BOTTOM: 1px; PADDING-LEFT: 4px; PADDING-RIGHT: 4px; BORDER-TOP: darkred 1px solid; BORDER-RIGHT: darkred 1px solid; PADDING-TOP: 1px
+}
+.bbit-dp-inner .bbit-dp-selected SPAN {
+	FONT-WEIGHT: bold
+}
+.bbit-dp-inner .bbit-dp-prevday A {
+	COLOR: #aaa; TEXT-DECORATION: none !important
+}
+.bbit-dp-inner .bbit-dp-nextday A {
+	COLOR: #aaa; TEXT-DECORATION: none !important
+}
+.bbit-dp-inner A:hover {
+	BACKGROUND: #ddecfe; COLOR: black; TEXT-DECORATION: none !important
+}
+.bbit-dp-inner bbit-dp-disabled A:hover {
+	BACKGROUND: #ddecfe; COLOR: black; TEXT-DECORATION: none !important
+}
+.bbit-dp-inner .bbit-dp-disabled A {
+	BACKGROUND: #eee; COLOR: #bbb; CURSOR: default
+}
+.bbit-dp-bottom {
+	PADDING-BOTTOM: 2px; PADDING-LEFT: 2px; PADDING-RIGHT: 2px; BACKGROUND: url(../images/glass-bg.gif) #dfecfb repeat-x left top; BORDER-TOP: #a3bad9 1px solid; PADDING-TOP: 2px
+}
+.bbit-dp-mp {
+	POSITION: absolute; DISPLAY: none; BACKGROUND: white; TOP: 0px; LEFT: 0px
+}
+.bbit-dp-mp TD {
+	PADDING-BOTTOM: 2px; PADDING-LEFT: 2px; PADDING-RIGHT: 2px; FONT: 11px arial, helvetica, tahoma, sans-serif; PADDING-TOP: 2px
+}
+TD.bbit-dp-mp-month {
+	BORDER-BOTTOM: 0px; TEXT-ALIGN: center; BORDER-LEFT: 0px; WIDTH: 25%; VERTICAL-ALIGN: middle; BORDER-TOP: 0px; BORDER-RIGHT: 0px
+}
+TD.bbit-dp-mp-year {
+	BORDER-BOTTOM: 0px; TEXT-ALIGN: center; BORDER-LEFT: 0px; WIDTH: 25%; VERTICAL-ALIGN: middle; BORDER-TOP: 0px; BORDER-RIGHT: 0px
+}
+TD.bbit-dp-mp-ybtn {
+	BORDER-BOTTOM: 0px; TEXT-ALIGN: center; BORDER-LEFT: 0px; WIDTH: 25%; VERTICAL-ALIGN: middle; BORDER-TOP: 0px; BORDER-RIGHT: 0px
+}
+.bbit-dp-mp-ok {
+	MARGIN-RIGHT: 3px
+}
+.bbit-dp-mp-btns BUTTON {
+	BORDER-BOTTOM: #005 1px solid; TEXT-ALIGN: center; BORDER-LEFT: #36c 1px solid; PADDING-BOTTOM: 1px; PADDING-LEFT: 3px; WIDTH: 45px; PADDING-RIGHT: 3px; FONT: 11px arial, helvetica, tahoma, sans-serif; BACKGROUND: #083772; COLOR: white; BORDER-TOP: #36c 1px solid; CURSOR: pointer; BORDER-RIGHT: #005 1px solid; TEXT-DECORATION: none !important; PADDING-TOP: 1px
+}
+.bbit-dp-mp-btns {
+	BACKGROUND: url(../images/glass-bg.gif) #dfecfb repeat-x left top
+}
+.bbit-dp-mp-btns TD {
+	TEXT-ALIGN: center; BORDER-TOP: #c5d2df 1px solid
+}
+TD.bbit-dp-mp-month A {
+	TEXT-ALIGN: center; PADDING-BOTTOM: 2px; PADDING-LEFT: 4px; PADDING-RIGHT: 4px; DISPLAY: block; COLOR: #15428b; TEXT-DECORATION: none; PADDING-TOP: 2px
+}
+TD.bbit-dp-mp-year A {
+	TEXT-ALIGN: center; PADDING-BOTTOM: 2px; PADDING-LEFT: 4px; PADDING-RIGHT: 4px; DISPLAY: block; COLOR: #15428b; TEXT-DECORATION: none; PADDING-TOP: 2px
+}
+TD.bbit-dp-mp-month A:hover {
+	BACKGROUND: #ddecfe; COLOR: #15428b; CURSOR: pointer; TEXT-DECORATION: none
+}
+TD.bbit-dp-mp-year A:hover {
+	BACKGROUND: #ddecfe; COLOR: #15428b; CURSOR: pointer; TEXT-DECORATION: none
+}
+TD.bbit-dp-mp-sel A {
+	BORDER-BOTTOM: #8db2e3 1px solid; BORDER-LEFT: #8db2e3 1px solid; PADDING-BOTTOM: 1px; PADDING-LEFT: 3px; PADDING-RIGHT: 3px; BACKGROUND: url(../images/glass-bg.gif) #dfecfb repeat-x left top; BORDER-TOP: #8db2e3 1px solid; BORDER-RIGHT: #8db2e3 1px solid; PADDING-TOP: 1px
+}
+.bbit-dp-mp-ybtn A {
+	MARGIN: 0px auto; WIDTH: 15px; DISPLAY: block; BACKGROUND: url(../images/tool-sprites.gif) no-repeat; HEIGHT: 15px; OVERFLOW: hidden; CURSOR: pointer
+}
+.bbit-dp-mp-ybtn A.bbit-dp-mp-next {
+	BACKGROUND-POSITION: 0px -120px
+}
+.bbit-dp-mp-ybtn A.bbit-dp-mp-next:hover {
+	BACKGROUND-POSITION: -15px -120px
+}
+.bbit-dp-mp-ybtn A.bbit-dp-mp-prev {
+	BACKGROUND-POSITION: 0px -105px
+}
+.bbit-dp-mp-ybtn A.bbit-dp-mp-prev:hover {
+	BACKGROUND-POSITION: -15px -105px
+}
+.bbit-dp-mp-ybtn {
+	TEXT-ALIGN: center
+}
+TD.bbit-dp-mp-sep {
+	BORDER-RIGHT: #c5d2df 1px solid
+}
+.bbit-dp-input {
+	PADDING-LEFT: 4px; WIDTH: 100px; HEIGHT: 18px
+}

@@ -1,0 +1,303 @@
+HTML {
+	PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-LEFT: 0px; WIDTH: 100%; PADDING-RIGHT: 0px; HEIGHT: 100%; PADDING-TOP: 0px
+}
+.toolBotton {
+	BORDER-BOTTOM: #99bbe8 1px solid; POSITION: relative; BORDER-LEFT: medium none; PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; BACKGROUND: url(../images/tbg.gif) #ccc repeat-x 50% top; HEIGHT: 25px; OVERFLOW: hidden; BORDER-TOP: medium none; BORDER-RIGHT: medium none; PADDING-TOP: 0px
+}
+.toolBotton A {
+	WIDTH: auto; DISPLAY: block; CURSOR: pointer
+}
+.toolBotton A SPAN {
+	WIDTH: auto; DISPLAY: block; FLOAT: left; CURSOR: pointer
+}
+BODY {
+	PADDING-BOTTOM: 0px; BACKGROUND-COLOR: #e8f1f8; MARGIN: 0px; PADDING-LEFT: 0px; WIDTH: 100%; PADDING-RIGHT: 0px; FONT-FAMILY: "Î¢ÈíÑÅºÚ" , "ËÎÌå" , Consolas, Verdana; HEIGHT: 100%; FONT-SIZE: 12px; PADDING-TOP: 0px
+}
+DIV {
+	FONT-FAMILY: "Î¢ÈíÑÅºÚ" , "ËÎÌå" , Consolas, Verdana
+}
+SPAN {
+	FONT-FAMILY: "Î¢ÈíÑÅºÚ" , "ËÎÌå" , Consolas, Verdana
+}
+TD {
+	FONT-FAMILY: "Î¢ÈíÑÅºÚ" , "ËÎÌå" , Consolas, Verdana
+}
+A:link {
+	COLOR: #333; TEXT-DECORATION: none
+}
+A:visited {
+	COLOR: #333; TEXT-DECORATION: none
+}
+INPUT {
+	BORDER-BOTTOM: #3c7fb1 1px solid; BORDER-LEFT: #3c7fb1 1px solid; BORDER-TOP: #3c7fb1 1px solid; BORDER-RIGHT: #3c7fb1 1px solid
+}
+SELECT {
+	BORDER-BOTTOM: #3c7fb1 1px solid; BORDER-LEFT: #3c7fb1 1px solid; BORDER-TOP: #3c7fb1 1px solid; BORDER-RIGHT: #3c7fb1 1px solid
+}
+INPUT[type='text'] {
+	BORDER-BOTTOM: #3c7fb1 1px solid; BORDER-LEFT: #3c7fb1 1px solid; HEIGHT: 18px; BORDER-TOP: #3c7fb1 1px solid; BORDER-RIGHT: #3c7fb1 1px solid
+}
+INPUT[type='checkbox'] {
+	BORDER-BOTTOM: medium none; BORDER-LEFT: medium none; BORDER-TOP: medium none; BORDER-RIGHT: medium none
+}
+INPUT[type='radio'] {
+	BORDER-BOTTOM: medium none; BORDER-LEFT: medium none; BORDER-TOP: medium none; BORDER-RIGHT: medium none
+}
+TEXTAREA {
+	BORDER-BOTTOM: #3c7fb1 1px solid; BORDER-LEFT: #3c7fb1 1px solid; OVERFLOW: auto; BORDER-TOP: #3c7fb1 1px solid; BORDER-RIGHT: #3c7fb1 1px solid
+}
+.ellipsis {
+	TEXT-OVERFLOW: ellipsis; DISPLAY: block; WHITE-SPACE: nowrap; OVERFLOW: hidden
+}
+HTML > BODY .ellipsis {
+	CLEAR: both
+}
+.bbit-main {
+	Z-INDEX: 0; POSITION: absolute; BACKGROUND-COLOR: #e8f1f8; WIDTH: 100%; HEIGHT: 100%; TOP: 0px; LEFT: 0px
+}
+A.linkdelete SPAN {
+	PADDING-LEFT: 18px; BACKGROUND: url(../images/delete.png) no-repeat left 6px; COLOR: #000000; TEXT-DECORATION: underline; PADDING-TOP: 5px
+}
+A.imgbtn {
+	COLOR: #000000
+}
+A.imgbtn SPAN {
+	PADDING-BOTTOM: 3px; PADDING-LEFT: 21px; PADDING-RIGHT: 4px; CURSOR: point; PADDING-TOP: 4px
+}
+A.imgbtn:hover SPAN {
+	BORDER-BOTTOM: #466094 1px solid; BORDER-LEFT: #466094 1px solid; PADDING-BOTTOM: 2px; BACKGROUND-COLOR: #edf1d5; PADDING-LEFT: 20px; PADDING-RIGHT: 3px; BORDER-TOP: #466094 1px solid; CURSOR: point; BORDER-RIGHT: #466094 1px solid; PADDING-TOP: 3px
+}
+A.imgbtn SPAN.Save {
+	BACKGROUND: url(../images/Item.Save.gif) no-repeat 3px 4px
+}
+A.imgbtn SPAN.Close {
+	BACKGROUND: url(../images/Btn.Close.gif) no-repeat 3px 4px
+}
+A.imgbtn SPAN.Delete {
+	BACKGROUND: url(../images/delete.png) no-repeat 3px 4px
+}
+SPAN.addcal {
+	PADDING-LEFT: 20px; BACKGROUND: url(../images/date_add.png) no-repeat 1px 50%
+}
+SPAN.showdayview {
+	PADDING-LEFT: 20px; BACKGROUND: url(../images/cal-day.gif) no-repeat 1px 50%
+}
+SPAN.showweekview {
+	PADDING-LEFT: 20px; BACKGROUND: url(../images/cal-week.gif) no-repeat 1px 50%
+}
+SPAN.showwkweekview {
+	PADDING-LEFT: 20px; BACKGROUND: url(../images/cal-wk-week.gif) no-repeat 1px 50%
+}
+SPAN.chinese {
+	PADDING-LEFT: 20px; BACKGROUND: url(../images/cn.gif) no-repeat 1px 50%
+}
+SPAN.english {
+	PADDING-LEFT: 20px; BACKGROUND: url(../images/us.gif) no-repeat 1px 50%
+}
+SPAN.english_au {
+	PADDING-LEFT: 20px; BACKGROUND: url(../images/au.gif) no-repeat 1px 50%
+}
+SPAN.showmonthview {
+	PADDING-LEFT: 20px; BACKGROUND: url(../images/cal-month.gif) no-repeat 1px 50%
+}
+SPAN.showtoday {
+	PADDING-LEFT: 20px; BACKGROUND: url(../images/date.png) no-repeat 1px 50%
+}
+SPAN.fprev {
+	WIDTH: 18px; BACKGROUND: url(../images/resultset_previous.png) no-repeat 1px bottom
+}
+SPAN.fnext {
+	WIDTH: 18px; BACKGROUND: url(../images/resultset_next.png) no-repeat 1px bottom
+}
+SPAN.showdayflash {
+	PADDING-LEFT: 20px; BACKGROUND: url(../images/date_reflash.png) no-repeat 1px 50%
+}
+.size1 {
+	WIDTH: 50px
+}
+.size2 {
+	WIDTH: 100px
+}
+.size3 {
+	WIDTH: 160px
+}
+.size4 {
+	WIDTH: 200px
+}
+.size5 {
+	WIDTH: 260px
+}
+.size6 {
+	WIDTH: 300px
+}
+.size7 {
+	WIDTH: 360px
+}
+.X {
+	PADDING-RIGHT: 3px; FLOAT: right; HEIGHT: 16px; COLOR: #555; CURSOR: pointer
+}
+.nodisplay {
+	DISPLAY: none
+}
+LABEL.error {
+	PADDING-BOTTOM: 2px; PADDING-LEFT: 20px; PADDING-RIGHT: 0px; DISPLAY: block; BACKGROUND: url(../images/exclamation.png) no-repeat 2px center; PADDING-TOP: 2px
+}
+INPUT.error {
+	BORDER-BOTTOM: red 1px solid; BORDER-LEFT: red 1px solid; BORDER-TOP: red 1px solid; BORDER-RIGHT: red 1px solid
+}
+SELECT.error {
+	BORDER-BOTTOM: red 1px solid; BORDER-LEFT: red 1px solid; BORDER-TOP: red 1px solid; BORDER-RIGHT: red 1px solid
+}
+TEXTAREA.error {
+	BORDER-BOTTOM: red 1px solid; BORDER-LEFT: red 1px solid; BORDER-TOP: red 1px solid; BORDER-RIGHT: red 1px solid
+}
+INPUT.cusErrorPanel {
+	BORDER-BOTTOM: red 1px solid; BORDER-LEFT: red 1px solid; BORDER-TOP: red 1px solid; BORDER-RIGHT: red 1px solid
+}
+cusErrorPanel.cusErrorPanel {
+	BORDER-BOTTOM: red 1px solid; BORDER-LEFT: red 1px solid; BORDER-TOP: red 1px solid; BORDER-RIGHT: red 1px solid
+}
+TEXTAREA.cusErrorPanel {
+	BORDER-BOTTOM: red 1px solid; BORDER-LEFT: red 1px solid; BORDER-TOP: red 1px solid; BORDER-RIGHT: red 1px solid
+}
+LABEL.checked {
+	POSITION: relative; PADDING-BOTTOM: 0px; PADDING-LEFT: 18px; PADDING-RIGHT: 0px; BACKGROUND: url(../images/accept.png) no-repeat 2px center; FLOAT: none; PADDING-TOP: 0px
+}
+DIV.error {
+	
+}
+DIV.cusErrorPanel {
+	Z-INDEX: auto; POSITION: absolute; FILTER: alpha(opacity=90); LINE-HEIGHT: 40px; TEXT-INDENT: 5px; WIDTH: 276px; FONT-FAMILY: Arial; BACKGROUND: url(../images/tooltop.gif) no-repeat left top; HEIGHT: 35px; FONT-SIZE: 12px; OVERFLOW: hidden; opacity: 0.9
+}
+.infocontainer {
+	BORDER-BOTTOM: #999 1px solid; BORDER-LEFT: #999 1px solid; PADDING-BOTTOM: 4px; MARGIN: 2px; PADDING-LEFT: 4px; PADDING-RIGHT: 4px; BACKGROUND: #fff; BORDER-TOP: #999 1px solid; BORDER-RIGHT: #999 1px solid; PADDING-TOP: 4px
+}
+.fform {
+	MARGIN: 0px
+}
+.fform LABEL {
+	PADDING-BOTTOM: 2px; MARGIN-TOP: 2px; PADDING-LEFT: 2px; PADDING-RIGHT: 2px; DISPLAY: block; VERTICAL-ALIGN: top; PADDING-TOP: 2px
+}
+.fform LABEL.checkp {
+	DISPLAY: inline
+}
+.fform LABEL SPAN {
+	DISPLAY: block; FONT-WEIGHT: bold
+}
+INPUT.noborder {
+	BORDER-BOTTOM: medium none; BORDER-LEFT: medium none; BORDER-TOP: medium none; BORDER-RIGHT: medium none
+}
+.doing {
+	BORDER-BOTTOM: #555 1px solid; POSITION: absolute; BORDER-LEFT: #555 1px solid; PADDING-BOTTOM: 5px; BACKGROUND-COLOR: #ffff00; PADDING-LEFT: 5px; PADDING-RIGHT: 5px; DISPLAY: none; COLOR: red; VERTICAL-ALIGN: middle; BORDER-TOP: #555 1px solid; TOP: 20%; BORDER-RIGHT: #555 1px solid; PADDING-TOP: 5px; LEFT: 20%
+}
+DIV.clear {
+	CLEAR: both
+}
+DIV.cHead {
+	BORDER-BOTTOM: #99bbe8 1px solid; POSITION: relative; BORDER-LEFT: #99bbe8 1px solid; DISPLAY: block; WHITE-SPACE: nowrap; BACKGROUND: url(../images/headbg.gif) repeat-x 50% top; OVERFLOW: hidden; BORDER-TOP: 0px; FONT-WEIGHT: bold; BORDER-RIGHT: #99bbe8 1px solid
+}
+DIV.cHead DIV {
+	PADDING-BOTTOM: 4px; PADDING-LEFT: 4px; PADDING-RIGHT: 4px; WHITE-SPACE: nowrap; PADDING-TOP: 4px
+}
+DIV.cHead DIV.ftitle {
+	PADDING-LEFT: 20px; BACKGROUND: url(../images/grid.png) no-repeat left 50%; COLOR: #15428b; MARGIN-LEFT: 10px
+}
+DIV.cHead DIV.ptogtitle {
+	POSITION: absolute; PADDING-BOTTOM: 1px; PADDING-LEFT: 2px; PADDING-RIGHT: 2px; HEIGHT: 18px; TOP: 3px; RIGHT: 15px; FONT-WEIGHT: normal; PADDING-TOP: 1px
+}
+DIV.cHead DIV.loadicon {
+	BACKGROUND: #c44; COLOR: #fff
+}
+DIV.cHead DIV.loaderror {
+	PADDING-BOTTOM: 1px; PADDING-LEFT: 4px; PADDING-RIGHT: 4px; BACKGROUND: #fad163; PADDING-TOP: 1px
+}
+DIV.cHead DIV.ptogtitle INPUT {
+	BORDER-BOTTOM: #ccc 1px solid; BORDER-LEFT: #ccc 1px solid; BACKGROUND-COLOR: #fff; PADDING-LEFT: 4px; HEIGHT: 16px; BORDER-TOP: #ccc 1px solid; BORDER-RIGHT: #ccc 1px solid
+}
+DIV.ctoolbar {
+	BORDER-BOTTOM: #99bbe8 1px solid; POSITION: relative; BORDER-LEFT: #99bbe8 1px solid; BACKGROUND: url(../images/tbg.gif) #ccc repeat-x 50% top; HEIGHT: 25px; OVERFLOW: hidden; BORDER-TOP: #99bbe8 0px solid; BORDER-RIGHT: #99bbe8 1px solid
+}
+DIV.ctoolbar DIV.fbutton {
+	PADDING-BOTTOM: 1px; PADDING-LEFT: 1px; PADDING-RIGHT: 1px; DISPLAY: block; FLOAT: left; HEIGHT: 22px; MARGIN-LEFT: 1px; CURSOR: pointer; PADDING-TOP: 1px
+}
+DIV.ctoolbar DIV.fbutton DIV {
+	PADDING-BOTTOM: 2px; PADDING-LEFT: 3px; PADDING-RIGHT: 3px; FLOAT: left; PADDING-TOP: 2px
+}
+DIV.ctoolbar DIV.fbutton SPAN {
+	DISPLAY: block; FLOAT: left; HEIGHT: 18px
+}
+DIV.ctoolbar DIV.fcurrent.fbutton {
+	BORDER-BOTTOM: #555 1px solid; BORDER-LEFT: #555 1px solid; PADDING-BOTTOM: 0px; BACKGROUND-COLOR: #edf1d5; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; BORDER-TOP: #555 1px solid; CURSOR: pointer; BORDER-RIGHT: #555 1px solid; PADDING-TOP: 0px
+}
+DIV.ctoolbar DIV.fcurrent.fbutton DIV {
+	BORDER-BOTTOM: #eee 1px solid; BORDER-LEFT: #fff 1px solid; PADDING-BOTTOM: 1px; PADDING-LEFT: 2px; PADDING-RIGHT: 2px; BORDER-TOP: #fff 1px solid; BORDER-RIGHT: #eee 1px solid; PADDING-TOP: 1px
+}
+DIV.ctoolbar DIV.fbutton:hover {
+	BORDER-BOTTOM: #466094 1px solid; BORDER-LEFT: #466094 1px solid; PADDING-BOTTOM: 0px; BACKGROUND-COLOR: #edf1d5; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; BORDER-TOP: #466094 1px solid; CURSOR: pointer; BORDER-RIGHT: #466094 1px solid; PADDING-TOP: 0px
+}
+.ctoolbar.div DIV.fbOver.fbutton {
+	BORDER-BOTTOM: #466094 1px solid; BORDER-LEFT: #466094 1px solid; PADDING-BOTTOM: 0px; BACKGROUND-COLOR: #edf1d5; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; BORDER-TOP: #466094 1px solid; CURSOR: pointer; BORDER-RIGHT: #466094 1px solid; PADDING-TOP: 0px
+}
+DIV.ctoolbar DIV.fbutton:hover DIV {
+	BORDER-BOTTOM: #eee 1px solid; BORDER-LEFT: #fff 1px solid; PADDING-BOTTOM: 1px; PADDING-LEFT: 2px; PADDING-RIGHT: 2px; BORDER-TOP: #fff 1px solid; BORDER-RIGHT: #eee 1px solid; PADDING-TOP: 1px
+}
+.ctoolbar.div DIV.fbOver.fbutton DIV {
+	BORDER-BOTTOM: #eee 1px solid; BORDER-LEFT: #fff 1px solid; PADDING-BOTTOM: 1px; PADDING-LEFT: 2px; PADDING-RIGHT: 2px; BORDER-TOP: #fff 1px solid; BORDER-RIGHT: #eee 1px solid; PADDING-TOP: 1px
+}
+DIV.ctoolbar DIV.btnseparator {
+	BORDER-LEFT: #ccc 1px solid; MARGIN: 1px; FLOAT: left; HEIGHT: 18px; BORDER-RIGHT: #fff 1px solid
+}
+DIV.ctoolbar DIV.fshowdatep {
+	PADDING-BOTTOM: 1px; PADDING-LEFT: 1px; PADDING-RIGHT: 1px; DISPLAY: block; FLOAT: left; HEIGHT: 22px; CURSOR: default; PADDING-TOP: 1px
+}
+DIV.ctoolbar DIV.fshowdatep DIV {
+	PADDING-BOTTOM: 2px; PADDING-LEFT: 3px; PADDING-RIGHT: 3px; FLOAT: left; PADDING-TOP: 2px
+}
+DIV.ctoolbar DIV.fshowdatep SPAN {
+	DISPLAY: block; FLOAT: left
+}
+DIV.cbody DIV.ctablehead {
+	BORDER-BOTTOM: #9c9c9c 0px solid; POSITION: relative; BORDER-LEFT: #ccc 1px solid; BACKGROUND: url(../images/gridth.gif) #e3f7ff repeat-x left bottom; HEIGHT: 25px; OVERFLOW: hidden; BORDER-TOP: #fff 1px solid; BORDER-RIGHT: #ccc 1px solid
+}
+DIV.cbody DIV.ctablehead TH DIV {
+	BORDER-LEFT: medium none; PADDING-BOTTOM: 4px; PADDING-LEFT: 4px; PADDING-RIGHT: 4px; OVERFLOW: hidden; PADDING-TOP: 4px
+}
+DIV.cbody DIV.ctablebody TD DIV {
+	BORDER-LEFT: medium none; PADDING-BOTTOM: 4px; PADDING-LEFT: 4px; PADDING-RIGHT: 4px; OVERFLOW: hidden; PADDING-TOP: 4px
+}
+DIV.cbody DIV.ctablehead TH {
+	TEXT-ALIGN: left; BORDER-LEFT: #fff 1px solid; WHITE-SPACE: nowrap; VERTICAL-ALIGN: top !important; OVERFLOW: hidden; CURSOR: default; FONT-WEIGHT: normal; BORDER-RIGHT: #ddd 1px solid
+}
+DIV.cbody DIV.ctablehead DIV.ctableheadp {
+	FLOAT: left
+}
+DIV.cbody DIV.ctablehead TH DIV {
+	HEIGHT: 17px
+}
+DIV.cbody DIV.ctablebody {
+	BORDER-BOTTOM: #ccc 1px solid; POSITION: relative; BORDER-LEFT: #ccc 1px solid; BACKGROUND: #dfe8f6; OVERFLOW: auto; BORDER-TOP: #ccc 0px solid; BORDER-RIGHT: #ccc 1px solid
+}
+DIV.cbody DIV.ctablebody TD {
+	BORDER-BOTTOM: #ddd 1px dotted; TEXT-ALIGN: left; BORDER-LEFT: #fff 1px solid; BACKGROUND-COLOR: #fff; WHITE-SPACE: nowrap; VERTICAL-ALIGN: top !important; OVERFLOW: hidden; BORDER-TOP: medium none; CURSOR: default; BORDER-RIGHT: #ddd 1px solid
+}
+DIV.cbody DIV.ctablebody TR.erow TD {
+	BACKGROUND: #f5ffef
+}
+DIV.cbody DIV.ctablebody TR:hover TD {
+	BORDER-BOTTOM: #a8d8eb 1px dotted; BORDER-LEFT: #eef8ff 1px solid; BACKGROUND: #ffffbb
+}
+DIV.cbody DIV.ctablebody TR.trOver TD {
+	BORDER-BOTTOM: #a8d8eb 1px dotted; BORDER-LEFT: #eef8ff 1px solid; BACKGROUND: #ffffbb
+}
+DIV.cbody DIV.ctablebody TD DIV {
+	PADDING-BOTTOM: 2px; BORDER-TOP: #fff 0px solid
+}
+DIV.ViewgBlock {
+	BACKGROUND: url(../images/load-bg.png) #e3e3e3
+}
+DIV.ViewgBlock > DIV.loading {
+	FILTER: alpha(opacity=50); WIDTH: 100%; DISPLAY: block; BACKGROUND: url(../images/indicator_web20_working.gif) #f4f4f4 no-repeat center center; HEIGHT: 100%; opacity: 0.5
+}
+.transparent {
+	FILTER: alpha(opacity=0); BACKGROUND-COLOR: #000; opacity: 0; -moz-opacity: 0
+}

@@ -1,0 +1,216 @@
+#blackbird {
+	POSITION: fixed; PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; FONT: 11px/1.3 Consolas, "Lucida Console", Monaco, monospace; PADDING-TOP: 0px; _position: absolute; _border: 2px solid #BBB
+}
+.bbTopLeft#blackbird {
+	TOP: 0px; LEFT: 0px
+}
+.bbTopRight#blackbird {
+	TOP: 0px; RIGHT: 0px
+}
+* HTML .bbTopRight {
+	RIGHT: auto
+}
+.bbBottomLeft#blackbird {
+	BOTTOM: 0px; LEFT: 0px
+}
+* HTML .bbBottomLeft {
+	BOTTOM: auto
+}
+.bbBottomRight#blackbird {
+	BOTTOM: 0px; RIGHT: 0px
+}
+* HTML .bbBottomRight {
+	BOTTOM: auto; RIGHT: auto
+}
+.bbSmall#blackbird {
+	WIDTH: 300px; _width: 272px
+}
+.bbSmall#blackbird .header {
+	_width: 272px
+}
+.bbSmall#blackbird .header DIV.left {
+	WIDTH: 150px
+}
+.bbSmall#blackbird .footer DIV.left {
+	WIDTH: 150px
+}
+.bbSmall#blackbird .main {
+	_width: 272px
+}
+.bbSmall#blackbird .main DIV {
+	HEIGHT: 200px
+}
+.bbSmall#blackbird .main DIV.mainBody {
+	WIDTH: 272px
+}
+.bbSmall#blackbird .footer {
+	_width: 272px
+}
+.bbLarge#blackbird {
+	WIDTH: 500px; _width: 472px
+}
+.bbLarge#blackbird .header {
+	_width: 472px
+}
+.bbLarge#blackbird .header DIV.left {
+	WIDTH: 350px
+}
+.bbLarge#blackbird .footer DIV.left {
+	WIDTH: 350px
+}
+.bbLarge#blackbird .main {
+	_width: 472px
+}
+.bbLarge#blackbird .main DIV {
+	HEIGHT: 500px
+}
+.bbLarge#blackbird .main DIV.mainBody {
+	WIDTH: 472px
+}
+.bbLarge#blackbird .footer {
+	_width: 472px
+}
+#blackbird .header SPAN {
+	BACKGROUND-IMAGE: url(images/blackbird_icons.png); POSITION: relative; MARGIN: 0px 4px; WIDTH: 16px; BACKGROUND-REPEAT: no-repeat; FLOAT: left; HEIGHT: 16px
+}
+#blackbird .header SPAN.error {
+	BACKGROUND-POSITION: 0px 0px
+}
+#blackbird .header SPAN.errorDisabled {
+	BACKGROUND-POSITION: -16px 0px
+}
+#blackbird .header SPAN.warn {
+	BACKGROUND-POSITION: 0px -16px
+}
+#blackbird .header SPAN.warnDisabled {
+	BACKGROUND-POSITION: -16px -16px
+}
+#blackbird .header SPAN.info {
+	BACKGROUND-POSITION: 0px -32px
+}
+#blackbird .header SPAN.infoDisabled {
+	BACKGROUND-POSITION: -16px -32px
+}
+#blackbird .header SPAN.debug {
+	BACKGROUND-POSITION: 0px -48px
+}
+#blackbird .header SPAN.debugDisabled {
+	BACKGROUND-POSITION: -16px -48px
+}
+#blackbird .header SPAN.profile {
+	BACKGROUND-POSITION: 0px -64px
+}
+#blackbird .header SPAN.profileDisabled {
+	BACKGROUND-POSITION: -16px -64px
+}
+#blackbird .header SPAN.close {
+	BACKGROUND-POSITION: 0px -80px
+}
+#blackbird .header SPAN.clear {
+	BACKGROUND-POSITION: -16px -80px
+}
+#blackbird .header SPAN.small {
+	BACKGROUND-POSITION: 0px -96px
+}
+#blackbird .header SPAN.large {
+	BACKGROUND-POSITION: -16px -96px
+}
+#blackbird .header > DIV {
+	BACKGROUND-IMAGE: url(images/blackbird_panel.png); BACKGROUND-REPEAT: no-repeat
+}
+#blackbird .main > DIV {
+	BACKGROUND-IMAGE: url(images/blackbird_panel.png); BACKGROUND-REPEAT: no-repeat
+}
+#blackbird .footer > DIV {
+	BACKGROUND-IMAGE: url(images/blackbird_panel.png); BACKGROUND-REPEAT: no-repeat
+}
+#blackbird .header DIV {
+	FLOAT: left; _background-color: #000
+}
+#blackbird .header DIV.left {
+	BACKGROUND-POSITION: left top; HEIGHT: 40px; _height: 16px
+}
+#blackbird .header .left DIV.filters {
+	PADDING-BOTTOM: 0px; PADDING-LEFT: 19px; PADDING-RIGHT: 0px; FLOAT: left; MARGIN-LEFT: -4px; PADDING-TOP: 16px; _padding: 6px 8px
+}
+#blackbird .header DIV.right {
+	WIDTH: 150px; BACKGROUND-POSITION: right top; HEIGHT: 40px; _width: 122px; _height: 16px
+}
+#blackbird .header .right DIV.controls {
+	PADDING-BOTTOM: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 24px; FLOAT: right; PADDING-TOP: 16px; _padding: 6px 8px
+}
+#blackbird .header .right .controls SPAN {
+	MARGIN: 0px
+}
+#blackbird .header .right .controls SPAN.clear {
+	MARGIN-RIGHT: 8px
+}
+#blackbird .main DIV {
+	FLOAT: left
+}
+#blackbird .main DIV.left {
+	WIDTH: 11px; BACKGROUND-POSITION: 0px -30px; _width: 0
+}
+#blackbird .main DIV.mainBody {
+	BACKGROUND-POSITION: 40% -40px; _background-color: #000
+}
+#blackbird .main .mainBody OL {
+	PADDING-BOTTOM: 0px; LINE-HEIGHT: 1.45; LIST-STYLE-TYPE: none; MARGIN: 0px; PADDING-LEFT: 0px; WIDTH: 100%; PADDING-RIGHT: 0px; HEIGHT: 100%; OVERFLOW: auto; PADDING-TOP: 0px
+}
+#blackbird .main .mainBody OL LI {
+	BORDER-BOTTOM: #333 1px solid; PADDING-BOTTOM: 1px; MARGIN: 2px; PADDING-LEFT: 30px; PADDING-RIGHT: 4px; COLOR: #ccc; PADDING-TOP: 1px; _text-indent: -2px
+}
+#blackbird .main .mainBody OL LI SPAN {
+	BORDER-BOTTOM: #333 1px solid; BORDER-LEFT: #333 1px solid; MARGIN: -2px 0px 1px -25px; WIDTH: 16px; DISPLAY: block; BACKGROUND: url(images/blackbird_icons.png) no-repeat 0px 0px; FLOAT: left; HEIGHT: 16px; BORDER-TOP: #333 1px solid; BORDER-RIGHT: #333 1px solid; _display: inline
+}
+#blackbird .main .mainBody OL LI.error SPAN {
+	BACKGROUND-POSITION: 0px 0px
+}
+#blackbird .main .mainBody OL LI.warn SPAN {
+	BACKGROUND-POSITION: 0px -16px
+}
+#blackbird .main .mainBody OL LI.info SPAN {
+	BACKGROUND-POSITION: 0px -32px
+}
+#blackbird .main .mainBody OL LI.debug SPAN {
+	BACKGROUND-POSITION: 0px -48px
+}
+#blackbird .main .mainBody OL LI.profile SPAN {
+	BACKGROUND-POSITION: 0px -64px
+}
+#blackbird .main .mainBody OL LI.profile {
+	FONT-STYLE: italic; COLOR: #ddd
+}
+#blackbird .errorHidden LI.error {
+	DISPLAY: none
+}
+#blackbird .warnHidden LI.warn {
+	DISPLAY: none
+}
+#blackbird .infoHidden LI.info {
+	DISPLAY: none
+}
+#blackbird .debugHidden LI.debug {
+	DISPLAY: none
+}
+#blackbird .profileHidden LI.profile {
+	DISPLAY: none
+}
+#blackbird .main DIV.right {
+	WIDTH: 17px; BACKGROUND: url(images/blackbird_panel.png) no-repeat 100% -30px; _width: 0
+}
+#blackbird .footer DIV {
+	FLOAT: left; HEIGHT: 50px; _background-color: #000; _height: 30px
+}
+#blackbird .footer DIV.left {
+	BACKGROUND-POSITION: left bottom; _width: 100%
+}
+#blackbird .footer DIV.left LABEL {
+	POSITION: relative; MARGIN: 8px 0px 0px 16px; DISPLAY: block; FONT-FAMILY: Arial, sans-serif; COLOR: #bbb; _margin: 4px 0 0 8px
+}
+#blackbird .footer DIV.left LABEL INPUT {
+	PADDING-BOTTOM: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; VERTICAL-ALIGN: middle; PADDING-TOP: 0px
+}
+#blackbird .footer DIV.right {
+	WIDTH: 150px; BACKGROUND-POSITION: right bottom; _width: 0
+}

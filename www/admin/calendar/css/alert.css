@@ -1,0 +1,78 @@
+#popup_container {
+	BORDER-BOTTOM: #777 1px solid; MIN-WIDTH: 300px; BORDER-LEFT: #777 1px solid; FONT-FAMILY: Arial, sans-serif; MAX-WIDTH: 600px; BACKGROUND: #fff; COLOR: #000; FONT-SIZE: 12px; BORDER-TOP: #777 1px solid; BORDER-RIGHT: #777 1px solid; _width: 320px
+}
+#ctl {
+	Z-INDEX: 99999; POSITION: absolute; FONT-STYLE: normal; WIDTH: 5px; BACKGROUND: url(../images/corners.gif) #fff no-repeat; HEIGHT: 5px; OVERFLOW: hidden
+}
+#cbl {
+	Z-INDEX: 99999; POSITION: absolute; FONT-STYLE: normal; WIDTH: 5px; BACKGROUND: url(../images/corners.gif) #fff no-repeat; HEIGHT: 5px; OVERFLOW: hidden
+}
+#ctr {
+	Z-INDEX: 99999; POSITION: absolute; FONT-STYLE: normal; WIDTH: 5px; BACKGROUND: url(../images/corners.gif) #fff no-repeat; HEIGHT: 5px; OVERFLOW: hidden
+}
+#cbr {
+	Z-INDEX: 99999; POSITION: absolute; FONT-STYLE: normal; WIDTH: 5px; BACKGROUND: url(../images/corners.gif) #fff no-repeat; HEIGHT: 5px; OVERFLOW: hidden
+}
+#ctl {
+	BACKGROUND-COLOR: #dae7f6; BACKGROUND-POSITION: 0px 0px; TOP: -1px; LEFT: -1px
+}
+#ctr {
+	BACKGROUND-COLOR: #dae7f6; BACKGROUND-POSITION: -5px 0px; TOP: -1px; RIGHT: -1px
+}
+#cbl {
+	BOTTOM: -1px; BACKGROUND-POSITION: 0px -5px; LEFT: -1px
+}
+#cbr {
+	BOTTOM: -1px; BACKGROUND-POSITION: -5px -5px; RIGHT: -1px
+}
+#popup_title {
+	BORDER-BOTTOM: #777 1px solid; TEXT-ALIGN: left; PADDING-BOTTOM: 0px; LINE-HEIGHT: 1.9em; MARGIN: 0em; PADDING-LEFT: 8px; PADDING-RIGHT: 0px; BACKGROUND: url(../images/title.gif) repeat-x 0px -2px; COLOR: #333; FONT-SIZE: 12px; CURSOR: default; FONT-WEIGHT: bold; PADDING-TOP: 0px
+}
+#popup_close {
+	POSITION: absolute; WIDTH: 15px; BACKGROUND: url(../images/close.gif) no-repeat; HEIGHT: 15px; TOP: 4px; CURSOR: pointer; RIGHT: 7px
+}
+#popup_close:hover {
+	FILTER: alpha(opacity=80); opacity: 0.8; -moz-opacity: 0.8
+}
+#popup_content {
+	PADDING-BOTTOM: 12px; MARGIN: 0em; PADDING-LEFT: 12px; PADDING-RIGHT: 12px; BACKGROUND: no-repeat 16px 16px; PADDING-TOP: 12px
+}
+#popup_container .alert {
+	BACKGROUND-IMAGE: url(../images/info.gif)
+}
+#popup_container .confirm {
+	BACKGROUND-IMAGE: url(../images/important.gif)
+}
+#popup_container .prompt {
+	BACKGROUND-IMAGE: url(../images/help.gif)
+}
+#popup_message {
+	PADDING-LEFT: 48px
+}
+#popup_panel {
+	TEXT-ALIGN: center; MARGIN: 1em 0em 0em 1em
+}
+#popup_ok {
+	BORDER-BOTTOM: medium none; TEXT-ALIGN: center; BORDER-LEFT: medium none; PADDING-BOTTOM: 0px; LINE-HEIGHT: 20px; PADDING-LEFT: 0px; WIDTH: 55px; PADDING-RIGHT: 0px; BACKGROUND: url(../images/bot.gif) no-repeat; HEIGHT: 20px; FONT-SIZE: 12px; BORDER-TOP: medium none; BORDER-RIGHT: medium none; PADDING-TOP: 0px
+}
+#popup_cancel {
+	BORDER-BOTTOM: medium none; TEXT-ALIGN: center; BORDER-LEFT: medium none; PADDING-BOTTOM: 0px; LINE-HEIGHT: 20px; PADDING-LEFT: 0px; WIDTH: 55px; PADDING-RIGHT: 0px; BACKGROUND: url(../images/bot.gif) no-repeat; HEIGHT: 20px; FONT-SIZE: 12px; BORDER-TOP: medium none; BORDER-RIGHT: medium none; PADDING-TOP: 0px
+}
+#popup_prompt {
+	MARGIN: 0.5em 0em
+}
+.openBox#popup_content {
+	PADDING-BOTTOM: 12px; PADDING-LEFT: 12px; PADDING-RIGHT: 12px; BACKGROUND: none transparent scroll repeat 0% 0%; PADDING-TOP: 12px
+}
+.openBox #popup_message {
+	PADDING-BOTTOM: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; OVERFLOW: auto; PADDING-TOP: 0px
+}
+#over_container {
+	BORDER-BOTTOM: #0099cc 1px solid; MIN-WIDTH: 300px; BORDER-LEFT: #0099cc 1px solid; BACKGROUND: #ddedfb; COLOR: #000; BORDER-TOP: #0099cc 1px solid; BORDER-RIGHT: #0099cc 1px solid
+}
+#over_message {
+	TEXT-ALIGN: center; PADDING-BOTTOM: 5px; PADDING-LEFT: 20px; PADDING-RIGHT: 20px; PADDING-TOP: 5px
+}
+.over_3#over_container {
+	BORDER-BOTTOM: #ff8080 1px solid; BORDER-LEFT: #ff8080 1px solid; BACKGROUND: #fff2f2; BORDER-TOP: #ff8080 1px solid; BORDER-RIGHT: #ff8080 1px solid
+}
