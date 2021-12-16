@@ -4827,11 +4827,11 @@ editor.init = () => {
     let svgId = _req().id;
     //if(id)
     if (svgId) {
-      __post('svgedit/edit', { id: svgId, title : newTitle, content: svg }, res => {
+      __post('svgedit/edit', { id: svgId, title: newTitle, content: str }, res => {
         _msg("编辑成功")
       })
     } else {
-      __post('svgedit/add', { title: newTitle, content: svg }, res => {
+      __post('svgedit/add', { title: newTitle, content: str }, res => {
         layer.close(index);
         console.log(res)
         svgId = res.data.data;
