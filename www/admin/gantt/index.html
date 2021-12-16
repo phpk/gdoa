@@ -37,8 +37,7 @@
   <script src="ganttDrawerSVG.js"></script>
   <script src="ganttZoom.js"></script>
   <script src="ganttGridEditor.js"></script>
-  <script src="ganttMaster.js"></script>  
-  <script src="showtips.js"></script>  
+  <script src="ganttMaster.js"></script>   
   <script src="/admin/config/config.js"></script>
 </head>
 <body style="background-color: #fff;">
@@ -68,24 +67,6 @@
     margin-left: 10px;
   }
 
-  .show_msg{
-				width:100%;
-				height:35px;
-				text-align:center;
-				position:fixed;
-				left: 0;
-				z-index: 999;
-			}
-			.show_span{
-					display: inline-block;
-					height: 35px;
-					padding: 0 15px;
-					line-height: 35px;
-					background:rgba(0,0,0,0.8);
-					border-radius: 50px;
-					color: #fff;
-					font-size: 1em;
-			}
 
 </style>
 
@@ -275,7 +256,7 @@ function saveGanttOnServer() {
     title = prj.tasks[0].name;
   }else{
     //console.log(layui.modules.layer)
-    showMsg('内容不能为空');
+    _msg('内容不能为空');
     return;
   }
   //console.log(title)
@@ -293,10 +274,10 @@ function saveGanttOnServer() {
         success: (res) => {
             //console.log(res)
             if (res.code === 0) {
-                showMsg('保存成功')
+                _msg('保存成功')
                 gantId = res.data;
             } else {
-                showMsg('保存失败')
+                _msg('保存失败')
             }
         }
     });
@@ -310,9 +291,9 @@ function saveGanttOnServer() {
         success: (res) => {
             //console.log(res)
             if (res.code === 0) {
-                showMsg('保存成功')
+                _msg('保存成功')
             } else {
-                showMsg('保存失败')
+                _msg('保存失败')
             }
         }
     });

@@ -16,5 +16,7 @@ www/source/svg/node_modules
 www/source/svg/dist
 www/source/draw/node_modules
 www/source/draw/dist
+www/source/imgedit/dist
+www/source/imgedit/node_modules
 app/
 todo.md

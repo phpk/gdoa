@@ -72,7 +72,7 @@ editor.exportWindowCt = 0;
 /**
 * @type {boolean}
 */
-editor.langChanged = false;
+editor.langChanged = true;
 /**
 * @type {boolean}
 */
@@ -110,7 +110,7 @@ const callbacks = [],
     /**
     * Default to "en" if locale.js detection does not detect another language.
     */
-    lang: '',
+    lang: 'zh-CN',
     /**
     * Will default to 's' if the window height is smaller than the minimum
     * height and 'm' otherwise.
@@ -1564,7 +1564,31 @@ editor.init = () => {
       showSourceEditor(0, true);
       return;
     }
-
+    //console.log(svg)
+    /*
+    let id = _req().id;
+    if (id) {
+      __post('svgedit/edit', { id: id, content: svg }, res => {
+        _msg("编辑成功")
+      })
+    } else {
+      layer.prompt({
+        formType: 0,
+        value: '',
+        title: '请输入文件名',
+        area: ['200px', '30px'] //自定义文本域宽高
+      }, function (value, index, elem) {
+        //alert(value); //得到value
+        __post('svgedit/add', {title:value, content: svg }, res => {
+          layer.close(index);
+          layer.msg("编辑成功", {icon:1})
+        })
+        
+      });
+      
+    }
+    return;
+    */
     // Since saving SVGs by opening a new window was removed in Chrome use artificial link-click
     // https://stackoverflow.com/questions/45603201/window-is-not-allowed-to-navigate-top-frame-navigations-to-data-urls
     const a = document.createElement('a');
@@ -4759,6 +4783,7 @@ editor.init = () => {
   *
   * @returns {boolean} Whether there were problems saving the document properties
   */
+  let svgId = _req().id;
   const saveDocProperties = function () {
     // set title
     const newTitle = $('#canvas_title').val();
@@ -4792,8 +4817,30 @@ editor.init = () => {
 
     // Set image save option
     editor.pref('img_save', $('#image_save_opts :checked').val());
+    if (!newTitle || newTitle == '') {
+      _msg('名称不能为空');
+      return false;
+    }
     updateCanvas();
     hideDocProperties();
+    let str = '<?xml version="1.0"?>\n' + svgCanvas.getSvgString();
+    //console.log(svgCanvas.getSvgString())
+    
+    
+    //if(id)
+    if (svgId) {
+      __post('svgedit/edit', { id: svgId, title: newTitle, content: str }, res => {
+        _msg("编辑成功")
+      })
+    } else {
+      __post('svgedit/add', { title: newTitle, content: str }, res => {
+        //layer.close(index);
+        //console.log(res)
+        svgId = res.data.data;
+        _msg("添加成功")
+      })
+
+    }
     return true;
   };
 

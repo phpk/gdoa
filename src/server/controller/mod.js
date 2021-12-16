@@ -19,7 +19,7 @@ module.exports = class extends Base {
     async listAction() {
         let { page, limit } = this.get();
 
-        let list = await this.model('mod').page(page, limit).select();
+        let list = await this.model('mod').page(page, limit).order('id desc').select();
         let types = {
             1: '控制层',
             2: '模型层',
