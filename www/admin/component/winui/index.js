@@ -307,6 +307,27 @@
         }
     },
     {
+        tips: 'Todos',
+        icon: 'fa-bell',
+        click: function (e) {
+            //winui.fullScreen(document.documentElement);
+            winui.window.open({
+                id : 'godocmstodos',
+                type: 2,
+                title: 'ToDos',
+                shade: 0,
+                moveOut: true,
+                area: ['80%', '80%'],
+                anim: 1,
+                content: '/admin/tools/todo/index.html',
+                offset: 'auto'  //居中
+                , min: true  //显示最小化按钮
+                , max: true  //显示最大化按钮
+                , refresh: true    //显示刷新按钮
+            });
+        }
+    },
+    {
         tips: '番茄时钟',
         icon: 'fa-clock-o',
         click: function (e) {
@@ -317,7 +338,7 @@
                 title: '番茄时钟',
                 shade: 0,
                 moveOut: true,
-                area: ['80%', '80%'],
+                area: ['550px', '320px'],
                 anim: 1,
                 content: '/admin/tools/clock/index.html',
                 offset: 'auto'  //居中
