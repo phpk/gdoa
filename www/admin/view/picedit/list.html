@@ -50,6 +50,9 @@
 		<script type="text/html" id="picedit-time">
 			{{layui.util.toDateString(d.add_time*1000, 'yyyy-MM-dd HH:mm:ss')}}
 		</script>
+		<script type="text/html" id="up-time">
+			{{layui.util.toDateString(d.update_time*1000, 'yyyy-MM-dd HH:mm:ss')}}
+		</script>
 		<script src="../../config/config.js"></script>
 		<script src="../../component/layui/layui.js"></script>
 		<script src="../../component/ui/ui.js"></script>
@@ -72,6 +75,7 @@
 						{
 							title: '名称',
 							field: 'title',
+							edit: 'text',
 							align: 'center'
 						},
 						{
@@ -79,6 +83,12 @@
 							field: 'add_time',
 							align: 'center',
 							templet: '#picedit-time'
+						},
+						{
+							title: '更新时间',
+							field: 'update_time',
+							align: 'center',
+							templet: '#up-time'
 						},
 						{
 							title: '操作',
@@ -129,6 +139,23 @@
 						window.refresh();
 					}
 				});
+				table.on('edit(picedit-table)', function (obj) {
+					let update = {
+						id: obj.data.id,
+						value: obj.value
+					}
+					console.log(update)
+					_post(layui, 'picedit/editName', update, res => {
+						//console.log(res)
+						layer.msg('更新成功', {
+								icon: 1,
+								time: 1000
+							});
+					}, err => {
+						//console.log(err)
+
+					})
+				});
 				// 监听搜索操作
 
 				form.on('submit(picedit-query)', function(data) {
@@ -160,10 +187,10 @@
 						title: '新增图片',
 						shade: 0.1,
 						offset: 'rt',
-						area: ['80%', '100%'],
+						area: ['90%', '100%'],
 						anim: 1,
 						maxmin: true,
-						content: '/admin/picedit/index.html'
+						content: '/admin/imgeditor/index.html'
 					});
 				}
 
@@ -173,10 +200,10 @@
 						title: '修改',
 						shade: 0.1,
 						offset: 'rt',
-						area: ['80%', '100%'],
+						area: ['90%', '100%'],
 						anim: 1,
 						maxmin: true,
-						content: '/admin/picedit/index.html?id=' + obj.data.id
+						content: '/admin/imgeditor/index.html?id=' + obj.data.id
 					});
 				}
 				window.remove = function(obj){
