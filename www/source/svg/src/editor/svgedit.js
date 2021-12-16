@@ -4783,6 +4783,7 @@ editor.init = () => {
   *
   * @returns {boolean} Whether there were problems saving the document properties
   */
+  let svgId = _req().id;
   const saveDocProperties = function () {
     // set title
     const newTitle = $('#canvas_title').val();
@@ -4816,15 +4817,16 @@ editor.init = () => {
 
     // Set image save option
     editor.pref('img_save', $('#image_save_opts :checked').val());
+    if (!newTitle || newTitle == '') {
+      _msg('名称不能为空');
+      return false;
+    }
     updateCanvas();
     hideDocProperties();
     let str = '<?xml version="1.0"?>\n' + svgCanvas.getSvgString();
     //console.log(svgCanvas.getSvgString())
-    if (!newTitle || newTitle == '') {
-      _msg('名称不能为空');
-      return true;
-    }
-    let svgId = _req().id;
+    
+    
     //if(id)
     if (svgId) {
       __post('svgedit/edit', { id: svgId, title: newTitle, content: str }, res => {
@@ -4832,10 +4834,10 @@ editor.init = () => {
       })
     } else {
       __post('svgedit/add', { title: newTitle, content: str }, res => {
-        layer.close(index);
-        console.log(res)
+        //layer.close(index);
+        //console.log(res)
         svgId = res.data.data;
-        layer.msg("添加成功", { icon: 1 })
+        _msg("添加成功")
       })
 
     }
