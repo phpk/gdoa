@@ -307,14 +307,14 @@
         }
     },
     {
-        tips: 'Todos',
-        icon: 'fa-bell',
+        tips: '便签',
+        icon: 'fa-clock-o',
         click: function (e) {
             //winui.fullScreen(document.documentElement);
             winui.window.open({
                 id : 'godocmstodos',
                 type: 2,
-                title: 'ToDos',
+                title: '便签',
                 shade: 0,
                 moveOut: true,
                 area: ['80%', '80%'],
@@ -329,7 +329,7 @@
     },
     {
         tips: '番茄时钟',
-        icon: 'fa-clock-o',
+        icon: 'fa-bell',
         click: function (e) {
             //winui.fullScreen(document.documentElement);
             winui.window.open({
