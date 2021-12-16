@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>图片编辑器</title>
+    <link type="text/css" href="css/tui-color-picker.css" rel="stylesheet"/>
+    <link type="text/css" href="css/tui-image-editor.min.css" rel="stylesheet" />
+    <link type="text/css" href="css/fonts.css?family=Noto+Sans" rel="stylesheet" />
+    <style>
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="tui-image-editor-container"></div>
+    <script type="text/javascript" src="js/fabric.js"></script>
+    <script type="text/javascript" src="js/tui-code-snippet.min.js"></script>
+    <script type="text/javascript" src="js/tui-color-picker.js"></script>
+    <script type="text/javascript" src="js/FileSaver.min.js"></script>
+    <script type="text/javascript" src="js/tui-image-editor.min.js"></script>
+    <!--script type="text/javascript" src="js/theme/white-theme.js"></script-->
+    <script type="text/javascript" src="js/theme/black-theme.js"></script>
+    <script>
+      // Image editor
+      var imageEditor = new tui.ImageEditor('#tui-image-editor-container', {
+        includeUI: {
+          loadImage: {
+            path: 'img/sampleImage2.png',
+            name: 'SampleImage',
+          },
+          theme: blackTheme, // or whiteTheme
+          initMenu: 'filter',
+          menuBarPosition: 'bottom',
+        },
+        cssMaxWidth: 700,
+        cssMaxHeight: 500,
+        usageStatistics: false,
+      });
+      window.onresize = function () {
+        imageEditor.ui.resizeEditor();
+      };
+    </script>
+  </body>
+</html>

@@ -291,12 +291,18 @@
 		<div style="">
 			<canvas id="rest" style="display:none;"></canvas>
 		</div>
+		<script src="/admin/config/config.js"></script>
 		<script src="/admin/picedit/scripts.min.js?v29"></script>
 		<script src="/admin/picedit/jquery.min.js"></script>
-		<script src="/admin/picedit/assets/lib/layer.js"></script>
+		<!--script src="/admin/picedit/assets/lib/layer.js"></script-->
+		<script src="/admin/component/layer/layer.js"></script>
 		<script>
+			
+			let req = _req();
+			let id = req.id;
+			console.log(id)
 			window.history.pushState(null, null, "/admin/picedit/");
-			var pixie = new Pixie({
+			let pixie = new Pixie({
 				languages: {
 					active: "lang_zh",
 					custom: {
@@ -401,20 +407,54 @@
 				},
 				watermarkText: "",
 				onLoad: function() {
-					console.log(pixie), window.postMessage("pixieLoaded", "*")
+					//console.log(pixie), window.postMessage("pixieLoaded", "*")
+					if(id) {
+						__post('picedit/editBefore', {id}, res => {
+							//console.log(res)
+							var a = res.file.toDataURL();
+							pixie.resetAndOpenEditor("image", a)
+						})
+					}
 				},
 				onFileOpen: function(e) {
 					console.log(e)
 				},
 				onSave: function(e, t) {
-					if (isPC()) t.indexOf(".json") > 1 ? download(e, t) : downloadFile(e, t);
-					else {
-						var o = window.open();
-						t.indexOf(".json") > 1 ? o.document.write("<code>" + e + "</code>") : o.document.write(
-							"<center><img src=" + e +
-							" /><br><h3>\u957f\u6309\u56fe\u7247\u6216\u9f20\u6807\u53f3\u952e\u4fdd\u5b58</h3></center>"
-							)
-					}
+					//console.log(e)
+					layer.confirm('', {
+						btn: ['保存并下载本地', '保存到服务器']
+					}, (index)=> {
+						console.log(t)
+						layer.close(index);
+						if (isPC()) t.indexOf(".json") > 1 ? download(e, t) : downloadFile(e, t);
+						else {
+							var o = window.open();
+							t.indexOf(".json") > 1 ? o.document.write("<code>" + e + "</code>") : o.document.write(
+								"<center><img src=" + e +
+								" /><br><h3>\u957f\u6309\u56fe\u7247\u6216\u9f20\u6807\u53f3\u952e\u4fdd\u5b58</h3></center>"
+								)
+						}
+					}, ()=> {
+						//console.log(e)
+						//console.log(t)
+						if(!id) {
+							__post('picedit/add',{title : t, content : e}, res => {
+								console.log(res.data)
+								id = res.data;
+								layer.msg('保存成功');
+
+							})
+						}else{
+							__post('picedit/edit',{id : id, title : t, content : e}, res => {
+								//id = res.data;
+								layer.msg('编辑成功');
+							})
+						}
+						
+					});
+					
+					return;
+					
 				},
 				crossOrigin: !0,
 				ui: {
