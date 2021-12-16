@@ -209,9 +209,9 @@ const _ajax = (url, method = "GET", params, callback) => {
             } catch (e) {
                 try {
                     xmlhttp = new XMLHttpRequest();
-                    if (xmlhttp.overrideMimeType) {
-                        xmlhttp.overrideMimeType("text/xml");
-                    }
+                    // if (xmlhttp.overrideMimeType) {
+                    //     xmlhttp.overrideMimeType("text/xml");
+                    // }
                 } catch (e) {
                     _msg("您的浏览器不支持Ajax");
                 }
@@ -239,9 +239,11 @@ const _ajax = (url, method = "GET", params, callback) => {
     xmlhttp.onreadystatechange = function () {
         let returnValue;
         try {
+            
             if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                //console.log(xmlhttp)
                 let jsonText = xmlhttp.responseText;
-                //console.log(jsonText)
+                //console.log(xmlhttp)
                 if (jsonText) {
                     //returnValue = eval("(" + jsonText + ")");
                     returnValue = JSON.parse(jsonText);
@@ -267,17 +269,20 @@ const _ajax = (url, method = "GET", params, callback) => {
     // 建立连接  
     xmlhttp.open(method, url, true);
     xmlhttp.withCredentials = true;
-    xmlhttp.setRequestHeader("Content-Type",
-        "application/x-www-form-urlencoded");
+    xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    //xmlhttp.setRequestHeader("Content-type", "application/json");
     xmlhttp.setRequestHeader(TOKEN_NAME, getToken());
+    //xmlhttp.setRequestHeader("Content-Type", "application/json");
     if ("GET" === method.toUpperCase()) {
         xmlhttp.send(null);
     }
+    
     else if ("POST" === method.toUpperCase()) {
         // 如果是POST提交，设置请求头信息  
         
         xmlhttp.send(formateParams);
     }
+    
     
 }
 const __post = (url, params, callback) => {
