@@ -18,13 +18,14 @@
   <!-- SCRIPTS -->
 
   <!-- Lacking browser support -->
+  <script src="/admin/config/config.js"></script>
   <script type="module" src="./redirect-on-lacking-support.js"></script>
 
   <!-- If you do not wish to add extensions by URL, you can add calls
       within the following file to svgEditor.setConfig -->
   <script type="module" src="xdomain-index.js"></script>
 
-  <title>SVG-edit</title>
+  <title>SVG编辑器</title>
 </head>
 
 <body>
@@ -65,6 +66,16 @@
               <td class="layername">Layer 1</td>
             </tr>
           </table>
+
+          <h3>Objects</h3>
+          <table id="objectlist">
+            <tr class="object">
+              <td class="objectvis"></td>
+              <td class="objectname">Object 1</td>
+              <td class="objectselect"></td>
+            </tr>
+          </table>
+
           <span id="selLayerLabel">Move elements to:</span>
           <select id="selLayerNames" title="Move selected elements to a different layer" disabled="disabled">
             <option selected="selected" value="layer1">Layer 1</option>
@@ -75,7 +86,7 @@
       </div>
       <div id="main_button">
         <div id="main_icon" class="tool_button" title="Main Menu">
-          <span>SVG-Edit</span>
+          <span>主菜单</span>
           <div id="logo"></div>
           <div class="dropdown"></div>
         </div>
@@ -84,48 +95,40 @@
           <ul>
             <li id="tool_clear">
               <div></div>
-              New Image (N)
+              新的图片 (N)
             </li>
             <li id="tool_open" style="display:none;">
               <div></div>
-              Open SVG
+              打开SVG
             </li>
             <li id="tool_import" style="display:none;">
               <div></div>
-              Import Image
+              导入图片
             </li>
             <li id="tool_save">
               <div></div>
-              Save Image (S)
+              保存图片 (S)
             </li>
             <li id="tool_export">
               <div></div>
-              Export
+              导出
             </li>
             <li id="tool_docprops">
               <div></div>
-              Document Properties (D)
+              图片属性 (D)
             </li>
             <li id="tool_editor_prefs">
               <div></div>
-              Editor Preferences
+              编辑器设置
             </li>
-            <li id="tool_editor_homepage">
-              <div></div>
-              SVG-Edit Home Page
-            </li>
-            <li style="width:50%;margin:auto;">
-              <a href="https://www.netlify.com">
-                <img style="height:25px;" src="https://www.netlify.com/img/global/badges/netlify-dark.svg" alt="Deploys by Netlify" />
-              </a>
-            </li>
+            
           </ul>
         </div>
       </div>
       <div id="tools_top" class="tools_panel">
         <div id="editor_panel">
           <div class="tool_sep"></div>
-          <div class="push_button" id="tool_source" title="Edit Source [U]"></div>
+          <div class="push_button" id="tool_source" title="编辑源码 [U]"></div>
           <div class="tool_button" id="tool_wireframe" title="Wireframe Mode [F]"></div>
         </div>
         <!-- History buttons -->
@@ -309,11 +312,44 @@
         </div>
         <div id="text_panel">
           <div class="toolset">
-            <div class="tool_button" id="tool_text_anchor_start" title="Align the text in start"></div>
-            <div class="tool_button" id="tool_text_anchor_middle" title="Align the text in middle"></div>
-            <div class="tool_button" id="tool_text_anchor_end" title="Align the text in end"></div>
             <div class="tool_button" id="tool_bold" title="Bold Text [B]"><span></span>B</div>
             <div class="tool_button" id="tool_italic" title="Italic Text [I]"><span></span>i</div>
+          </div>
+          <div class="dropdown toolset" id="tool_text_anchor" title="Define the text anchor">
+            <div id="text_anchor_icon" class="icon_label"></div>
+            <button></button>
+          </div>
+          <div class="dropdown toolset" id="tool_text_decoration" title="Format text with decoration">
+            <div id="text_decoration_icon" class="icon_label"></div>
+            <button></button>
+          </div>
+          <div class="toolset" id="tool_letter_spacing" title="Change the letter spacing of the text">
+            <label>
+              <span id="letter_spacing_icon" class="icon_label"></span>
+              <input id="letter_spacing" size="3" value="0" type="text" />
+            </label>
+            <div id="letter_spacing_dropdown" class="dropdown">
+              <button></button>
+              <ul>
+                <li class="special">
+                  <div id="letter_spacing_slider"></div>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="toolset" id="tool_word_spacing" title="Change the word spacing of the text">
+            <label>
+              <span id="word_spacing_icon" class="icon_label"></span>
+              <input id="word_spacing" size="3" value="0" type="text" />
+            </label>
+            <div id="word_spacing_dropdown" class="dropdown">
+              <button></button>
+              <ul>
+                <li class="special">
+                  <div id="word_spacing_slider"></div>
+                </li>
+              </ul>
+            </div>
           </div>
           <div class="toolset" id="tool_font_family">
             <label>
@@ -338,6 +374,24 @@
             <span id="font_sizeLabel" class="icon_label"></span>
             <input id="font_size" size="3" value="0" type="text" />
           </label>
+          <div class="toolset" id="tool_text_length" title="Change the length of the text">
+            <label>
+              <span id="text_length_icon" class="icon_label"></span>
+              <input id="text_length" size="4" value="0" type="text" />
+            </label>
+            <div id="text_length_dropdown" class="dropdown">
+              <button></button>
+              <ul>
+                <li class="special">
+                  <div id="text_length_slider"></div>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="dropdown toolset" id="tool_length_adjust" title="Controls how the text is stretched into the length defined by the textLength attribute">
+            <label id="length_adjust_label">Length adjust:</label>
+            <button></button>
+          </div>
           <!-- Not visible, but still used -->
           <input id="text" type="text" size="35" />
         </div>
@@ -518,6 +572,20 @@
           <li class="push_button" id="tool_postop" title="Align Top"></li>
           <li class="push_button" id="tool_posmiddle" title="Align Middle"></li>
           <li class="push_button" id="tool_posbottom" title="Align Bottom"></li>
+        </ul>
+        <ul id="text_anchor_opts">
+          <li class="push_button" id="tool_text_anchor_start" title="Align the text in start" data-value="start"></li>
+          <li class="push_button" id="tool_text_anchor_middle" title="Align the text in middle" data-value="middle"></li>
+          <li class="push_button" id="tool_text_anchor_end" title="Align the text in end" data-value="end"></li>
+        </ul>
+        <ul id="text_decoration_opts">
+          <li class="push_button" id="tool_text_decoration_underline" title="Underline Text" data-value="underline">ab</li>
+          <li class="push_button" id="tool_text_decoration_linethrough" title="Strike through Text" data-value="line-through">ab</li>
+          <li class="push_button" id="tool_text_decoration_overline" title="Overline Text" data-value="overline">ab</li>
+        </ul>
+        <ul id="length_adjust_opts">
+          <li class="push_button" id="tool_length_adjust_spacing" title="Stretched using spacing only" data-value="spacing">spacing</li>
+          <li class="push_button" id="tool_length_adjust_spacingAndGlyphs" title="Stretched using spacing and glyphs" data-value="spacingAndGlyphs">spacingAndGlyphs</li>
         </ul>
       </div>
       <!-- hidden divs -->

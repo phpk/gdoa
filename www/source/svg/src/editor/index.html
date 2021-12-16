@@ -18,13 +18,14 @@
   <!-- SCRIPTS -->
 
   <!-- Lacking browser support -->
+  <script src="/admin/config/config.js"></script>
   <script type="module" src="./redirect-on-lacking-support.js"></script>
 
   <!-- If you do not wish to add extensions by URL, you can add calls
       within the following file to svgEditor.setConfig -->
   <script type="module" src="index.js"></script>
 
-  <title>SVG-edit V6.1.0</title>
+  <title>SVG编辑器</title>
 </head>
 
 <body>
@@ -85,7 +86,7 @@
       </div>
       <div id="main_button">
         <div id="main_icon" class="tool_button" title="Main Menu">
-          <span>SVG-Edit</span>
+          <span>主菜单</span>
           <div id="logo"></div>
           <div class="dropdown"></div>
         </div>
@@ -94,48 +95,40 @@
           <ul>
             <li id="tool_clear">
               <div></div>
-              New Image (N)
+              新的图片 (N)
             </li>
             <li id="tool_open" style="display:none;">
               <div></div>
-              Open SVG
+              打开SVG
             </li>
             <li id="tool_import" style="display:none;">
               <div></div>
-              Import Image
+              导入图片
             </li>
             <li id="tool_save">
               <div></div>
-              Save Image (S)
+              下载SVG (S)
             </li>
             <li id="tool_export">
               <div></div>
-              Export
+              导出
             </li>
             <li id="tool_docprops">
               <div></div>
-              Document Properties (D)
+              保存图片 (D)
             </li>
             <li id="tool_editor_prefs">
               <div></div>
-              Editor Preferences
+              编辑器设置
             </li>
-            <li id="tool_editor_homepage">
-              <div></div>
-              SVG-Edit Home Page
-            </li>
-            <li style="width:50%;margin:auto;">
-              <a href="https://www.netlify.com">
-                <img style="height:25px;" src="https://www.netlify.com/img/global/badges/netlify-dark.svg" alt="Deploys by Netlify" />
-              </a>
-            </li>
+            
           </ul>
         </div>
       </div>
       <div id="tools_top" class="tools_panel">
         <div id="editor_panel">
           <div class="tool_sep"></div>
-          <div class="push_button" id="tool_source" title="Edit Source [U]"></div>
+          <div class="push_button" id="tool_source" title="编辑源码 [U]"></div>
           <div class="tool_button" id="tool_wireframe" title="Wireframe Mode [F]"></div>
         </div>
         <!-- History buttons -->
@@ -620,46 +613,46 @@
       <div class="overlay"></div>
       <div id="svg_docprops_container">
         <div id="tool_docprops_back" class="toolbar_button">
-          <button id="tool_docprops_save">OK</button>
-          <button id="tool_docprops_cancel">Cancel</button>
+          <button id="tool_docprops_save">保存</button>
+          <button id="tool_docprops_cancel">取消</button>
         </div>
         <fieldset id="svg_docprops_docprops">
-          <legend id="svginfo_image_props">Image Properties</legend>
+          <legend id="svginfo_image_props">图片属性</legend>
           <label>
-            <span id="svginfo_title">Title:</span>
+            <span id="svginfo_title">名称:</span>
             <input type="text" id="canvas_title" />
           </label>
           <fieldset id="change_resolution">
-            <legend id="svginfo_dim">Canvas Dimensions</legend>
+            <legend id="svginfo_dim">图片大小</legend>
             <label>
-              <span id="svginfo_width">width:</span>
+              <span id="svginfo_width">宽:</span>
               <input type="text" id="canvas_width" size="6" />
             </label>
             <label>
-              <span id="svginfo_height">height:</span>
+              <span id="svginfo_height">高:</span>
               <input type="text" id="canvas_height" size="6" />
             </label>
             <label>
               <select id="resolution">
-                <option id="selectedPredefined" selected="selected">Select predefined:</option>
+                <option id="selectedPredefined" selected="selected">选择像素:</option>
                 <option>640x480</option>
                 <option>800x600</option>
                 <option>1024x768</option>
                 <option>1280x960</option>
                 <option>1600x1200</option>
-                <option id="fitToContent" value="content">Fit to Content</option>
+                <option id="fitToContent" value="content">铺满内容</option>
               </select>
             </label>
           </fieldset>
           <fieldset id="image_save_opts">
-            <legend id="includedImages">Included Images</legend>
+            <legend id="includedImages">包含的图片</legend>
             <label>
               <input type="radio" name="image_opt" value="embed" checked="checked" />
-              <span id="image_opt_embed">Embed data (local files)</span>
+              <span id="image_opt_embed">嵌入数据（本地文件）</span>
             </label>
             <label>
               <input type="radio" name="image_opt" value="ref" />
-              <span id="image_opt_ref">Use file reference</span>
+              <span id="image_opt_ref">使用文件引用</span>
             </label>
           </fieldset>
         </fieldset>
@@ -669,13 +662,13 @@
       <div class="overlay"></div>
       <div id="svg_prefs_container">
         <div id="tool_prefs_back" class="toolbar_button">
-          <button id="tool_prefs_save">OK</button>
-          <button id="tool_prefs_cancel">Cancel</button>
+          <button id="tool_prefs_save">保存</button>
+          <button id="tool_prefs_cancel">取消</button>
         </div>
         <fieldset>
-          <legend id="svginfo_editor_prefs">Editor Preferences</legend>
+          <legend id="svginfo_editor_prefs">编辑器属性</legend>
           <label>
-            <span id="svginfo_lang">Language:</span>
+            <span id="svginfo_lang">语言:</span>
             <!-- Source: https://en.wikipedia.org/wiki/Language_names -->
             <select id="lang_select">
               <option id="lang_ar" value="ar">العربية</option>
