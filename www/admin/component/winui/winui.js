@@ -857,6 +857,7 @@
                 $('.winui-window').addClass('layui-hide');
                 //去除所有任务项选中
                 $('.winui-task-item').removeClass(THIS);
+               
             },
             //控制中心点击事件
             consoleClick: function () {
@@ -893,7 +894,25 @@
                 $('.leftbtnhovertext').remove();
             }
         };
-
+        $(".winui-desktop").on("contextmenu",function(e) { 	
+            if(!$(e.target).hasClass('winui-desktop')) return;	
+            let x= e.clientX,
+                y=e.clientY,
+                desktopmenu=$(".desktop-menu");//菜单 
+            //console.log($(e.target))
+            
+            //判断坐标  
+            let width = document.body.clientWidth,
+                height=document.body.clientHeight;  
+              
+            x=(x+desktopmenu.width())>=width?width-desktopmenu.width()-15:x;  
+            y=(y+desktopmenu.height())>=height-40?height-desktopmenu.height()-15:y; 
+            //定位并显示  
+            desktopmenu.css({"top":y,"left":x}).show(); 
+        });  
+        $(".winui-desktop").on("click", function(e) {
+            $(".desktop-menu").hide()
+        })
         //阻止原有的右键菜单
         $(document).off('contextmenu').on('contextmenu', function () {
             return false;

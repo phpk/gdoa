@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<!-- saved from url=(0028)http://test.90zs.net/window/ -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <title>Desktop-Webos基于Layui</title>
+  <meta name="keywords" content="desktop">
+  <meta name="description" content="desktop">
+  <meta name="renderer" content="webkit|ie-comp|ie-stand">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link rel="stylesheet" type="text/css" href="./assets/layui.css">
+  <link rel="stylesheet" type="text/css" href="./assets/swiper-3.4.0.min.css">
+  <link rel="stylesheet" type="text/css" href="./assets/desktop.css">
+  <link id="layuicss-laydatecss" rel="stylesheet" href="./assets/laydate.css" media="all">
+  <link id="layuicss-skinlayercss" rel="stylesheet" href="./assets/layer.css" media="all">
+  <link id="layuicss-skincodecss" rel="stylesheet" href="./assets/code.css" media="all">
+</head>
+<body class="desktop-bg">
+	
+	<!--桌面app配置参数-->
+	<script type="text/javascript">
+    	var desktpData = {
+    "menu": [
+        {
+            "menuid": "m001", 
+            "name": "1", 
+            "app": [
+                "m101", 
+                "m102", 
+                "m103", 
+                "m104", 
+                "m105", 
+                "m106", 
+                "m107", 
+            ]
+        }, 
+        {
+            "menuid": "m002", 
+            "name": "2", 
+            "app": [
+                "m201", 
+                "m202"
+            ]
+        }, 
+        {
+            "menuid": "m003", 
+            "name": "3", 
+            "app": [
+                "m301"
+            ]
+        }, 
+        {
+            "menuid": "m004", 
+            "name": "opening", 
+            "app": [
+                "m401", 
+                "m402", 
+                "m403", 
+                "m404", 
+                "m405", 
+                "m406"
+            ]
+        }
+    ], 
+    "apps": {
+        "m101": {
+            "appid": "101", 
+            "isicon": 1, 
+            "icon": "&#xe638;",
+			"iconbg":"#51555e", 
+            "name": "弹出层", 
+            "url": "http://layer.layui.com", 
+            "height": "", 
+            "width": ""
+        }, 
+        "m102": {
+            "appid": "102", 
+            "isicon": 1, 
+            "icon": "&#xe63a;", 
+			"iconbg":"#60b979", 
+            "name": "即时通讯", 
+            "url": "http://layim.layui.com/", 
+            "height": "", 
+            "width": ""
+        }, 
+        "m103": {
+            "appid": "103", 
+            "isicon": 1, 
+            "icon": "&#xe637;", 
+			"iconbg":"#d3b59d", 
+            "name": "日期时间选择", 
+            "url": "http://laydate.layui.com/", 
+            "height": "", 
+            "width": ""
+        }, 
+        "m104": {
+            "appid": "104", 
+            "isicon": 1, 
+            "icon": "&#xe633;",
+			"iconbg":"#109b8e", 
+            "name": "分页", 
+            "url": "http://laypage.layui.com/", 
+            "height": "", 
+            "width": ""
+        }, 
+        "m105": {
+            "appid": "105", 
+            "icon": "&#xe628;",
+			"iconbg":"#e6db74",  
+            "name": "模板引擎", 
+            "url": "http://laytpl.layui.com/", 
+            "isicon": 1, 
+            "height": "", 
+            "width": ""
+        }, 
+        "m106": {
+            "appid": "106", 
+            "icon": "&#xe639;",
+			"iconbg":"#e6db74",  
+            "name": "表单", 
+            "url": "customer.html", 
+            "isicon": 1, 
+            "height": "", 
+            "width": ""
+        }, 
+        "m107": {
+            "appid": "107", 
+            "icon": "&#xe62f;", 
+			"iconbg":"#e6db74",  
+            "name": "文件上传", 
+            "url": "http://www.layui.com/doc/modules/upload.html", 
+            "isicon": 1, 
+            "height": "", 
+            "width": ""
+        }, 
+        "m201": {
+            "appid": "107", 
+            "icon": "&#xe62f;", 
+			"iconbg":"#e6db74",  
+            "name": "常用元素操作", 
+            "url": "http://www.layui.com/doc/modules/element.html", 
+            "isicon": 1, 
+            "height": "", 
+            "width": ""
+        }, 
+        "m202": {
+             "appid": "107", 
+            "icon": "&#xe62f;", 
+			"iconbg":"#e6db74",  
+            "name": "文件上传", 
+            "url": "http://www.layui.com/doc/modules/upload.html", 
+            "isicon": 1, 
+            "height": "", 
+            "width": ""
+        }, 
+        "m301": {
+            "appid": "301", 
+            "icon": "&#xe635;", 
+			"iconbg":"#e6db74", 
+            "name": "代码修饰器", 
+            "url": "http://www.layui.com/doc/modules/code.html", 
+            "isicon": 1, 
+            "height": "", 
+            "width": ""
+        },
+        "m401": {
+            "appid": "101", 
+            "isicon": 1, 
+            "icon": "&#xe638;",
+			"iconbg":"#51555e", 
+            "name": "弹出层", 
+            "url": "http://layer.layui.com", 
+            "height": "", 
+            "width": ""
+        }, 
+        "m402": {
+            "appid": "102", 
+            "isicon": 1, 
+            "icon": "&#xe63a;", 
+			"iconbg":"#60b979", 
+            "name": "即时通讯", 
+            "url": "http://layim.layui.com/", 
+            "height": "", 
+            "width": ""
+        }, 
+        "m403": {
+            "appid": "103", 
+            "isicon": 1, 
+            "icon": "&#xe637;", 
+			"iconbg":"#d3b59d", 
+            "name": "日期时间选择", 
+            "url": "http://laydate.layui.com/", 
+            "height": "", 
+            "width": ""
+        }, 
+        "m404": {
+            "appid": "104", 
+            "isicon": 1, 
+            "icon": "&#xe633;",
+			"iconbg":"#109b8e", 
+            "name": "分页", 
+            "url": "http://laypage.layui.com/",
+            "height": "", 
+            "width": ""
+        }, 
+        "m405": {
+            "appid": "105", 
+            "icon": "&#xe628;",
+			"iconbg":"#e6db74",  
+            "name": "模板引擎", 
+            "url": "http://laytpl.layui.com/", 
+            "isicon": 1, 
+            "height": "", 
+            "width": ""
+        }, 
+        "m406": {
+            "appid": "106", 
+            "icon": "&#xe639;",
+			"iconbg":"#e6db74",  
+            "name": "表单", 
+            "url": "customer.html", 
+            "isicon": 1, 
+            "height": "", 
+            "width": ""
+        },
+    }
+}
+    </script> 
+    
+    <!--主桌面-->
+    <div class="swiper-container desktop-container" style="height: 984px;">
+    	<div class="swiper-pagination"><span class="swiper-pagination-switch swiper-visible-switch swiper-active-switch"></span><span class="swiper-pagination-switch"></span><span class="swiper-pagination-switch"></span></div>
+        <div class="swiper-wrapper" style="width: 5730px; height: 984px;"><div class="swiper-slide swiper-slide-visible swiper-slide-active" style="width: 1910px; height: 984px;"><div class="desktopContainer ui-sortable" data-menuid="m001" data-name="1"><div class="desktop-app ui-sortable-handle" data-id="101 " data-title="弹出层" data-url="http://layer.layui.com" data-icon="" data-iconbg="#51555e" data-isicon="1" data-height="" data-width="" data-fid="m101" style="top: 0px; left: 0px;"><i class="layui-icon" style="background-color:#51555e"></i><span class="desktop-title layui-elip">弹出层</span></div><div class="desktop-app ui-sortable-handle" data-id="102 " data-title="即时通讯" data-url="http://layim.layui.com/" data-icon="" data-iconbg="#60b979" data-isicon="1" data-height="" data-width="" data-fid="m102" style="top: 108px; left: 0px;"><i class="layui-icon" style="background-color:#60b979"></i><span class="desktop-title layui-elip">即时通讯</span></div><div class="desktop-app ui-sortable-handle" data-id="103 " data-title="日期时间选择" data-url="http://laydate.layui.com/" data-icon="" data-iconbg="#d3b59d" data-isicon="1" data-height="" data-width="" data-fid="m103" style="top: 216px; left: 0px;"><i class="layui-icon" style="background-color:#d3b59d"></i><span class="desktop-title layui-elip">日期时间选择</span></div><div class="desktop-app ui-sortable-handle" data-id="104 " data-title="分页" data-url="http://laypage.layui.com/" data-icon="" data-iconbg="#109b8e" data-isicon="1" data-height="" data-width="" data-fid="m104" style="top: 324px; left: 0px;"><i class="layui-icon" style="background-color:#109b8e"></i><span class="desktop-title layui-elip">分页</span></div><div class="desktop-app ui-sortable-handle" data-id="105 " data-title="模板引擎" data-url="http://laytpl.layui.com/" data-icon="" data-iconbg="#e6db74" data-isicon="1" data-height="" data-width="" data-fid="m105" style="top: 432px; left: 0px;"><i class="layui-icon" style="background-color:#e6db74"></i><span class="desktop-title layui-elip">模板引擎</span></div><div class="desktop-app ui-sortable-handle" data-id="106 " data-title="表单" data-url="customer.html" data-icon="" data-iconbg="#e6db74" data-isicon="1" data-height="" data-width="" data-fid="m106" style="top: 540px; left: 0px;"><i class="layui-icon" style="background-color:#e6db74"></i><span class="desktop-title layui-elip">表单</span></div><div class="desktop-app ui-sortable-handle" data-id="107 " data-title="文件上传" data-url="http://www.layui.com/doc/modules/upload.html" data-icon="" data-iconbg="#e6db74" data-isicon="1" data-height="" data-width="" data-fid="m107" style="top: 648px; left: 0px;"><i class="layui-icon" style="background-color:#e6db74"></i><span class="desktop-title layui-elip">文件上传</span></div></div></div><div class="swiper-slide" style="width: 1910px; height: 984px;"><div class="desktopContainer ui-sortable" data-menuid="m002" data-name="2"><div class="desktop-app ui-sortable-handle" data-id="107 " data-title="常用元素操作" data-url="http://www.layui.com/doc/modules/element.html" data-icon="" data-iconbg="#e6db74" data-isicon="1" data-height="" data-width="" data-fid="m201"><i class="layui-icon" style="background-color:#e6db74"></i><span class="desktop-title layui-elip">常用元素操作</span></div><div class="desktop-app ui-sortable-handle" data-id="107 " data-title="文件上传" data-url="http://www.layui.com/doc/modules/upload.html" data-icon="" data-iconbg="#e6db74" data-isicon="1" data-height="" data-width="" data-fid="m202"><i class="layui-icon" style="background-color:#e6db74"></i><span class="desktop-title layui-elip">文件上传</span></div></div></div><div class="swiper-slide" style="width: 1910px; height: 984px;"><div class="desktopContainer ui-sortable" data-menuid="m003" data-name="3"><div class="desktop-app ui-sortable-handle" data-id="301 " data-title="代码修饰器" data-url="http://www.layui.com/doc/modules/code.html" data-icon="" data-iconbg="#e6db74" data-isicon="1" data-height="" data-width="" data-fid="m301"><i class="layui-icon" style="background-color:#e6db74"></i><span class="desktop-title layui-elip">代码修饰器</span></div></div></div> </div>        
+     </div>
+    <!--任务栏-->
+    <div class="desktop-taskbar">
+        <!--div class="desktop-taskbar-pr"></div-->
+        <div id="opening-menu" class="opening-menu">
+            <div class="opening-menu-app-list"><div class="desktop-app" data-id="101 " data-title="弹出层" data-url="http://layer.layui.com" data-icon="" data-iconbg="#51555e" data-isicon="1" data-height="" data-width="" data-fid="m401"><i class="layui-icon" style="background-color:#51555e"></i><span class="desktop-title layui-elip">弹出层</span></div><div class="desktop-app" data-id="102 " data-title="即时通讯" data-url="http://layim.layui.com/" data-icon="" data-iconbg="#60b979" data-isicon="1" data-height="" data-width="" data-fid="m402"><i class="layui-icon" style="background-color:#60b979"></i><span class="desktop-title layui-elip">即时通讯</span></div><div class="desktop-app" data-id="103 " data-title="日期时间选择" data-url="http://laydate.layui.com/" data-icon="" data-iconbg="#d3b59d" data-isicon="1" data-height="" data-width="" data-fid="m403"><i class="layui-icon" style="background-color:#d3b59d"></i><span class="desktop-title layui-elip">日期时间选择</span></div><div class="desktop-app" data-id="104 " data-title="分页" data-url="http://laypage.layui.com/" data-icon="" data-iconbg="#109b8e" data-isicon="1" data-height="" data-width="" data-fid="m404"><i class="layui-icon" style="background-color:#109b8e"></i><span class="desktop-title layui-elip">分页</span></div><div class="desktop-app" data-id="105 " data-title="模板引擎" data-url="http://laytpl.layui.com/" data-icon="" data-iconbg="#e6db74" data-isicon="1" data-height="" data-width="" data-fid="m405"><i class="layui-icon" style="background-color:#e6db74"></i><span class="desktop-title layui-elip">模板引擎</span></div><div class="desktop-app" data-id="106 " data-title="表单" data-url="customer.html" data-icon="" data-iconbg="#e6db74" data-isicon="1" data-height="" data-width="" data-fid="m406"><i class="layui-icon" style="background-color:#e6db74"></i><span class="desktop-title layui-elip">表单</span></div></div>
+            <div class="opening-menu-user">
+                <div class="desktop-opening-icon"></div>
+                <div class="opening-menu-user-list">
+                    <a title="系统设置" cmd="Setting" class="dock_tool_setting" href="javascript:void(0)">系统设置</a><a title="主题设置" cmd="Theme" class="dock_tool_theme" href="javascript:void(0)">主题设置</a><a title="个人资料" cmd="ziliao" class="dock_tool_ziliao" href="javascript:void(0)">个人资料</a><a title="注销登录" cmd="loginout" class="dock_tool_loginout" href="javascript:void(0)">注销登录</a>
+                </div>
+            </div>
+        </div>
+        <!--开始菜单-->
+        <div class="layui-inline taskbar-win"><i class="iconfont icon-windows"></i></div>
+        <!---->
+        <div class="layui-inline desktop-taskbar-app-list">
+        
+        </div>
+        <!--时间显示-->
+        <div class="layui-inline taskbar-time" title="2016年12月15日 星期四">
+            <label id="laydate-hs">15:59</label>
+            <label id="laydate-ymd">2016/12/15</label>
+        </div>
+        <div class="layui-inline taskbar-showdesktop" title="显示桌面"></div>
+    </div>
+    <!--右键菜单-->
+    <div class="desktop-menu" style="display: none;">  
+            <ul>  
+                <li><a href="javascript:;" id="showdesktop">显示桌面</a></li>  
+                <li><a href="javascript:;" id="closeall">关闭所有</a></li>  
+                <li><a href="javascript:;" id="lockscreen">锁屏</a></li>  
+                <hr>  
+                <li><a href="javascript:;" id="systemsettings">系统设置</a></li> 
+                <li><a href="javascript:;" id="themesettings">主题设置</a></li>  
+                <li><a href="javascript:;" id="technicalsupport">技术支持</a></li>  
+                <hr>  
+                <li><a href="javascript:;" id="cancellation">注销</a></li>  
+            </ul>  
+        </div>  
+
+<script src="./assets/layui.all.js"></script>
+<script src="./assets/swiper.js"></script>
+<script src="./assets/jquery-ui.min.js"></script>
+<script src="./assets/desktop.js"></script><div class="layui-layer layui-layer-page layui-layer-notepaper layer-anim-06" id="layui-layer1" type="page" times="1" showtime="0" contype="string" style="z-index: 19891015; width: 250px; top: 0px; left: 1660px;"><div class="layui-layer-title" style="cursor: move;">便签</div><div id="" class="layui-layer-content"><textarea class="layui-textarea notepaper">更新日志什么的，真心不想写了。BY SMALL</textarea></div><span class="layui-layer-setwin"><a class="layui-layer-ico layui-layer-close layui-layer-close1" href="javascript:;"></a></span><span class="layui-layer-resize"></span></div><div class="layui-layer-move"></div>
+<script>
+
+
+	layui.use('layer',function(){
+		var layer = layui.layer;
+		setTimeout(function(){layer.open({
+		  type: 1
+		  ,title: false //不显示标题栏
+		  ,closeBtn: false
+		  ,area: '300px;'
+		  ,shade: 0.8
+		  ,id: 'LAY_layuipro' //设定一个id，防止重复弹出
+		  ,resize: false
+		  ,btn: ['火速点赞', '知晓了']
+		  ,btnAlign: 'c'
+		  ,moveType: 1 //拖拽模式，0或者1
+		  ,content: '<div style="padding: 50px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;">你知道吗？亲！<br>在你再次看见的时候，已再次更新，桌面app打开逻辑更完善。<br>更新了通知栏是否显示图标；更新显示的时候，点击通知栏就隐藏并去掉高亮；更新窗体大小由用户自定义初始化；<br>觉得赞的请在LAYUI案例页面为我点赞，在此感谢了！！！<br>须知：本案例不能用于商业项目，仅限于LAYUI的朋友学习交流！</div>'
+		  ,success: function(layero){
+			var btn = layero.find('.layui-layer-btn');
+			btn.find('.layui-layer-btn0').attr({
+			  href: 'http://fly.layui.com/case/2016/top'
+			  ,target: '_blank'
+			});
+		  }
+		});},1000*60*24);
+	});
+</script>
+
+
+</body></html>

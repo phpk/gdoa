@@ -1,0 +1,134 @@
+html, body.desktop-bg { height: 100%; position: relative; background: url(../images/desktop_windows7.jpg) center no-repeat; /*background-size: 100% 100%*/ }
+/*系统所需图标*/
+@font-face { font-family: "iconfont"; src: url('fonts/iconfont.eot?t=1480683923713'); /* IE9*/ src: url('fonts/iconfont.eot?t=1480683923713#iefix') format('embedded-opentype'), /* IE6-IE8 */  url('fonts/iconfont.woff?t=1480683923713') format('woff'), /* chrome, firefox */  url('fonts/iconfont.ttf?t=1480683923713') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/  url('fonts/iconfont.svg?t=1480683923713#iconfont') format('svg'); /* iOS 4.1- */ }
+.iconfont { font-family: "iconfont" !important; font-size: 16px;  font-style: normal; -webkit-font-smoothing: antialiased; -webkit-text-stroke-width: 0.2px; -moz-osx-font-smoothing: grayscale; color: #fff; }
+
+/*桌面app图标*/
+/*员工管理*/.icon-role:before { content: "\e65b"; }
+.icon-role-bg{ background-color:#3c9eea}
+/*数据导出*/.icon-daochu:before { content: "\e611"; }
+.icon-daochu-bg{ background-color:#3a9fe5}
+/*数据导入*/.icon-daoru:before { content: "\e641"; }
+.icon-daoru-bg{ background-color:#ec5050}
+/*工作报告*/.icon-baogaoxuanze:before { content: "\e6b6"; }
+.icon-baogaoxuanze-bg{ background-color:#6c57b0}
+/*地区设置*/.icon-diqu:before { content: "\e687"; }
+.icon-diqu-bg{ background-color:#3ebd44}
+/*数据备份*/.icon-yunzhujibeifen:before { content: "\e653"; }
+.icon-yunzhujibeifen-bg{ background-color:#eca450}
+/*自定义字段*/.icon-t:before { content: "\e833"; }
+.icon-t-bg{ background-color:#66a17c}
+/*日志记录*/.icon-rili:before { content: "\e62f"; }
+.icon-rili-bg{ background-color:#6077b7}
+/*windows*/
+.icon-windows-bg { }.icon-windows:before { content: "\e75e"; }
+/*名片夹*/.icon-mingpianjia:before { content: "\e6aa"; }
+.icon-mingpianjia-bg { background-color: #cf7b7b }
+/*内部公告*/.icon-id-321:before { content: "\e650"; }
+.icon-id-321-bg { background-color: #6099a7 }
+/*合同管理*/.icon-hetongguanli:before { content: "\e688"; }
+.icon-hetongguanli-bg { background-color: #4c6ba3 }
+/*邮件管理*/.icon-email:before { content: "\e6d9"; }
+.icon-email-bg { background-color: #65b7d6 }
+/*快递查询*/.icon-kuaidichaxun:before { content: "\e66a"; }
+.icon-kuaidichaxun-bg { background-color: #cf7b7b }
+/*财务管理*/.icon-caiwuguanli:before { content: "\e6ff"; }
+.icon-caiwuguanli-bg { background-color: #bc5257 }
+/*回收箱*/.icon-icon15:before { content: "\e60f"; }
+.icon-icon15-bg { background-color: #857a75 }
+/*内部消息*/.icon-ht_notice:before { content: "\e603"; }
+.icon-ht_notice-bg { background-color: #d19c85 }
+/*跟单管理*/.icon-iconfontguanli:before { content: "\e623"; }
+.icon-iconfontguanli-bg { background-color: #ff982a }
+/*客户管理*/.icon-fcstubiao17:before { content: "\e668"; }
+.icon-fcstubiao17-bg { background-color: #44abeb }
+/*订单管理*/.icon-tubiao30:before { content: "\e64d"; }
+.icon-tubiao30-bg { background-color: #64c574 }
+/*售后服务*/.icon-fuwu4:before { content: "\e601"; }
+.icon-fuwu4-bg { background-color: #43b9a7 }
+/*帮助*/.icon-bangzhu:before { content: "\e60d"; }
+.icon-bangzhu-bg { background-color: #d9c597 }
+/*数据统计*/.icon-shujutongji:before { content: "\e610"; }
+.icon-shujutongji-bg { background-color: #33774b }
+/*内部通讯录*/.icon-tongxunlu:before { content: "\e674"; }
+.icon-tongxunlu-bg { background-color: #a3d063 }
+/*产品管理*/.icon-chanpin:before { content: "\e835"; }
+.icon-chanpin-bg { background-color: #40a495 }
+/*计算器*/.icon-jisuanqi:before { content: "\e639"; }
+.icon-jisuanqi-bg { background-color: #d8bf8a }
+/*文件夹管理*/.icon-wenjianjiadakai:before { content: "\e677"; }
+.icon-wenjianjiadakai-bg { background-color: #2cadbe }
+/*客户公共池*/.icon-gonggongfuwu:before { content: "\e60a"; }
+.icon-gonggongfuwu-bg { background-color: #4180d5 }
+/*客户生日提醒*/.icon-tixing:before { content: "\e647"; }
+.icon-tixing-bg { background-color: #cba0cf }
+/*我的桌面*/.icon-wodezhuomian:before { content: "\e60e"; }
+.icon-wodezhuomian-bg{ background-color:#01AAED}
+/*锁屏*/.icon-suoping:before { content: "\e776"; }
+.icon-suoping-bg{background-color:#393D49}
+/*个人设置*/.icon-gerenshezhi:before { content: "\e678"; }
+.icon-gerenshezhi-bg{ background-color:#5FB878}
+/*主题设置*/.icon-theme:before { content: "\e87f"; }
+.icon-theme-bg{ background-color:#FF5722}
+/*系统设置*/.icon-xitongshezhi:before { content: "\e6b9"; }
+.icon-xitongshezhi-bg{ background-color:#F7B824}
+/*技术支持*/.icon-zhichi:before { content: "\e648"; }
+.icon-zhichi-bg{ background-color:#1E9FFF}
+/*关闭*/.icon-guanbi:before { content: "\e604"; }
+.icon-zhichi-bg{ background-color:#2F4056}
+/*桌面切换*/.desktop-container { width: 100%; height: 94%; margin-left: auto; margin-right: auto; }
+.swiper-slide { }
+/*任务栏样式*/.desktop-taskbar { width: 100%; height: 40px; background-color: rgba(0, 0, 0, 0.6); background:url(../images/rgba00006.png) repeat \9; position: absolute; left: 0px; right: 0px; bottom: 0px; z-index:999 }
+.desktop-taskbar-pr{ position:relative; }
+/*开始菜单*/.opening-menu{  visibility: hidden; position:fixed; width:374px; left:0px; bottom:40px; opacity:0;background-color:#44628f; filter: alpha(Opacity=80);-moz-opacity: 0.8;opacity: 0.8; -webkit-transform: translateY(400px);-ms-transform: translateY(400px);transform: translateY(400px);-webkit-transition: all .2s;transition: all .2s;-moz-border-radius: 5px 5px 0 0;-khtml-border-radius: 5px 5px 0 0;-webkit-border-radius: 5px 5px 0 0;border-radius: 5px 5px 0 0;}
+.opening-menu.opening-menu-on{visibility: visible; opacity: 1; -webkit-transform: translateY(0); -ms-transform: translateY(0);transform: translateY(0);-webkit-transition: opacity .3s, -webkit-transform .3s;transition: opacity .3s, transform .3s;}
+.opening-menu-app-list{ width:212px; background-color:#fff; margin:6px;border: solid 1px #365167; box-shadow: 0 0 1px #fff; -moz-box-shadow: 0 0 1px #fff; -webkit-box-shadow: 0 0 1px #fff; border-radius: 3px; -moz-border-radius: 3px; -webkit-border-radius: 3px; min-height: 350px; padding:2px; float:left }
+.opening-menu-app-list .desktop-app{ height:40px; position:inherit; width:202px; padding:4px; overflow:hidden; border:1px solid #fff; }
+.opening-menu-app-list .desktop-app i.iconfont{ font-size:30px; height:40px; width:40px; float:left;line-height:40px;}
+.opening-menu-app-list .desktop-app i.layui-icon{ font-size:30px; height:40px; width:40px; float:left;line-height:40px;}
+.opening-menu-app-list .desktop-app span.desktop-title{ display:block; height:40px; line-height:40px; background:none; float:left; margin-top:0px; color:#4b4b4b;}
+.opening-menu-user{ width:127px; min-height:350px; margin:7px; float:right; position:relative;}
+.desktop-opening-icon{ height:64px; width:64px; background:url(../images/folder.png) center no-repeat; position:absolute; top:-50px; left:30.5px;}
+.opening-menu-user-list{ margin-top:32px;}
+.opening-menu-user-list a{ display:block; color:#fff;border: solid 1px transparent;margin: 5px 0;line-height: 28px;padding-left: 5px;}
+.opening-menu-user-list a:hover { border: solid 1px #000; -moz-border-radius: 3px; -webkit-border-radius: 3px; box-shadow: 0 0 1px #fff; -moz-box-shadow: inset 0 0 1px #fff; -webkit-box-shadow: inset 0 0 1px #fff; background-color: #658da0; background: -moz-linear-gradient(center left, rgba(81,115,132,0.55), rgba(121,163,184,0.55) 50%, rgba(81,115,132,0.55)); background: -webkit-gradient(linear, 0% 100%, 100% 100%, from(#517384), color-stop(50%, #79a3b8), to(#517384)); }
+
+.taskbar-win{ width:60px; height:40px; text-align:center; line-height:40px;cursor:default}
+.taskbar-win i.iconfont{ font-size:25px;}
+.taskbar-time{ width:80px; height:40px; text-align:center; color:#fff; position:absolute; top:0px; right:15px;}
+.taskbar-time:hover{background-color:rgba(255, 255, 255, 0.30);background:url(../images/rgbafff28.png) repeat \9;}
+.taskbar-time label{ color:#fff; line-height:20px;}
+.taskbar-showdesktop{ width:15px; height:40px; background-color:rgba(255, 255, 255, 0.28); position:absolute; right:0px; top:0px;background:url(../images/rgbafff28.png) repeat \9;}
+.desktop-taskbar-app-list{ width:86% \9; }
+.taskbar-app{ padding:0 8px; height:40px; line-height:40px; text-align:center; color:#fff; cursor:default; }
+.taskbar-app.taskbar-app-on{ background-color:rgba(255, 255, 255, 0.30);}
+.taskbar-app:hover{background-color:rgba(255, 255, 255, 0.30);background:url(../images/rgbafff28.png) repeat \9;}
+.taskbar-app i.iconfont{ font-size:25px; padding:3px; height:28px; cursor:default; margin:3px 5px 3px 0; float:left; line-height:28px;}
+.taskbar-app i.layui-icon{ font-size:25px; padding:3px; height:28px; cursor:default; margin:3px 5px 3px 0; float:left; line-height:28px;}
+.taskbar-app span.desktop-title{ float:left}
+
+/*桌面图标通用样式*/.desktopContainer { margin: 1%; width: 98%; height: 98%; position: relative }
+.desktop-app { height: 88px; padding:3px; width:88px; border:1px solid transparent; position: absolute; cursor:pointer }
+.desktop-app:hover { border: solid 1px #7da2ce; -moz-border-radius: 3px; -webkit-border-radius: 3px; box-shadow: inset 0 0 1px #fff; -moz-box-shadow: inset 0 0 1px #fff; -webkit-box-shadow: inset 0 0 1px #fff; background: #cfe3fd; background: -moz-linear-gradient(top, #dcebfd, #c2dcfd); background: -webkit-gradient(linear, center top, center bottom, from(#dcebfd), to(#c2dcfd)); opacity:.9;filter: alpha(Opacity=90);  }
+.desktop-app i.layui-icon{display: block; width: 60px; height: 60px; margin: 0 auto; text-align: center; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; font-size: 50px; color:#fff;}
+.desktop-app i.iconfont { display: block; width: 60px; height: 60px; margin: 0 auto; text-align: center; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; font-size: 50px;  }
+.desktop-app span.desktop-title { width: 68px; height: 21px; display: block; margin: 5px auto 0; line-height: 21px; text-align: center;/* background-color: rgba(0, 0, 0, 0.6); */-webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; font-size: 12px; color: #fff;background:url(../images/rgba00006.png) repeat \9;  }
+html .desktop-win-app .layui-layer-setwin{ top:10px;}
+/*便签*/
+html .layui-layer-notepaper{background-color:#fff57c;}
+.layui-layer-notepaper .layui-layer-title{border:none; background-color:#fff57c; color:#000;}
+.layui-layer-notepaper textarea.notepaper{ height:100%;}
+/*右键菜单*/.desktop-menu { position: absolute; width: 150px; height: auto; background-color: rgb(255, 255, 255); border: #CCC 1px solid; display: none; border-radius: 5px; z-index: 219930725; }
+.desktop-menu ul { margin: 0px; padding: 0px; }
+.desktop-menu ul li { list-style: none; line-height: 30px; height: 30px; margin: 3px 0px; padding: 0px; font-size: 13px; }
+.desktop-menu ul li a { text-decoration: none; display: block; font-family: 微软雅黑; padding: 0px 5px 0 30px; height: 100%; color: #333; outline: none; }
+.desktop-menu ul li a:hover { background-color: #DDD; }
+.desktop-menu ul hr { margin: 1px 0px; height: 0px; border: 0px; border-bottom: #CCC 1px solid; }
+/*日程提醒*/
+.calendar-layout{width:300px; max-height:400px; margin:0 auto;}
+.calendar-header{ height:40px; line-height:40px; text-align:center; background-color:#393D49; font-size:16px; font-weight:500; color:#fff;}
+.calendar-list{ }	
+.calendar-list .layui-elem-quote{ padding:5px; margin-top:5px; border-left:none; color:#8a7777; }
+.calendar-list .layui-elem-quote span{ background-color:#f10f4d; color:#fff; padding:2px 6px; -webkit-border-radius: 3px;
+-moz-border-radius: 3px;
+border-radius: 3px; margin-right:5px;}

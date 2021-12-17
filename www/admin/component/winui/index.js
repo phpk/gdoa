@@ -470,5 +470,8 @@
 
         });
     }
+    //$(document).contextmenu(function() {return false;}); 
+      
+    
     exports('index', {});
 });
