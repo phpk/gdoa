@@ -1,166 +1,62 @@
-<div align="center" style="display:flex;flex-direction:column;">
-  <a href="https://excalidraw.com">
-    <img width="540" src="./public/og-image-sm.png" alt="Excalidraw logo: Sketch handrawn like diagrams." />
-  </a>
-  <h3>Virtual whiteboard for sketching hand-drawn like diagrams.<br>Collaborative and end-to-end encrypted.</h3>
-  <p>
-    <a href="https://twitter.com/Excalidraw">
-      <img alt="Follow Excalidraw on Twitter" src="https://img.shields.io/twitter/follow/excalidraw.svg?label=follow+excalidraw&style=social&logo=twitter">
-    </a>
-    <a target="_blank" href="https://crowdin.com/project/excalidraw">
-      <img src="https://badges.crowdin.net/excalidraw/localized.svg">
-    </a>
-  </p>
-  <p>Ask questions or hang out on our <a target="_blank" href="https://discord.gg/UexuTaE">discord.gg/UexuTaE</a>.</p>
+<div style="text-align: center; transform: scale(.5);">
+  <img src="./assets/tldraw.png"/>
 </div>
 
-## Try it now
+![A screenshot of the tldraw web app](./assets/screenshot.png)
 
-Go to [excalidraw.com](https://excalidraw.com) to start sketching.
+Welcome to the [tldraw](https://tldraw.com) monorepo.
 
-Read the latest news and updates on our [blog](https://blog.excalidraw.com). A good start is to see all the updates of [One Year of Excalidraw](https://blog.excalidraw.com/one-year-of-excalidraw/).
+🙌 Questions? Join the [Discord channel](https://discord.gg/SBBEVCA4PG) or start a [discussion](https://github.com/tldraw/tldraw/discussions/new).
 
-## Supporting Excalidraw
+💕 Love this project? Consider [becoming a sponsor](https://github.com/sponsors/steveruizok?frequency=recurring&sponsor=steveruizok).
 
-If you like the project, you can become a sponsor at [Open Collective](https://opencollective.com/excalidraw).
+Thanks to our corporate sponsors:
 
-[<img src="https://opencollective.com/excalidraw/tiers/sponsors/0/avatar.svg?avatarHeight=120">](https://opencollective.com/excalidraw/tiers/sponsors/0/website) [<img src="https://opencollective.com/excalidraw/tiers/sponsors/1/avatar.svg?avatarHeight=120">](https://opencollective.com/excalidraw/tiers/sponsors/1/website) [<img src="https://opencollective.com/excalidraw/tiers/sponsors/2/avatar.svg?avatarHeight=120">](https://opencollective.com/excalidraw/tiers/sponsors/2/website) [<img src="https://opencollective.com/excalidraw/tiers/sponsors/3/avatar.svg?avatarHeight=120">](https://opencollective.com/excalidraw/tiers/sponsors/3/website) [<img src="https://opencollective.com/excalidraw/tiers/sponsors/4/avatar.svg?avatarHeight=120">](https://opencollective.com/excalidraw/tiers/sponsors/4/website) [<img src="https://opencollective.com/excalidraw/tiers/sponsors/5/avatar.svg?avatarHeight=120">](https://opencollective.com/excalidraw/tiers/sponsors/5/website) [<img src="https://opencollective.com/excalidraw/tiers/sponsors/6/avatar.svg?avatarHeight=120">](https://opencollective.com/excalidraw/tiers/sponsors/6/website) [<img src="https://opencollective.com/excalidraw/tiers/sponsors/7/avatar.svg?avatarHeight=120">](https://opencollective.com/excalidraw/tiers/sponsors/7/website) [<img src="https://opencollective.com/excalidraw/tiers/sponsors/8/avatar.svg?avatarHeight=120">](https://opencollective.com/excalidraw/tiers/sponsors/8/website) [<img src="https://opencollective.com/excalidraw/tiers/sponsors/9/avatar.svg?avatarHeight=120">](https://opencollective.com/excalidraw/tiers/sponsors/9/website) [<img src="https://opencollective.com/excalidraw/tiers/sponsors/10/avatar.svg?avatarHeight=120">](https://opencollective.com/excalidraw/tiers/sponsors/10/website)
+<a href="https://sentry.io"><img src="./assets/sentry.svg"></img></a>
 
-<a href="https://opencollective.com/excalidraw#category-CONTRIBUTE" target="_blank"><img src="https://opencollective.com/excalidraw/tiers/backers.svg?avatarHeight=32"/></a>
+<a href="https://vercel.com/?utm_source=team-slug&utm_campaign=oss"><img src="./assets/vercel.svg"></img></a>
 
-Last but not least, we're thankful to these companies for offering their services for free:
+...and to our [individual sponsors](https://github.com/sponsors/steveruizok#sponsors)!
 
-[![Vercel](./.github/assets/vercel.svg)](https://vercel.com) [![Sentry](./.github/assets/sentry.svg)](https://sentry.io) [![Crowdin](./.github/assets/crowdin.svg)](https://crowdin.com)
+<!-- sponsors --><!-- sponsors -->
 
-## Documentation
+## Contents
 
-### Shortcuts
+This repository is a monorepo containing two packages:
 
-You can almost do anything with shortcuts. Click on the help icon on the bottom right corner to see them all.
+- [**packages/tldraw**](https://github.com/tldraw/tldraw/tree/main/packages/tldraw) contains the source for the [@tldraw/tldraw](https://www.npmjs.com/package/@tldraw/tldraw) package. This is an editor as a React component named `<Tldraw>`. You can use this package to embed the tldraw editor in any React application.
+- [**packages/core**](https://github.com/tldraw/tldraw/tree/main/packages/core) contains the source for the [@tldraw/core](https://www.npmjs.com/package/@tldraw/core) package. This is a renderer for React components in a canvas-style UI. It is used by `@tldraw/tldraw` as well as several other projects.
 
-### Curved lines and arrows
+...and three apps:
 
-Choose line or arrow and click click click instead of drag.
+- [**apps/www**](https://github.com/tldraw/tldraw/tree/main/apps/www) contains the source for the [tldraw.com](https://tldraw.com) website.
+- [**apps/vscode**](https://github.com/tldraw/tldraw/tree/main/apps/vscode) contains the source for the [tldraw VS Code extension](https://marketplace.visualstudio.com/items?itemName=tldraw-org.tldraw-vscode).
+- [**apps/electron**](https://github.com/tldraw/tldraw/tree/main/apps/electron) contains the source for an experimental Electron app.
 
-### Charts
+...and three examples:
 
-You can easily create charts by copy pasting data from Excel or just plain comma separated text.
+- [**examples/core-example**](https://github.com/tldraw/tldraw/tree/main/examples/core-example) is a simple example for `@tldraw/core`.
+- [**examples/core-example-advanced**](https://github.com/tldraw/tldraw/tree/main/examples/core-example-advanced) is a second example for `@tldraw/core`.
+- [**examples/tldraw-example**](https://github.com/tldraw/tldraw/tree/main/examples/tldraw-example) is an example for `@tldraw/tldraw`.
 
-### Translating
+## Discussion
 
-To translate Excalidraw into other languages, please visit [our Crowdin page](https://crowdin.com/project/excalidraw). To add a new language, [open an issue](https://github.com/excalidraw/excalidraw/issues/new) so we can get things set up on our end first.
+Want to connect? Visit the [Discord channel](https://discord.gg/SBBEVCA4PG).
 
-Translations will be available on the app if they exceed a certain threshold of completion (currently 85%).
+## Contribution
 
-### Create a collaboration session manually
+Interested in contributing? See the [contributing guide](/CONTRIBUTING.md).
 
-In order to create a session manually, you just need to generate a link of this form:
+## Support
 
-```
-https://excalidraw.com/#room=[0-9a-f]{20},[a-zA-Z0-9_-]{22}
-```
+Need help? Please [open an issue](https://github.com/tldraw/tldraw/issues/new) for support.
 
-#### Example
+## License
 
-```
-https://excalidraw.com/#room=91bd46ae3aa84dff9d20,pfLqgEoY1c2ioq8LmGwsFA
-```
+This project is licensed under MIT.
 
-The first set of digits is the room. This is visible from the server that’s going to dispatch messages to everyone that knows this number.
+If you're using the library in a commercial product, please consider [becoming a sponsor](https://github.com/sponsors/steveruizok?frequency=recurring&sponsor=steveruizok).
 
-The second set of digits is the encryption key. The Excalidraw server doesn’t know about it. This is what all the participants use to encrypt/decrypt the messages.
+## Author
 
-> Note: Please ensure that the encryption key is 22 characters long.
-
-## Shape libraries
-
-Find a growing list of libraries containing assets for your drawings at [libraries.excalidraw.com](https://libraries.excalidraw.com).
-
-## Embedding Excalidraw in your App?
-
-Try out [`@excalidraw/excalidraw`](https://www.npmjs.com/package/@excalidraw/excalidraw). This package allows you to easily embed Excalidraw as a React component into your apps.
-
-## Development
-
-### Code Sandbox
-
-- Go to https://codesandbox.io/s/github/excalidraw/excalidraw
-  - You may need to sign in with GitHub and reload the page
-- You can start coding instantly, and even send PRs from there!
-
-### Local Installation
-
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
-
-#### Requirements
-
-- [Node.js](https://nodejs.org/en/)
-- [Yarn](https://yarnpkg.com/getting-started/install) (v1 or v2.4.2+)
-- [Git](https://git-scm.com/downloads)
-
-#### Clone the repo
-
-```bash
-git clone https://github.com/excalidraw/excalidraw.git
-```
-
-#### Install the dependencies
-
-```bash
-yarn
-```
-
-#### Start the server
-
-```bash
-yarn start
-```
-
-Now you can open [http://localhost:3000](http://localhost:3000) and start coding in your favorite code editor.
-
-#### Commands
-
-| Command            | Description                       |
-| ------------------ | --------------------------------- |
-| `yarn`             | Install the dependencies          |
-| `yarn start`       | Run the project                   |
-| `yarn fix`         | Reformat all files with Prettier  |
-| `yarn test`        | Run tests                         |
-| `yarn test:update` | Update test snapshots             |
-| `yarn test:code`   | Test for formatting with Prettier |
-
-#### Docker Compose
-
-You can use docker-compose to work on Excalidraw locally if you don't want to setup a Node.js env.
-
-```sh
-docker-compose up --build -d
-```
-
-### Self-hosting
-
-We publish a Docker image with the Excalidraw client at [excalidraw/excalidraw](https://hub.docker.com/r/excalidraw/excalidraw). You can use it to self-host your own client under your own domain, on Kubernetes, AWS ECS, etc.
-
-```sh
-docker build -t excalidraw/excalidraw .
-docker run --rm -dit --name excalidraw -p 5000:80 excalidraw/excalidraw:latest
-```
-
-The Docker image is free of analytics and other tracking libraries.
-
-**At the moment, self-hosting your own instance doesn't support sharing or collaboration features.**
-
-We are working towards providing a full-fledged solution for self-hosting your own Excalidraw.
-
-## Contributing
-
-Pull requests are welcome. For major changes, please [open an issue](https://github.com/excalidraw/excalidraw/issues/new) first to discuss what you would like to change.
-
-## Notable used tools
-
-- [Create React App](https://github.com/facebook/create-react-app)
-- [Rough.js](https://roughjs.com)
-- [TypeScript](https://www.typescriptlang.org)
-- [Vercel](https://vercel.com)
-
-And the main source of inspiration for starting the project is the awesome [Zwibbler](https://zwibbler.com/demo/) app.
+- [@steveruizok](https://twitter.com/steveruizok)
