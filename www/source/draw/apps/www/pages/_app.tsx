@@ -3,14 +3,13 @@ import Head from 'next/head'
 import useGtag from 'utils/useGtag'
 import { init } from 'utils/sentry'
 import type { AppProps } from 'next/app'
+
 import type React from 'react'
 
 init()
 
 const APP_NAME = '白板'
-const APP_DESCRIPTION = '协同白班'
-const APP_URL = 'https://tldraw.com'
-const IMAGE = 'https://tldraw.com/social-image.png'
+const APP_DESCRIPTION = '协同白板'
 
 function MyApp({ Component, pageProps }: AppProps) {
   useGtag()
@@ -27,20 +26,6 @@ function MyApp({ Component, pageProps }: AppProps) {
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="theme-color" content="#fafafa" />
 
-        <meta name="twitter:url" content={APP_URL} />
-        <meta name="twitter:title" content={APP_NAME} />
-        <meta name="twitter:description" content={APP_DESCRIPTION} />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:creator" content="@tldraw" />
-        <meta name="twitter:site" content="@tldraw" />
-        <meta name="twitter:image" content={IMAGE} />
-
-        <meta property="og:type" content="website" />
-        <meta property="og:title" content={APP_NAME} />
-        <meta property="og:description" content={APP_DESCRIPTION} />
-        <meta property="og:site_name" content={APP_NAME} />
-        <meta property="og:url" content={APP_URL} />
-        <meta property="og:image" content={IMAGE} />
 
         <meta
           name="viewport"

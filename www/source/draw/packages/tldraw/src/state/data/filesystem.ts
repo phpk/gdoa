@@ -13,11 +13,14 @@ const checkPermissions = async (handle: FileSystemHandle) => {
 
 export async function loadFileHandle() {
   const fileHandle = await getFromIdb(`Tldraw_file_handle_${window.location.origin}`)
+  //console.log(fileHandle)
+  //let fileHandle = ``
   if (!fileHandle) return null
   return fileHandle
 }
 
 export async function saveFileHandle(fileHandle: FileSystemHandle | null) {
+  //console.log(fileHandle)
   return setToIdb(`Tldraw_file_handle_${window.location.origin}`, fileHandle)
 }
 
@@ -32,11 +35,11 @@ export async function saveToFileSystem(document: TDDocument, fileHandle: FileSys
 
   // Serialize to JSON
   const json = JSON.stringify(file, null, 2)
-  console.log(json)
-  return;
+  //console.log(json)
+  //return;
   // Create blob
   const blob = new Blob([json], {
-    type: 'application/vnd.Tldraw+json',
+    type: 'application/json',
   })
 
   if (fileHandle) {
@@ -48,9 +51,9 @@ export async function saveToFileSystem(document: TDDocument, fileHandle: FileSys
   const newFileHandle = await fileSave(
     blob,
     {
-      fileName: `${file.name}.tldr`,
-      description: 'Tldraw File',
-      extensions: [`.tldr`],
+      fileName: `${file.name}.json`,
+      description: 'Draw File',
+      extensions: [`.json`],
     },
     fileHandle
   )
@@ -67,8 +70,8 @@ export async function openFromFileSystem(): Promise<null | {
 }> {
   // Get the blob
   const blob = await fileOpen({
-    description: 'Tldraw File',
-    extensions: [`.tldr`],
+    description: 'Draw File',
+    extensions: [`.json`],
     multiple: false,
   })
 

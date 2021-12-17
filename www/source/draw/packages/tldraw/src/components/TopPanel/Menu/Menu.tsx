@@ -68,11 +68,12 @@ export const Menu = React.memo(function Menu({ showSponsorLink, readOnly }: Menu
     app.selectNone()
   }, [app])
 
-  const showFileMenu =
-    app.callbacks.onNewProject ||
-    app.callbacks.onOpenProject ||
-    app.callbacks.onSaveProject ||
-    app.callbacks.onSaveProjectAs
+  // const showFileMenu =
+  //   app.callbacks.onNewProject ||
+  //   app.callbacks.onOpenProject ||
+  //   app.callbacks.onSaveProject ||
+  //   app.callbacks.onSaveProjectAs
+  const showFileMenu = true
 
   const showSignInOutMenu = app.callbacks.onSignIn || app.callbacks.onSignOut || showSponsorLink
 
@@ -84,10 +85,25 @@ export const Menu = React.memo(function Menu({ showSponsorLink, readOnly }: Menu
         <HamburgerMenuIcon />
       </DMTriggerIcon>
       <DMContent variant="menu">
-        <DMItem onClick={onSaveProject} kbd="#S">
-          保存
-        </DMItem>
-        
+        {showFileMenu && (
+          <DMSubMenu label="文件">
+            {app.callbacks.onNewProject && (
+              <DMItem onClick={onNewProject} kbd="#N">
+                新建
+              </DMItem>
+            )}
+            {app.callbacks.onOpenProject && (
+              <DMItem onClick={onOpenProject} kbd="#O">
+              打开
+              </DMItem>
+            )}
+            {app.callbacks.onSaveProject && (
+              <DMItem onClick={onSaveProject} kbd="#S">
+                保存
+              </DMItem>
+            )}
+          </DMSubMenu>
+        )}
         {!readOnly && (
           <>
             <DMSubMenu label="编辑">

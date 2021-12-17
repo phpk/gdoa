@@ -6,8 +6,9 @@
     desktop: 'js/winui.desktop',
     start: 'js/winui.start',
     helper: 'js/winui.helper'
-}).define(['window', 'desktop', 'start', 'helper', 'layer'], function (exports) {
+}).define(['window', 'desktop', 'start', 'helper', 'layer', 'laytpl'], function (exports) {
     var $ = layui.jquery,
+        laytpl = layui.laytpl,
         layer = layui.layer;
 
     $(function () {
@@ -15,7 +16,7 @@
         // if(localStorage.getItem('lockscreen')) {
         //     winui.lockScreen();
         // }
-        
+
         /*
         winui.window.msg('Welcome To GodoCms', {
             time: 4500,
@@ -47,7 +48,7 @@
             setTimeout(() => {
                 powerOnBox.remove();
             }, 2000);
-            
+
             winui.config({
                 settings: layui.data('winui').settings || {
                     color: 32,
@@ -136,11 +137,11 @@
                     $(d).show();
                 })
             })
-            
+
         })
-        
+
     });
-    
+
     //开始菜单磁贴点击
     $('.winui-tile').on('click', function () {
         OpenWindow(this);
@@ -150,7 +151,7 @@
     $('.winui-start-item.winui-start-individuation').on('click', function () {
         winui.window.openTheme();
     });
-    
+
     //打开窗口的方法（可自己根据需求来写）
     function OpenWindow(menuItem) {
         var $this = $(menuItem);
@@ -184,7 +185,7 @@
                 maxmin: true,
                 content: url
             });*/
-            
+
             $.ajax({
                 type: 'get',
                 url: url,
@@ -217,7 +218,7 @@
                     });
                 }
             });
-            
+
         } else {
             content = url;
         }
@@ -236,21 +237,21 @@
             , maxOpen: maxOpen
             //, max: false
             //, min: false
-            , refresh:true
+            , refresh: true
         });
     }
     let loginOut = () => {
         winui.window.confirm('确认注销吗?', { icon: 3, title: '提示' }, function (index) {
             //winui.window.msg('执行注销操作，返回登录界面');
             layer.close(index);
-            
+
             _get(layui, 'admin/loginOut', res => {
                 let au = document.createElement("audio");
                 au.preload = "auto";
                 au.src = './component/winui/audio/out.mp3';
                 au.play();
                 loginOutToken();
-                localStorage.setItem('lockscreen',true);
+                localStorage.setItem('lockscreen', true);
                 winui.lockScreen();
             })
         });
@@ -264,36 +265,21 @@
     if (window.localStorage.getItem("lockscreen") == "true") {
         winui.lockScreen();
     }
-    
 
-    //扩展桌面助手工具
-    winui.helper.addTool([
-    {
-        tips: '切换壁纸',
-        icon: 'fa-television',
-        click: function (e) {
-            //layer.msg('这个是自定义的工具栏', { zIndex: layer.zIndex });
+    let toolsAction = {
+        changeBg: () => {
             let id = parseInt(Math.random() * 21 + 1, 10);
-            let bgSrc = '/admin/component/winui/images/bg/img'+id+'.webp';
+            let bgSrc = '/admin/component/winui/images/bg/img' + id + '.webp';
             winui.resetBg(bgSrc);
-        }
-    },
-    {
-        tips: '全屏',
-        icon: 'fa-clone',
-        click: function (e) {
+        },
+        fullScreen: () => {
             winui.fullScreen(document.documentElement);
-        }
-    },
-    {
-        tips: '工具',
-        icon: 'fa-gavel',
-        click: function (e) {
-            //winui.fullScreen(document.documentElement);
+        },
+        devTools: () => {
             winui.window.open({
-                id : 'godocmstools',
+                id: 'godocmstools',
                 type: 2,
-                title: '工具集',
+                title: '开发工具集',
                 shade: 0,
                 moveOut: true,
                 area: ['80%', '80%'],
@@ -304,15 +290,10 @@
                 , max: true  //显示最大化按钮
                 , refresh: true    //显示刷新按钮
             });
-        }
-    },
-    {
-        tips: '便签',
-        icon: 'fa-clock-o',
-        click: function (e) {
-            //winui.fullScreen(document.documentElement);
+        },
+        toolsTodo: () => {
             winui.window.open({
-                id : 'godocmstodos',
+                id: 'godocmstodos',
                 type: 2,
                 title: '便签',
                 shade: 0,
@@ -325,15 +306,10 @@
                 , max: true  //显示最大化按钮
                 , refresh: true    //显示刷新按钮
             });
-        }
-    },
-    {
-        tips: '番茄时钟',
-        icon: 'fa-bell',
-        click: function (e) {
-            //winui.fullScreen(document.documentElement);
+        },
+        toolsClock: () => {
             winui.window.open({
-                id : 'godocmsclocks',
+                id: 'godocmsclocks',
                 type: 2,
                 title: '番茄时钟',
                 shade: 0,
@@ -346,14 +322,26 @@
                 , max: true  //显示最大化按钮
                 , refresh: true    //显示刷新按钮
             });
-        }
-    },
-    {
-        tips: '计算器',
-        icon: 'fa-calculator',
-        click: function (e) {
+        },
+        toolsBaiban: () => {
             winui.window.open({
-                id : 'godocmscalculater',
+                id: 'godocmsbaiban',
+                type: 2,
+                title: '办公白板',
+                shade: 0,
+                moveOut: true,
+                area: ['90%', '90%'],
+                anim: 1,
+                content: '/admin/tools/baiban/index.html',
+                offset: 'auto'  //居中
+                , min: true  //显示最小化按钮
+                , max: true  //显示最大化按钮
+                , refresh: true    //显示刷新按钮
+            });
+        },
+        toolsCaculater: () => {
+            winui.window.open({
+                id: 'godocmscalculater',
                 type: 2,
                 title: '计算器',
                 shade: 0,
@@ -366,14 +354,10 @@
                 , max: true  //显示最大化按钮
                 , refresh: true    //显示刷新按钮
             });
-        }
-    },
-    {
-        tips: '日历',
-        icon: 'fa-calendar',
-        click: function (e) {
+        },
+        toolsCalendar: () => {
             winui.window.open({
-                id : 'godocmsrilis',
+                id: 'godocmstoolsCalendar',
                 type: 2,
                 title: '日历',
                 shade: 0,
@@ -386,24 +370,87 @@
                 , max: true  //显示最大化按钮
                 , refresh: true    //显示刷新按钮
             });
-        }
-    },
-    {
-        tips: '切换风格',
-        icon: 'fa-paper-plane-o',
-        click: function (e) {
-            //loginOut();
+        },
+        changeTheme: () => {
             location.href = 'index.html';
         }
-    },
-    {
+
+    }
+    let toolsObj = [
+        {
+            tips: '日历',
+            icon: 'fa-calendar',
+            startcss: 'winui-tile-normal',
+            click: toolsAction.toolsCalendar
+        },
+        {
+            tips: '计算器',
+            icon: 'fa-calculator',
+            startcss: 'winui-tile-normal',
+            click: toolsAction.toolsCaculater
+        },
+        {
+            tips: '开发工具',
+            icon: 'fa-gavel',
+            startcss: 'winui-tile-normal',
+            click: toolsAction.devTools
+        },
+        {
+            tips: '切换风格',
+            icon: 'fa-paper-plane-o',
+            startcss: 'winui-tile-normal',
+            click: toolsAction.changeTheme
+        },
+        {
+            tips: '便签',
+            icon: 'fa-clock-o',
+            startcss: 'winui-tile-normal',
+            click: toolsAction.toolsTodo
+        },
+        {
+            tips: '番茄时钟',
+            icon: 'fa-bell',
+            startcss: 'winui-tile-normal',
+            click: toolsAction.toolsClock
+        },
+        {
+            tips: '切换壁纸',
+            icon: 'fa-television',
+            startcss: 'winui-tile-normal',
+            click: toolsAction.changeBg
+        },
+        {
+            tips: '办公白板',
+            icon: 'fa-file-archive-o',
+            startcss: 'winui-tile-long',
+            click: toolsAction.toolsBaiban
+
+        }
+    ];
+    laytpl($('#startCenterTpl').html()).render(toolsObj, function (html) {
+        $('#winui-tilebox-body').html(html)
+        $('#winui-tilebox-body').on('click', '.winui-tile', e => {
+            let id = $(e.target).attr('data-id')
+            //console.log(id)
+            toolsObj[id].click()
+        })
+    });
+    
+    toolsObj.push({
+        tips: '全屏',
+        icon: 'fa-clone',
+        startcss: 'winui-tile-normal',
+        click: toolsAction.fullScreen
+    });
+    toolsObj.push({
         tips: '注销登录',
         icon: 'fa-power-off',
         click: function (e) {
             loginOut();
         }
-    }
-    ]);
+    });
+    //扩展桌面助手工具
+    winui.helper.addTool(toolsObj);
     layui.admin = {};
     layui.admin.addTab = (id, title, content) => {
         //console.log(id)
@@ -416,11 +463,11 @@
             offset: 'auto',
             area: ['90%', '90%'],
             anim: 1,
-            moveOut : true,
+            moveOut: true,
             maxmin: true,
             refresh: true
             //zIndex: layer.zIndex + 10
-            
+
         });
     }
     exports('index', {});

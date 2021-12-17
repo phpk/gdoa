@@ -223,9 +223,11 @@ export class TldrawApp extends StateManager<TDSnapshot> {
   /* -------------------- Internal -------------------- */
 
   protected onReady = () => {
+    //alert(this.document)
     this.loadDocument(this.document)
 
     loadFileHandle().then((fileHandle) => {
+      //console.log(fileHandle)
       this.fileSystemHandle = fileHandle
     })
 

@@ -10,13 +10,13 @@ interface PageProps {
   isSponsor: boolean
 }
 
-export default function Home({ isUser, isSponsor }: PageProps): JSX.Element {
+export default function Home({ isUser, isSponsor}: PageProps): JSX.Element {
   return (
     <>
       <Head>
         <title>白板</title>
       </Head>
-      <Editor id="home" isUser={isUser} isSponsor={isSponsor} />
+      <Editor id="home" isUser={isUser} isSponsor={isSponsor}  />
     </>
   )
 }
@@ -27,7 +27,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   return {
     props: {
       isUser: session?.user ? true : false,
-      isSponsor: session?.user ? true : false,
+      isSponsor: session?.user ? true : false
+
     },
   }
 }
