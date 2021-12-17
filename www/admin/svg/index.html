@@ -19,11 +19,19 @@
 
   <!-- Lacking browser support -->
   <script src="/admin/config/config.js"></script>
+  <script>var svgId = _req().id;</script>
   <script type="module" src="./redirect-on-lacking-support.js"></script>
 
   <!-- If you do not wish to add extensions by URL, you can add calls
       within the following file to svgEditor.setConfig -->
-  <script type="module" src="index.js"></script>
+  <script>
+              const systemJsLoaderTag = document.createElement('script');
+              systemJsLoaderTag.src = './s.min.js';
+              systemJsLoaderTag.addEventListener('load', function () {
+                System.import('./index.js');
+                });
+              document.head.appendChild(systemJsLoaderTag);
+              </script>
 
   <title>SVG编辑器</title>
 </head>

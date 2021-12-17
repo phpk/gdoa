@@ -1,7 +1,6 @@
 const Base = require('./base.js');
 const fs = require('fs');
 const path = require('path');
-const rename = think.promisify(fs.rename, fs);
 /**
  * @class
  * @apiDefine picedit 图片编辑器管理
@@ -19,8 +18,8 @@ module.exports = class extends Base {
 
     async addAction() {
         let post = this.post();
-        post.user_id = this.adminId;
-        post.add_time = this.now();
+        //post.user_id = this.adminId;
+        //post.add_time = this.now();
         //console.log(post)
         let name = Date.now() + post.title;
         if (name.indexOf('.') === -1) {

@@ -19,6 +19,7 @@
 
   <!-- Lacking browser support -->
   <script src="/admin/config/config.js"></script>
+  <script>var svgId = _req().id;</script>
   <script type="module" src="./redirect-on-lacking-support.js"></script>
 
   <!-- If you do not wish to add extensions by URL, you can add calls
@@ -109,10 +110,10 @@
               <div></div>
               下载SVG (S)
             </li>
-            <li id="tool_export">
+            <!--li id="tool_export">
               <div></div>
               导出
-            </li>
+            </li-->
             <li id="tool_docprops">
               <div></div>
               保存图片 (D)

@@ -4783,7 +4783,7 @@ editor.init = () => {
   *
   * @returns {boolean} Whether there were problems saving the document properties
   */
-  let svgId = _req().id;
+  
   const saveDocProperties = function () {
     // set title
     const newTitle = $('#canvas_title').val();
@@ -4836,7 +4836,7 @@ editor.init = () => {
       __post('svgedit/add', { title: newTitle, content: str }, res => {
         //layer.close(index);
         //console.log(res)
-        svgId = res.data.data;
+        svgId = res.data;
         _msg("添加成功")
       })
 
