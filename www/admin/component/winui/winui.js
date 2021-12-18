@@ -435,7 +435,7 @@
 
             //显示系统时间
             , sysTime: function (selector, formatStr) {
-                return setInterval(function () {
+                return setInterval(() => {
                     //获取系统时间。
                     var dateTime = new Date();
 
@@ -476,9 +476,15 @@
 
                     //将时间显示到指定的位置，时间格式形如：19:18:02
                     $(selector).html(str);
+                    this.taskList(dateTime);
                 }, 1000);
+            },
+            taskList: (now) => {
+                //自动锁屏
+                let lockTime = localStorage.getItem('_godocmsLockScreenTime');
+                
+                //console.log(now)
             }
-
             //停止显示时间
             , stopSysTime: function (obj) {
                 window.clearInterval(obj);
