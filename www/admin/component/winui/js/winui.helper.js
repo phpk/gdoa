@@ -107,7 +107,7 @@ layui.define(['jquery', 'layer', 'winui'], function (exports) {
                 that.addTool([{
                     tips: '添加便签',
                     icon: 'fa-pencil-square-o',
-                    click: function (e) {
+                    clickActioin: function (e) {
                         var tagsCount = $(CONTENT).children('.tags-content').length;
                         if (tagsCount >= 5) {
                             layer.msg('最多只能存五条便签', { zIndex: layer.zIndex });
@@ -140,7 +140,7 @@ layui.define(['jquery', 'layer', 'winui'], function (exports) {
                 }, {
                     tips: '主题设置',
                     icon: 'fa-paw',
-                    click: function (e) {
+                    clickActioin: function (e) {
                         winui.window.openTheme();
                     }
                 }]);
@@ -197,7 +197,7 @@ layui.define(['jquery', 'layer', 'winui'], function (exports) {
                     layui.stope(e);
                     var left = e.clientX,
                         top = e.clientY,
-                        html = '<ul class="helper-menu" style="top:' + top + 'px;left:' + left + 'px;"><li><i class="fa fa-fw fa-cog"></i>设置</li><li><i class="fa fa-fw fa-outdent"></i>退出桌面助手</li></ul>';
+                        html = '<ul class="helper-menu" style="top:' + top + 'px;left:' + left + 'px;"><li><i class="fa fa-fw fa-cog"></i>设置</li><li></ul>';
                     //移除之前菜单
                     $('.helper-menu').remove();
                     //渲染当前菜单
@@ -230,12 +230,13 @@ layui.define(['jquery', 'layer', 'winui'], function (exports) {
                         }
                     });
                     //退出点击
-                    $('.helper-menu li').eq(1).on('mousedown', function (e) {
-                        layui.stope(e);
-                        if (e.button == 0) {
-                            that.destroy();
-                        }
-                    });
+                    // $('.helper-menu li').eq(1).on('mousedown', function (e) {
+                    //     layui.stope(e);
+                    //     if (e.button == 0) {
+                    //         that.destroy();
+                    //         localStorage.removeItem('_windowsHelperTips')
+                    //     }
+                    // });
                 });
                 //收缩与展开点击
                 $(SWITCH).on('click', function (e) {
@@ -274,8 +275,8 @@ layui.define(['jquery', 'layer', 'winui'], function (exports) {
             //拼接HTML
             $(TOOL).append('<span data-tips="' + item.tips + '"><i ' + (item.style ? 'style = "' + item.style + '"' : '') + ' class="fa fa-fw ' + item.icon + '"></i></span>');
             //绑定事件
-            if (typeof item.click === 'function') {
-                $(TOOL).children('span').eq(count + index).on('click', item.click);
+            if (typeof item.clickActioin === 'function') {
+                $(TOOL).children('span').eq(count + index).on('click', item.clickActioin);
             }
         });
 

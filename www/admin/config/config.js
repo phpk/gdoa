@@ -249,6 +249,8 @@ const _ajax = (url, method = "GET", params, callback) => {
                     returnValue = JSON.parse(jsonText);
                 }
                 callback(returnValue);
+            } else {
+                callback(xmlhttp);
             }
         } catch (e) {
             console.log(e.message)

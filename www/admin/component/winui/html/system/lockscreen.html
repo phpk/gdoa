@@ -5,22 +5,12 @@
     <div id="login_div" class="animated fadeIn layui-hide">
         <img src="/static/logo.png" />
         <p id="user_name">GoDo</p>
-        <form class="layui-form winui-from">
-            <div class="layui-form-item">
-				<input placeholder="账 户" value="" name="username" id="username" lay-verify="required" hover class="layui-input"  />
-			</div>
-			<!--div class="layui-form-item">
-				<input placeholder="密 码" name="password" value="" lay-verify="required" hover class="layui-input" type="password" />
-			</div-->
-			<div class="layui-form-item">
-				<input placeholder="验证码" name="captcha" id="captcha"  hover  lay-verify="required" class="codes"  />
-				<img src="" id="codeImage" class="codeImage" />
-			</div>
+        <div class="layui-form winui-from">
             <div class="winui-from-group">
-                <input type="password" name="password" id="password" value="" placeholder="密码" height="36" />
-                <button lay-submit lay-filter="unlock" id="unlock"><i class="fa fa-arrow-right"></i></button>
+                <input type="password" name="password" id="password" value="" placeholder="请输入锁屏密码" height="36" />
+                <button id="unlock"><i class="fa fa-arrow-right"></i></button>
             </div>
-        </form>
+        </div>
     </div>
     <div id="date_time" class="animated fadeIn"></div>
 </div>

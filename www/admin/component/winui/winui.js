@@ -335,7 +335,7 @@
 
             //渲染背景图
             , renderBg: function () {
-                let bgSrc = this.settings.bgSrc;
+                let bgSrc = this.settings.bgSrc || '/admin/component/winui/images/bg/img1.webp';
                 //let bgSrc = '/admin/component/winui/images/bg/img1.webp'
                 if (bgSrc)
                     $('body').css('background-image', 'url(' + bgSrc + ')');
@@ -525,147 +525,27 @@
             //获取Winui设置
             , getSetting: function (settingKey) {
                 return this.settings[settingKey];
-            }
+            },
 
-            //锁屏
-            , lockScreen: function (callback) {
-                var self = this;
-                $('.winui-taskbar').css('zIndex', '0');
-                $.get(winui.path + 'html/system/lockscreen.html', {}, function (content) {
-                    layer.open({
-                        id: 'winui-lockscreen',
-                        type: 1,
-                        title: false,
-                        skin: 'lockscreen',
-                        closeBtn: 0,
-                        shade: 0,
-                        anim: -1,
-                        isOutAnim: false,
-                        zIndex: layer.zIndex,
-                        content: content,
-                        success: function (layero, layerindex) {
-                            $('.lock-body').css('background-image', 'url(' + self.settings.lockBgSrc + ')');
-                            window.localStorage.setItem("lockscreen", true);
-                            var index = winui.sysTime('#date_time', '<p id="time">!HH:!mm</p><p id="date">!M月!d日,星期!w</p>');
-                            var showUnlockDiv = function () {
-                                winui.stopSysTime(index);
-                                $('#date_time').toggleClass('layui-hide');
-                                $('#login_div').toggleClass('layui-hide');
-                                //解绑旧的鼠标键盘事件
-                                $(document).off('mouseup', docMouseup);
-                                $(document).off(' keydown', docKeydown);
-                                //绑定新的键盘事件
-                                $(document).on('keydown', function (e) {
-                                    var ev = document.all ? window.event : e;
-                                    if (ev.keyCode == 27) {
-                                        //按下ESC
-                                        showTimeDiv();
-                                    }
-                                });
-                            }, showTimeDiv = function () {
-                                index = winui.sysTime('#date_time', '<p id="time">!HH:!mm</p><p id="date">!M月!d日,星期!w</p>')
-                                $('#date_time').toggleClass('layui-hide');
-                                $('#login_div').toggleClass('layui-hide');
-                                //解绑旧的鼠标键盘事件
-                                $(document).off('keydown');
-                                //绑定新事件
-                                $(document).on('mouseup', docMouseup);
-                                $(document).on('keydown', docKeydown);
-                            }, docMouseup = function (e) {
-                                if (!e) e = window.event;
-                                if (e.button == 0) {
-                                    //左键
-                                    showUnlockDiv();
-                                }
-                            }, docKeydown = function (e) {
-                                var ev = document.all ? window.event : e;
-                                if (ev.keyCode == 13) {
-                                    //按下回车
-                                    showUnlockDiv();
-                                }
-                            }
-                            $(document).on('mouseup', docMouseup);
-                            $(document).on('keydown', docKeydown);
-                            let changeImg = () => {
-                                $('#codeImage').attr('src','/server/login/captcha?t='+ Math.random());
-                            };
-                            changeImg();
-                            $('#codeImage').click(() => {
-                                changeImg();
-                            });
-                            let localusername = localStorage.getItem('godocms_username'),
-                                localpassword = localStorage.getItem('godocms_password');
-                            if(localusername) {
-                                $('#username').val(localusername);
-                            }
-                            if(localpassword) {
-                                $('#password').val(localpassword);
-                            }
-                            $('#password').on('keydown', (e) => {
-                                if (e.keyCode == 13) {
-                                    $("#unlock").trigger("click");
-                                    return false
-                                }
-                            });
-                            //解锁点击
-                            form.on('submit(unlock)', function (data) {
-                                data = data.field;
-                                //console.log(data);
-                                if (data.username == '') {
-                                    layer.msg('用户名不能为空');
-                                    return false;
-                                }
-                                if (data.password == '') {
-                                    layer.msg('密码不能为空');
-                                    return false;
-                                }
-                                if (data.captcha == '') {
-                                    layer.msg('验证码不能为空');
-                                    return false;
-                                }
-                                /// 登录
-                                let postData = {
-                                    password: data.password,
-                                    username: data.username,
-                                    captcha: data.captcha
-                                };
-                                _post(layui, 'login/do', postData, res => {
-                                    layer.close(layerindex);
-                                    //console.log(res)
-                                    let au = document.createElement("audio");
-                                    au.preload = "auto";
-                                    //au.autoplay = "autoplay";
-                                    au.src = './component/winui/audio/login.mp3';
-                                    //au.muted = true;
-                                    au.play();
-
-                                    setToken(res);
-                                    window.localStorage.setItem("godocms_username", postData.username);
-                                    window.localStorage.setItem("godocms_password", postData.password);
-                                    window.localStorage.setItem("lockscreen", false);
-                                    //console.log(winui)
-                                    winui.desktop.data = res.routeData.desktops;
-                                    winui.desktop.init()
-                                    //winui.start.init()
-                                }, err => {
-                                    if(err.code == 201) {
-                                        changeImg();
-                                    }
-                                })
-                                // try {
-                                //     if (typeof callback === 'function' && callback.call(this, data.field.password)) {
-                                //         layer.close(layerindex);
-                                //         window.localStorage.setItem("lockscreen", false);
-                                //     }
-                                // } catch (e) {
-                                //     console.error(e);
-                                //     return false;
-                                // }
-                                return false;
-                            });
-                        }
-                    });
-                });
+            getData: (datakey, key = '') => {
+                let data = localStorage.getItem(datakey);
+                if (data) {
+                    data = JSON.parse(data)
+                    if (key !== '') {
+                        return data[key]
+                    } else {
+                        return data;
+                    }
+                }
+            },
+            setData: (datakey, val, key = '') => {
+                if (key === '') {
+                    localStorage.setItem(datakey, JSON.stringify(val))
+                } else {
+                    let data = localStorage.getItem(datakey) || {};
+                    data[key] = val;
+                    localStorage.setItem(datakey, JSON.stringify(data))
+                }
             }
         };
 
@@ -911,6 +791,9 @@
             desktopmenu.css({"top":y,"left":x}).show(); 
         });  
         $(".winui-desktop").on("click", function(e) {
+            $(".desktop-menu").hide()
+        })
+        $(".desktop-menu").on("click", function (e) {
             $(".desktop-menu").hide()
         })
         //阻止原有的右键菜单

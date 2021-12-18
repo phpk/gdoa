@@ -664,20 +664,9 @@ body {
 	bottom: 48px;
 }
 
-.winui-start-left .winui-start-item.bottom:nth-last-child(3) {
-	bottom: 96px;
-}
 
-.winui-start-left .winui-start-item.bottom:nth-last-child(4) {
-	bottom: 144px;
-}
 
-.winui-start-left .winui-start-item.bottom:nth-last-child(5),
-.winui-start-left .winui-start-item.bottom:nth-last-child(6),
-.winui-start-left .winui-start-item.bottom:nth-last-child(7),
-.winui-start-left .winui-start-item.bottom:nth-last-child(8) {
-	display: none;
-}
+
 
 .leftbtnhovertext {
 	background: #2b2b2b;
@@ -700,8 +689,8 @@ body {
 
 .winui-start-center {
 	width: 260px;
-	height: 100%;
-	padding-top: 1rem;
+	height: 58vh;
+	padding-top: 1vh;
 	position: relative;
 }
 
@@ -784,7 +773,7 @@ body {
 
 .winui-start-center .layui-nav-tree .layui-nav-itemed .layui-nav-more {
 	border-color: transparent transparent #fff;
-	top: 9px;
+	top: -7px;
 }
 
 

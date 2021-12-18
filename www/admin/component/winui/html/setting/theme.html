@@ -241,11 +241,22 @@
                 </div>
                 <!-- 锁屏界面 -->
                 <div class="winui-tab-item">
+                    <h1>自动锁屏</h1>
+                    <div class="layui-form winui-radio taskbar-position">
+                        <input type="radio" name="locktime" value="3" title="三分钟" lay-filter="taskLocktime">
+                        <input type="radio" name="locktime" value="10" title="十分钟" lay-filter="taskLocktime">
+                        <input type="radio" name="locktime" value="30" title="半小时" lay-filter="taskLocktime">
+                        <input type="radio" name="locktime" value="0" title="永不" lay-filter="taskLocktime" checked>
+                    </div>
+                    <h2>锁屏密码</h2>
+                    <div class="layui-form">
+                        <input type="password" name="lockpassword" value="" class="layui-input" id="taskLockpassword">
+                    </div>
                     <h1>预览</h1>
                     <div class="lockscreen-preview">
                         <div class="lockscreen-preview-time"></div>
                     </div>
-                    <h2>选择图片</h2>
+                    <h3>选择图片</h3>
                     <div class="lockscreen-choose">
                         <img src="/admin/component/winui/images/bg/bg1.jpg" />
                         <img src="/admin/component/winui/images/bg/bg2.jpg" />

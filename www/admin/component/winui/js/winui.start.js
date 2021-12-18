@@ -29,10 +29,13 @@ layui.define(['jquery', 'element', 'layer', 'winui'], function (exports) {
         var html = '';
         //console.log(this.data)
         let leftHtml = '',
-            chtml = '';
+            chtml = '',
+            bottomNum = 458;
+        
         this.data.forEach((d, i) => {
             if (d.type < 2) {
-                leftHtml += `<div class="winui-start-item bottom startmenu" data-text="${d.title}" data-id="${i}""><i class="layui-icon ${d.icon}"></i></div>`;
+                bottomNum = bottomNum - 48;
+                leftHtml += `<div class="winui-start-item startmenu" data-text="${d.title}" data-id="${i}"" style="bottom:${bottomNum}px"><i class="layui-icon ${d.icon}"></i></div>`;
                 //let chtml = '';
                 if (d.children && d.children.length > 0) {
                     d.children.forEach(el => {

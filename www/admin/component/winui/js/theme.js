@@ -123,4 +123,10 @@ layui.use(['layer', 'form'], function (exports) {
     form.on('radio(startSize)', function (data) {
         winui.resetStartSize(data.value);
     });
+    form.on('radio(taskLocktime)', function (data) {
+        localStorage.setItem('_godocmsLockScreenTime', data.value);
+    });
+    $('#taskLockpassword').on('blur keydown', e => {
+        localStorage.setItem('_godocmsLockScreenPassword', $('#taskLockpassword').val());
+    })
 });
