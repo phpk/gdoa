@@ -40,7 +40,7 @@ layui.define(['jquery', 'layer', 'winui'], function (exports) {
                 //isFaIcon = (item.icon.indexOf('fa-') != -1 && item.icon.indexOf('.') == -1),
                 //icon = isFaIcon ? '<i class="fa ' + item.icon + ' fa-fw"></i>' : '<img src="' + item.icon + '" />'
                 icon = '<i class="layui-icon ' + item.icon + ' fa-fw"></i>';
-            html += '<div class="winui-desktop-item" ' + id + ' ' + url + ' ' + title + ' ' + opentype + ' ' + maxOpen + '>';
+            html += '<div class="winui-desktop-item" ' + id + ' ' + url + ' ' + title + ' ' + opentype + ' ' + maxOpen + ' draggable="true">';
             //html += '<div class="winui-icon ' + (isFaIcon ? 'winui-icon-font' : 'winui-icon-img') + '">';
             html += '<div class="winui-icon winui-icon-font">';
             html += icon;
@@ -65,45 +65,6 @@ layui.define(['jquery', 'layer', 'winui'], function (exports) {
         // }
         obj.data = res.desktops;
         callback.call(obj);
-        /*var obj = this
-            , currOptions = obj.options;
-        
-        
-        if (!currOptions.url || !currOptions.method)
-            return
-        $.ajax({
-            url: currOptions.url,
-            type: currOptions.method,
-            data: $.extend({}, currOptions.data),
-            dataType: 'json',
-            success: function (res) {
-                res = res.data;
-                if (typeof res === "string") {
-                    obj.data = JSON.parse(res);
-                    if (typeof callback === 'function')
-                        callback.call(obj);
-                } else if (typeof (res) == "object" && (Object.prototype.toString.call(res).toLowerCase() == "[object object]" || Object.prototype.toString.call(res).toLowerCase() == "[object array]")) {
-                    obj.data = res;
-                    if (typeof callback === 'function')
-                        callback.call(obj);
-                } else {
-                    layer.msg('请对接口返回json对象或者json字符串', {
-                        offset: '40px',
-                        zIndex: layer.zIndex
-                    });
-                }
-            },
-            error: function (e) {
-                if (e.status != 200) {
-                    console.error(e.statusText);
-                } else {
-                    layer.msg('请对接口返回json对象或者json字符串', {
-                        offset: '40px',
-                        zIndex: layer.zIndex
-                    });
-                }
-            }
-        });*/
     };
 
     //桌面应用构造函数
@@ -119,6 +80,7 @@ layui.define(['jquery', 'layer', 'winui'], function (exports) {
         //重置右键事件
         common.resetEvent('.winui-desktop>.winui-desktop-item', 'mouseup', function (e) {
             if (!e) e = window.event;
+            console.log(e)
             var currentItem = this;
             if (e.button == 2) {
                 var left = e.clientX;
@@ -178,7 +140,7 @@ layui.define(['jquery', 'layer', 'winui'], function (exports) {
             $('.winui-desktop>.winui-desktop-item').removeClass('winui-this');
         });
     }
-
+    //DeskatopApp.prototype.onmousedown
     var desktopApp = new DesktopApp();
 
     //公共事件

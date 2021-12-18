@@ -1,6 +1,7 @@
-layui.define(['layer', 'winui', 'laytpl', 'desklogin','desklock'], function (exports) {
+layui.define(['layer', 'winui', 'laytpl', 'winuiInit','desklogin','desklock'], function (exports) {
     let $ = layui.$,
         layer = layui.layer,
+        winuiInit = layui.winuiInit,
         desklogin = layui.desklogin,
         desklock = layui.desklock,
         //winui = layui.winui,
@@ -246,30 +247,45 @@ layui.define(['layer', 'winui', 'laytpl', 'desklogin','desklock'], function (exp
     ];
 
     winui.helper.addTool(toolsObj.concat(menutextList));
+    let isFullScreen = false;
     $('#rightmenu-screen').on('click', (e) => {
-        toolsAction.fullScreen()
+        if(!isFullScreen) {
+            isFullScreen = true;
+            toolsAction.fullScreen();
+            $('#rightmenu-screen').text('退出全屏')
+        }else{
+            isFullScreen = true;
+            winui.exitFullScreen();
+            $('#rightmenu-screen').text('进入全屏')
+        }
+        
     });
     $('#rightmenu-loginout').on('click', (e) => {
         loginOut()
     });
     $('#rightmenu-lock').on('click', e => {
         desklock.showBox()
+    });
+    $('#rightmenu-refresh').on('click', e => {
+        //location.reload()
+        winuiInit()
     })
     let showHelperKey = '_windowsHelperTips'
     let windowShowHelper = localStorage.getItem(showHelperKey);
     if (!windowShowHelper) {
         $('.layer-ext-winhelper').hide()
+        $('#rightmenu-showhelper').text('显示助手')
     }
     $('#rightmenu-showhelper').on('click', () => {
         let windowShowHelper = localStorage.getItem(showHelperKey);
         if (!windowShowHelper) {
             $('.layer-ext-winhelper').show()
             localStorage.setItem(showHelperKey, 1)
-            $('#rightmenu-showhelper').text('隐藏桌面助手')
+            $('#rightmenu-showhelper').text('隐藏助手')
         } else {
             $('.layer-ext-winhelper').hide()
             localStorage.removeItem(showHelperKey)
-            $('#rightmenu-showhelper').text('显示桌面助手')
+            $('#rightmenu-showhelper').text('显示助手')
         }
     })
     exports('deskmenu', {});

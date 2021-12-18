@@ -17,10 +17,13 @@
         layer = layui.layer,
         deskstartUp = layui.deskstartUp,
         winuiInit = layui.winuiInit,
-        desklogin = layui.desklogin;
+        desklogin = layui.desklogin,
+        desklock = layui.desklock;
     //console.log(winuiInit)
     deskstartUp.init().then(res => {
         winuiInit()
+        winui.desklock = desklock;
+        winui.desklogin = desklogin;
     })
 
     

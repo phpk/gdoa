@@ -16,6 +16,21 @@ layui.define(['layer', 'winui'], function (exports) {
                     desktopApp.onclick(function (id, elem) {
                         OpenWindow(elem);
                     });
+                    $('.winui-desktop-item').on('dragend', e => {
+                        //console.log(e)
+                        let el = e.target;
+                        //console.log(e.clientX)
+                        $(el).css({ 'top': e.clientY + 'px', 'left': e.clientX + 'px' })
+                    })
+                    $('.winui-desktop-item').on('dragover', e => {
+                        e.preventDefault();
+                    })
+                    $('.winui-desktop-item').on('drap', e => {
+                        e.preventDefault();
+                    })
+                    $('.winui-desktop-item').on('dragenter', e => {
+                        e.preventDefault();
+                    })
                     desktopApp.contextmenu({
                         item: ["打开", "删除"],
                         item1: function (id, elem) {

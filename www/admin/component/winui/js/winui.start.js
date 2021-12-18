@@ -30,7 +30,7 @@ layui.define(['jquery', 'element', 'layer', 'winui'], function (exports) {
         //console.log(this.data)
         let leftHtml = '',
             chtml = '',
-            bottomNum = 458;
+            bottomNum = 428;
         
         this.data.forEach((d, i) => {
             if (d.type < 2) {

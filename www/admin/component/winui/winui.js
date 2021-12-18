@@ -35,7 +35,6 @@
     layui.define(['jquery', 'layer', 'element', 'form'], function (exports) {
         var $ = layui.jquery
             , form = layui.form
-
             //开始磁贴
             , tile = {
                 data: null,
@@ -118,7 +117,15 @@
             this.taskItem = taskItem;
             this.tab = tab;
         }
-
+        let systemLocked = false,
+            systemNowTime = parseInt((new Date().getTime()) / 1000),
+            setSystemNowTime = () => {
+                systemNowTime = parseInt((new Date().getTime()) / 1000)
+            };
+        document.addEventListener('mousedown', function() {
+            setSystemNowTime()
+        }, false);
+        
         //原型
         Winui.prototype = {
             //配置
@@ -148,33 +155,7 @@
                 if (options.renderBg) {
                     othis.renderBg();
                 }
-                //console.log(options)
-                //console.log(settings.audioSrc)
-                /* 播放提示音 */
                 
-                //播放声音
-                //if (options.audioPlay){
-                //if (options.audioPlay && !layui.sessionData('winuiSession').audio) {
-                    
-                    
-                    /*
-                    var audio = document.createElement("audio"), format = undefined;
-                    audio.onended = function () {
-                        audio = null;
-                    }
-                    audio.preload = 'auto';
-                    if (audio.canPlayType("audio/mp3"))
-                        format = '.mp3';
-                    else if (audio.canPlayType("audio/ogg"))
-                        format = ".wav";
-                    if (format) {
-                        //audio.src = settings.audioSrc + format;
-                        audio.src = '/admin/component/winui/audio/startup.mp3'
-                        audio.play();
-                        //播放过后 刷新页面不再播放
-                        layui.sessionData('winuiSession', { key: 'audio', value: true });
-                    }*/
-                //}
                 //任务栏模式渲染
                 othis.renderTaskbar();
                 //开始菜单尺寸设置
@@ -476,14 +457,29 @@
 
                     //将时间显示到指定的位置，时间格式形如：19:18:02
                     $(selector).html(str);
-                    this.taskList(dateTime);
+                    this.taskLockScreen(dateTime);
                 }, 1000);
             },
-            taskList: (now) => {
+            //开始
+            initLockScreen : () => {
+                systemLocked = false;
+                setSystemNowTime();
+            },
+            taskLockScreen: (now) => {
+                //console.log(winui)
                 //自动锁屏
                 let lockTime = localStorage.getItem('_godocmsLockScreenTime');
-                
-                //console.log(now)
+                let t = parseInt(now.getTime()/1000);
+                if(lockTime && lockTime > 0 && !systemLocked) {
+                    let t = parseInt(now.getTime()/1000) - systemNowTime;
+                    //console.log(t)
+                    //console.log(lockTime*6)
+                    if(t > lockTime*60){
+                        systemLocked = true;
+                        winui.desklock.showBox()
+                    }
+
+                }
             }
             //停止显示时间
             , stopSysTime: function (obj) {

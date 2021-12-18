@@ -1,8 +1,6 @@
 ﻿/**
 
  @Name：winui.helper 桌面助手模块
- @Author：Leo
- @License：MIT
     
  */
 

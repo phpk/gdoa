@@ -5,6 +5,7 @@ layui.define(['layer', 'winui','form'], function (exports) {
         lockKey = '_godocmsLockScreenPassword';
     
     let showBox = () => {
+        
         let lockData = localStorage.getItem(lockKey);
         $('.winui-taskbar').css('zIndex', '0');
         if (!lockData) {
@@ -47,6 +48,7 @@ layui.define(['layer', 'winui','form'], function (exports) {
                                 showTimeDiv();
                             }
                         });
+                        $('#password').focus();
                     }, showTimeDiv = function () {
                         index = winui.sysTime('#date_time', '<p id="time">!HH:!mm</p><p id="date">!M月!d日,星期!w</p>')
                         $('#date_time').toggleClass('layui-hide');
@@ -71,6 +73,7 @@ layui.define(['layer', 'winui','form'], function (exports) {
                     }
                     $(document).on('mouseup', docMouseup);
                     $(document).on('keydown', docKeydown);
+                    
                     //解锁点击
                     let setDown = (e) => {
                         if (e.keyCode == 13) {
@@ -85,6 +88,7 @@ layui.define(['layer', 'winui','form'], function (exports) {
                         au.play();
                         layer.close(layerindex);
                         window.localStorage.setItem("lockscreen", false);
+                        winui.initLockScreen();
                     }
                     $('#password').on('keydown', setDown);
                     $('#password').on('keyup', e => {
