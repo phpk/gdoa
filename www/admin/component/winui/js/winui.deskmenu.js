@@ -1,4 +1,4 @@
-layui.define(['layer', 'winui', 'laytpl', 'winuiInit','desklogin','desklock'], function (exports) {
+layui.define(['layer', 'winui', 'laytpl', 'winuiInit', 'desklogin', 'desklock'], function (exports) {
     let $ = layui.$,
         layer = layui.layer,
         winuiInit = layui.winuiInit,
@@ -267,8 +267,11 @@ layui.define(['layer', 'winui', 'laytpl', 'winuiInit','desklogin','desklock'], f
         desklock.showBox()
     });
     $('#rightmenu-refresh').on('click', e => {
-        //location.reload()
-        winuiInit()
+        location.reload()
+        //winuiInit()
+    });
+    $('#rightmenu-initpos').on('click', e => {
+        winui.desktop.initPos()
     })
     let showHelperKey = '_windowsHelperTips'
     let windowShowHelper = localStorage.getItem(showHelperKey);

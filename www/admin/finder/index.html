@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+    <link href="assets/css/desktop.css" rel="stylesheet" media="all and (min-width: 600px)">
+    <title>Finder</title>
+</head>
+
+<body>
+    <section class="main">
+        <section class="finder" is-click="class:remove('hide', '#finder')">
+            <img src="assets/svg/finder.svg" alt="finder icon" class="finderIcon">
+        </section>
+        <div id="finder" class="container">
+            <div class="header">
+                <div class="headerTop">
+                    <div class="headerIconsLeft">
+                        <div class="headerIconClose"  is-click="class:add('hide', '#finder')"><img src="assets/svg/close.svg" alt="close" class="imgHeader"></div>
+                        <div class="headerIconMinimize"><img src="assets/svg/minimize.svg" alt="minimize" class="imgHeader"></div>
+                        <div class="headerIconOpen"><img src="assets/svg/expand.svg" alt="expand" class="imgHeader"></div>
+                    </div>
+                    <div class="headerTitle">
+                        <img src="assets/svg/folder-blue.svg" alt="folder blue" class="header_IconTitle">
+                        <p class="header_TextTitle">test</p>
+                    </div>
+                </div>
+                <div class="navbar">
+                    <div class="arrows">
+                        <img class="iconArrow" src="assets/svg/left-arrow.svg" alt="left arrow">
+                        <img class="iconArrow" src="assets/svg/right-arrow.svg" alt="right arrow">
+                    </div>
+                    <div class="navbarPanel">
+	                    <div class="navbarPanelLeft">
+	                        <img class="iconPanelLeft active" src="assets/svg/panel_1.svg" alt="cuadricula">
+	                        <img class="iconPanelLeft" src="assets/svg/panel_2.svg" alt="line">
+	                        <img class="iconPanelLeft" src="assets/svg/panel_3.svg" alt="view">
+	                        <img class="iconPanelLeft final" src="assets/svg/panel_4.svg" alt="3d">
+	                    </div>
+	                    <div class="navbarPanelRight">
+	                        <img class="iconPanelRight" src="assets/svg/panel_5.svg" alt="list">
+	                        <img class="iconPanelRight" src="assets/svg/panel_6.svg" alt="options">
+	                        <img class="iconPanelRight" src="assets/svg/panel_7.svg" alt="upload">
+	                        <img class="iconPanelRight" src="assets/svg/panel_8.svg" alt="tag">
+	                    </div>
+                    </div>
+                    <div class="navbarSearch">
+                    	<img src="assets/svg/lupa.svg" alt="lupa" class="iconSearch">
+                    	<input type="text" name="name" class="navbarSearchText" placeholder="Search">
+                    </div>
+                </div>
+            </div>
+            <div class="sidebar">
+            	<div class="sidebarSection">
+            		<p class="sidebarTitle">Favorites</p>
+            		<div class="sidebarGroup"><img src="assets/svg/app-store.svg" alt="applications" class="sidebarIcons">Applications<p class="sidebarName"></p></div>
+            		<div class="sidebarGroup"><img src="assets/svg/home.svg" alt="user" class="sidebarIcons">gustavocogollo<p class="sidebarName"></p></div>
+            		<div class="sidebarGroup"><img src="assets/svg/folder.svg" alt="folder cloud" class="sidebarIcons">cloud<p class="sidebarName"></p></div>
+            		<div class="sidebarGroup"><img src="assets/img/desktop.png" alt="desktop" class="sidebarIcons">Desktop<p class="sidebarName"></p></div>
+            		<div class="sidebarGroup"><img src="assets/svg/download.svg" alt="folder donwload" class="sidebarIcons">Download<p class="sidebarName"></p></div>
+            		<div class="sidebarGroup"><img src="assets/svg/folder.svg" alt="folder" class="sidebarIcons">Temario<p class="sidebarName"></p></div>
+            		<div class="sidebarGroup"><img src="assets/svg/folder.svg" alt="folder" class="sidebarIcons">www<p class="sidebarName"></p></div>
+            	</div>
+            	<div class="sidebarSection">
+            		<p class="sidebarTitle">Devices</p>
+            		<div class="sidebarGroup">
+            			<img src="assets/svg/laptop.svg" alt="device" class="sidebarIcons"><p class="sidebarName">Gustavo MacBoo...</p>
+            		</div>
+            	</div>
+            	<div class="sidebarSection">
+            		<p class="sidebarTitle">Shared</p>
+            		<div class="sidebarGroup">
+            		<img src="assets/svg/network.svg" alt="network icon" class="sidebarIcons"><p class="sidebarName">All...</p>
+            		</div>
+            	</div>
+            </div>
+            <div class="space">
+            	<div class="spaceIcon">
+            		<img src="assets/svg/folder-blue.svg" alt="folder blue" class="spaceIcons">
+            		<p class="spaceTitle">wordpress</p>
+            	</div>
+            	<div class="spaceIcon">
+            		<img src="assets/svg/file.svg" alt="document applications" class="spaceIcons">
+            		<p class="spaceTitle">index.php</p>
+            	</div>
+            </div>
+        </div>
+    </section>
+
+    <script src="assets/js/ffnm.min.js"></script>
+</body>
+
+
+</html>

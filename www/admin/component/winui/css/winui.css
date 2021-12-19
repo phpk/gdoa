@@ -268,7 +268,7 @@ body {
 	cursor : move;
 }
 
-.winui-desktop-item.winui-this {
+.winui-desktop-item.winui-this,.ui-selected {
 	border: 1px solid rgba(221, 221, 221, .8);
 	background-color: rgba(255, 255, 255, .3);
 	overflow: visible;

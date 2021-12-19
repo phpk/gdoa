@@ -1,5 +1,6 @@
-layui.define(['layer', 'winui'], function (exports) {
-    let $ = layui.$;
+layui.define(['layer', 'winui','dragmove'], function (exports) {
+    let $ = layui.$,
+        dragmove = layui.dragmove;
     let initWindows = () => {
         winui.config({
             settings: layui.data('winui').settings || {
@@ -12,25 +13,20 @@ layui.define(['layer', 'winui'], function (exports) {
             desktop: {
                 options: {},    //可以为{}  默认 请求 json/desktopmenu.json
                 done: function (desktopApp) {
-                    //desktopApp.ondblclick(function (id, elem) {
-                    desktopApp.onclick(function (id, elem) {
+                    desktopApp.ondblclick(function (id, elem) {
+                    //desktopApp.onclick(function (id, elem) {
                         OpenWindow(elem);
                     });
-                    $('.winui-desktop-item').on('dragend', e => {
-                        //console.log(e)
-                        let el = e.target;
-                        //console.log(e.clientX)
-                        $(el).css({ 'top': e.clientY + 'px', 'left': e.clientX + 'px' })
-                    })
-                    $('.winui-desktop-item').on('dragover', e => {
-                        e.preventDefault();
-                    })
-                    $('.winui-desktop-item').on('drap', e => {
-                        e.preventDefault();
-                    })
-                    $('.winui-desktop-item').on('dragenter', e => {
-                        e.preventDefault();
-                    })
+                    dragmove.moveOne('.winui-desktop-item');
+                    const selectable = new Selectable({
+                        filter: ".winui-desktop > .winui-desktop-item"
+                    });
+                    selectable.on('end', (e, selected, unselected) => {
+                        //console.log(selected)
+                        if (selected.length > 0) {
+                            dragmove.moveMore(selected);
+                        }
+                    });
                     desktopApp.contextmenu({
                         item: ["打开", "删除"],
                         item1: function (id, elem) {

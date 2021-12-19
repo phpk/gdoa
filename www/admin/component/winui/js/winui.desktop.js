@@ -29,7 +29,7 @@ layui.define(['jquery', 'layer', 'winui'], function (exports) {
         //console.log($(this.data))
         $(this.data).each(function (index, item) {
             //console.log(item)
-            var id = (item.id == '' || item.id == undefined) ? '' : 'win-id="' + item.id + '"',
+            var id = (item.id == '' || item.id == undefined) ? '' : 'win-id="' + item.id + '" id="winid-' + item.id + '"',
                 url = (item.href == '' || item.href == undefined) ? '' : 'win-url="' + item.href + '"',
                 title = (item.title == '' || item.title == undefined) ? '' : 'win-title="' + item.title + '"',
                 //opentype = (item.openType == '' || item.openType == undefined) ? '' : 'win-opentype="' + item.openType + '"',
@@ -80,7 +80,7 @@ layui.define(['jquery', 'layer', 'winui'], function (exports) {
         //重置右键事件
         common.resetEvent('.winui-desktop>.winui-desktop-item', 'mouseup', function (e) {
             if (!e) e = window.event;
-            console.log(e)
+            //console.log(e)
             var currentItem = this;
             if (e.button == 2) {
                 var left = e.clientX;
@@ -141,10 +141,10 @@ layui.define(['jquery', 'layer', 'winui'], function (exports) {
         });
     }
     //DeskatopApp.prototype.onmousedown
-    var desktopApp = new DesktopApp();
-
+    let desktopApp = new DesktopApp();
+    let menuPostionData = localStorage.getItem('_deskTopMenuPostion')
     //公共事件
-    var common = {
+    let common = {
         //重置元素事件
         resetEvent: function (selector, eventName, func) {
             if (typeof func != "function") return;
@@ -152,6 +152,14 @@ layui.define(['jquery', 'layer', 'winui'], function (exports) {
         },
         //定位桌面应用
         locaApp: function () {
+            if (!menuPostionData) {
+                this.initPos()
+            } else {
+                this.setPos()
+            }
+            
+        },
+        initPos: () => {
             //计算一竖排能容纳几个应用
             var appHeight = 96;
             var appWidth = 90;
@@ -160,6 +168,7 @@ layui.define(['jquery', 'layer', 'winui'], function (exports) {
             var rowspan = 0;
             var colspan = 0;
             //定位桌面应用
+            let res = {};
             $('.winui-desktop>.winui-desktop-item').each(function (index, elem) {
                 var newTemp = parseInt(index / maxCount);
 
@@ -167,10 +176,20 @@ layui.define(['jquery', 'layer', 'winui'], function (exports) {
                 rowspan = oldTemp == newTemp ? rowspan : 0;
 
                 if (rowspan == 0 && oldTemp != newTemp) oldTemp++;
-
-                $(this).css('top', appHeight * rowspan + 'px').css('left', appWidth * colspan + 'px');
+                let topIndex = appHeight * rowspan + 'px',
+                    leftIndex = appWidth * colspan + 'px';
+                $(this).css('top', topIndex).css('left', leftIndex);
                 rowspan++;
+                res[$(this).attr('id')] = { top: topIndex, left: leftIndex}
             });
+            localStorage.setItem('_deskTopMenuPostion',JSON.stringify(res))
+        },
+        setPos: () => {
+            let posData = JSON.parse(menuPostionData)
+            for (let p in posData) {
+                let el = posData[p];
+                $('#' + p).css('top', el.top).css('left', el.left);
+            }
         }
     };
 
@@ -183,7 +202,7 @@ layui.define(['jquery', 'layer', 'winui'], function (exports) {
     };
 
     var desktop = new Desktop();
-
+    desktop.initPos = common.initPos;
     //配置
     desktop.config = function (options) {
         options = options || {};
@@ -210,7 +229,7 @@ layui.define(['jquery', 'layer', 'winui'], function (exports) {
 
     winui.desktop = desktop;
 
-    exports('desktop', {});
+    exports('desktop', desktop);
 
     delete layui.desktop;
 });
