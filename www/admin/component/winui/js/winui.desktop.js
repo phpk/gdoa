@@ -26,7 +26,7 @@ layui.define(['jquery', 'layer', 'winui'], function (exports) {
         //console.log($(this.data))
         $(this.data).each(function (index, item) {
             //console.log(item)
-            var id = (item.id == '' || item.id == undefined) ? '' : 'win-id="' + item.id + '" id="winid-' + item.id + '"',
+            var id = (item.id == '' || item.id == undefined) ? '' : 'win-id="' + item.id + '" id="winid_' + item.id + '"',
                 url = (item.href == '' || item.href == undefined) ? '' : 'win-url="' + item.href + '"',
                 title = (item.title == '' || item.title == undefined) ? '' : 'win-title="' + item.title + '"',
                 //opentype = (item.openType == '' || item.openType == undefined) ? '' : 'win-opentype="' + item.openType + '"',

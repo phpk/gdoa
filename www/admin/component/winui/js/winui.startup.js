@@ -14,6 +14,7 @@ layui.define(['layer', 'winui', 'desklogin'], function (exports) {
             au.play();
             setTimeout(() => {
                 powerOnBox.remove();
+                layer.closeAll();
                 winui.loginNum = 0;
                 desklogin.showBox();
             }, 2000);

@@ -5,7 +5,7 @@ layui.define(['layer', 'winui','form'], function (exports) {
         lockKey = '_godocmsLockScreenPassword';
     
     let showBox = () => {
-        
+        layer.closeAll();
         let lockData = localStorage.getItem(lockKey);
         $('.winui-taskbar').css('zIndex', '0');
         if (!lockData) {

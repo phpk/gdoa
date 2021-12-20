@@ -18,14 +18,15 @@ layui.define(['layer', 'winui','dragmove'], function (exports) {
                         OpenWindow(elem);
                     });
                     try {
-                        dragmove.moveOne('.winui-desktop-item');
-                        const selectable = new Selectable({
+                        let selectable = new Selectable({
                             filter: ".winui-desktop-item"
                         });
+                        dragmove.moveOne('.winui-desktop-item',selectable);
+                        
                         selectable.on('end', (e, selected, unselected) => {
                             //console.log(selected)
                             if (selected.length > 0) {
-                                dragmove.moveMore(selected);
+                                dragmove.moveMore(selected, selectable);
                             }
                         });
                     } catch (error) {
