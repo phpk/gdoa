@@ -369,7 +369,11 @@ body {
 	display: inline-block;
 	vertical-align: middle;
 	line-height: 40px;
-	width: 160px;
+	/*width: 160px;*/
+	width:70px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 	padding: 0 10px;
 	text-align: center;
 	-moz-box-sizing: border-box;
@@ -401,12 +405,12 @@ body {
 
 .winui-taskbar-task .winui-task-item.winui-this {
 	/*任务Item选中样式*/
-	/*background-color: #004275;*/
+	background-color: #004275;
 }
 
 .winui-taskbar-task .winui-task-item.winui-this:hover {
 	/*任务Item选中悬浮样式*/
-	/*background-color: #195583;*/
+	background-color: #195583;
 }
 
 

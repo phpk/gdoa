@@ -149,6 +149,10 @@
 				});
                 
                window.addmd = function() {
+                    parent.layui.admin.addTab('godocmsdocsadd_' + 113 + req.did,
+					'添加文档',
+					'/admin/view/doc/addmd.html?did=' + req.did)
+                    /*
 					layer.open({
 						type: 2,
 						title: '添加文档',
@@ -158,11 +162,15 @@
 						anim: 1,
 						maxmin: true,
 						content: MODULE_PATH + 'addmd.html?did=' + req.did
-					});
+					});*/
 				}
 
                 window.edit = function (obj) {
+                    parent.layui.admin.addTab('godocmsdocsedit_' + obj.data.id+111,
+					obj.data.title + '-修改文档',
+					'/admin/view/doc/editmd.html?id=' + obj.data.id + '&did=' + req.did)
                     //console.log(obj)
+                    /*
                     layer.open({
                         type: 2,
                         title: '修改',
@@ -174,7 +182,7 @@
                         anim: 1,
                         maxmin: true,
                         content: MODULE_PATH + 'editmd.html?id=' + obj.data.id + '&did=' + req.did
-                    });
+                    });*/
                 }
                 window.back = function (obj) {
                     layer.confirm('回写将按summary.md结构重置数据！', {

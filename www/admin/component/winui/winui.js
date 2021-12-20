@@ -491,9 +491,9 @@
                 var res = true;
                 $('.winui-taskbar-task').each(function () {
                     var thisWidth = parseInt($(this).prop('scrollWidth'));
-                    var childWidth = parseInt($(this).children().length * 165);
+                    var childWidth = parseInt($(this).children().length * 72);
                     //响应式
-                    if (thisWidth - 165 < childWidth) {
+                    if (thisWidth - 70 < childWidth) {
                         layer.msg('任务栏装不下啦', { zIndex: layer.zIndex });
                         res = false;
                         return false;

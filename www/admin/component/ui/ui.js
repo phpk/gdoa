@@ -47,7 +47,7 @@ layui.config({
 	FileSaver: 'FileSaver',
 	wordexport: 'wordexport',
 	transferTable: 'transferTable',
-	tableEdit: 'tableEdit'
+
 }).use(['layer', 'theme'], function () {
 	layui.theme.changeTheme(window, false);
 });

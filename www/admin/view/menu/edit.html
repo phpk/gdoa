@@ -19,7 +19,10 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">菜单上级</label>
                     <div class="layui-input-block">
-                        <input type="text" name="pname" lay-verify="required" autocomplete="off" id="tree" readonly class="layui-input">
+                        <span class="layui-btn pear-btn-success pear-btn-md" id="chooseRule">
+                                <span id="ruleText">顶层菜单</span>
+                                <i class="layui-icon layui-icon-down layui-font-12"></i>
+                        </span>
                     </div>
                 </div>
                 <div class="layui-form-item">
@@ -47,6 +50,7 @@
                         <input type="radio" name="type" value="0" title="目录">
                         <input type="radio" name="type" value="1" title="菜单">
                         <input type="radio" name="type" value="2" title="按钮">
+                        <input type="radio" name="type" value="5" title="右键">
                         <input type="radio" name="type" value="3" title="权限">
                     </div>
                 </div>
@@ -69,7 +73,7 @@
     <div class="bottom">
         <div class="button-container">
             <input type="hidden" name="id" lay-verify="required|number">
-            <input type="hidden" name="pid" lay-verify="required|number">
+            <input type="hidden" name="pid" id="pid" lay-verify="required|number">
             <button type="submit" class="pear-btn pear-btn-primary pear-btn-sm" lay-submit="" lay-filter="user-save">
                 <i class="layui-icon layui-icon-ok"></i>
                 提交
@@ -81,43 +85,33 @@
 <script src="../../component/layui/layui.js"></script>
 <script src="../../component/ui/ui.js"></script>
 <script>
-layui.use(['form','jquery','iconSelectedPlus', 'treeSelect'],function(){
+layui.use(['form','jquery','iconSelectedPlus', 'dropdown'],function(){
     let form = layui.form,
         $ = layui.jquery,
         iconSelectedPlus = layui.iconSelectedPlus,
-        treeSelect = layui.treeSelect,
+        dropdown = layui.dropdown,
         req = _req();
     //console.log(req)
     
     _get(layui, 'menu/one?id=' + req.id, res => {
         //console.log(res)
         form.val("editform",res);
+        $('#ruleText').text(res.pname);
         iconSelectedPlus.render(".icon-selected", {
             //position : 'right',
             icons: iconSelectedPlus.icons.layui,
             simple : true
         });
-        treeSelect.render({
-            // 选择器
-            elem: '#tree',
-            // 数据
-            data: res.list,
-            // 异步加载方式：get/post，默认get
-            //type: 'get',
-            // 占位符
-            placeholder: res.pname,
-            // 是否开启搜索功能：true/false，默认false
-            search: false,
-            // 点击回调
-            click: function(d){
-                //console.log(d);
-                form.val("editform",{pid : d.current.id});
-            },
-            // 加载完成后的回调函数
-            success: function (d) {
-                console.log(d);
-            }
-        });
+        dropdown.render({
+                        elem: '#chooseRule',
+                        data: res.list,
+                        trigger: 'hover',
+                        click: (d, el) => {
+                            $('#ruleText').text(d.title);
+                            $('#pid').val(d.id);
+                            return;
+                 }
+        })
 
     })
     

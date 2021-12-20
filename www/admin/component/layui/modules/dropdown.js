@@ -183,10 +183,10 @@ layui.define(['jquery', 'laytpl', 'lay'], function(exports){
           //标题区
           ,function(){
             //是否超文本
-            var viewText = ('href' in item) ? (
-              '<a href="'+ item.href +'" target="'+ (item.target || '_self') +'">'+ title +'</a>'
-            ) : title;
-            
+            //var viewText = ('href' in item) ? (
+            //  '<a href="'+ item.href +'" target="'+ (item.target || '_self') +'">'+ title +'</a>'
+            //) : title;
+            var viewText = title;
             //是否存在子级
             if(isChild){
               return '<div class="'+ STR_MENU_TITLE +'">'+ viewText + function(){

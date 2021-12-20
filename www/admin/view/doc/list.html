@@ -207,6 +207,10 @@
 				}
 				
 				window.listmd = function(obj) {
+					parent.layui.admin.addTab('godocmsdocslist_' + obj.data.id+112,
+					obj.data.title + '-文档列表',
+					'/admin/view/doc/listmd.html?did=' + obj.data.id)
+					/*
 					layer.open({
 						type: 2,
 						title: '文档列表-' + obj.data.title,
@@ -216,7 +220,7 @@
 						anim: 1,
 						maxmin: true,
 						content: MODULE_PATH + 'listmd.html?did=' + obj.data.id
-					});
+					});*/
 				}
 				window.remove = function(obj){
 		            layer.confirm('确定要删除', {icon: 3, title:'提示'}, function(index){

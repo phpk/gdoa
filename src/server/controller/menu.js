@@ -68,12 +68,12 @@ module.exports = class extends Base {
         }
 
         let list = await this.model('menu').tree();
-        let pname = '顶层目录';
+        let pname = '顶层菜单';
         data.list = [
             {
                 id: 0,
-                name: pname,
-                children: list,
+                title: pname,
+                child: list,
                 open: true
             }
         ]
@@ -104,7 +104,7 @@ module.exports = class extends Base {
      * @apiParam  {String} route 后端路由
      * @apiParam  {String} icon 菜单icon
      * @apiParam  {Number} type 类型 0 1 2 3
-     * @apiParam  {Number} desktop 桌面推荐 0 1
+     * 
      * @apiParam  {Number} order_num 排序
      * @apiSuccess (200) {type} name description
      *

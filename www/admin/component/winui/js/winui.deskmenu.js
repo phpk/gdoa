@@ -154,7 +154,23 @@ layui.define(['layer', 'winui', 'laytpl', 'winuiInit', 'desklogin', 'desklock'],
         },
         lockScreen: () => {
             desklock.showBox()
-        }
+        },
+        toolsFontEditor: () => {
+            winui.window.open({
+                id: 'godocmsfonteditor',
+                type: 2,
+                title: '字体编辑器',
+                shade: 0,
+                moveOut: true,
+                area: ['90%', '90%'],
+                anim: 1,
+                content: '/admin/fontedit/index.html',
+                offset: 'auto'  //居中
+                , min: true  //显示最小化按钮
+                , max: true  //显示最大化按钮
+                , refresh: true    //显示刷新按钮
+            });
+        },
 
     }
     let toolsObj = [
@@ -203,10 +219,17 @@ layui.define(['layer', 'winui', 'laytpl', 'winuiInit', 'desklogin', 'desklock'],
         {
             tips: '办公白板',
             icon: 'fa-file-archive-o',
-            startcss: 'winui-tile-long',
+            startcss: 'winui-tile-normal',
+            //startcss: 'winui-tile-long',
             clickActioin: toolsAction.toolsBaiban
 
-        }
+        },
+        {
+            tips: '字体编辑器',
+            icon: 'fa-tint',
+            startcss: 'winui-tile-normal',
+            clickActioin: toolsAction.toolsFontEditor
+        },
     ];
     laytpl($('#startCenterTpl').html()).render(toolsObj, function (html) {
         $('#winui-tilebox-body').html(html)

@@ -17,16 +17,21 @@ layui.define(['layer', 'winui','dragmove'], function (exports) {
                     //desktopApp.onclick(function (id, elem) {
                         OpenWindow(elem);
                     });
-                    dragmove.moveOne('.winui-desktop-item');
-                    const selectable = new Selectable({
-                        filter: ".winui-desktop > .winui-desktop-item"
-                    });
-                    selectable.on('end', (e, selected, unselected) => {
-                        //console.log(selected)
-                        if (selected.length > 0) {
-                            dragmove.moveMore(selected);
-                        }
-                    });
+                    try {
+                        dragmove.moveOne('.winui-desktop-item');
+                        const selectable = new Selectable({
+                            filter: ".winui-desktop-item"
+                        });
+                        selectable.on('end', (e, selected, unselected) => {
+                            //console.log(selected)
+                            if (selected.length > 0) {
+                                dragmove.moveMore(selected);
+                            }
+                        });
+                    } catch (error) {
+                        console.log(error)
+                    }
+                    
                     desktopApp.contextmenu({
                         item: ["打开", "删除"],
                         item1: function (id, elem) {

@@ -68,9 +68,21 @@
                     }
                 })
                 const vditor = new Vditor('veditor', {
-                    height: 560,
+                    height: 680,
                     placeholder: '请输入内容',
                     value : '',
+                    cdn : '/admin/component/vditor',
+                    preview: {
+                                markdown: {
+                                    toc: true,
+                                    mark: true,
+                                    footnotes: true,
+                                    autoSpace: true,
+                                },
+                                math: {
+                                    engine: 'KaTeX',
+                                },
+                    },
                     cache : {
                         enable : false
                     },
