@@ -68,13 +68,13 @@ body {
 }
 
 .taskbarInTop .winui-console {
-	top: 40px;
+	/*top: 40px;*/
 	bottom: 0;
 }
 
 .taskbarInBottom .winui-console {
-	top: 0;
-	bottom: 40px;
+	/*top: 0;*/
+	bottom: 42px;
 }
 
 /*按钮*/
@@ -868,116 +868,19 @@ body {
 /*控制中心*/
 
 .winui-console {
-	width: 398px;
+	width: 60vw;
+	height: 70vh;
 	position: fixed;
-	top: 0;
 	right: 0;
-	bottom: 40px;
+	bottom: 42px;
 	z-index: 201704011157;
+	background: #fff;
+    box-shadow: 0 0 8px rgba(0,0,0,.1);
+    border-top-left-radius:5px;
+    overflow: hidden;
 }
 
-.winui-console h1:first-child {
-	line-height: 50px;
-	font-size: 15px;
-	font-weight: 600;
-	padding-left: 12px;
-	color: #fff;
-	cursor: default;
-}
 
-.winui-console .winui-message {
-	position: absolute;
-	top: 50px;
-	bottom: 192px;
-	padding-left: 12px;
-	padding-right: 14px;
-	width: 372px;
-}
-
-.winui-console .winui-message .layui-side-scroll {
-	width: 100%;
-}
-
-.winui-console .winui-message .winui-message-item {
-	color: #fff;
-	padding: 10px 15px;
-	background-color: rgba(255, 255, 255, 0.10);
-	margin-bottom: 10px;
-	width: 322px;
-}
-
-.winui-console .winui-message .winui-message-item:active {
-	-moz-transform: scale(.98, .98);
-	-webkit-transform: scale(.98, .98);
-	-o-transform: scale(.98, .98);
-}
-
-.winui-console .winui-message .winui-message-item:last-child {
-	margin-bottom: 0;
-}
-
-.winui-console .winui-message .winui-message-item h2 {
-	font-size: 15px;
-	font-weight: 600;
-}
-
-.winui-console .winui-message .winui-message-item .content {
-	font-size: 14px;
-	color: #ddd
-}
-
-.winui-console .winui-shortcut {
-	position: absolute;
-	bottom: 12px;
-	padding-left: 12px;
-	padding-right: 14px;
-	overflow-y: hidden;
-	height: 162px;
-	-moz-transition: height .5s;
-	-o-transition: height .5s;
-	-webkit-transition: height .5s;
-	transition: height .5s;
-}
-
-.winui-console .winui-shortcut.extend {
-	height: 300px;
-}
-
-.winui-console .winui-shortcut>h2>.extend-switch {
-	font-size: 12px;
-	cursor: default;
-	color: #ddd;
-}
-
-.winui-console .winui-shortcut>h2>.extend-switch:hover {
-	color: #fff;
-}
-
-.winui-console .winui-shortcut .winui-shortcut-item {
-	color: #fff;
-	height: 65px;
-	width: 90px;
-	display: inline-block;
-	margin-top: 4px;
-	padding: 4px;
-	-moz-box-sizing: border-box;
-	-webkit-box-sizing: border-box;
-	box-sizing: border-box;
-	position: relative;
-	font-size: 20px;
-	border: 2px solid rgba(0, 0, 0, 0.00);
-}
-
-.winui-console .winui-shortcut .winui-shortcut-item:hover {
-	border: 2px solid rgba(255, 255, 255, 0.4);
-}
-
-.winui-console .winui-shortcut .winui-shortcut-item span {
-	position: absolute;
-	left: 4px;
-	bottom: 4px;
-	font-size: 12px;
-}
 
 /********************************************************************************/
 /*window窗口样式*/
@@ -1677,8 +1580,8 @@ body .layer-ext-winconfirm .layui-layer-content {
 
 /*开始菜单*/
 .winui-start,
-/*控制中心*/
-.winui-console,
+/*控制中心
+.winui-console,*/
 /*开始按钮选中*/
 .winui-taskbar-start.winui-this,
 /*任务项选中*/

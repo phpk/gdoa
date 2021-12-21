@@ -20,6 +20,7 @@
     "mysql-import": "^5.0.21",
     "mysql-ssh": "^1.0.6",
     "mysqldump": "^3.2.0",
+    "socket.io-redis": "^6.1.1",
     "svg-captcha": "^1.4.0",
     "think-cache": "^1.0.0",
     "think-cache-file": "^1.0.8",
@@ -31,6 +32,8 @@
     "think-session": "^1.0.0",
     "think-session-file": "^1.0.5",
     "think-session-redis": "^1.1.4",
+    "think-websocket": "^1.0.8",
+    "think-websocket-socket.io": "^1.0.12",
     "thinkjs": "^3.0.0"
   },
   "devDependencies": {

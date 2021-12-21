@@ -8,7 +8,9 @@ const isDev = think.env === 'development';
 const redisSession = require('think-session-redis');
 const redisCache = require('think-cache-redis');
 const sqlite = require('think-model-sqlite');
-const conf = require('./config.js')
+const socketio = require('think-websocket-socket.io');
+const socketRedis = require('socket.io-redis');
+const conf = require('./config.js');
 /**
  * cache adapter config
  * @type {Object}
@@ -120,3 +122,22 @@ exports.logger = {
     filename: path.join(think.ROOT_PATH, 'logs/app.log')
   }
 };
+
+exports.websocket = {
+  type: 'socketio',
+  common: {
+    // common config
+  },
+  socketio: {
+    handle: socketio,
+    allowOrigin: null, // any origin is allowed by default
+    path: '/socket.io', // `/socket.io` by default.
+    //adapter: null,
+    adapter: socketRedis({ host: 'localhost', port: 6379 }),
+    messages: [{
+      open: '/server/chat/open', // websocket action when connected
+      close: '/server/chat/close', // websocket action when close
+      addUser: '/server/chat/addUser', //websocket addUser action when event is addUser
+    }]
+  }
+}

@@ -32,9 +32,10 @@
             return obj instanceof $;
         }
 
-    layui.define(['jquery', 'layer', 'element', 'form'], function (exports) {
+    layui.define(['jquery', 'layer', 'element', 'form', 'laytpl'], function (exports) {
         var $ = layui.jquery
             , form = layui.form
+            , laytpl = layui.laytpl
             //开始磁贴
             , tile = {
                 data: null,
@@ -116,15 +117,14 @@
             this.tile = tile;
             this.taskItem = taskItem;
             this.tab = tab;
-        }
-        let systemLocked = false,
-            systemNowTime = parseInt((new Date().getTime()) / 1000),
-            setSystemNowTime = () => {
-                systemNowTime = parseInt((new Date().getTime()) / 1000)
+            this.systemLocked = false;
+            this.systemNowTime = parseInt((new Date().getTime()) / 1000);
+            this.setSystemNowTime = () => {
+                this.systemNowTime = parseInt((new Date().getTime()) / 1000)
             };
-        document.addEventListener('mousedown', function() {
-            setSystemNowTime()
-        }, false);
+            
+        }
+        
         
         //原型
         Winui.prototype = {
@@ -198,7 +198,7 @@
                 //绑定右下角控制中心点击事件
                 common.resetClick('.winui-taskbar-console', call.consoleClick);
                 //绑定控制中心展开与折叠事件
-                common.resetClick('.winui-console .extend-switch', call.consoleExtendClick);
+                //common.resetClick('.winui-console .extend-switch', call.consoleExtendClick);
                 //绑定右下角显示桌面点击事件
                 common.resetClick('.winui-taskbar-desktop', call.desktopClick);
                 //任务栏右下角显示时间
@@ -457,25 +457,25 @@
 
                     //将时间显示到指定的位置，时间格式形如：19:18:02
                     $(selector).html(str);
-                    this.taskLockScreen(dateTime);
+                    this.taskLockScreen(dateTime, this);
                 }, 1000);
             },
             //开始
             initLockScreen : () => {
-                systemLocked = false;
+                this.systemLocked = false;
                 setSystemNowTime();
             },
-            taskLockScreen: (now) => {
+            taskLockScreen: (now, that) => {
                 //console.log(winui)
                 //自动锁屏
                 let lockTime = localStorage.getItem('_godocmsLockScreenTime');
                 let t = parseInt(now.getTime()/1000);
-                if(lockTime && lockTime > 0 && !systemLocked) {
-                    let t = parseInt(now.getTime()/1000) - systemNowTime;
+                if(lockTime && lockTime > 0 && !that.systemLocked) {
+                    let t = parseInt(now.getTime() / 1000) - that.systemNowTime;
                     //console.log(t)
                     //console.log(lockTime*6)
                     if(t > lockTime*60){
-                        systemLocked = true;
+                        that.systemLocked = true;
                         winui.desklock.showBox()
                     }
 
@@ -742,12 +742,16 @@
                
             },
             //控制中心点击事件
+            /*
             consoleClick: function () {
                 $(this).toggleClass(THIS);
                 $('.winui-console').removeClass('layui-hide');
                 $('.winui-console').toggleClass('slideInRight');
                 $('.winui-console').toggleClass('slideOutRight');
-            },
+                // $.get(winui.path + 'html/chat/index.html', function (html) {
+                //     $('#winui-chatbox').html(laytpl(html).render(this))
+                // });
+            },*/
             //控制中心展开与折叠事件
             consoleExtendClick: function () {
                 if ($(this).text() === '展开') {
@@ -810,7 +814,9 @@
         window.winui = new Winui();
 
         winui.tab.init();
-
+        document.addEventListener('mousedown', () => {
+            winui.setSystemNowTime()
+        }, false);
         exports('winui', {});
 
         delete layui.winui;

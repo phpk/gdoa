@@ -48,5 +48,6 @@ module.exports = {
     errnoField: 'code', // errno field
     errmsgField: 'message', // errmsg field
     defaultErrno: 201, // default errno
-    validateDefaultErrno: 202 // validate default errno
+    validateDefaultErrno: 202, // validate default errno
+    stickyCluster: true,//websocket
 };
