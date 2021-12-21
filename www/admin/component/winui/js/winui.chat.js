@@ -12,12 +12,13 @@ layui.define(['layim', 'layer', 'winui'], function (exports) {
     const serverUrl = getDomain();
     console.log(serverUrl)
     //console.log(getToken())
-    const socket = io(serverUrl, {
-        extraHeaders: {
-            rttoken : getToken()
-        },
-        autoConnect: false
-    });
+    // const socket = io(serverUrl, {
+    //     extraHeaders: {
+    //         rttoken : getToken()
+    //     },
+    //     autoConnect: false
+    // });
+    const socket = io(serverUrl);
     console.log(socket)
     socket.open();
     socket.on('messgae',function(data) {
