@@ -7,11 +7,51 @@ module.exports = class extends think.Controller {
     constructor(ctx) {
         super(ctx);
     }
+    
     async __before() {
-        this.userId = await this.chkToken();
+        //this.userId = await this.chkToken();
         //console.log(this.userId)
-        if (!this.userId) return;
+        //if (!this.userId) return;
+        this.io = this.ctx.req.io;
+        this.socket = this.ctx.req.websocket;
     }
+    
+    
+    async openAction() {
+        //console.log(this.get())
+        console.log('open')
+        //console.log(this.wsData)
+        //console.log(this.socket.id)
+        this.socket.emit('open', 'websocket success')
+    }
+    async addUserAction() {
+        //console.log(this.wsData)
+        console.log(this.socket.id)
+        this.socket.emit('addUser', 'addUser success')
+    }
+    async messageAction() {
+        this.io.emit('message', {
+            nickname: this.wsData.nickname,
+            type: 'message',
+            message: this.wsData.message,
+            id: this.socket.id
+        })
+
+    }
+    async closeAction() {
+        console.log('close')
+        //this.socket.emit('close', 'websocket close')
+        //console.log(this.socket)
+        //this.io.disconnect(true);
+    }
+    
+    // emit(action, data) {
+    //     if (action === 'message') {
+    //       this.io.emit(action, data)
+    //     } else {
+    //       this.socket.broadcast.emit(action, data);
+    //     }
+    // }
     async chkToken() {
         let headers = this.ctx.req.rawHeaders,
             index = headers.indexOf('rttoken') + 1;
@@ -25,17 +65,20 @@ module.exports = class extends think.Controller {
         if (rt.adminId != userId) return false;
         return userId;
     }
-    /**
-    * @name 打开socket
-    */
-    async openAction() {
-        //console.log(this.get())
-        this.emit('opend', 'This client opened successfully!')
-    }
-    /**
-    * @name 关闭socket
-    */
-    async closeAction() {
-
+    async getSession(name){
+        const cookies = {};
+        this.websocket.handshake.headers.cookie
+          .split(';')
+          .forEach((text) => {
+            const [k,v] = text.split('=');
+            cookies[k] = v;
+          });
+        
+        var sessionId = cookies['thinkjs'];
+        if(sessionId){
+          var session = await this.redis.get(sessionId);
+          session = JSON.parse(session|| '{}');
+          return session[name];
+        }
     }
 };

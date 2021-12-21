@@ -10,16 +10,56 @@ layui.define(['layim', 'layer', 'winui'], function (exports) {
         return arrUrl[0] + '//' + window.location.host;
     }
     const serverUrl = getDomain();
-    //console.log(url)
-    console.log(getToken())
+    console.log(serverUrl)
+    //console.log(getToken())
     const socket = io(serverUrl, {
         extraHeaders: {
             rttoken : getToken()
-        }
+        },
+        autoConnect: false
     });
-    socket.on('opend', function (data) {
-        console.log('opend:', data);
+    console.log(socket)
+    socket.open();
+    socket.on('messgae',function(data) {
+        console.log(data)
+    })
+    socket.on('open', function (data) {
+        console.log('open:', data);
     });
+    socket.on('close', data => {
+        console.log(data)
+    })
+    socket.on('disconnected', data => {
+        console.log(data)
+    })
+    socket.emit('addUser', {ddd : '112'});
+    // socket.on("connect", () => {
+    //     const engine = socket.io.engine;
+    //     console.log(engine); // false
+    // });
+    /*
+    socket.connect();
+    //socket.emit('addUser', {ddd : '112'});
+    socket.on('addUser', function (data) {
+        console.log('addUser:', data);
+    });
+    socket.on('open', function (data) {
+        console.log('open:', data);
+        socket.emit('addUser', {ddd : '111'});
+    });
+    socket.on("disconnect", () => {
+        socket.connect();
+    });
+    */
+    // socket.on('connect', function(e){
+    //    console.log(e)
+    //     socket.emit('open', {ddd : '112'});
+    // });
+    /*
+    
+    socket.on('message', function (data) {
+        console.log('message:', data);
+    });*/
     //演示自动回复
     var autoReplay = [
         '您好，我现在有事不在，一会再和您联系。',

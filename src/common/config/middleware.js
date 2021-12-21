@@ -24,6 +24,10 @@ module.exports = [
     enable: conf.ratelimit.enable,
     match: /^\/server/,
   },
+  // {
+  //   handle: 'socket',
+  //   enable: true,
+  // },
   {
     handle: 'meta',
     match: /^\/server/,

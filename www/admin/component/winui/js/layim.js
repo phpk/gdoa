@@ -387,10 +387,16 @@ layui.define(['layer', 'laytpl', 'upload', 'winui'], function(exports){
   //Ajax
   var post = function(options, callback, tips){
     options = options || {};
+    $.ajaxSetup({
+      xhrFields: {
+          withCredentials: true
+      }
+    });
     return $.ajax({
       url: options.url
       ,type: options.type || 'get'
       ,data: options.data
+      ,headers : getHeader()
       ,dataType: options.dataType || 'json'
       ,cache: false
       ,success: function(res){
