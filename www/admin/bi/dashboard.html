@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  <title>看板列表</title>
+  <link rel="stylesheet" href="https://at.alicdn.com/t/font_2431045_hbwl3x53oep.css">
+  <link rel="stylesheet" href="./styles/date.css">
+  <link rel="stylesheet" href="./layui/css/layui.css">
+  <link rel="stylesheet" href="./zTree_v3/css/zTreeStyle/zTreeStyle.css">
+  <link rel="stylesheet" href="./styles/iconfont/iconfont.css">
+  <link rel="stylesheet" href="./styles/common.css">
+  <link rel="stylesheet" href="./styles/popup.css">
+  <link rel="stylesheet" href="./styles/index.css" type="text/css">
+  <link rel="stylesheet" href="./styles/dashboard.css">
+
+</head>
+
+<body>
+  <div class="dashboard">
+    <div class="d-left" id="d-left">
+
+      <div class="d-left-fold" id="d-left-fold" onclick="toggleRight(event)" onmouseover="hoverRightImg(event)" onmouseleave="recoverRightImg(event)" >
+        <img src="./imgs/icon_close_nor.png" alt="">
+      </div>
+      <div class="d-left-conent" id="d-left-conent">
+        <div id="d-left-wrap-search" class="d-left-wrap-search">
+          <input type="text" class="bi-input" autocomplete="off" style="margin-right: 10px" placeholder="请输入分组名称、看板名称"></input>
+          <button class="bi-btn btn-primary" onclick="searchBoardTree(event)">搜 索</button>
+        </div>
+        <div class="r-tree">
+          <ul id="dashboardtree" class="ztree"></ul>
+        </div>
+      </div>
+    </div>
+    <div class="d-right" onmousewheel="wheelZoom(event)">
+      <div class="right-wrap" id="right-wrap" onclick="clickBlank(event)">
+        <!-- 预览元素 -->
+      </div>
+
+      <div class="d-zoom" >
+        <input type="text" autocomplete="off" id="zoom-input"  value="100%" onfocus="focusZoom(event)" onblur="blurZoom(event)" />
+      </div>
+
+    </div>
+  </div>
+
+  
+  <!-- 弹窗部分 -->
+  <div class="popup" id="popup">
+    <div class="popup-wrap">
+      <div class="popup-head">
+        <span>趋势曲线</span>
+        <i class="iconfont iconguanbi1 popup-close" onclick="dblClose(event)"></i>
+      </div>
+      <div class="popup-body">
+        <div class="popup-search">
+          <!-- <div>
+            <div class="pop-select-wrap">
+              <div class="layui-input-inline divmagin">
+                <i class="icon iconfont iconriqixuanze"></i>
+                <input type="text" class="data-input" autocomplete="off" id="revisionTime"
+                  placeholder=" 开始时间           至          结束时间 ">
+              </div>
+            </div>
+          </div> -->
+
+          <div class="r-date-group popup-search-picker">
+            <div class="bi-datePicker date-wrap">
+              <input type="text" name="startTime" id="searchStartPicker" class="startPicker" autocomplete="off"
+                placeholder="请选择">
+            </div>
+            <div class="bi-datePicker date-wrap">
+              <input type="text" name="endTime" id="searchEndPicker" class="endPicker" autocomplete="off"
+                placeholder="请选择">
+            </div>
+          </div>
+
+          <div>
+            <button type="button" class="popup-btn popup-confirm" style="margin-right: 10px"
+              onclick="searchvarible()">搜索</button>
+            <button type="button" class="popup-btn popup-isplain" style="margin-right: 10px"
+              onclick="changePop(event)">切换数据表</button>
+          </div>
+        </div>
+        <!-- 图表展示部分 -->
+        <div class="data-chart" id="data-chart">
+        </div>
+        <!-- 表格部分 -->
+        <div class="popup-table data-table" id="data-table">
+          <!-- 表格 -->
+          <div>
+            <div class="bi-table">
+              <div class="bi-table-header-wrap">
+                <table cellspacing="0" cellpadding="0" border="0" class="bi-table__header">
+                  <thead>
+                    <tr>
+                      <th rowspan="1" colspan="1" class="table-checkbox">序号</th>
+                      <th rowspan="1" colspan="1" style="text-align: center;">
+                        时间
+                      </th>
+                      <th rowspan="1" colspan="1" style="text-align: center;">
+                        数值
+                      </th>
+                    </tr>
+                  </thead>
+                </table>
+              </div>
+              <div class="bi-table-body-wrap">
+                <table cellspacing="0" cellpadding="0" border="0" class="el-table__body">
+                  <tbody id="popup-tbody">
+
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+<script src="./js/jquery-1.10.2.min.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="./utils/request.js"></script>
+<script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>
+<script src="./js/moment.js"></script>
+<!--  -->
+<script type="text/javascript" src="./js/dropdown.js"></script>
+<script src="./js/echarts.js"></script>
+<script src="./js/ecStat.js"></script>
+<script src="./js/jquery-1.10.2.min.js"></script>
+<script src="./饼图/饼图Echarts.js"></script>
+<script src="./仪表盘/仪表盘Echarts.js"></script>
+<script src="./柱形图/柱形图Echarts.js"></script>
+<script src="./折线图/折线图Echarts.js"></script>
+<!-- 此处引入日期时间组件 -->
+<script src="./js/jquery-datePicker.min.js"></script>
+<script src="./js/num.js"></script>
+<script type="text/javascript" src="./layui//layui.all.js"></script>
+
+<script type="text/javascript" src="./js/echartsJson.js"></script>
+<!-- 引入树组件 -->
+<script type="text/javascript" src="./zTree_v3/js/jquery.ztree.all.min.js"></script>
+<script src="./js/dashboard.js"></script>
+<script>
+
+  function clickBlank(e) {
+    if (e.target.id === 'right-wrap') {
+      let items = document.querySelectorAll('#right-wrap ul')
+      let icons = document.querySelectorAll('.input-suffix-inner i')
+      items.forEach(item => {
+        item.style.display = 'none'
+      })
+      icons.forEach(item => {
+        item.classList.remove('is-reverse')
+      })
+    }
+  }
+
+  // 获取树信息
+  function getDashboardTree() {
+    // let appid = getUrlParam('appId')
+    
+    // if (appid && appid != '') {
+      
+    //   appId = appid
+    //   token = getUrlParam('token')
+    // }
+    request.get(`/bi/${appId}/panel-tree`).then(res => {
+      if (res.data.data) {
+        boardData = res.data.data
+        boardData.forEach((item, index) => {
+          if (item.nodeType != 'panel') {
+            item.icon = "./styles/iconTool/icon_file.png"
+
+          } else {
+            item.icon = "./styles/iconTool/icon_monitor_nor.png"
+          }
+
+        })
+        $.fn.zTree.init($("#dashboardtree"), boardSetting, boardData);
+        let zTree = $.fn.zTree.getZTreeObj("dashboardtree");
+        let node1 = zTree.getNodes()[0];
+        zTree.expandAll(true)
+        let node2 = ''
+        if (node1.children) {
+          let children = node1.children
+          for (let i = 0; i < children.length; i++) {
+            if (children[i].nodeType == 'panel') {
+              node2 = children[i]
+              break
+            }
+
+          }
+
+          if (node2 != "") {
+            zTree.selectNode(node2);
+            nodeCLick('', '', node2)
+          }
+
+        }
+        
+        let id = getParams('panelId', window.location.href)
+        if (id) {
+          let postData = {
+            appId,
+            panelId: id,
+          }
+          let node3 = zTree.getNodeByParam('id',id)
+          zTree.selectNode(node3);
+          request.get(`/bi/${appId}/panel-tree/children-panel`, {
+            params: postData
+          }).then(res => {
+            if (res.data.code !== 0) {
+              app.msg(res.data.msg)
+              return
+            }
+
+
+            if (res.data.data.configDetails) {
+              Controls = JSON.parse(res.data.data.configDetails)
+            } else {
+              $("#right-wrap").empty()
+              app.msg('无数据')
+              return
+            }
+            Controls = JSON.parse(res.data.data.configDetails)
+            Common = {
+              Name: Controls.Name,
+              Position: Controls.Position,
+              BackSetting: Controls.BackSetting,
+              BackColor: Controls.BackColor,
+              BackImg: Controls.BackImg,
+              Permision: Controls.Permision,
+              Description: Controls.Description
+            }
+            initCanvas()
+          })
+        }
+      }
+
+    })
+  }
+
+  function getUrlParam(name) {
+    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+    var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+    if (r != null) return unescape(r[2]); return null; //返回参数值
+  }
+
+  function searchBoardTree(e) {
+    let postData = {
+      appId,
+      name: e.target.parentElement.firstElementChild.value
+    }
+    request.get(`/bi/${appId}/panel-tree/search`, { params: postData }).then(res => {
+      if (res.data.data) {
+        boardData = res.data.data
+        boardData.forEach((item, index) => {
+          if (item.nodeType != 'panel') {
+            item.icon = "./styles/iconTool/icon_file.png"
+
+          } else {
+            item.icon = "./styles/iconTool/icon_monitor_nor.png"
+          }
+
+        })
+        $.fn.zTree.init($("#dashboardtree"), boardSetting, boardData);
+        var zTree = $.fn.zTree.getZTreeObj("dashboardtree");
+        zTree.expandAll(true)
+
+
+      }
+
+      // $.fn.zTree.init($("#dashboardtree"), boardSetting, boardData);
+    })
+  }
+
+  function searchJumpTree(e) {
+    let postData = {
+      appId,
+      name: e.target.parentElement.firstElementChild.value
+    }
+    request.get(`/bi/${appId}/panel-tree/search`, { params: postData }).then(res => {
+      boardData = res.data.data
+      $.fn.zTree.init($("#dashboardtree"), boardSetting, boardData);
+    })
+  }
+
+  function hoverRightImg(e) {
+    let img = document.querySelector('#d-left-fold img')
+    if (index % 2 === 0) {
+      img.src = "./imgs/icon_close_pre.png"
+    } else {
+      img.src = "./imgs/icon_open_pre.png"
+    }
+  }
+
+  function recoverRightImg(e) {
+    let img = document.querySelector('#d-left-fold img')
+    if (index % 2 === 0) {
+      img.src = "./imgs/icon_close_nor.png"
+    } else {
+      img.src = "./imgs/icon_open_nor.png"
+    }
+  }
+
+
+  function toggleRight(e) {
+    let left = document.getElementById('d-left')
+    let fold = document.getElementById('d-left-fold')
+    let img = document.querySelector('#d-left-fold img')
+    let conent = document.getElementById('d-left-conent')
+    if (index % 2 === 0) {
+      // fold.style.transform = "rotate(180deg)"
+      img.src = "./imgs/icon_close_nor.png"
+      fold.style.left = '0px'
+      left.style.width = 0
+      left.style.minWidth = 0
+      left.style.marginLeft = '-50px'
+      left.style.background = ' rgba(0, 0, 0, 0)'
+      // if()
+      conent.style.display = 'none'
+      // fold.style.display = 'none'
+      index++
+    } else {
+      // fold.style.transform = "rotate(0deg)"
+      img.src = "./imgs/icon_open_nor.png"
+      fold.style.left = '320px'
+      left.style.width = '320px'
+      left.style.minWidth = '320px'
+      left.style.marginLeft = '0px'
+      conent.style.display = 'block'
+      left.style.background = '#fff'
+      index++
+    }
+  }
+
+  $(document).ready(function () {
+    // var Controls = {}
+    
+    getDashboardTree()
+
+  })
+</script>
+
+</html>

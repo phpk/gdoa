@@ -87,9 +87,9 @@ layui.define(['layim', 'layer', 'winui','winuisocket'], function (exports) {
             //, notice: true //是否开启桌面消息提醒，默认false
             //,voice: false //声音提醒，默认开启，声音文件为：default.mp3
 
-            , msgbox: winui.path + 'js/chat/msgbox.html' //消息盒子页面地址，若不开启，剔除该项即可
-            , find: winui.path + 'js/chat/find.html' //发现页面地址，若不开启，剔除该项即可
-            , chatLog: winui.path + 'js/chat/chatlog.html' //聊天记录页面地址，若不开启，剔除该项即可
+            , msgbox: winui.path + 'html/chat/msgbox.html' //消息盒子页面地址，若不开启，剔除该项即可
+            , find: winui.path + 'html/chat/find.html' //发现页面地址，若不开启，剔除该项即可
+            , chatLog: winui.path + 'html/chat/chatlog.html' //聊天记录页面地址，若不开启，剔除该项即可
 
         });
 

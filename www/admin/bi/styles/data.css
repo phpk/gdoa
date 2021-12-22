@@ -1,0 +1,371 @@
+/* index 右侧数据部分样式 */
+.data-func {
+  padding: 0 10px;
+  border-bottom: 1px solid #CFD7E5;
+}
+
+.func-variable {
+  display: flex;
+}
+
+.func-wrap-title {
+  display: inline-block;
+  width: 45px;
+}
+
+.func-wrap-center {
+  display: flex;
+  width: 100%;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.func-wrap-input,
+.func-format-input {
+  width: 80px;
+  height: 28px;
+  box-sizing: border-box;
+  outline: none;
+  padding: 0 5px;
+  border: 1px solid #DCDFE6;
+}
+
+.func-wrap-input {
+  width: 80%;
+  border-bottom-left-radius: 4px;
+  border-top-left-radius: 4px;
+}
+
+.func-wrap-choice {
+  width: 50px;
+  height: 28px;
+  line-height: 28px;
+  display: inline-block;
+  box-sizing: border-box;
+  background: #409EFF;
+  color: #fff;
+  border: 1px solid #409EFF;
+  margin-left: -1px;
+  cursor: pointer;
+  text-align: center;
+  border-bottom-right-radius: 4px;
+  border-top-right-radius: 4px;
+}
+
+.func-others {
+  font-size: 12px;
+  padding-left: 33px;
+  display: flex;
+  align-items: center;
+  user-select: none;
+  margin-left: 10px;
+}
+
+.func-others input {
+  margin-right: 8px;
+}
+
+.func-others label {
+  cursor: pointer;
+}
+
+.func-format {
+  display: flex;
+  align-items: center;
+}
+
+.func-wrap-format {
+  width: 100px;
+}
+
+.func-format-input {
+  width: 55px;
+  margin: 0 8px;
+  box-sizing: border-box;
+}
+
+/* 动态文本数据样式 */
+.data-table-h {
+  padding: 20px 0;
+  font-size: 12px;
+  font-family: 'PingFang SC';
+  font-weight: 500;
+
+}
+
+.data-table-h table {
+  width: 100%;
+  border: 0px;
+  border-spacing: 0px;
+}
+
+.data-table-h table tr th {
+  font-size: 12px;
+  height: 36px;
+  background: #A4CCF5;
+  color: #FFFFFF;
+  margin: 0px;
+  text-align: left;
+  padding-left: 5px;
+  overflow: hidden;
+  white-space:nowrap;
+  text-overflow:ellipsis;
+  width: 70px;
+}
+.data-table-h table select,
+.data-table-h table input{
+  width: 60px;
+  border: 0;
+  padding: 0;
+}
+.data-table-h table select{
+  width: 60px;
+} 
+
+.data-table-h table .table-img{
+  height: 40px;
+  width: 40px;
+  cursor: pointer;
+}
+
+
+.data-table-h table tr td {
+  background: #FFFFFF;
+  padding-left: 5px;
+  color: #333333;
+  max-width: 65px;
+  overflow: hidden;
+  white-space:nowrap;
+  text-overflow:ellipsis;
+  
+
+}
+
+.datatextblock-td-input {
+  width: 46px !important;
+}
+
+.datatextblock-td-label {
+  display: inline-block;
+  width: 46px 
+}
+
+.datatextblock-td-icon {
+  color:#409EFF;
+  cursor: pointer;
+}
+
+.div-color-h {
+  width: 20px;
+  height: 20px;
+  border: 1px solid #DCDFE6;
+  border-radius: 4px;
+  background: red;
+  cursor: pointer;
+  
+}
+
+.add-btn-h {
+  height: 30px;
+  width: 140px;
+  background: #FFFFFF;
+  text-align: center;
+  margin-top: 12px;
+  color: #409EFF;
+  line-height: 30px;
+  font-size: 14px;
+  cursor: pointer;
+  margin: 10px auto;
+  position: fixed;
+  right: 0px;
+  top: 140px;
+}
+.add-btn-h i{
+ font-size: 8px;
+ margin-right: 8px;
+}
+
+
+.data-table-h table tr:hover td {
+  background: #F2F8FF;
+ 
+}
+
+.data-condition-h {
+  height: 42px;
+  line-height: 42px;
+
+}
+.variable-style-h{
+  color: #409EFF;
+}
+
+/* switch按钮样式 */
+table .dy-switch-h input{
+ width: 36px;
+ vertical-align: middle;
+}
+
+.table-switch-h {
+  width: 20px;
+  height: 18px;
+  position: relative;
+  border: 1px solid #dfdfdf !important;
+  background-color: #fdfdfd;
+  box-shadow: #dfdfdf 0 0 0 0 inset;
+  border-radius: 10px;
+  background-clip: content-box;
+  display: inline-block;
+  -webkit-appearance: none;
+  user-select: none;
+  outline: none;
+}
+.table-switch-h:before {
+  content: '';
+  width: 18px;
+  height: 18px;
+  position: absolute;
+  top: -1px;
+  left: 0;
+  border-radius: 9px;
+  background-color: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+.table-switch-h:checked {
+  border-color: #13CE66;
+  box-shadow: #13CE66 0 0 0 16px inset;
+  background-color: #13CE66;
+}
+.table-switch-h:checked:before {
+  left: 18px;
+}
+.table-switch-h.switch-anim {
+  transition: border cubic-bezier(0, 0, 0, 1) 0.4s, box-shadow cubic-bezier(0, 0, 0, 1) 0.4s;
+}
+.table-switch-h.switch-anim:before {
+  transition: left 0.3s;
+}
+.table-switch-h.switch-anim:checked {
+  box-shadow: #13CE66 0 0 0 16px inset;
+  background-color: #13CE66;
+  transition: border ease 0.4s, box-shadow ease 0.4s, background-color ease 1.2s;
+}
+.table-switch-h.switch-anim:checked:before {
+  transition: left 0.3s;
+}
+/* 状态点 */
+.ellipselamp-default-color{
+ display: inline-block;
+ margin-right: 20px;
+}
+.ellipselamp-default-color input{
+   vertical-align: middle;
+}
+/* 数值显示 */
+.datatextblock-default-h{
+  /* display: inline-block; */
+  float: left;
+  width: 47%;
+}
+.datatextblock-default-h .input{
+  display: inline-block;
+  width: 60%;
+  margin-left: 5px;
+}
+
+/* 读写框 */
+.rwtextbox-default-h .trigger{
+  padding: 0 0 0 33px
+}
+
+.rwtextbox-default-h .trigger input{
+  width: auto;
+  vertical-align: middle;
+  margin-right: 5px;
+}
+.rwtextbox-default-h .trigger label{
+  margin-right: 20px;
+  cursor: pointer;
+}
+
+/* 控制按钮 */
+.cornerbutton-div-height{
+  height: auto;
+}
+.cornerbutton-default-h{
+  display: flex;
+  /* align-items: center; */
+  justify-content:space-between;
+}
+.cornerbutton-three-type{
+  position: relative; 
+  font-size: 14px;
+   /* background: rosybrown; */
+}
+.cornerbutton-three-title{
+  font-size: 14px;
+  font-weight: normal;
+  overflow: hidden;
+}
+ .cornerbutton-three-add{
+  color: #409EFF;
+  position: absolute;
+  right: 0;
+  z-index: 2;
+  top:0;
+  cursor:pointer 
+  
+} 
+.cornerbutton-checkbox input{
+  width: auto;
+  vertical-align:middle;
+  margin-right: 5px;
+
+}
+.cornerbutton-checkbox-input{
+  margin-left: 22px;
+}
+.cornerbutton-three-type .bi-collapse-content{
+  padding-right: 0;
+  position: relative;
+
+}
+.r-pos-h{
+  margin: 0 0 0 10px;
+}
+.r-pos-h table{
+  font-size: 12px;
+}
+.r-pos-h .span-text{
+  color: #409EFF;
+  float: right;
+  cursor:pointer
+  
+}
+
+/* 文本查询 */
+.textsearch-data-h select{
+  /* display: inline-block; */
+  width: 30%;
+  margin-right: 20px;
+
+}
+.textsearch-data-h input{
+  width: 60%;
+}
+
+/* 日期时间 */
+
+.datapicker-input select{
+ width: 83%;
+ margin-left: 10px;
+}
+.datapicker-input input{
+  width: 40%;
+  margin-left: 0px;
+}
+/* 表格变量hover样式 */
+.variable-c {
+  cursor: pointer;
+  color: #409EFF;
+}

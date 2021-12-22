@@ -1,0 +1,300 @@
+/* 树状结构css样式 */
+.z-contentBoxLeft{
+  overflow: auto;
+}
+.g-left{
+  float: left;
+}
+
+.z-contentBoxLeft .ztree li a:hover{
+  text-decoration: none;
+  background: #F5F7FB;
+  color: #409EFF!important;
+}
+.z-contentBoxLeft .ztree li a{
+  height: 20px;
+  padding-top: 7px;
+  position: relative;
+}
+.z-contentBoxLeft .ztree li span.button.noline_open{
+  width: 16px;
+  height: 16px;
+  background: url('./iconTool/icon_open.png');
+  position: relative;
+  top: 0;
+  left: 3px;
+}
+.z-contentBoxLeft .ztree li span.button.noline_close{
+  width: 16px;
+  height: 16px;
+  background: url('./iconTool/icon_close.png');
+  position: relative;
+  top: -1;
+  left: 3px;
+}
+.z-contentBoxLeft .ztree li span.button.ico_open,.z-contentBoxLeft .ztree li span.button.ico_close{
+  width: 16px;
+  height: 16px;
+  background: url('./iconTool/icon_file.png');
+  position: relative;
+  top: 2px;
+  margin: 0 6px 0 10px;
+}
+.z-contentBoxLeft .ztree li a:hover span.button.ico_open,.z-contentBoxLeft .ztree li a:hover span.button.ico_close{
+  width: 16px;
+  height: 16px;
+  background: url('./iconTool/icon_file2.png');
+  position: relative;
+  top: 2px;
+  margin: 0 6px 0 10px;
+}
+.z-contentBoxLeft .ztree li span.button.ico_docu {
+  width: 16px;
+  height: 16px;
+  background: url('./iconTool/icon_dashboard_nor.png');
+  position: relative;
+  top: 2px;
+  margin: 0 6px 0 10px;
+}
+.z-contentBoxLeft .ztree li a:hover span.button.ico_docu {
+  background:url('./iconTool/icon_dashboard_hov.png');
+}
+.z-contentBoxLeft .ztree li a.curSelectedNode {
+  /* height: 36px; */
+  background-color: #F9FAFD;
+  color: #409EFF!important;
+  border: none;
+  opacity: 1;
+  padding-top: 7px;
+}
+
+/*  */
+/* .clearfix:after {
+  content: ".";
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
+} */
+.z-selectDeptInp{
+  position: relative;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+#z-selectDept i{
+  position: absolute;
+  right: 79px;
+  top: 13px;
+  width: 16px;
+  height: 16px;
+  background: url('./iconTool/icon_open.png');
+}
+.z-selectDeptInp .treeSelectShow{
+  width: 420px;
+  height: 120px;
+  background: #FFFFFF;
+  border: 1px solid #DCDFE6;
+  border-radius: 4px;
+  margin: 15px 30px;
+  padding: 10px;
+  overflow: auto;
+}
+.z-selectDeptInp .layui-tab-title li{
+  /* padding: 0 33px; */
+  width: 25%;
+}
+.z-selectDeptInp .layui-tab-title .layui-this:after{
+  width: 40%;
+  left: 30%;
+}
+.z-selectDeptInp .layui-tab-brief>.layui-tab-more li.layui-this:after, .z-selectDeptInp .layui-tab-brief>.layui-tab-title .layui-this:after {
+  border-bottom: 2px solid #409EFF;
+}
+.z-selectDeptInp .layui-tab-brief>.layui-tab-title .layui-this {
+  color: #409EFF;
+}
+.z-selectDeptInp .layui-tab{
+  height: 100%;
+  /* height: 355px; */
+}
+.z-selectDeptInp .layui-tab-content input{
+  width: 408px;
+  height: 32px;
+  background: #FFFFFF;
+  border: 1px solid #DCDFE6;
+  border-radius: 4px;
+  margin: 12px 26px 10px 19px;
+  padding-left: 30px;
+}
+.z-selectDeptInp .layui-tab-item-inpbox{
+  position: relative;
+}
+.z-selectDeptInp .layui-tab-item-inpbox i{
+  top: 18px;
+  left: 28px;
+  position: absolute;
+}
+.z-selectDeptInp .treeSelectShow li{
+  height: 28px;
+  line-height: 28px;
+  text-align: center;
+  background: #F4F4F4;
+  border: 1px solid #E9E9EB;
+  border-radius: 4px;
+  margin-right: 9px;
+  margin-bottom: 9px;
+  padding: 0 10px;
+}
+.z-selectDeptInp .treeSelectShow li span{
+  font-size: 14px;
+  font-family: PingFang SC;
+  font-weight: 400;
+  color:#666666;
+}
+.z-selectDeptInp .treeSelectShow li i{
+  width: 16px;
+  height: 16px;
+  position: relative;
+  top: 3px;
+  left: 4px;
+  cursor: pointer;
+  display: inline-block;
+  background: url('./iconTool/icon_delete1.png');
+}
+.z-selectDeptInp .treeSelectShow li i:hover{
+  background: url('./iconTool/icon_delete2.png');
+}
+.z-selectDeptInp .z-contentBoxLeft .ztree li span.button.noline_open,.z-selectDeptInp .z-contentBoxLeft .ztree li span.button.noline_close {
+  top:4px;
+  position: relative;
+  z-index: 100;
+}
+.z-selectDeptInp .z-contentBoxLeft {
+  float: none;
+  width: 100%;;
+  height: 265px;
+  border-bottom: 1px solid #DCDFE6;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+.z-selectDeptInp .ztree {
+  position: relative;
+  left: 9px;
+  width: 448px;
+}
+.z-selectDeptInp .layui-tab-content .rank span{
+  font-size: 14px;
+  font-family: PingFang SC;
+  font-weight: 500;
+  color: #333333;
+}
+.z-selectDeptInp .layui-tab-content .rank i{
+  position: relative;
+  cursor: pointer;
+  width: 14px;
+  height: 14px;
+  display: inline-block;
+  background: url('./iconTool/icon_sel_nor2.png');
+}
+.z-selectDeptInp .layui-tab-content .rank  i.active{
+  width: 14px;
+  height: 14px;
+  background: url('./iconTool/icon_sel_pre2.png');
+}
+.z-selectDeptInp .layui-tab-content .rank li{
+  height: 36px;
+  line-height: 36px;
+  width: 100%;
+  padding:0 21px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.z-selectDeptInp .layui-tab-content .rank{
+  width: 474px;
+  height: 200px;
+  overflow: auto;
+}
+.z-selectDeptInp  .z-contentBoxLeft .treeDemoDeptOrpeo .ztree li span.button.noline_open, .z-selectDeptInp  .z-contentBoxLeft .treeDemoDeptOrpeo .ztree li span.button.noline_close {
+  /* top: 6px; */
+  top: 0px;
+  left: -3px;
+}
+.z-selectDeptInp .selectPeopleBox{
+  position: relative;
+  left: 10px;
+  padding-left: 8px;
+}
+.z-selectDeptInp .selectPeople i{
+  position: relative;
+  top: 12px;
+  cursor: pointer;
+  width: 14px;
+  height: 14px;
+  background: url('./iconTool/icon_sel_nor2.png');
+  margin-right: 10px;
+}
+.z-selectDeptInp .selectPeople i.active{
+  background: url('./iconTool/icon_sel_pre2.png');
+}
+.z-selectDeptInp .selectPeople span{
+  position: relative;
+  top: 9px;
+}
+.z-selectDeptInp .selectPeople li{
+  height: 36px;
+}
+.z-selectDeptInp .selectPeople{
+  /* height: 240px; */
+  overflow: auto;
+}
+
+.layui-table[lay-even] tr:nth-child(even) {
+  /* background-color: #aaffaa; */
+  background-color: red;
+}
+
+/* 鼠标指向表格时,奇数行背景颜色 */
+/* .layui-table tbody tr:hover,.layui-table-hover {
+  background-color: red;
+} */
+
+/* 表格头部工具栏背景色 */
+.layui-table-tool {
+  background-color: #eeffee;
+}
+
+/* 表格头部背景色 */
+.layui-table th {
+  background-color: #4293E5; /* MediumSeaGreen */
+  color: #fff;
+  font-weight: bold;
+  height: 48px;
+}
+.layui-table tr{
+  height: 48px;
+}
+.layui-table  tr:nth-child(even)  {
+  background-color:   #F5F7FC ;
+}
+.layui-table{
+width: 100%;
+}
+.content-wrap {
+  width: 100%;
+  height: 100%;
+  display: flex;
+}
+.tree-wrap {
+  flex: 1;
+  border-right: 1px solid #DCDFE6;
+  height: 100%;
+  overflow: auto;
+}
+.tree-users {
+  flex: 1;
+  height: 100%;
+  overflow: auto;
+}

@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <title>仪表盘配置</title>
+    <link rel="stylesheet" href="./global.css">
+    <link rel="stylesheet" href="./libs/layui/css/layui.css">
+
+    <link rel="stylesheet" href="./styles/iconfont/iconfont.css">
+    <link rel="stylesheet" href="./libs/zTree_v3/css/zTreeStyle/zTreeStyle.css">
+    <link rel="stylesheet" href="./pagination.css">
+    <link rel="stylesheet" href="./index.css">
+    <style type="text/css">
+        /* @media screen and (max-width: 1100px) {
+            .z-contentBoxRight-table {
+                height: calc(100% - 220px);
+                width: 100%;
+               
+            }
+
+        } */
+    </style>
+</head>
+
+<body>
+    <div class="z-contentBox">
+        <div class="z-contentBoxLeft">
+            <div class="g-search">
+                <input class="g-search-input" type="text" onblur="searchGroupTree(event)" placeholder="请输入分组名称">
+                <i></i>
+            </div>
+            <div class="tree nicescroll-slideBar">
+                <ul id="treeDemo" class="ztree"></ul>
+            </div>
+        </div>
+        <div class="z-contentBoxRight">
+            <div class="z-contentBoxRightBox">
+                <div class="z-contentBoxRight-top">
+                    <ul class="clearfix">
+                        <li class="g-left revisionTime">
+                            <div class="layui-inline">
+                                <label class="time">最近修改时间</label>
+                                <div class="layui-input-inline divmagin">
+                                    <i class="icon iconfont iconriqixuanze"></i>
+                                    <input type="text" class="layui-input" autocomplete="off" id="revisionTime"
+                                        placeholder=" 开始时间           至          结束时间 ">
+                                </div>
+                            </div>
+                        </li>
+                        <li class="g-left clearfix">
+                            <label class="g-left state">状态</label>
+                            <div class="layui-form g-left statediv" lay-filter="myDiv">
+                                <select name="" id="mySelect" lay-filter="mySelect">
+                                    <option value="" selected>全部</option>
+                                    <option value="published">已发布</option>
+                                    <option value="wait_published">未发布
+                                    <option>
+                                </select>
+                            </div>
+                        </li>
+                        <li class="g-left">
+                            <input class="g-search-input crname" type="text" id="userName" autocomplete="off"
+                                placeholder="请输入名称、创建者、修改人">
+                        </li>
+                        <li class="g-left">
+                            <button type="button" id="searchBtn" data-type="reload" onclick="searchTableData()"
+                                class="layui-btn layui-btn-normal layui-btn-sm search"><i
+                                    class="icon iconfont iconsousuo"></i>查询</button>
+                        </li>
+                        <li class="g-left">
+                            <button type="button" id="resetBtn" class="layui-btn layui-btn-normal layui-btn-sm reset"><i
+                                    class="icon iconfont iconzhongzhi"></i>重置</button>
+                        </li>
+                        <li class="g-left checkPer" id="addDashboardBtnLi"
+                            data-permission="bi_configuration_dashboard_add">
+                            <button data-method="offset" data-type="auto" id="addDashboard"
+                                class="layui-btn layui-btn-normal layui-btn-sm add"><i
+                                    class="icon iconfont iconxinzeng "></i>新增看板</button>
+                        </li>
+                        <li id="batchReleaseBtn" class="g-left checkPer" data-permission="bi_configuration_release">
+                            <button type="button" class="layui-btn layui-btn-normal layui-btn-sm all"
+                                data-type="getCheckData" id="batchRelease"><i
+                                    class="icon iconfont iconxinzeng"></i>批量发布</button>
+                        </li>
+                    </ul>
+                </div>
+                <div id="z-contentBoxRight-table" class="z-contentBoxRight-table">
+                    <table class="layui-hide" id="myTable" lay-filter="test"></table>
+                </div>
+                <!-- 分页 -->
+                <div class="popup-pagination popup-pagination1" id="popup-pagination">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="addDashboardContent nicescroll-add" id="addDashboardContent" style="display: none;">
+        <div class="layui-form-item">
+            <label class="layui-form-label name"><i class="g-star">*</i>名称：</label>
+            <div class="layui-input-block">
+                <input type="text" maxlength="30" name="title" required lay-verify="required" placeholder="请输入名称"
+                    autocomplete="off" class="layui-input" id="addDashboardName">
+            </div>
+        </div>
+        <div class="layui-form-item clearfix" style="margin-bottom: 0;position: relative;">
+            <div class="g-left position" style="padding: 9px 15px;"><i class="g-star">*</i>位置：</div>
+            <div class="layui-form g-left" lay-filter="myDiv">
+                <ul class="list">
+                    <li class="title"><input id="citySel" class="citySel" placeholder="请选择位置" type="text" readonly
+                            value="" id="menuBtn" href="#" onclick="showMenu(); return false;" /></li>
+                </ul>
+            </div>
+            <div id="menuContent" class="menuContent z-contentBoxLeft treeDemoAddNicescroll"
+                style="display:none;height: 220px; position: absolute;border: 1px solid #eee;margin-left: 100px;top:40px;left: 0;background: #fff;">
+                <ul id="treeDemoAdd" class="ztree"></ul>
+            </div>
+        </div>
+
+    </div>
+    <div class="addDashboardContent nicescroll-add" id="Z-addFenZU" style="display: none;">
+        <div class="layui-form-item">
+            <label class="layui-form-label name"><i class="g-star">*</i>名称：</label>
+            <div class="layui-input-block">
+                <input type="text" maxlength="30" name="title" required lay-verify="required" placeholder="请输入名称"
+                    autocomplete="off" class="layui-input" id="fenzuName">
+            </div>
+        </div>
+        <div class="layui-form-item clearfix" style="margin-bottom: 0;position: relative;">
+            <div class="g-left position"><i class="g-star">*</i>上级分组：</div>
+            <div class="layui-form g-left" lay-filter="myDiv">
+                <ul class="list">
+                    <li class="title"><input id="fenzuPosition" class="citySel" placeholder="请选择位置" type="text" readonly
+                            value="" href="#" onclick="showMenuFenzu(); return false;" /></li>
+                </ul>
+            </div>
+            <div id="menuContentFenzu" class="menuContent z-contentBoxLeft treeDemoAddNicescroll attr-wrap"
+                style="display:none;height: 220px;margin-left: 100px;position: absolute;background: #fff;top: 40px;z-index: 2;border: 1px solid rgb(238, 238, 238);left: 10px;width: 310px">
+                <ul id="treeDemoAddFenzu" class="ztree"></ul>
+            </div>
+        </div>
+
+    </div>
+    <!-- 属性表单div -->
+    <form class="layui-form z-attribute" action="" id="attribute" style="display: none;" lay-filter="attribute">
+        <div class="layui-form-item form-block">
+            <label class="layui-form-label"><i class="g-star">*</i>名称：</label>
+            <div class="layui-input-block">
+                <input type="text" maxlength="30" name="title" required lay-verify="required" placeholder="请输入名称"
+                    autocomplete="off" class="layui-input" id="attrName">
+            </div>
+        </div>
+        <div class="layui-form-item form-block clearfix" style="margin-bottom: 0;position: relative;">
+            <label class="layui-form-label"><i class="g-star">*</i>位置：</label>
+            <div class="layui-form g-left" lay-filter="myDiv">
+                <ul class="list">
+                    <li class="title">
+                        <input id="attrPosition" class="attr-pos" placeholder="请选择位置" type="text" readonly value=""
+                            href="#" onclick="openTreeAttr(); return false;" />
+                    </li>
+                </ul>
+            </div>
+            <div id="attrwrap" class="menuContent z-contentBoxLeft treeDemoAddNicescroll attr-wrap"
+                style="display:none;height: 250px;position: absolute;background: #fff;top: 40px;z-index: 2;border: 1px solid rgb(238, 238, 238);">
+                <ul id="treeAttr" class="ztree"></ul>
+            </div>
+        </div>
+
+
+
+        <div class="layui-form-item safe">
+            <label class="layui-form-label">安全策略：</label>
+            <div class="layui-input-block clearfix safeDiv">
+                <div class="g-left intro" id="copeConfigureFrom"><i></i><span>从其他仪表板复制配置</span></div>
+                <div class="g-left intro" id="copeConfigureTo"><i></i><span>将配置复制给其他仪表板</span></div>
+            </div>
+        </div>
+        <div class="layui-form-item" id="layui-form-margin9">
+            <label class="layui-form-label"><i class="g-star">*</i>访问权限：</label>
+            <div class="layui-input-block">
+                <input type="radio" name="permission" value="public" title="公开" lay-filter="policyRadio">
+                <input type="radio" name="permission" value="custom" title="自定义" lay-filter="policyRadio">
+                <input type="radio" name="permission" value="private" title="私有" lay-filter="policyRadio">
+            </div>
+        </div>
+        <div class="layui-form-item" style="display: none;margin-bottom: 9px;" id="z-selectDept">
+            <label class="layui-form-label"></label>
+            <div class="layui-input-block">
+                <input type="text" placeholder="请点击选择" autocomplete="off" class="layui-input" readonly
+                    style="cursor: pointer;" id="z-selectDeptInp">
+                <i></i>
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">描述：</label>
+            <div class="layui-input-block">
+                <textarea placeholder="请输入描述" class="layui-textarea" id="attribute-describeVal"></textarea>
+            </div>
+        </div>
+        <!-- <div class="layui-form-item">
+          <div class="layui-input-block">
+            <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+          </div>
+        </div> -->
+    </form>
+    <div class="copeConfigureForm" style="display:none;">
+        <div class="copeConfigureForm-search">
+            <input id="cope-search-input" class="g-search-input" type="text" placeholder="请输入分组、仪表板名称">
+            <button type="button" class="layui-btn layui-btn-normal layui-btn-sm"
+                onclick="searchFromTree(event)">搜索</button>
+        </div>
+        <div class="z-contentBoxLeft treeDemoCopeFromScroll" style="height: 470px;width: 474px;">
+            <ul id="treeDemoCopeFrom" class="ztree"></ul>
+        </div>
+    </div>
+    <div class="copeConfigureTo1 copeConfigureTo" style="display:none;">
+        <div class="copeConfigureForm-search">
+            <input id="copeConfigureTo1-search-input" class="g-search-input" type="text" placeholder="请输入分组、仪表板名称">
+            <button type="button" class="layui-btn layui-btn-normal layui-btn-sm"
+                onclick="searchToTree(event)">搜索</button>
+        </div>
+        <div class="z-contentBoxLeft treeDemoCopetoScroll" style="height: 470px;width: 474px;">
+            <ul id="treeDemoCopeto" class="ztree"></ul>
+        </div>
+    </div>
+    <div class="z-selectDeptInp" style="display:none;">
+        <div class="treeSelectShow treeSelectShowScroll clearfix">
+            <ul class="clearfix g-left" id="viewTpl">
+            </ul>
+            <ul class="clearfix g-left" id="viewTpl2">
+            </ul>
+            <ul class="clearfix g-left" id="viewTpl3">
+            </ul>
+        </div>
+        <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+            <ul class="layui-tab-title">
+                <li class="layui-this">部门</li>
+                <li>职位</li>
+                <li>人员</li>
+            </ul>
+            <div class="layui-tab-content z-contentBoxLeft">
+                <div class="layui-tab-item copeConfigureTo layui-show">
+                    <div class="layui-tab-item-inpbox">
+                        <input type="text" onblur="searchDept(event)" id="input-Dept" autocomplete="off"
+                            placeholder="搜索部门名称">
+                        <i class="icon iconfont iconsousuo"></i>
+                    </div>
+                    <div style="overflow: auto;height: 230px;">
+                        <ul id="treeDept" class="ztree" style="width: 98%"></ul>
+                    </div>
+                </div>
+                <div class="layui-tab-item">
+                    <div class="layui-tab-item-inpbox">
+                        <input type="text" onblur="searchJob(event)" id="input-job" autocomplete="off"
+                            placeholder="搜索职位名称">
+                        <i class="icon iconfont iconsousuo"></i>
+                    </div>
+                    <ul class="rank rankScroll" id="rankSelect">
+                        <!-- <li class="clearfix">
+                            <span class="g-left">销售主管1</span>
+                            <i class="g-right"></i>
+                        </li>
+                        <li class="clearfix">
+                            <span class="g-left">销售主管2</span>
+                            <i class="g-right"></i>
+                        </li>
+                        <li class="clearfix">
+                            <span class="g-left">销售主管3</span>
+                            <i class="g-right"></i>
+                        </li>
+                        <li class="clearfix">
+                            <span class="g-left">销售主管4</span>
+                            <i class="g-right"></i>
+                        </li> -->
+                    </ul>
+                </div>
+                <div class="layui-tab-item treeDemoDeptOrpeo" style="width: 486px;position: relative;">
+                    <div class="g-line-right"></div>
+                    <div class="g-line-heng"></div>
+                    <div class="clearfix">
+                        <ul id="treeDemoDeptOrpeo" class="ztree g-left" style="width: 224px;height: 251px;"></ul>
+                        <div class="g-left selectPeopleBox">
+                            <div class="layui-tab-item-inpbox">
+                                <input type="text" onblur="searchName(event)" id="input-user" autocomplete="off"
+                                    placeholder="搜索用户名称" style="width: 205px;margin: 0;">
+                                <i class="icon iconfont iconsousuo" style="top: 10px;left: 9px;"></i>
+                            </div>
+                            <ul class="selectPeople selectPeopleScroll" id="peopleSelect">
+                                <!-- <li class="clearfix">
+                                    <i class="g-left"></i>
+                                    <span class="g-left">李白1</span>
+                                </li>
+                                <li class="clearfix">
+                                    <i class="g-left"></i>
+                                    <span class="g-left">李白2</span>
+                                </li>
+                                <li class="clearfix">
+                                    <i class="g-left"></i>
+                                    <span class="g-left">李白3</span>
+                                </li>
+                                <li class="clearfix">
+                                    <i class="g-left"></i>
+                                    <span class="g-left">李白4</span>
+                                </li> -->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="rMenu" class="checkPer" data-permission="bi_configuration_view" onmouseenter="handelEnter(event)" onmouseleave="handleLeave(event)" >
+        <ul>
+            <!-- <li id="m_add" onclick="addTreeNode();">添加子分组</li>
+            <li id="m_check" onclick="checkTreeNode(true);">编辑分组</li>
+            <li id="m_del" onclick="removeTreeNode();">删除分组</li> -->
+
+            <li id="m_add_btn" class="checkPer" data-permission="bi_configuration_group_add">
+                <div id="m_add">添加子分组</div>
+            </li>
+            <li id="m_check_btn" class="checkPer" data-permission="bi_configuration_group_edit">
+                <div id="m_check"> 编辑分组</div>
+            </li>
+            <li id="m_del_btn" class="checkPer" data-permission="bi_configuration_group_delete">
+                <div id="m_del" onclick="removeTreeNode();">删除分组</div>
+            </li>
+        </ul>
+    </div>
+    <script id="demoTpl" type="text/html">
+        {{#  layui.each(d, function(index, item){ }}
+            <li class="g-left">
+                <span>{{ item }}</span>
+                <i data-id="{{index}}"></i>
+            </li>
+        {{#  }); }}
+    </script>
+    <script id="jobArrTpl" type="text/html">
+        {{#  layui.each(d, function(index, item){ }}
+            <li class="g-left">
+                <span>{{ item }}</span>
+                <i data-id="{{index}}"></i>
+            </li>
+        {{#  }); }}
+    </script>
+    <script src="./jquery-3.5.1.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script> <!-- 引入axiox -->
+    <script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>
+    <script src="./utils/request.js"></script>
+    <script src="./utils/common.js"></script>
+    <script src="./libs/layui/layui.all.js"></script>
+    <script src="./utils/pagination.js"></script> <!-- 引入分组组件 -->
+    <script src="./libs/zTree_v3/js/jquery.ztree.all.min.js"></script>
+    <!-- <script src="./libs/zTree_v3/js/jquery.ztree.core.min.js"></script>
+    <script src="./libs/zTree_v3/js/jquery.ztree.exedit.js"></script>
+    <script src="./libs/zTree_v3/js/jquery.ztree.excheck.min.js"></script> -->
+    <script src="./libs/nicescroll/jquery.nicescroll.js"></script>
+    <script src="./js/common.js"></script>
+    <script src="./js/index.js"></script>
+    <script type="text/html" id="barDemo">
+
+
+        {{#  if(d.published == "未发布"){ }}
+            <a class="g-bluebtn g-edit checkPer" data-permission="bi_configuration_dashboard_edit" lay-event="edit">编辑</a>
+            <a class="g-redbtn g-del checkPer" data-permission="bi_configuration_dashboard_delete" lay-event="del">删除</a>
+            <a class="g-bluebtn g-release checkPer" data-permission="bi_configuration_release" lay-event="release">发布</a>
+            <a class="g-bluebtn g-attribute checkPer" data-permission="bi_configuration_attribute" lay-event="attribute">属性</a>
+        {{# }if(d.published == "已发布") { }}
+            <a class="g-bluebtn g-edit checkPer" data-permission="bi_configuration_dashboard_edit" lay-event="edit">编辑</a>
+            <a class="g-redbtn g-del checkPer" data-permission="bi_configuration_dashboard_delete" lay-event="del">删除</a>
+            <a class="g-bluebtn g-release checkPer" data-permission="bi_configuration_release" lay-event="offline">下线</a>
+            <a class="g-bluebtn g-attribute checkPer" data-permission="bi_configuration_attribute" lay-event="attribute">属性</a>
+        {{#  } }}
+    </script>
+
+
+</body>
+
+</html>

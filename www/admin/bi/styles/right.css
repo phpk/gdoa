@@ -1,0 +1,165 @@
+/* 右侧样式 */
+.r-select {
+  width: 130px;
+  /* position: static; */
+}
+
+.r-select input {
+  border-radius: 3px;
+}
+
+.r-select .select-dropdown {
+  position: absolute;
+}
+
+.r-border-common {
+  display: flex;
+  align-items: center;
+  /* justify-content: space-between; */
+}
+
+.r-border-common_item {
+  flex: 1;
+  height: 50px;
+  line-height: 50px;
+  display: flex;
+  /* justify-content: space-between; */
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.r-border-common_item>span:first-child {
+  margin-right: 20px;
+}
+
+.r-border-common_item .r-border-common_input {
+  width: 130px;
+  border-radius: 3px;
+}
+
+.r-border-shadow {
+  /* display: flex; */
+  /* align-items: center; */
+}
+
+.r-border-shadow div {
+  display: inline-block;
+  width: 26px;
+  height: 26px;
+  /* border: 1px solid #fff; */
+  margin-right: 20px;
+  /* background: #000; */
+  cursor: pointer;
+  box-sizing: border-box;
+}
+.r-border-shadow div img{
+  vertical-align: middle;
+}
+.r-date-group {
+  display: flex;
+}
+
+#r-date .date-wrap {
+  min-height: 30px;
+  margin-bottom: 10px;
+}
+
+.r-date-group .date-wrap {
+  /* width: 160px; */
+  flex: 1;
+  display: flex;
+}
+
+.r-date-group input {
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+}
+
+.r-date-group .date-wrap input:focus {
+  border: 1px solid #dcdfe6
+}
+
+
+.r-date-group .date-wrap:first-child {
+  margin-right: 15px;
+}
+
+/* 线型下拉框 */
+.el-input{
+  padding: 0 8px;
+  /* margin: 50px; */
+  width: 112px; 
+  height: 28px;
+  border: 1px solid #c0c4cc;
+  border-radius: 4px;
+  background: #fff;
+  position: relative;
+  cursor: pointer;
+}
+.select-drop-down1,
+.select-drop-down{
+  position: absolute;
+  max-height: 260px;
+  height: auto;
+
+  border: 1px solid #c0c4cc;
+  border-radius: 4px;
+  background: #fff;
+  overflow: auto;
+}
+.drop-down-list1,
+.drop-down-list{
+  margin: 0;
+  padding: 4px 0;
+  width: 100%;
+  list-style: none;
+}
+.drop-down-list1 li,
+.drop-down-list li{
+  padding: 0 8px;
+  line-height: 34px;
+  height: 34px;
+  position: relative;
+  cursor: pointer;
+  color: #666666;
+  /* vertical-align: middle; */
+}
+.drop-down-list1 li:hover,
+.drop-down-list li:hover{
+  background:#ECF5FF;
+}
+.drop-li{
+  max-width: 200px;
+  overflow:hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  -o-text-overflow:ellipsis;
+}
+
+.xianDiv{
+  position: absolute;
+    width: 90%;
+    top: 50%;
+    left: 5%;
+    line-height: 0;
+}
+/* 选择关联变量下拉框 */
+.el-input1{
+  padding: 0 8px;
+  /* margin: 50px; */
+  width: 160px; 
+  height: 28px;
+  border: 1px solid #c0c4cc;
+  border-radius: 4px;
+  background: #fff;
+  position: relative;
+  cursor: pointer;
+}
+/* 上移下移图标 */
+.tableDataUpIcon{
+  color: #999;
+}
+.tableDataUpIcon1{
+  color: #ccc;
+}

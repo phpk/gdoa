@@ -1,0 +1,619 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <title>BI系统</title>
+    <script src="./js/watcher.js"></script>
+    <link rel="stylesheet" href="https://at.alicdn.com/t/font_2431045_hbwl3x53oep.css">
+    <link rel="stylesheet" href="./styles/date.css">
+    <link rel="stylesheet" href="./layui/css/layui.css">
+    <link rel="stylesheet" href="./styles/common.css">
+    <link rel="stylesheet" href="./styles/index.css" type="text/css">
+    <link rel="stylesheet" href="./styles/data.css">
+    <link rel="stylesheet" href="./styles/right.css">
+    <link rel="stylesheet" href="./styles/popup.css">
+    <link rel="stylesheet" href="./css/caiyongxiang.css">
+    <link rel="stylesheet" href="./styles/iconfont/iconfont.css">
+    <link rel="stylesheet" href="./zTree_v3/css/zTreeStyle/zTreeStyle.css">
+    <link rel="stylesheet" href="./styles/tree.css">
+    <link rel="stylesheet" href="./components/selectPage/selectPage.css">
+    <!-- <link href="./js/select2/v4.0.6/css/select2.min.css" rel="stylesheet" /> -->
+    <script src="./styles/iconfont/iconfont.js"></script>
+    <script src="./js/echarts.js"></script>
+    <script src="./js/ecStat.js"></script>
+    <!-- <script???? src="../js/ecStat.js"></script????> -->
+</head>
+
+<body>
+    
+    <div class="page">
+        <div class="page-tools">
+            <div class="bodycolorcover" style="display: none;position: absolute;top: 0;left: 0;z-index: 10;width: 100%;height:100%;" onclick='color1(this,"hide")'></div>
+        </div>
+        <div class="wrap-tab">
+            <div class="bodycolorcover" style="display: none;position: absolute;top: 0;left: 0;z-index: 10;width: 100%;height:100%;" onclick='color1(this,"hide")'></div>
+            <button type="button" class="visual-pagination-button" style="display: none;" disabled='disabled'><i
+                    class="iconfont iconzuojiantou"></i></button>
+            <div class="btn-groups" id="btnGroups">
+                <!-- 此处遍历生成组件内容 -->
+            </div>
+            <button type="button" class=" visual-pagination-button" style="display: none;" disabled='disabled'><i
+                    class="iconfont iconyoujiantou_huaban"></i></button>
+        </div>
+        <div class="page-wrap">
+            <div class="canvas" id="canvas">
+            
+                <div class="canvas-wrap" id="canvas-wrap" onclick="clickWrap(event)" oncontextmenu="forbidMouse(event)">
+                  
+                    <!-- 复用 -->
+                    <!-- <div class="reuse" id="reuse">
+                        <div class="reuse-header">
+                            <span>复用</span>
+                            <i onclick="closeReuse()" class="iconfont iconguanbi1"></i>
+                        </div>
+                        <div class="reuse-wrap">
+                            <div class="reuse-wrap-search">
+                                <input id="reuseSearchInput" type="text" autocomplete="off" class="bi-input" style="margin-right: 10px"
+                                    placeholder="搜索分组、看板、组件名称"></input>
+                                <button class="bi-btn btn-primary" onclick="initReuseTree()">搜 索</button>
+                            </div>
+                            <div class="bi-tree">
+                                <ul id="reusetree" class="ztree"></ul>
+                            </div>
+                        </div>
+                    </div> -->
+                    <div class="wrap" id="wrap">
+                        <!-- 此处遍历生成画布元素 -->
+                    </div>
+                    <div class="bodycolorcover" style="display: none;position: absolute;top: 0;left: 0;z-index: 10;width: 100%;height:100%;" onclick='color1(this,"hide")'></div>
+                    <div class="line across-line" id="across-line" ></div> <!-- 横线 -->
+                    <div class="line vertical-line" id="vertical-line" ></div> <!-- 竖线 -->
+                </div>
+            </div>
+            <!-- 复用挪到此处 -->
+            <div class="reuse" id="reuse">
+                <div class="reuse-header">
+                    <span>复用</span>
+                    <i onclick="closeReuse()" class="iconfont iconguanbi1"></i>
+                </div>
+                <div class="reuse-wrap">
+                    <div class="reuse-wrap-search">
+                        <input id="reuseSearchInput" type="text" autocomplete="off" class="bi-input" style="margin-right: 10px"
+                            placeholder="搜索分组、看板、组件名称"></input>
+                        <button class="bi-btn btn-primary" onclick="initReuseTree()">搜 索</button>
+                    </div>
+                    <div class="bi-tree">
+                        <ul id="reusetree" class="ztree"></ul>
+                    </div>
+                </div>
+            </div>
+            <div class="details">
+
+                <!-- <div style="width:100%;height:500px">
+                  <iframe id="pie" style="width:100%;height:100%" src="./饼图/饼图.html"></iframe>
+                </div> -->
+                <!-- 属性栏固定组 -->
+                <div class="common-group" id="common-group">
+                  
+                </div>
+                <!-- 属性栏变化组 -->
+                <div class="change-group" id="change-group">
+                   
+                </div>
+            </div>
+            <!-- 鼠标右键菜单 -->
+            <ul id="rightMenu">
+                <li class="menu" onclick="delElement()">删 除</li>
+            </ul>
+            <!-- 弹窗部分 -->
+            <div class="popup" id="popup">
+                <div class="popup-wrap" id="popupWrap1">
+                    <div class="popup-head">
+                        <span>选择关联变量</span>
+                        <i class="iconfont iconguanbi1 popup-close" onclick="closePopup(event)"></i>
+                    </div>
+                    <div class="popup-body">
+                        <div class="popup-search">
+                            <div>
+                                <div class="pop-select-wrap">
+                                    <input autocomplete=off type="text" placeholder="请选择" id="datatextblockOrigin">
+                                </div>
+                                <div class="pop-select-wrap">
+                                    <!-- <input type="text" placeholder="请选择" id="datatextblockDevice"> -->
+                                    <input autocomplete="off" type="text" id="datatextblockDevice"
+                                        onclick="changeDatatextblockDevice(event)" placeholder="请选择" class="el-input1">
+                                    <!-- <select placeholder="请选择"  class="form-control" id="datatextblockDevice"></select> -->
+
+                                </div>
+                                <input class="popup-input" placeholder="变量名" autocomplete="off" id="varName"
+                                    onblur="getVirate(event)" type="text">
+                                <input class="popup-input" placeholder="描述" autocomplete="off" id="varDesc"
+                                    onblur="getDescribe(event)" type="text">
+                            </div>
+                            <div>
+                                <button type="button" class="popup-btn popup-confirm" onclick="searchVirate()"
+                                    style="margin-right: 10px">查 询</button>
+                                <button type="button" class="popup-btn popup-cancel" onclick="resetVirate()">重
+                                    置</button>
+                            </div>
+                        </div>
+                        <!-- 弹窗表格部分 -->
+                        <div class="popup-table">
+                            <!-- 表格 -->
+                            <div>
+                                <div class="bi-table">
+                                    <div class="bi-table-header-wrap">
+                                        <table cellspacing="0" cellpadding="0" border="0" class="bi-table__header">
+                                            <thead>
+                                                <tr>
+                                                    <th rowspan="1" colspan="1" class="table-checkbox "></th>
+                                                    <th onmouseover="showTableTips(event,'变量来源')" id="th1" rowspan="1" colspan="1">
+                                                        <div>变量来源</div>
+                                                    </th>
+                                                    <th onmouseover="showTableTips(event,'变量名称')" id="th2" rowspan="1" colspan="1">
+                                                        <div>变量名称</div>
+                                                    </th>
+                                                    <th onmouseover="showTableTips(event,'变量描述')" id="th3" rowspan="1" colspan="1">
+                                                        <div>变量描述</div>
+                                                    </th>
+                                                    <th onmouseover="showTableTips(event,'单位')" id="th4" rowspan="1" colspan="1">
+                                                        <div>单位</div>
+                                                    </th>
+                                                    <th onmouseover="showTableTips(event,'数据类型')" id="th5" rowspan="1" colspan="1">
+                                                        <div>数据类型</div>
+                                                    </th>
+                                                    <!-- <th onmouseover="showTableTips(event,'变量类型')" id="th6" rowspan="1" colspan="1">
+                                                        <div>变量类型</div>
+                                                    </th> -->
+                                                    <th onmouseover="showTableTips(event,'所属客户')" id="th7" rowspan="1" colspan="1">
+                                                        <div>所属客户</div>
+                                                    </th>
+                                                    <th onmouseover="showTableTips(event,'所属设备')" id="th8" rowspan="1" colspan="1">
+                                                        <div>所属设备</div>
+                                                    </th>
+                                                    <th onmouseover="showTableTips(event,'设备编号')" id="th9" rowspan="1" colspan="1">
+                                                        <div>设备编号</div>
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                    <div class="bi-table-body-wrap">
+                                        <table cellspacing="0" cellpadding="0" border="0" class="el-table__body">
+                                            <tbody id="popup-tbody">
+                                                <!-- 此处遍历生成tr元素 -->
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 分页 -->
+                        <div class="popup-pagination" id="popup-pagination">
+                            <!-- <div class="visual-pagination">
+                              <span>共 <span id="page-totalCount" ></span> 条</span>
+                              <select class="visual-pagination-select" name="" id="">
+                                <option value="10">10条/页</option>
+                                <option value="30">30条/页</option>
+                                <option value="50">50条/页</option>
+                                <option value="80">80条/页</option>
+                              </select>
+                              <button type="button" class="visual-pagination-button"  disabled='disabled'><i class="iconfont iconzuojiantou"></i></button>
+                              <ul class="visual-pager" >
+                                <li class="activePage" >1</li>
+                              </ul>
+                              <button type="button" class=" visual-pagination-button" disabled='disabled'><i class="iconfont iconyoujiantou_huaban"></i></button>
+                              <span>前往</span>
+                              <input type="text" class="pager-input" value="1" >
+                              <span>页</span>
+                            </div> -->
+                        </div>
+                        <!-- <select class="form-control" id="id_select2_demo1">
+                            <option value="">-----单选-----</option>
+                            <option value="1">OPS-COFFEE-A</option>
+                            <option value="2">OPS-COFFEE-B</option>
+                            <option value="3">OPS-COFFEE-C</option>
+                            <option value="4">OPS-COFFEE-D</option>
+                            <option value="5">OPS-COFFEE-E</option>
+                            <option value="6">OPS-COFFEE-F</option>
+                            <option value="7">OPS-COFFEE-G</option>
+                        </select> -->
+                    </div>
+                    <div class="popup-footer">
+                        <button type="button" class="popup-btn popup-cancel" style="margin-right: 20px"
+                            onclick="closePopup(event)">取 消</button>
+                        <button type="button" class="popup-btn popup-confirm" onclick="confirmPop(event)">确 认</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 此弹窗已弃用  -->
+            <div class="popup" id="additionPop">
+                <div class="popup-wrap" style="width: 600px">
+                    <div class="popup-head">
+                        <span>新增</span>
+                        <i class="iconfont iconguanbi1 popup-close" onclick="closeAddtion(event)"></i>
+                    </div>
+                    <div class="popup-body">
+                        <form class="popup-form" action="">
+                            <div class="form-wrap">
+                                <div class="form-item">
+                                    <span class="form-item-label">条件：</span>
+                                    <select class="popup-select form-input" id="form-select"
+                                        onchange="getFlag(this[selectedIndex].value)" placeholder="请选择">
+                                        <option value=">">></option>
+                                        <option value="=">=</option>
+                                        <option value="<">
+                                            << /option>
+                                        <option value=">=">>=</option>
+                                        <option value="<=">
+                                            <=< /option>
+                                    </select>
+                                </div>
+                                <div class="form-item">
+                                    <span class="form-item-label">值：</span>
+                                    <input type="text" class="popup-input form-input" autocomplete="off" id="form-input"
+                                        onblur="getNum(event)">
+                                </div>
+                                <div class="form-item">
+                                    <span class="form-item-label">颜色：</span>
+                                    <div class="form-color">
+                                        <span class="pos-border-color" id="formColor" style="margin: 0"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="popup-footer">
+                        <button type="button" class="popup-btn popup-cancel" style="margin-right: 20px"
+                            onclick="closeAddtion(event)">取 消</button>
+                        <button type="button" class="popup-btn popup-confirm" onclick="confirmAddition(event)">确
+                            认</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 跳转链接，选择看板  -->
+            <div class="popup" id="jumpPop">
+                <div class="popup-wrap" style="width: 599px;height: 650px;">
+                    <div class="popup-head">
+                        <span>看板列表</span>
+                        <div class="iconfont iconguanbi1 popup-close" onclick="closeJump(event)"></div>
+                    </div>
+                    <div class="popup-body">
+                        <div class="jumpPop-wrap">
+                            <div class="jumpPop-search" style="width: 90%;">
+                                <input type="text" class="bi-input" style="margin-right: 10px;width: 80%;"
+                                    placeholder="搜索分组、看板、组件名称"></input>
+                                <button class="bi-btn btn-primary" onclick="searchJumpTree(event)">搜 索</button>
+                            </div>
+                        </div>
+                        <div class="jumptree-tree bi-tree" style="margin:0">
+                            <ul id="jumptree" class="jumptree ztree" style="margin:0 !important;padding-left:5%"></ul>
+                        </div>
+                    </div>
+                    <!-- <div class="popup-footer">
+                        <button type="button" class="popup-btn popup-cancel" style="margin-right: 20px"
+                            onclick="closeJump(event)">取 消</button>
+                        <button type="button" class="popup-btn popup-confirm" onclick="confirmJump(event)">确 认</button>
+                    </div> -->
+                </div>
+            </div>
+
+            <!-- 图表字段弹窗  -->
+            <div class="popup" id="fieldPop">
+                <div class="popup-wrap" style="width: 600px">
+                    <div class="popup-head">
+                        <span>选择关联字段</span>
+                        <i class="iconfont iconguanbi1 popup-close" onclick="closeField(event)"></i>
+                    </div>
+                    <div class="popup-body">
+                        <form class="popup-form" action="">
+                            <div style="position: relative;">
+                                <input type="text" placeholder="搜索字段" autocomplete="off" id="checkFieldKeyValue">
+                                <i style="position: absolute; right: 10px;cursor: pointer;top:4px"
+                                    onclick="checkFieldKey(event)" class="icon iconfont iconsousuo"></i>
+                            </div>
+                            <ul class="field-ul" id="field-ul">
+                                <!-- <li>
+                                    <input type="checkbox" name="field-check" id="filed1" ><label for="filed1">字段1</label>
+                                </li>
+                                <li>
+                                    <input type="checkbox" name="field-check" id="filed2" ><label for="filed2">字段2</label>
+                                </li>
+                                <li>
+                                    <input type="checkbox" name="field-check" id="filed3" ><label for="filed3">字段3</label>
+                                </li> -->
+                            </ul>
+                        </form>
+                    </div>
+                    <div class="popup-footer">
+                        <button type="button" class="popup-btn popup-cancel" style="margin-right: 20px"
+                            onclick="closeField(event)">取 消</button>
+                        <button type="button" class="popup-btn popup-confirm" onclick="confirmField(event)">确 认</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 看板弹窗部分 -->
+            <div class="copeConfigureForm" style="display:none;">
+                <div class="copeConfigureForm-search">
+                    <input class="g-search-input" type="text" placeholder="请输入分组、看板名称">
+                    <button type="button" class="layui-btn layui-btn-normal layui-btn-sm"
+                        onclick="searchFromTree(event)">搜索</button>
+                </div>
+                <div class="bi-tree dashboardtree treeDemoCopeFromScroll" style="height: 465px;">
+                    <ul id="treeCopeFrom" class="ztree copyTree"></ul>
+                </div>
+            </div>
+            <div class="copeConfigureTo" style="display:none;">
+                <div class="copeConfigureForm-search">
+                    <input class="g-search-input" type="text" placeholder="请输入分组、看板名称">
+                    <button type="button" class="layui-btn layui-btn-normal layui-btn-sm"
+                        onclick="searchToTree(event)">搜索</button>
+                </div>
+                <div class="bi-tree dashboardtree treeDemoCopetoScroll" style="height: 465px;">
+                    <ul id="treeCopeto" class="ztree copyTree"></ul>
+                </div>
+            </div>
+            <!-- 访问权限自定义 -->
+            <div class="z-selectDeptInp" style="display:none;">
+                <div class="treeSelectShow treeSelectShowScroll clearfix">
+                    <ul class="clearfix g-left" id="viewTpl">
+                    </ul>
+                    <ul class="clearfix g-left" id="viewTpl2">
+                    </ul>
+                    <ul class="clearfix g-left" id="viewTpl3">
+                    </ul>
+                </div>
+                <div class="layui-tab layui-tab-brief" id="tab-wrap" lay-filter="docDemoTabBrief">
+                    <ul class="layui-tab-title">
+                        <li class="layui-this">部门</li>
+                        <li>职位</li>
+                        <li>人员</li>
+                    </ul>
+                    <div class="layui-tab-content z-contentBoxLeft">
+                        <div class="layui-tab-item copeConfigureTo1 layui-show">
+                            <div class="layui-tab-item-inpbox">
+                                <input type="text" onblur="searchDept(event)" id="input-Dept" autocomplete="off"
+                                    placeholder="搜索部门名称">
+                                <i class="icon iconfont iconsousuo"></i>
+                            </div>
+                            <ul id="treeDept" class="ztree"></ul>
+                        </div>
+                        <div class="layui-tab-item">
+                            <div class="layui-tab-item-inpbox">
+                                <input type="text" onblur="searchJob(event)" id="input-job" autocomplete="off"
+                                    placeholder="搜索职位名称">
+                                <i class="icon iconfont iconsousuo"></i>
+                            </div>
+                            <ul class="rank rankScroll" id="rankSelect">
+                            </ul>
+                        </div>
+                        <div class="layui-tab-item treeDemoDeptOrpeo" style="position: relative; height:100%">
+                            <div class="content-wrap">
+                                <div class="tree-wrap">
+                                    <ul id="treeDemoDeptOrpeo" class="ztree g-left" style="width: 220px;"></ul>
+                                </div>
+                                <div class="tree-users">
+                                    <div class="g-left selectPeopleBox">
+                                        <div class="layui-tab-item-inpbox">
+                                            <input type="text" onblur="searchName(event)" id="input-user"
+                                                autocomplete="off" placeholder="搜索用户名称" style="width: 205px;margin: 0;">
+                                            <i class="icon iconfont iconsousuo" style="top: 6px;left: 9px;"></i>
+                                        </div>
+                                        <ul class="selectPeople selectPeopleScroll" id="peopleSelect"></ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="chart-list" id="chart-list">
+            <iframe id="data-line" name="dataLine" style="width:100%;height:100%;border:none;display: none"
+                src="./折线图/折线图变量.html"></iframe>
+            <iframe id="data-barId" name="dataBarId" style="width:100%;height:100%;border:none;display: none"
+                src="./柱形图/柱形图变量.html"></iframe>
+            <iframe id="data-dash" name="dataDash" style="width:100%;height:100%;border:none;display: none"
+                src="./仪表盘/仪表盘变量.html"></iframe>
+            <iframe id="data-pie" name="dataPie" style="width:100%;height:100%;border:none;display: none"
+                src="./饼图/饼图变量.html"></iframe>
+        </div>
+    </div>
+
+    <!-- <div class="solidrectangle-more" id="moreTool-rect">
+        <div class="moretool-wrap" >
+            <div class="wrap-border" >
+                <div draggable="true">
+                    <div class="wrap-border-subDiv1" ></div>
+                </div>
+                <div>边框一</div>    
+            </div> 
+            <div class="wrap-border" >
+                <div draggable="true">
+                    <div class="wrap-border-subDiv2" ></div>    
+                </div>
+                <div>边框二</div>    
+            </div>
+            <div class="wrap-border" >
+                <div draggable="true">
+                    <div class="wrap-border-subDiv3" ></div>    
+                </div>
+                <div>边框三</div>    
+            </div>   
+        </div> 
+        <div class="moretool-wrap">
+            <div class="wrap-border" >
+                <div draggable="true">
+                    <div class="wrap-border-subDiv4" ></div>
+                </div>
+                <div>边框四</div>    
+            </div>
+            <div class="wrap-border" >
+                <div draggable="true">
+                    <div class="wrap-border-subDiv5" ></div>
+                </div>
+                <div>边框五</div>    
+            </div>
+            <div class="wrap-border" >
+                <div draggable="true">
+                    <div class="wrap-border-subDiv6" ></div>
+                </div>
+                <div>边框六</div>    
+            </div>
+        </div>    
+    </div> -->
+     <script>
+          color1 = function(a,type){
+            $('.bodycolorcover').hide() // 隐藏遮罩层
+            if(type){
+                $(a).hide()
+            }else{
+                $(a).remove()
+            }
+         
+          back(selectdata, Controls)
+          if(document.getElementById('pie')!==null){
+          for(let i=0;i< $(document.getElementById('pie').contentWindow.document.body).find('.colordiv').length;i++){
+            $($(document.getElementById('pie').contentWindow.document.body).find('.colordiv')[i]).hide()
+          }
+          }
+          if(document.getElementById('line')!==null){
+          for(let i=0;i< $(document.getElementById('line').contentWindow.document.body).find('.colordiv').length;i++){
+            $($(document.getElementById('line').contentWindow.document.body).find('.colordiv')[i]).hide()
+          }
+          }
+          if(document.getElementById('dash')!==null){
+          for(let i=0;i< $(document.getElementById('dash').contentWindow.document.body).find('.colordiv').length;i++){
+            $($(document.getElementById('dash').contentWindow.document.body).find('.colordiv')[i]).hide()
+          }
+          }
+          if(document.getElementById('barId')!==null){
+          for(let i=0;i< $(document.getElementById('barId').contentWindow.document.body).find('.colordiv').length;i++){
+            $($(document.getElementById('barId').contentWindow.document.body).find('.colordiv')[i]).hide()
+          }
+        }
+        }
+         localStorage.setItem("colorarr",JSON.stringify(["rgb(255,255, 255)","rgb(255,255, 255)","rgb(255,255, 255)","rgb(255,255, 255)","rgb(255,255, 255)","rgb(255,255, 255)","rgb(255,255, 255)","rgb(255,255, 255)","rgb(255,255, 255)","rgb(255,255, 255)","rgb(255,255, 255)","rgb(255,255, 255)","rgb(255,255, 255)","rgb(255,255, 255)","rgb(255,255, 255)","rgb(255,255, 255)"]));
+     </script>
+    <script src="./js/jquery.min.js"></script>
+    <script src="./js/html2canvas.js"></script>
+    <script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>
+    <script src="./utils/common.js"></script>
+
+    <!-- 引入axiox -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="./utils/request.js"></script>
+    <script src="./js/color.js"></script>
+    <script type="text/javascript" src="./js/data.js"></script>
+    <script type="text/javascript" src="./js/dropdown.js"></script>
+    <!-- 图表 -->
+
+
+
+    <!-- <script src="./js/echarts.js"></script>
+    <script src="./js/ecStat.js"></script> -->
+    <script src="./js/jquery-1.10.2.min.js"></script>
+    <script src="./饼图/饼图Echarts.js"></script>
+    <script src="./仪表盘/仪表盘Echarts.js"></script>
+    <script src="./柱形图/柱形图Echarts.js"></script>
+    <script src="./折线图/折线图Echarts.js"></script>
+    <script src="./js/echartsJson.js"></script>
+    <!-- <script type="text/javascript" src="./js/select2/v4.0.6/js/select2.min.js"></script> -->
+    <script type="text/javascript" src="./js/main.js"></script>
+    <script type="text/javascript" src="./js/rightStyle.js"></script>
+    <script type="text/javascript" src="./js/rightData.js"></script>
+    <script type="text/javascript" src="./js/topNav.js"></script>
+    <script type="text/javascript" src="./components/laydate/laydate.js"></script> <!-- 引入第三方日期时间组件 -->
+    <!-- 引入datepicker -->
+    <!-- <script src="./js/jquery-3.3.1.min.js"></script> -->
+    <script src="./js/moment.js"></script>
+    <script src="./js/jquery-datePicker.min.js"></script>
+    <script src="./js/num.js"></script>
+    <script type="text/javascript" src="./layui/layui.all.js"></script>
+    <script type="text/javascript" src="./js/pagination.js"></script>
+    <!-- 引入树组件 -->
+    <script type="text/javascript" src="./zTree_v3/js/jquery.ztree.all.min.js"></script>
+    <script type="text/javascript" src="./js/treeConfig.js"></script>
+    <!-- <script type="text/javascript" src="./zTree_v3/js/jquery.ztree.core.min.js"></script> -->
+    <!-- <script type="text/javascript" src="./zTree_v3/js/jquery.ztree.all.min.js"></script> -->
+    <!--   <script type="text/javascript" src="./zTree_v3/js/jquery.ztree.exedit.js"></script> -->
+    <!--   <script type="text/javascript" src="./zTree_v3/js/jquery.ztree.excheck.min.js"></script> -->
+    <script id="demoTpl" type="text/html">
+        {{#  layui.each(d, function(index, item){ }}
+            <li class="g-left">
+                <span>{{ item }}</span>
+                <i data-id="{{index}}"></i>
+            </li>
+        {{#  }); }}
+    </script>
+    <script id="jobArrTpl" type="text/html">
+        {{#  layui.each(d, function(index, item){ }}
+            <li class="g-left">
+                <span>{{ item }}</span>
+                <i data-id="{{index}}"></i>
+            </li>
+        {{#  }); }}
+    </script>
+
+<script src="./js/index.js"></script>
+<script src="./js/caiyongxiang.js"></script>
+<script src="./components/selectPage/selectPage.min.js"></script>
+<script>
+    //定义数组，在服务端返回的数据也以该格式返回：Array[{Object},{...}]
+    var tag_data = [
+        { id: 1, name: 'Chicago Bulls', desc: '芝加哥公牛' },
+        { id: 2, name: 'Cleveland Cavaliers', desc: '克里夫兰骑士' },
+        { id: 3, name: 'Detroit Pistons', desc: '底特律活塞' },
+        { id: 4, name: 'Indiana Pacers', desc: '印第安纳步行者' }
+    ];
+    window.addEventListener("beforeunload", function (event) {
+        localStorage.removeItem('percentage')
+    });
+    if (document.referrer == "https://bidev.sycdev.com/preview.html" || document.referrer == 'http://localhost:8200/web/bi/index.html') {
+        if (localStorage.percentage) {
+            let password = JSON.parse(localStorage.percentage)
+            $('.selected').removeClass('selected')
+            for (let i = 0; i < $('.select-pass').find('li').length; i++) {
+                if ($($('.select-pass').find('li')[i]).attr('name') == password) {
+                    $($('.select-pass').find('li')[i]).attr('class', 'selected')
+                }
+            }
+            viewpass.push((parseInt(password) / 100))
+            if (viewpass.length > 2) {
+                viewpass.shift()
+            }
+            $('.viewpass')[0].innerText = password
+        }
+        //      Controls.ControlList.forEach((item) => {
+
+            //  item.PropertyList.Width = item.PropertyList.Width / (parseInt(password) / 100)
+            // item.PropertyList.Height = item.PropertyList.Height / (parseInt(password) / 100)
+
+
+            // })
+
+        }
+
+// //初始化插件
+// $('#datatextblockOrigin').selectPage({
+//     showField : 'desc',
+//     keyField : 'id',
+//     data : tag_data
+// });
+// $('#datatextblockDevice').selectPage({
+//     showField : 'desc',
+//     keyField : 'id',
+//     data : tag_data
+// });
+
+</script>
+   
+</html>

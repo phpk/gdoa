@@ -1,0 +1,448 @@
+.page-tools .select-pass{
+    width: 75px;
+    position: fixed;
+    border: 1px solid #e4e7ed;
+    border-radius: 4px;
+    background-color: #fff;
+    box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
+    box-sizing: border-box;
+    margin: 5px 0;
+    height: 150px;
+    list-style: none;
+    padding: 6px 0;
+    /* display: none; */
+    z-index: 999;
+    overflow-y: auto;
+    overflow-x: hidden;
+    display: none;
+}
+.page-tools .select-pass>li{
+    width: 75px !important;
+    float: left;
+    display: block;
+}
+.page-tools input{
+    border: none;
+    width: 70px;
+    display: inline-block;
+    text-align: center;
+    height: 32px;
+    border-radius: 4px;
+    cursor: pointer;
+    outline: none;
+    padding: 0;
+    background: #F5F8FB;
+    color: #333333;
+    border: 1px solid #E4E8ED;
+}
+.picker {
+    /* display: none; */
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    position: absolute;
+    left: 1700px;
+    top: 900px;
+    z-index: 30;
+}
+.picker1 {
+    /* display: none; */
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    position: absolute;
+    left: 1300px;
+    top: 18px;
+    z-index: 100;
+}
+.page-tools input:hover{
+    border: 1px solid #409EFF;
+    /* color: #ccc; */
+}
+.page-tools .name{
+    font-size: 18px;
+    color: #333333;
+    font-weight: bold;
+}
+.page-tools ul{
+    width: 1900px;
+    height: 100%;
+    padding-left: 15px;
+    margin: 0;
+    list-style: none;
+    clear: both;
+    display: flex;
+    align-items: center;
+}
+.page-tools ul li{
+   width: 50px;
+   text-align: center;
+   float: left;
+   position: relative;
+   box-sizing: border-box;
+   -webkit-touch-callout: none; /* iOS Safari */
+
+-webkit-user-select: none; /* Chrome/Safari/Opera */
+
+-khtml-user-select: none; /* Konqueror */
+
+-moz-user-select: none; /* Firefox */
+
+-ms-user-select: none; /* Internet Explorer/Edge */
+
+user-select: none; /* Non-prefixed version, currently
+
+not supported by any browser */
+}
+.page{
+    -webkit-touch-callout: none; /* iOS Safari */
+
+    -webkit-user-select: none; /* Chrome/Safari/Opera */
+    
+    -khtml-user-select: none; /* Konqueror */
+    
+    -moz-user-select: none; /* Firefox */
+    
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    
+    user-select: none; /* Non-prefixed version, currently
+    
+    not supported by any browser */
+}
+.page-tools ul li div{
+    width: 100%;
+    height: 49%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.page-tools li .li-svgIcon {
+    width: 32px;
+    height: 32px;
+    font-size: 28px;
+}
+.page-tools #paste i, .page-tools #cut i {
+    font-size: 18px;
+    line-height: 32px;
+}
+.page-tools ul li.btns-li {
+    display: flex;
+    align-items: center;
+    margin-right: 18px;
+}
+.page-tools .first{
+    width: 200px;
+    line-height: 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.page-tools .line{
+    display: inline-block;
+    background: #CFD7E5;
+    height: 25px;
+    width: 1px;
+    margin: 10px;
+}
+.page-tools .line:first-child{
+    width: 2px;
+    background:#409EFF;
+}
+.page-tools li img{
+    position: absolute;
+    width: 55px;
+}
+/* .page-tools li .word{
+    position: absolute;
+    top: 8px;
+    right: 0px;
+    font-size: 12px;
+    height: 20px;
+    width: 60px;
+    text-align: center;
+} */
+.page-tools .li{
+    cursor: pointer;
+}
+.page-tools .li:hover{
+    border:1px solid #409EFF;
+}
+.page-tools .li.btns-li:hover{
+    border:none;
+}
+.page-tools ul  .myimg img{
+    width: 25px;
+    top: 10px;
+    right: 17px;
+}
+.page-tools .something{
+    display: none;
+}
+
+/* @media screen and (max-width: 1550px) {
+    .page-tools .something{
+        display: block;
+    }
+    .page-tools .ul>li:nth-child(23){
+        display: none;
+}
+    .page-tools .floattap{
+        position: absolute;
+        width: 80px;
+        height: 85px;
+        right: 0;
+        background: #383838;
+        bottom: -90px;
+        z-index: 100;
+        border:1px solid #515151;
+        box-shadow: 1px 1px 10px #272727;
+        overflow: hidden;
+    }
+}
+@media screen and (max-width: 1480px) {
+    .page-tools .something{
+        display: block;
+    }
+    .page-tools .ul>li:nth-child(-n+23):nth-child(n+22){
+        display: none;
+}
+    .page-tools .floattap{
+        position: absolute;
+        width: 150px;
+        height: 85px;
+        right: 0;
+        background: #383838;
+        bottom: -90px;
+        z-index: 100;
+        border:1px solid #515151;
+        box-shadow: 1px 1px 10px #272727;
+        overflow: hidden;
+    }
+}
+@media screen and (max-width: 1420px) {
+    .page-tools .something{
+        display: block;
+    }
+    .page-tools .ul>li:nth-child(-n+23):nth-child(n+21){
+        display: none;
+}
+    .page-tools .floattap{
+        position: absolute;
+        width: 210px;
+        height: 85px;
+        right: 0;
+        background: #383838;
+        bottom: -90px;
+        z-index: 100;
+        border:1px solid #515151;
+        box-shadow: 1px 1px 10px #272727;
+        overflow: hidden;
+    }
+}
+@media screen and (max-width: 1360px) {
+    .page-tools .something{
+        display: block;
+    }
+    .page-tools .ul>li:nth-child(-n+23):nth-child(n+20){
+        display: none;
+}
+    .page-tools .floattap{
+        position: absolute;
+        width: 265px;
+        height: 85px;
+        right: 0;
+        background: #383838;
+        bottom: -90px;
+        z-index: 100;
+        border:1px solid #515151;
+        box-shadow: 1px 1px 10px #272727;
+        overflow: hidden;
+    }
+}
+@media screen and (max-width: 1300px) {
+    .page-tools .something{
+        display: block;
+    }
+    .page-tools .ul>li:nth-child(-n+23):nth-child(n+18){
+        display: none;
+}
+    .page-tools .floattap{
+        position: absolute;
+        width: 340px;
+        height: 85px;
+        right: 0;
+        background: #383838;
+        bottom: -90px;
+        z-index: 100;
+        border:1px solid #515151;
+        box-shadow: 1px 1px 10px #272727;
+        overflow: hidden;
+    }
+}
+@media screen and (max-width: 1315px) {
+    .page-tools .something{
+        display: block;
+    }
+    .page-tools .ul>li:nth-child(-n+23):nth-child(n+17){
+        display: none;
+}
+    .page-tools .floattap{
+        position: absolute;
+        width: 400px;
+        height: 85px;
+        right: 0;
+        background: #383838;
+        bottom: -90px;
+        z-index: 100;
+        border:1px solid #515151;
+        box-shadow: 1px 1px 10px #272727;
+        overflow: hidden;
+    }
+}
+@media screen and (max-width: 1255px) {
+    .page-tools .something{
+        display: block;
+    }
+    .page-tools .ul>li:nth-child(-n+23):nth-child(n+16){
+        display: none;
+}
+    .page-tools .floattap{
+        position: absolute;
+        width: 460px;
+        height: 85px;
+        right: 0;
+        background: #383838;
+        bottom: -90px;
+        z-index: 100;
+        border:1px solid #515151;
+        box-shadow: 1px 1px 10px #272727;
+        overflow: hidden;
+    }
+}
+@media screen and (max-width: 1095px) {
+    .page-tools .something{
+        display: block;
+    }
+    .page-tools .ul>li:nth-child(-n+23):nth-child(n+15){
+        display: none;
+}
+    .page-tools .floattap{
+        position: absolute;
+        width: 520px;
+        height: 85px;
+        right: 0;
+        background: #383838;
+        bottom: -90px;
+        z-index: 100;
+        border:1px solid #515151;
+        box-shadow: 1px 1px 10px #272727;
+        overflow: hidden;
+    }
+}
+@media screen and (max-width: 1035px) {
+    .page-tools .something{
+        display: block;
+    }
+    .page-tools .ul>li:nth-child(-n+23):nth-child(n+14){
+        display: none;
+}
+    .page-tools .floattap{
+        position: absolute;
+        width: 580px;
+        height: 85px;
+        right: 0;
+        background: #383838;
+        bottom: -90px;
+        z-index: 100;
+        border:1px solid #515151;
+        box-shadow: 1px 1px 10px #272727;
+        overflow: hidden;
+    }
+}
+@media screen and (max-width: 975px) {
+    .page-tools .something{
+        display: block;
+    }
+    .page-tools .ul>li:nth-child(-n+23):nth-child(n+13){
+        display: none;
+}
+    .page-tools .floattap{
+        position: absolute;
+        width: 640px;
+        height: 85px;
+        right: 0;
+        background: #383838;
+        bottom: -90px;
+        z-index: 100;
+        border:1px solid #515151;
+        box-shadow: 1px 1px 10px #272727;
+        overflow: hidden;
+    }
+}
+@media screen and (max-width: 915px) {
+    .page-tools .something{
+        display: block;
+    }
+    .page-tools .ul>li:nth-child(-n+23):nth-child(n+12){
+        display: none;
+}
+    .page-tools .floattap{
+        position: absolute;
+        width: 700px;
+        height: 85px;
+        right: 0;
+        background: #383838;
+        bottom: -90px;
+        z-index: 100;
+        border:1px solid #515151;
+        box-shadow: 1px 1px 10px #272727;
+        overflow: hidden;
+    }
+}
+@media screen and (max-width: 855px) {
+    .page-tools .something{
+        display: block;
+    }
+    .page-tools .ul>li:nth-child(-n+23):nth-child(n+11){
+        display: none;
+}
+    .page-tools .floattap{
+        position: absolute;
+        width: 760px;
+        height: 85px;
+        right: 0;
+        background: #383838;
+        bottom: -90px;
+        z-index: 100;
+        border:1px solid #515151;
+        box-shadow: 1px 1px 10px #272727;
+        overflow: hidden;
+    }
+}
+@media screen and (max-width: 855px) {
+    .page-tools .something{
+        display: block;
+    }
+    .page-tools .ul>li:nth-child(-n+23):nth-child(n+11){
+        display: none;
+}
+    .page-tools .floattap{
+        position: absolute;
+        width: 760px;
+        height: 85px;
+        right: 0;
+        background: #383838;
+        bottom: -90px;
+        z-index: 100;
+        border:1px solid #515151;
+        box-shadow: 1px 1px 10px #272727;
+        overflow: hidden;
+    }
+}
+.page-tools .floattap{
+    display: none;
+    bottom: -85px;
+}
+.page-tools .something:hover>.floattap{
+ display: block;
+} */

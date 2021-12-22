@@ -1,0 +1,570 @@
+.popup {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  overflow: auto;
+  margin: 0;
+  color: #fff;
+  z-index: 9999;
+  background: rgba(0,0,0,0.6);
+  display: none;
+}
+.wrap{
+  position: relative;
+  z-index: 0;
+}
+.popup-wrap {
+    position: relative;
+    margin: 0 auto 50px;
+    background: #fff;
+    border-radius: 2px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.3);
+    box-sizing: border-box;
+    margin-top: 16vh;
+    width: 1020px;
+}
+/* 头部样式 */
+.popup-head {
+  text-align: center;
+  padding: 20px 20px 10px;
+  background: #409EFF;
+  font-size: 16px;
+}
+.popup-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  font-size: 16px;
+}
+/* 中间样式 */
+.popup-body {
+  padding: 20px 20px 10px 20px;
+  color: #606266;
+  font-size: 14px;
+  word-break: break-all;
+}
+.jumptree-tree {
+  height: 480px !important;
+  overflow: auto;
+  margin-top: 15px;
+  margin-left: 23%;
+}
+
+.jumptree {
+  margin-left: 23% !important;
+}
+
+.jumpPop-wrap {
+  display: flex;
+  justify-content: center;
+}
+
+
+.popup-search {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.popup-search-picker {
+  height: 32px;
+  line-height: 32px;
+}
+
+.popup-select, .popup-input {
+  width: 120px;
+  margin-right: 10px;
+  border-radius: 4px;
+}
+.pop-select-wrap {
+  width: 160px;
+  display: inline-block;
+  margin-right: 10px;
+}
+.popup-form {
+  text-align: center;
+}
+.form-wrap {
+  width: 50%;
+  margin: 0 auto;
+}
+.form-item {
+  height: 36px;
+  line-height: 36px;
+  display: flex;
+}
+.form-item-label {
+  width: 80px;
+  display: inline-block;
+  text-align: left;
+}
+.form-input {
+  width: calc(100% - 80px);
+}
+.form-color {
+  display: flex;
+  align-items: center;
+}
+
+/* 底部样式 */
+.popup-footer {
+  display: flex;
+  justify-content: center;
+  padding: 10px 20px 20px;
+  box-sizing: border-box;
+}
+.popup-btn {
+  display: inline-block;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  background: #fff;
+  border: 1px solid #dcdfe6;
+  color: #606266;
+  text-align: center;
+  box-sizing: border-box;
+  outline: none;
+  margin: 0;
+  transition: .1s;
+  font-weight: 500;
+  padding: 9px 15px;
+  font-size: 14px;
+  border-radius: 4px;
+  user-select: none;
+}
+.popup-cancel:hover {
+  color: #409eff;
+  border-color: #c6e2ff;
+  background-color: #ecf5ff;
+}
+.popup-isplain {
+  color: #409eff ;
+  background: #ecf5ff ;
+  border-color: #b3d8ff ;
+}
+.popup-isplain:hover {
+  background: #409eff;
+  border-color: #409eff;
+  color: #fff;
+}
+.popup-confirm {
+  color: #fff;
+  background-color: #409eff;
+  border-color: #409eff;
+}
+.popup-confirm:hover {
+  background: #66b1ff;
+  border-color: #66b1ff;
+  color: #fff;
+}
+.popup-table {
+  margin: 15px 0;
+  /* height: 420px; */
+}
+
+
+/* table */
+.bi-table {
+  border: 1px solid #ebeef5;
+  overflow: auto;
+  position: relative;
+}
+.bi-table-block{
+  border-right: 1px solid #ebeef5;
+}
+.bi-table-body-wrap {
+  position: relative;
+  width: 100%;
+}
+.bi-table table{
+  width: 100%;
+}
+.bi-table table tbody {
+  display: block;
+  height: 400px;
+  overflow-y: scroll;
+}
+.bi-table tbody tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+  }
+.bi-table table thead {
+  color: #909399;
+  display: table;
+  font-weight: 500;
+  width: 100%;
+  table-layout: fixed;
+}
+.bi-table table td, .bi-table table th {
+  padding: 12px 0;
+  min-width: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  vertical-align: middle;
+  position: relative;
+  text-align: left;
+  /* border-bottom: 1px solid #ebeef5; */
+}
+.bi-table table tr:last-child td{
+  border-bottom: none;
+}
+.bi-table table td {
+  padding: 8px 0;
+  box-sizing: border-box;
+}
+/* .bi-table table td:hover div{
+  overflow: auto;
+} */
+.bi-table table td div, .bi-table table th div{
+  box-sizing: border-box;
+  padding: 0 10px;
+}
+.bi-table table tr:nth-child(even) {
+  background-color: #F5F7FC;
+}
+.bi-table table tr:hover {
+  background-color: #F2F8FD;
+}
+
+.func-table  table{
+  width: 100%;
+  color: #000;
+  background: #F2F2F2
+}
+.func-table table td, .func-table table th {
+  min-width: 20px;
+  border-bottom: 1px solid #CFD7E5;
+}
+.table-back-color {
+  display: flex;
+  align-items: center;
+}
+.table-back-color span{
+  width: 20px;
+  height: 20px;
+  line-height: 15px;
+  background: red;
+}
+.table-icon-del {
+  width: 20px;
+  cursor: pointer;
+  color: #409eff
+}
+.table-checkbox {
+  width: 40px;
+  padding-left: 5px !important;
+}
+.table-checkbox input {
+  width: 15px;
+}
+
+/* 分页部分 */
+.popup-pagination {
+  height: 35px;
+  line-height: 35px;
+}
+.activePage {
+  color: #409EFF;
+}
+.popup-pagination button:disabled {
+  color: #c0c4cc;
+  background-color: #fff;
+  cursor: not-allowed
+}
+.visual-pagination {
+  display: flex;
+  align-items: center;
+}
+.visual-pagination span:nth-of-type(2) {
+  margin-left: 20px;
+}
+.visual-pagination-button {
+  cursor: pointer;
+  height: 35px;
+  line-height: 35px;
+  color: #909399;
+  background: #fff;
+  font-weight: 700;
+}
+.visual-pagination-button i{
+  font-size: 12px;
+}
+.visual-pagination-button:hover i, .visual-pager li:hover {
+  color: #409eff;
+}
+.visual-pager {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  user-select: none;
+}
+.visual-pager li {
+  padding: 0 4px;
+  background: #fff;
+  vertical-align: top;
+  display: inline-block;
+  font-size: 13px;
+  min-width: 35.5px;
+  height: 28px;
+  line-height: 30px;
+  cursor: pointer;
+  box-sizing: border-box;
+  text-align: center;
+  margin: 0;
+}
+.visual-pagination-select {
+  width: 105px;
+  border-radius: 4px;
+  margin: 0 20px;
+}
+.pager-input {
+  width: 50px;
+  border-radius: 4px;
+  margin: 0 4px
+}
+/* 仪表板设置 */
+.copeConfigureForm-search{
+  padding-top: 10px;
+  text-align: center;
+}
+.copeConfigureForm-search input{
+  width: 398px;
+  height: 32px;
+  background: #FFFFFF;
+  border: 1px solid #DCDFE6;
+  border-radius: 4px;
+}
+.copeConfigureForm-search button{
+  width: 50px;
+  height: 32px;
+  background: #409EFF;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  font-family: PingFang SC;
+  font-weight: 500;
+  color: #FFFFFF;
+  position: relative;
+  top: -1px;
+  margin-left: 6px;
+}
+.dashboardtree {
+  margin-left: 60px;
+}
+.bi-tree {
+  height: calc(100% - 30px);
+  margin: 20px 0;
+}
+.bi-tree .ztree  {
+  overflow: auto;
+  box-sizing: border-box;
+  height: 100%;
+}
+.bi-tree .ztree li a:hover{
+  text-decoration: none;
+  background-color: #F5F7FB;
+  color: #409EFF!important;
+}
+.bi-tree .ztree li a{
+  height: 30px;
+  padding-top: 7px;
+}
+.bi-tree .ztree li span.button.noline_open{
+  width: 16px;
+  height: 16px;
+  background: url('./iconTool/icon_open.png');
+  position: relative;
+  top: 6px;
+  left: 3px;
+}
+.bi-tree .ztree li span.button.noline_close{
+  width: 16px;
+  height: 16px;
+  background: url('./iconTool/icon_close.png');
+  position: relative;
+  top: 6px;
+  left: 3px;
+}
+.bi-tree .ztree li span.button.ico_open,.bi-tree .ztree li span.button.ico_close{
+  width: 16px;
+  height: 16px;
+  background: url('./iconTool/icon_file.png');
+  position: relative;
+  top: -1px;
+  margin: 0 6px 0 10px;
+}
+.bi-tree .ztree li a:hover span.button.ico_open,.bi-tree .ztree li a:hover span.button.ico_close{
+  width: 16px;
+  height: 16px;
+  background: url('./iconTool/icon_file2.png');
+  position: relative;
+  top: -1px;
+  margin: 0 6px 0 10px;
+}
+.bi-tree .ztree li span.button.ico_docu {
+  width: 16px;
+  height: 16px;
+  /* background: url('./iconTool/icon_monitor_nor.png'); */
+  position: relative;
+  top: -1px;
+  margin: 0 6px 0 10px;
+}
+/* .bi-tree .ztree li a:hover span.button.ico_docu {
+  background: url('./iconTool/icon_sel');
+} */
+.bi-tree .ztree li a.curSelectedNode {
+  background-color: #F9FAFD;
+  color: #409EFF!important;
+  border: none;
+  opacity: 1;
+  height: 30px;
+  padding-top: 7px;
+}
+
+.copeConfigureTo .ztree li span.button.chk.checkbox_true_part,.copeConfigureTo .ztree li span.button.chk.checkbox_true_part_focus {
+  background-position: 0 0;
+  background: url(./iconTool/icon_sel_pre2.png);
+  width: 14px;
+  height: 14px;
+}
+.copeConfigureTo .ztree li span.button.chk.checkbox_false_part,.copeConfigureTo .ztree li span.button.chk.checkbox_false_part_focus {
+  background-position: 0 0;
+  background: url(./iconTool/icon_sel_nor2.png);
+  width: 14px;
+  height: 14px;
+  position: relative;
+  top: 5px;
+  left: 5px;
+  margin-right: 10px;
+}
+.copeConfigureTo .ztree li span.button.chk.checkbox_true_full,.copeConfigureTo .ztree li span.button.chk.checkbox_true_full_focus{
+  background-position: 0 0;
+  background: url(./iconTool/icon_sel_pre2.png);
+  width: 14px;
+  height: 14px;
+  position: relative;
+  top: 5px;
+  left: 5px;
+  /* margin-right: 10px; */
+}
+.copeConfigureTo .ztree li span.button.chk.checkbox_false_full,.copeConfigureTo .ztree li span.button.chk.checkbox_false_full_focus{
+  background-position: 0 0;
+  background: url(./iconTool/icon_sel_nor2.png);
+  width: 14px;
+  height: 14px;
+  position: relative;
+  top: 5px;
+  left: 5px;
+  /* margin-right: 10px; */
+}
+
+.copeConfigureForm .copyTree, .copeConfigureTo .copyTree {
+  margin-left: 60px;
+}
+
+.copeConfigureTo1 .ztree li span.button.chk.checkbox_true_part,.copeConfigureTo1 .ztree li span.button.chk.checkbox_true_part_focus {
+  background-position: 0 0;
+  background: url(./iconTool/icon_sel_pre2.png);
+  width: 14px;
+  height: 14px;
+}
+.copeConfigureTo1 .ztree li span.button.chk.checkbox_false_part,.copeConfigureTo1 .ztree li span.button.chk.checkbox_false_part_focus {
+  background-position: 0 0;
+  background: url(./iconTool/icon_sel_nor2.png);
+  width: 14px;
+  height: 14px;
+  position: relative;
+  top: 5px;
+  left: 5px;
+  margin-right: 10px;
+}
+.copeConfigureTo1 .ztree li span.button.chk.checkbox_true_full,.copeConfigureTo1 .ztree li span.button.chk.checkbox_true_full_focus{
+  background-position: 0 0;
+  background: url(./iconTool/icon_sel_pre2.png);
+  width: 14px;
+  height: 14px;
+  position: relative;
+  top: 5px;
+  left: 5px;
+  margin-right: 10px;
+}
+.copeConfigureTo1 .ztree li span.button.chk.checkbox_false_full,.copeConfigureTo1 .ztree li span.button.chk.checkbox_false_full_focus{
+  background-position: 0 0;
+  background: url(./iconTool/icon_sel_nor2.png);
+  width: 14px;
+  height: 14px;
+  position: relative;
+  top: 5px;
+  left: 5px;
+  margin-right: 10px;
+}
+
+.copeConfigureForm .ztree li span.button.chk.radio_true_part,.copeConfigureForm .ztree li span.button.chk.radio_true_part_focus {
+  background-position: 0 0;
+  background: url(./iconTool/icon_sel_pre.png);
+  width: 14px;
+  height: 14px;
+}
+.copeConfigureForm .ztree li span.button.chk.radio_false_part,.copeConfigureForm .ztree li span.button.chk.radio_false_part_focus {
+  background-position: 0 0;
+  background: url(./iconTool/icon_sel_nor.png);
+  width: 14px;
+  height: 14px;
+  position: relative;
+  top: 5px;
+  left: 5px;
+}
+.copeConfigureForm .ztree li span.button.chk.radio_true_full,.copeConfigureForm .ztree li span.button.chk.radio_true_full_focus{
+  background-position: 0 0;
+  background: url(./iconTool/icon_sel_pre.png);
+  width: 14px;
+  height: 14px;
+  position: relative;
+  top: 5px;
+  left: 5px;
+}
+.copeConfigureForm .ztree li span.button.chk.radio_false_full,.copeConfigureForm .ztree li span.button.chk.radio_false_full_focus{
+  background-position: 0 0;
+  background: url(./iconTool/icon_sel_nor.png);
+  width: 14px;
+  height: 14px;
+  position: relative;
+  top: 5px;
+  left: 5px;
+}
+
+/* .bi-tree .ztree li .curSelectedNode span.button.ico_open,.bi-tree .ztree li .curSelectedNode span.button.ico_close {
+  background: url('./iconTool/icon_file2.png');
+}
+.bi-tree .ztree li .curSelectedNode span.button.ico_docu{
+  background: url('./iconTool/icon_monitor_nor.png');
+} */
+.layui-layer-page .layui-layer-btn {
+  display: flex;
+  justify-content: center;
+}
+
+.layui-layer-page .layui-layer-btn a:first-child {
+  border: 1px solid #409EFF;
+  border-radius: 4px;
+  color: #409EFF;
+  background: #ECF5FF;
+  margin-right: 20px;
+}
+.layui-layer-page .layui-layer-btn a:last-child {
+  border: 1px solid #409EFF;
+  border-radius: 4px;
+  color: #fff;
+  background: #409EFF;
+}

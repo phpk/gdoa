@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>预览</title>
+  <link rel="stylesheet" href="./styles/index.css" type="text/css">
+  <link rel="stylesheet" href="./styles/common.css" type="text/css">
+  <link rel="stylesheet" href="./styles/preview.css" type="text/css">
+  <link rel="stylesheet" href="./styles/iconfont/iconfont.css">
+  <style type="text/css">
+  /* .preview-page input{
+    padding:0 15px;
+  } */
+
+  </style>
+  
+</head>
+<body>
+  <div class="preview-page">
+    <div class="page-title">
+      预览看板
+      <div onclick='olclick()' style="background:#F5F8FB;border:1px solid #E4E8ED;display:inline-block;width: 75px;height: 25px;line-height:23px;cursor:pointer;position:relative;text-align: center;">
+        <span class='viewpass'>100%</span>
+        <ol class='select-pass'>
+        <!-- <li name='100%' class='selected' onclick='olloclick(this,event)'>100%</li>
+        <li name= '75%' onclick='olloclick(this,event)'>75%</li>
+        <li name = '50%' onclick='olloclick(this,event)'>50%</li>
+        <li name = '25%' onclick='olloclick(this,event)'>25%</li> -->
+        <li name ='200%' onclick='olloclick(this,event)'>200%</li>
+        <li name ='175%' onclick='olloclick(this,event)'>175%</li>
+        <li name ='150%' onclick='olloclick(this,event)'>150%</li>
+        <li name ='125%' onclick='olloclick(this,event)'>125%</li>
+        <li name ='100%' onclick='olloclick(this,event)'>100%</li>
+        <li name = '75%' onclick='olloclick(this,event)'>75%</li>
+        <li name = '50%' onclick='olloclick(this,event)'>50%</li>
+        <li name = '25%' onclick='olloclick(this,event)'>25%</li>
+        <li name = '10%' onclick='olloclick(this,event)'>10%</li>
+        </ol>      
+       </div>
+      <button onclick="javascript:history.back(-1);">编辑看板</button>
+    </div>
+      <div class="preview-canvas" >
+        <div class="page-wrap" id="page-wrap" >
+          <!-- 预览元素 -->
+        </div>
+      </div>
+  </div>
+</body>
+</html>
+<script type="text/javascript" src="./js/dropdown.js"></script>
+
+<script src="./js/echarts.js"></script>
+<script src="./js/ecStat.js"></script>
+<script src="./js/jquery-1.10.2.min.js"></script>
+<script src="./饼图/饼图Echarts.js"></script>
+<script src="./仪表盘/仪表盘Echarts.js"></script>
+<script src="./柱形图/柱形图Echarts.js"></script>
+<script src="./折线图/折线图Echarts.js"></script>
+
+<script type="text/javascript" src="./js/echartsJson.js"></script>
+<script>
+  var Controls = JSON.parse(localStorage.Controls)
+  let Common = JSON.parse(localStorage.CommonCanvas)
+  let password = JSON.parse(localStorage.percentage)
+  var viewpass = [1]
+  window.addEventListener("load", initCanvas, false);
+  olloclick = function (a, event) {
+    $('#coverol').hide()
+    $(a).siblings('li').removeClass('selected')
+    $(a).attr('class', 'selected')
+    $('.viewpass')[0].innerText = $(a).attr('name')
+    viewpass.push((parseInt($(a).attr('name')) / 100))
+    if (viewpass.length > 2) {
+      viewpass.shift()
+    }
+
+    Common.WrapWidth = $(a).attr('name')
+    Controls.WrapWidth = $(a).attr('name')
+    // Controls.ControlList.forEach((item) => {
+    //   item.PropertyList.Width = item.PropertyList.Width * (parseInt($(a).attr('name')) / 100)
+    //   item.PropertyList.Height = item.PropertyList.Height * (parseInt($(a).attr('name')) / 100)
+    // })
+    $('#page-wrap').empty()
+    initCanvas('init')
+    setTimeout(()=>{
+        PieChartDataFun()
+        DashChartDataFun()
+        BarChartDataFun()
+        LineChartDataFun()
+      },20)
+    localStorage.setItem("Controls", JSON.stringify(Controls))
+    localStorage.setItem("CommonCanvas", JSON.stringify(Common))
+    
+}
+olclick = function () {
+    $('#coverol').toggle()
+    $('.select-pass').toggle()
+
+    // if (viewpass.length > 1) {
+    //   Controls.ControlList.forEach((item) => {
+
+    //     item.PropertyList.Width = item.PropertyList.Width / (parseFloat(viewpass[viewpass.length - 1]))
+    //     item.PropertyList.Height = item.PropertyList.Height / (parseFloat(viewpass[viewpass.length - 1]))
+    //   })
+    //   viewpass.shift()
+    // }
+    localStorage.setItem("percentage", JSON.stringify($('.viewpass').text()))
+    Common.WrapWidth = $('.viewpass').text()
+    // $(wrap).css({
+    //   width: Common.WrapWidth,
+    //   height: Common.WrapWidth
+    // })
+    if (parseInt(Common.WrapWidth) >= 100) {
+      $('#page-wrap').css({
+        'transform-origin': '0% 0%',
+        'transform': `scale(${parseInt(Common.WrapWidth) * 0.01})`
+      })
+    } else {
+      $('#page-wrap').css({
+        'transform-origin': 'unset',
+        'transform': `scale(${parseInt(Common.WrapWidth) * 0.01})`
+      })
+    }
+    
+  }
+  function initCanvas (a) {
+    if (!Controls.ControlList) {
+      return
+    }
+    
+    let html = ''
+    let wrap = document.getElementById('page-wrap')
+    Controls.ControlList.forEach((item, index) => {
+      index = item.PropertyList.ZIndex
+      if (item.ControlType === 'solidrectangle') {  //矩形样式
+        html += `<div class="commonModule" draggable="false" data-id="${index}"
+        style="left: ${item.PropertyList.Left}px;top: ${item.PropertyList.Top}px; width: ${item.PropertyList.Width}px;transform: rotate(${item.PropertyList.Rotate}deg);
+        border-style: ${item.PropertyList.Style}; border-color: ${item.PropertyList.BorderColor}; border-width: ${item.PropertyList.BorderWidth}px;border-radius: ${item.PropertyList.BorderRadius}px;
+        ${item.PropertyList.BackSetting !== 'img' ? `background-color: ${item.PropertyList.BackColor}`: '' };box-shadow: ${item.PropertyList.BoxShadow}; height: ${item.PropertyList.Height}px;z-index: ${item.PropertyList.ZIndex};
+        opacity: ${Number(item.PropertyList.Opacity) / 100};">
+          <div class="moduleShape" style="${item.PropertyList.BackSetting === 'img' ? `background-image:url(${item.PropertyList.BackImg});background-size:100% 100%;background-repeat: no-repeat;`: '' }"></div>
+        </div>`
+      } else if (item.ControlType === 'titleCom') { // 标题样式
+        html += `<div class="commonModule" draggable="false" data-id="${index}"
+        style="left: ${item.PropertyList.Left}px;top: ${item.PropertyList.Top}px; width: ${item.PropertyList.Width}px;transform: rotate(${item.PropertyList.Rotate}deg);
+        border-style: ${item.PropertyList.Style}; border-color: ${item.PropertyList.BorderColor}; border-width: ${item.PropertyList.BorderWidth}px;border-radius: ${item.PropertyList.BorderRadius}px;
+        ${item.PropertyList.BackSetting !== 'img' ? `background-color: ${item.PropertyList.BackColor}`: '' };box-shadow: ${item.PropertyList.BoxShadow}; height: ${item.PropertyList.Height}px;z-index: ${item.PropertyList.ZIndex};
+        opacity: ${Number(item.PropertyList.Opacity) / 100};">
+          <div class="moduleShape" style="${item.PropertyList.BackSetting === 'img' ? `background-image:url(${item.PropertyList.BackImg});background-size:100% 100%;background-repeat: no-repeat;`: '' }"></div>
+        </div>
+        `
+      } else if (item.ControlType === 'line') {  //直线样式
+          html += `<div class="commonModule" draggable="false" data-id="${index}"
+          style="left: ${item.PropertyList.Left}px;top: ${item.PropertyList.Top}px; width: ${item.PropertyList.Width}px; z-index: ${item.PropertyList.ZIndex};
+          border-top-style: ${item.PropertyList.Style}; border-top-color: ${item.PropertyList.BorderColor}; border-top-width: ${item.PropertyList.BorderWidth}px;
+          opacity: ${Number(item.PropertyList.Opacity) / 100};">
+          <div class="moduleShape">
+            </div>
+          </div>
+          `
+        } else if (item.ControlType === 'staticimage' || item.ControlType === 'image') {  //静态图片和动态图片
+          html += `<div class="commonModule" draggable="false" data-id="${index}"
+          style="transform: rotate(${item.PropertyList.Rotate}deg);left: ${item.PropertyList.Left}px;top: ${item.PropertyList.Top}px; width: ${item.PropertyList.Width}px;
+          height: ${item.PropertyList.Height}px; border-style: ${item.PropertyList.Style};border-color: ${item.PropertyList.BorderColor}; border-width: ${item.PropertyList.BorderWidth}px;
+          z-index: ${item.PropertyList.ZIndex};border-radius: ${item.PropertyList.BorderRadius}px;opacity: ${Number(item.PropertyList.Opacity) / 100};">
+            <div class="img-div" style="box-shadow: ${item.PropertyList.BoxShadow};" >
+              <img class="moduleShape" src="${item.PropertyList.Img}" style="position: relative; vertical-align: top; z-index: ${item.PropertyList.ZIndex - 1 };border-radius: ${item.PropertyList.BorderRadius}px;" alt="图片" />
+            </div>
+          </div>
+          `
+        } else if (item.ControlType === 'datatextblock') {  //数值显示
+          let align = ''
+          if (item.PropertyList.JustifyContent === 'flex-start') {
+            align = 'left'
+          } else if (item.PropertyList.JustifyContent === 'center') {
+            align = 'center'
+          } else if (item.PropertyList.JustifyContent === 'flex-end') {
+            align = 'right'
+          }
+          html += `<div class="commonModule" draggable="false" data-id="${index}"
+          style="background-color: ${item.PropertyList.BackColor};left: ${item.PropertyList.Left}px;top: ${item.PropertyList.Top}px; width: ${item.PropertyList.Width}px;border-radius: ${item.PropertyList.BorderRadius}px;
+          height: ${item.PropertyList.Height}px;box-shadow: ${item.PropertyList.BoxShadow};z-index: ${item.PropertyList.ZIndex};opacity: ${Number(item.PropertyList.Opacity) / 100}; 
+          border-style: ${item.PropertyList.Style};border-color: ${item.PropertyList.BorderColor}; border-width: ${item.PropertyList.BorderWidth}px; transform: rotate(${item.PropertyList.Rotate}deg);
+          font-family: ${item.PropertyList.FontFamily};color: ${item.PropertyList.Color}; font-weight: ${item.PropertyList.FontWeight};text-decoration: ${item.PropertyList.TextDecoration};
+          display: flex;justify-content: ${item.PropertyList.JustifyContent};text-align:${align}; align-items: ${item.PropertyList.AlignItems};"
+          >
+          <span style="font-family: ${item.PropertyList.FontFamily};font-size: ${item.PropertyList.FontSize}px" >
+            数值显示
+          </span>
+          </div>
+          `
+        }  else if (item.ControlType === 'statictextblock') {  //静态文本
+          let align = ''
+          if (item.PropertyList.JustifyContent === 'flex-start') {
+            align = 'left'
+          } else if (item.PropertyList.JustifyContent === 'center') {
+            align = 'center'
+          } else if (item.PropertyList.JustifyContent === 'flex-end') {
+            align = 'right'
+          }
+          html += `<div class="commonModule" draggable="false" data-id="${index}"
+          style="left: ${item.PropertyList.Left}px;top: ${item.PropertyList.Top}px;
+          z-index: ${item.PropertyList.ZIndex};transform: rotate(${item.PropertyList.Rotate}deg);">
+          <div class="moduleShape common-input" contenteditable="true" style=" height: ${item.PropertyList.Height}px;width: ${item.PropertyList.Width}px;padding:0;background-color: ${item.PropertyList.BackColor};border-radius:${item.PropertyList.BorderRadius}px;border-style: ${item.PropertyList.Style};border-color: ${item.PropertyList.BorderColor}; border-width: ${item.PropertyList.BorderWidth}px;font-weight: ${item.PropertyList.FontWeight};text-decoration: ${item.PropertyList.TextDecoration};
+          font-weight: ${item.PropertyList.FontWeight};opacity: ${Number(item.PropertyList.Opacity) / 100};
+          box-shadow: ${item.PropertyList.BoxShadow};color: ${item.PropertyList.Color};font-size: ${item.PropertyList.FontSize}px;
+          font-family: ${item.PropertyList.FontFamily};position:absolute;top:0px;text-align:${item.PropertyList.TextAlign};
+          display: flex;justify-content: ${item.PropertyList.JustifyContent};align-items: ${item.PropertyList.AlignItems};text-align:${align};left:0px" 
+          >
+            <span>${item.PropertyList.Text}</span>
+          </div>
+          </div>
+          `
+        } else if(item.ControlType ===  'dynamictext') {  //动态文本
+          let align = ''
+          if (item.PropertyList.JustifyContent === 'flex-start') {
+            align = 'left'
+          } else if (item.PropertyList.JustifyContent === 'center') {
+            align = 'center'
+          } else if (item.PropertyList.JustifyContent === 'flex-end') {
+            align = 'right'
+          }
+          html += `<div class="commonModule" draggable="false" data-id="${index}"
+          style="left: ${item.PropertyList.Left}px;top: ${item.PropertyList.Top}px; width: ${item.PropertyList.Width}px;
+          height: ${item.PropertyList.Height}px;transform: rotate(${item.PropertyList.Rotate}deg);z-index: ${item.PropertyList.ZIndex};"
+          >
+          <div class="moduleShape common-input" contenteditable="true" style="height: ${item.PropertyList.Height}px;width: ${item.PropertyList.Width}px;padding:0;background-color: ${item.PropertyList.BackColor};border-radius:${item.PropertyList.BorderRadius}px;border-style: ${item.PropertyList.Style};border-color: ${item.PropertyList.BorderColor}; border-width: ${item.PropertyList.BorderWidth}px;font-weight: ${item.PropertyList.FontWeight};text-decoration: ${item.PropertyList.TextDecoration};
+          text-align:${item.PropertyList.TextAlign};font-weight: ${item.PropertyList.FontWeight};opacity: ${Number(item.PropertyList.Opacity) / 100};
+          box-shadow: ${item.PropertyList.BoxShadow};color: ${item.PropertyList.Color};font-size: ${item.PropertyList.FontSize}px;
+          font-family: ${item.PropertyList.FontFamily};position:absolute;top:0px;display: flex;
+          justify-content: ${item.PropertyList.JustifyContent};align-items: ${item.PropertyList.AlignItems};text-align:${align}; left:0px">
+            <span>${item.PropertyList.Text}</span>
+           </div>
+          </div>
+          `
+        } else if (item.ControlType ===  'solidellipse') { //圆形
+          html += `<div class="commonModule" draggable="false" data-id="${index}"
+          style="left: ${item.PropertyList.Left}px;top: ${item.PropertyList.Top}px; width: ${item.PropertyList.Width}px;border-radius: 50%;
+          border-style: ${item.PropertyList.Style}; border-color: ${item.PropertyList.BorderColor}; border-width: ${item.PropertyList.BorderWidth}px;
+          ${item.PropertyList.BackSetting !== 'img' ? `background-color: ${item.PropertyList.BackColor}`: '' };box-shadow: ${item.PropertyList.BoxShadow}; height: ${item.PropertyList.Height}px;z-index: ${item.PropertyList.ZIndex};
+          opacity: ${Number(item.PropertyList.Opacity) / 100};transform: rotate(${item.PropertyList.Rotate}deg);">
+          <div class="moduleShape" style="${item.PropertyList.BackSetting === 'img' ? `background-image:url(${item.PropertyList.BackImg});background-size:100% 100%;background-repeat: no-repeat;`: '' } border-radius: 50%;"></div>
+           
+          </div>
+          `
+        } else if (item.ControlType === 'ellipselamp') {  //圆形状态灯
+          html += `<div class="commonModule" draggable="false" data-id="${index}"
+          style="left: ${item.PropertyList.Left}px;top: ${item.PropertyList.Top}px; width: ${item.PropertyList.Width}px;border-radius: 50%;
+          height: ${item.PropertyList.Height}px;box-shadow: ${item.PropertyList.BoxShadow};z-index: ${item.PropertyList.ZIndex};background-color: #DDDDDD;
+          opacity: ${Number(item.PropertyList.Opacity) / 100};">
+            <div class="moduleShape">
+            </div>
+          </div>
+          `
+        }  else if (item.ControlType === 'commonlamp') { //矩形状态灯
+          html += `<div class="commonModule" draggable="false" data-id="${index}"
+          style="left: ${item.PropertyList.Left}px;top: ${item.PropertyList.Top}px; width: ${item.PropertyList.Width}px;border-radius: ${item.PropertyList.BorderRadius}px;
+          height: ${item.PropertyList.Height}px;box-shadow: ${item.PropertyList.BoxShadow};z-index: ${item.PropertyList.ZIndex};background-color: #DDDDDD;
+          opacity: ${Number(item.PropertyList.Opacity) / 100};">
+            <div class="moduleShape">
+            </div>
+          </div>
+          `
+        } else if (item.ControlType === 'cornerbutton') { //控制按钮
+          html += `<div class="commonModule div-btn" draggable="false" data-id="${index}"
+          style="left: ${item.PropertyList.Left}px;top: ${item.PropertyList.Top}px;color: ${item.PropertyList.Color}; width: ${item.PropertyList.Width}px;line-height: ${item.PropertyList.Height - (item.PropertyList.BorderWidth * 2)}px;height: ${item.PropertyList.Height}px;z-index: ${item.PropertyList.ZIndex};border-width: ${item.PropertyList.BorderWidth}px;border-style: ${item.PropertyList.Style};border-color: ${item.PropertyList.BorderColor};background: ${item.PropertyList.BackColor}; text-align: ${item.PropertyList.TextAlign}; border-radius: ${item.PropertyList.BorderRadius}px; opacity: ${Number(item.PropertyList.Opacity) / 100};">
+          <div class="moduleShape common-input" contenteditable="true"  style="font-weight: ${item.PropertyList.FontWeight};text-decoration: ${item.PropertyList.TextDecoration};
+            font-size: ${item.PropertyList.FontSize}px;font-family: ${item.PropertyList.FontFamily};box-shadow: ${item.PropertyList.BoxShadow};" >
+            <span>${item.PropertyList.Text}</span>
+          </div>
+          </div>`
+        } else if (item.ControlType === 'rwtextbox') {  //读写框
+          html += `<div class="commonModule div-text" draggable="false" data-id="${index}"
+          style="left: ${item.PropertyList.Left}px;top: ${item.PropertyList.Top}px; width: ${item.PropertyList.Width}px;height: ${item.PropertyList.Height}px;z-index: ${item.PropertyList.ZIndex};">
+          <input class="moduleShape common-input" contenteditable="true" style="width: ${item.PropertyList.Width}px;height: ${item.PropertyList.Height}px;padding:0;background-color: ${item.PropertyList.BackColor};border-radius:${item.PropertyList.BorderRadius}px;border-style: ${item.PropertyList.Style};border-color: ${item.PropertyList.BorderColor}; border-width: ${item.PropertyList.BorderWidth}px;font-weight: ${item.PropertyList.FontWeight};text-decoration: ${item.PropertyList.TextDecoration};
+          text-align:${item.PropertyList.TextAlign};font-weight: ${item.PropertyList.FontWeight};line-height: ${item.PropertyList.Height}px;opacity: ${Number(item.PropertyList.Opacity) / 100};box-shadow: ${item.PropertyList.BoxShadow};color: ${item.PropertyList.Color};font-size: ${item.PropertyList.FontSize}px;font-family: ${item.PropertyList.FontFamily};position:absolute;top:0px;left:0px" value='${item.PropertyList.Text}'>
+          </input>
+          </div>`
+        } else if (item.ControlType === 'jumplink') { //跳转链接
+          html += `<div class="commonModule div-text" draggable="false" data-id="${index}"
+          style="left: ${item.PropertyList.Left}px;top: ${item.PropertyList.Top}px;color: ${item.PropertyList.Color}; width: ${item.PropertyList.Width}px;line-height: ${item.PropertyList.Height}px;height: ${item.PropertyList.Height}px;z-index: ${item.PropertyList.ZIndex};background: ${item.PropertyList.BackColor};  opacity: ${Number(item.PropertyList.Opacity) / 100};">
+          <div class="moduleShape common-input flexLayout"  style="font-weight: ${item.PropertyList.FontWeight};text-decoration: ${item.PropertyList.TextDecoration};
+            font-size: ${item.PropertyList.FontSize}px;font-family: ${item.PropertyList.FontFamily};" >
+            <span>跳转链接 ></span>
+          </div>
+          </div>`
+        }  else if (item.ControlType === 'textsearch') { //文本查询
+          let dropList = TextSearchList.map(d => {
+            return `<li class="dropdown-item ${d.value === item.PropertyList.Value ? 'selected' : ''}" data-value="${d.value}" >${d.value}</li>`
+          }).join('')
+          html += `<div class="commonModule" draggable="false" data-id="${index}"
+          style="left: ${item.PropertyList.Left}px;top: ${item.PropertyList.Top}px; width: ${item.PropertyList.Width}px;line-height: ${item.PropertyList.Height - (item.PropertyList.BorderWidth * 2)}px;height: ${item.PropertyList.Height}px;z-index: ${item.PropertyList.ZIndex}; text-align: ${item.PropertyList.TextAlign};  opacity: ${Number(item.PropertyList.Opacity) / 100};">
+          <div style="width: 100%;height:100%;display: flex">
+            <div class="global-select" style="height:100%; margin-right: 10px;" >
+              <div class="global-input"style="height:100%;position:relative">
+                <input type="text" class="search-input input-inner" value="${item.PropertyList.Value}"  readonly="readonly" autocomplete="off"
+                style="width: 100%;left:0px;text-align: ${item.PropertyList.TextAlign};position:absolute;top:0;height:100%;box-shadow: ${item.PropertyList.BoxShadow};
+                color: ${item.PropertyList.Color};border-width: ${item.PropertyList.BorderWidth}px;border-style: ${item.PropertyList.Style};
+                border-color: ${item.PropertyList.BorderColor};border-radius: ${item.PropertyList.BorderRadius}px;text-align: ${item.PropertyList.TextAlign};
+                font-weight: ${item.PropertyList.FontWeight};text-decoration: ${item.PropertyList.TextDecoration}; font-size: ${item.PropertyList.FontSize}px;
+                font-family: ${item.PropertyList.FontFamily};background: ${item.PropertyList.BackColor}" placeholder="请选择" ></input>
+               <span class="input-suffix">
+                <span class="input-suffix-inner" >
+                  <i class="iconfont iconxialajiantou"></i>
+                </span>
+              </span>
+              </div>
+              <ul class="select-dropdown" onmousedown="selectValue(event, ${index}, 'Value')" style="width: ${item.PropertyList.Width}px;text-align: ${item.PropertyList.TextAlign}" >
+                  ${dropList}
+              </ul>
+            </div>
+            <input class="search-input" style="box-shadow: ${item.PropertyList.BoxShadow}; text-align: ${item.PropertyList.TextAlign};height: 100%;
+            color: ${item.PropertyList.Color};border-width: ${item.PropertyList.BorderWidth}px;border-style: ${item.PropertyList.Style};
+            border-color: ${item.PropertyList.BorderColor};border-radius: ${item.PropertyList.BorderRadius}px;text-align: ${item.PropertyList.TextAlign};
+            font-weight: ${item.PropertyList.FontWeight};text-decoration: ${item.PropertyList.TextDecoration}; font-size: ${item.PropertyList.FontSize}px;
+            font-family: ${item.PropertyList.FontFamily};background: ${item.PropertyList.BackColor}" placeholder="${item.PropertyList.Placeholder}"
+          value="${item.PropertyList.Text}" ${item.Disabled ? 'disabled' : '' } onblur="changeText(event, ${index}, 'Text')" />
+          </div>
+          </div>`
+        } else if (item.ControlType === 'associatedatetimepicker') {  //日期时间
+          html += `<div class="commonModule" draggable="false" data-id="${index}"
+          style="left: ${item.PropertyList.Left}px;top: ${item.PropertyList.Top}px; width: ${item.PropertyList.Width}px;transform: rotate(${item.PropertyList.Rotate}deg);
+          line-height: ${item.PropertyList.Height - (item.PropertyList.BorderWidth * 2)}px;height: ${item.PropertyList.Height}px;z-index: ${item.PropertyList.ZIndex};
+          background: ${item.PropertyList.BackColor};opacity: ${Number(item.PropertyList.Opacity) / 100};">
+
+          <div class="r-date-group" style="height: 100%;font-size: ${item.PropertyList.FontSize}px;font-family: ${item.PropertyList.FontFamily};color: ${item.PropertyList.Color};font-weight: ${item.PropertyList.FontWeight};" >
+            <div class="bi-datePicker date-wrap" >
+              <input type="text" readonly="readonly" style="background: ${item.PropertyList.BackColor};color: ${item.PropertyList.Color};box-shadow: ${item.PropertyList.BoxShadow};border-width: ${item.PropertyList.BorderWidth}px;border-style: ${item.PropertyList.Style};border-color: ${item.PropertyList.BorderColor};border-radius: ${item.PropertyList.BorderRadius}px;text-decoration: ${item.PropertyList.TextDecoration}; text-align: ${item.PropertyList.TextAlign}; " autocomplete="off" value="${item.StartTime}"  placeholder="请选择">
+            </div>
+            <div class="bi-datePicker date-wrap" >
+              <input type="text" readonly="readonly" style="background: ${item.PropertyList.BackColor};color: ${item.PropertyList.Color};box-shadow: ${item.PropertyList.BoxShadow};border-width: ${item.PropertyList.BorderWidth}px;border-style: ${item.PropertyList.Style};border-color: ${item.PropertyList.BorderColor};border-radius: ${item.PropertyList.BorderRadius}px;text-decoration: ${item.PropertyList.TextDecoration}; text-align: ${item.PropertyList.TextAlign}; " autocomplete="off" value="${item.EndTime}"  placeholder="请选择">
+            </div> 
+          </div>
+
+          </div>`
+        } else if (item.ControlType === 'datasearch') {  //数值查询
+          let emptys = ['为空', '不为空']
+          let equals = ['等于','不等于','大于等于','小于等于']
+          let dropList = DataSearchList.map(d => {
+            return `<li class="dropdown-item ${d.name === item.PropertyList.Value ? 'selected' : ''}" data-value="${d.value}" >${d.name}</li>`
+          }).join('')
+          html += `<div class="commonModule" draggable="false" data-id="${index}"
+        style="left: ${item.PropertyList.Left}px;top: ${item.PropertyList.Top}px; width: ${item.PropertyList.Width}px;transform: rotate(${item.PropertyList.Rotate}deg);height: ${item.PropertyList.Height}px;z-index: ${item.PropertyList.ZIndex};
+        background: ${item.PropertyList.BackColor}; text-align: ${item.PropertyList.TextAlign};  opacity: ${Number(item.PropertyList.Opacity) / 100};">
+        <div style="width:100%;height:100%;display: flex; line-height: ${item.PropertyList.Height - (item.PropertyList.BorderWidth * 2)}px;">
+          <div class="global-select" style="height:100%; margin-right: 10px; flex: 2" >
+            <div class="global-input"  style="height:100%;position:relative;">
+              <input type="text" class="search-input input-inner" value="${item.PropertyList.Value}" readonly="readonly" autocomplete="off"
+              style="left:0px;text-align: ${item.PropertyList.TextAlign};width:100%;color: ${item.PropertyList.Color};position:absolute;top:0px;box-shadow: ${item.PropertyList.BoxShadow};height: 100%;border-width: ${item.PropertyList.BorderWidth}px;border-style: ${item.PropertyList.Style};border-color: ${item.PropertyList.BorderColor};border-radius: ${item.PropertyList.BorderRadius}px;text-align: ${item.PropertyList.TextAlign};font-weight: ${item.PropertyList.FontWeight};text-decoration: ${item.PropertyList.TextDecoration}; font-size: ${item.PropertyList.FontSize}px;font-family: ${item.PropertyList.FontFamily};" placeholder="请选择" ></input>
+              <span class="input-suffix" >
+                <span class="input-suffix-inner" >
+                  <i class="iconfont iconxialajiantou" ></i>
+                </span>
+              </span>
+            </div>
+            <ul class="select-dropdown" onmousedown="selectValue(event, ${index}, 'Value')" style="width: ${item.PropertyList.Width}px;" >
+                ${dropList}
+            </ul>
+          </div>
+          <input class="search-input" ${emptys.includes(item.PropertyList.Value) ? 'disabled': ''}  style="color: ${item.PropertyList.Color};flex: 1;box-shadow: ${item.PropertyList.BoxShadow};height: 100%;border-width: ${item.PropertyList.BorderWidth}px;border-style: ${item.PropertyList.Style};border-color: ${item.PropertyList.BorderColor};border-radius: ${item.PropertyList.BorderRadius}px;text-align: ${item.PropertyList.TextAlign};font-weight: ${item.PropertyList.FontWeight};text-decoration: ${item.PropertyList.TextDecoration}; font-size: ${item.PropertyList.FontSize}px;font-family: ${item.PropertyList.FontFamily};" placeholder="${item.PropertyList.Placeholder}"
+            value="${item.PropertyList.Num1}" />
+          <div class="short" style="position:relative;line-height:0;"><span style="position:absolute;top:0px;bottom:0px;margin:auto;width:3px;display:inline-block;height:2px;right:2px;">-</span></div>
+          <input class="search-input" ${emptys.includes(item.PropertyList.Value) || equals.includes(item.PropertyList.Value)  ? 'disabled': ''} style="color: ${item.PropertyList.Color};flex: 1;box-shadow: ${item.PropertyList.BoxShadow};height: 100%;border-width: ${item.PropertyList.BorderWidth}px;border-style: ${item.PropertyList.Style};border-color: ${item.PropertyList.BorderColor};border-radius: ${item.PropertyList.BorderRadius}px;text-align: ${item.PropertyList.TextAlign};font-weight: ${item.PropertyList.FontWeight};text-decoration: ${item.PropertyList.TextDecoration}; font-size: ${item.PropertyList.FontSize}px;font-family: ${item.PropertyList.FontFamily};" placeholder="${item.PropertyList.Placeholder}"
+            value="${item.PropertyList.Num2}" />
+        </div>
+        </div>`
+        } else if (item.ControlType === 'dropsearch') {  //下拉查询
+          let filterList = []
+          item.PropertyList.datasetValue = item.PropertyList.datasetValue ? item.PropertyList.datasetValue : 'eq'
+          let dropList = DropSearchList.map(d => {
+            return `<li class="dropdown-item ${d.name === item.PropertyList.Value ? 'selected' : ''}"  data-value="${d.value}" >${d.name}</li>`
+          }).join('')
+          filterList = item.dropList.map(d => {
+            return `<li class="dropdown-item ${item.ChoiceList.includes(d.value) ? 'selected' : ''}" >${d.name}</li>`
+          }).join('')
+          var dataList = item.ChoiceList.map(d => {
+            return `<span class="tag" ><span >${d}</span><i onmousedown="delChoice(event, ${index})" class="iconfont iconguanbi2"></i></span>`
+          }).join('')
+          let leftHtml = ``
+          if (item.EchartList.length <= 1) {
+            leftHtml = `
+            <div class="global-select" style="height: 100%; flex: 1.1" >
+            <div class="select__tags">
+              <span>
+                ${dataList}
+              </span>
+              <input type="text" style="background: ${item.PropertyList.BackColor};color: ${item.PropertyList.Color}; min-width: 38px; width: calc(100% - 5px)" placeholder="${item.ChoiceList.length === 0 ? '请选择' : ''}" ${item.Disabled ? 'disabled' : '' } class="${item.Disabled ? 'is-forbid' : '' }" onmousedown="toggleItem(event, ${index}, 'filter')" onInput="textInput(event, ${index})" ></input>
+            </div>
+            <div class="global-input ${item.Disabled ? 'is-triger' : '' }" onmousedown="toggleItem(event, ${index}, 'resetDrop')" style="height:100%" >
+              <input type="text" ${item.Disabled ? 'disabled' : '' }  class="input-inner ${item.Disabled ? 'is-forbid' : '' }  " value="${item.PropertyList.CheckedValue}" autocomplete="off" readonly="readonly")"
+              style="position:absolute;top:0; background: ${item.PropertyList.BackColor};box-shadow: ${item.PropertyList.BoxShadow};height: 100%;color: ${item.PropertyList.Color};border-width: ${item.PropertyList.BorderWidth}px;border-style: ${item.PropertyList.Style};border-color: ${item.PropertyList.BorderColor};border-radius: ${item.PropertyList.BorderRadius}px;text-align: ${item.PropertyList.TextAlign};font-weight: ${item.PropertyList.FontWeight};text-decoration: ${item.PropertyList.TextDecoration}; font-size: ${item.PropertyList.FontSize}px;font-family: ${item.PropertyList.FontFamily};" ></input>
+              <span class="input-suffix ${item.Disabled ? 'is-forbid' : '' } ">
+              <span class="input-suffix-inner">
+                <i class="iconfont iconxialajiantou"></i>
+              </span>
+            </div>
+            <ul class="select-dropdown" id="child-drop${index}" onmousedown="addSelectChoice(event, ${index}, 'CheckedValue')" style="width: ${item.PropertyList.Width/2}px;" >
+              ${filterList}
+            </ul>
+          </div>`
+        } else {
+          leftHtml = `
+            <div class="global-select" style="height: 100%; flex: 1.1" >
+              <input ${item.Disabled ? 'disabled' : '' } class="search-input ${item.Disabled ? 'is-forbid' : '' }" value="${item.ChoiceList[0] ? item.ChoiceList[0] : ''}" onblur="getSelectValue(event, ${index})" style="position: absolute;top: 0px; background: ${item.PropertyList.BackColor};box-shadow: ${item.PropertyList.BoxShadow};height: 100%;color: ${item.PropertyList.Color};border-width: ${item.PropertyList.BorderWidth}px;border-style: ${item.PropertyList.Style};border-color: ${item.PropertyList.BorderColor};border-radius: ${item.PropertyList.BorderRadius}px;text-align: ${item.PropertyList.TextAlign};font-weight: ${item.PropertyList.FontWeight};text-decoration: ${item.PropertyList.TextDecoration}; font-size: ${item.PropertyList.FontSize}px;font-family: ${item.PropertyList.FontFamily};"" ></input>
+            </div>
+          `
+        }
+
+          html += `<div class="commonModule" draggable="false" data-id="${index}"
+          style="left: ${item.PropertyList.Left}px;top: ${item.PropertyList.Top}px; width: ${item.PropertyList.Width}px;transform: rotate(${item.PropertyList.Rotate}deg);
+          line-height: ${item.PropertyList.Height - (item.PropertyList.BorderWidth * 2)}px;height: ${item.PropertyList.Height}px;z-index: ${item.PropertyList.ZIndex};
+          background: ${item.PropertyList.BackColor}; text-align: ${item.PropertyList.TextAlign};  opacity: ${Number(item.PropertyList.Opacity) / 100};">
+            <div style="width:100%; height:100%; display: flex" >
+              <div class="global-select" style="height:100%; flex: 0.9; margin-right: 10px" >
+                <div class="global-input"  style="height:100%;">
+                  <input type="text" value="${item.PropertyList.Value}" readonly="readonly" autocomplete="off" 
+                  style="position:absolute;top:0px; background: ${item.PropertyList.BackColor};box-shadow: ${item.PropertyList.BoxShadow};height: 100%;color: ${item.PropertyList.Color};border-width: ${item.PropertyList.BorderWidth}px;border-style: ${item.PropertyList.Style};border-color: ${item.PropertyList.BorderColor};border-radius: ${item.PropertyList.BorderRadius}px;text-align: ${item.PropertyList.TextAlign};font-weight: ${item.PropertyList.FontWeight};text-decoration: ${item.PropertyList.TextDecoration}; font-size: ${item.PropertyList.FontSize}px;font-family: ${item.PropertyList.FontFamily};" placeholder="请选择" class="input-inner" ></input>
+                  <span class="input-suffix">
+                  <span class="input-suffix-inner">
+                    <i class="iconfont iconxialajiantou"></i>
+                  </span>
+                </span>
+                </div>
+                <ul class="select-dropdown" onmousedown="selectValue(event, ${index}, 'Value')" style="width: ${item.PropertyList.Width/2}px;" >
+                  ${dropList}
+                </ul>
+              </div>
+                ${leftHtml}
+              </div>
+            </div>
+          </div>`
+        }  else if (item.ControlType === 'searchbutton') { //查询按钮
+          html += `<div class="commonModule div-btn" draggable="false" data-id="${index}"
+          style="box-shadow: ${item.PropertyList.BoxShadow};left: ${item.PropertyList.Left}px;top: ${item.PropertyList.Top}px; width: ${item.PropertyList.Width}px;line-height: ${item.PropertyList.Height - (item.PropertyList.BorderWidth * 2)}px;height: ${item.PropertyList.Height}px;z-index: ${item.PropertyList.ZIndex};border-width: ${item.PropertyList.BorderWidth}px;border-style: ${item.PropertyList.Style};border-color: ${item.PropertyList.BorderColor};background: ${item.PropertyList.BackColor}; text-align: ${item.PropertyList.TextAlign}; border-radius: ${item.PropertyList.BorderRadius}px; opacity: ${Number(item.PropertyList.Opacity) / 100};">
+          <div class="moduleShape common-input" contenteditable="true"  style="color: ${item.PropertyList.Color};font-weight: ${item.PropertyList.FontWeight};text-decoration: ${item.PropertyList.TextDecoration};
+            font-size: ${item.PropertyList.FontSize}px;font-family: ${item.PropertyList.FontFamily};" >
+            <span>${item.PropertyList.Text}</span>
+          </div>
+          </div>`
+        } else if (item.ControlType === 'resetbutton') { //重置按钮
+          html += `<div class="commonModule div-btn" draggable="false" data-id="${index}"
+          style="box-shadow: ${item.PropertyList.BoxShadow};left: ${item.PropertyList.Left}px;top: ${item.PropertyList.Top}px; width: ${item.PropertyList.Width}px;line-height: ${item.PropertyList.Height - (item.PropertyList.BorderWidth * 2)}px;height: ${item.PropertyList.Height}px;z-index: ${item.PropertyList.ZIndex};border-width: ${item.PropertyList.BorderWidth}px;border-style: ${item.PropertyList.Style};border-color: ${item.PropertyList.BorderColor};background: ${item.PropertyList.BackColor}; text-align: ${item.PropertyList.TextAlign}; border-radius: ${item.PropertyList.BorderRadius}px; opacity: ${Number(item.PropertyList.Opacity) / 100};">
+          <div class="moduleShape common-input" contenteditable="true"  style="color: ${item.PropertyList.Color};font-weight: ${item.PropertyList.FontWeight};text-decoration: ${item.PropertyList.TextDecoration};
+            font-size: ${item.PropertyList.FontSize}px;font-family: ${item.PropertyList.FontFamily};" >
+            <span>${item.PropertyList.Text}</span>
+          </div>
+          </div>`
+        } else if(item.ControlType === 'piechart'){ //饼图
+          html += `<div  class="commonModule" draggable="false" data-id="${index}"
+          style="left: ${item.PropertyList.Left}px;top: ${item.PropertyList.Top}px; width: ${item.PropertyList.Width}px;height: ${item.PropertyList.Height}px;z-index: ${item.PropertyList.ZIndex};transform: rotate(${item.PropertyList.Rotate}deg);">
+          <div id="${item.Name}" style="width:100%;height:100%"></div>
+          </div>
+          <div  class="commonModule" draggable="false" data-id="${index}"
+          style="left: ${item.PropertyList.Left}px;top: ${item.PropertyList.Top}px; width: ${item.PropertyList.Width}px;height: ${item.PropertyList.Height}px;z-index: ${item.PropertyList.ZIndex-1};">
+          <div id="${item.Name}pie" style="width:100%;height:100%"></div>
+          </div>`
+        } else if(item.ControlType === 'dashboardchart'){
+          html += `<div  class="commonModule" draggable="false" data-id="${index}"
+          style="left: ${item.PropertyList.Left}px;top: ${item.PropertyList.Top}px; width: ${item.PropertyList.Width}px;height: ${item.PropertyList.Height}px;z-index: ${item.PropertyList.ZIndex};transform: rotate(${item.PropertyList.Rotate}deg);">
+          <div id="${item.Name}" style="width:100%;height:100%"></div>
+          </div>`
+        } else if(item.ControlType === 'barchart'){
+          html += `<div  class="commonModule" draggable="false" data-id="${index}"
+          style="left: ${item.PropertyList.Left}px;top: ${item.PropertyList.Top}px; width: ${item.PropertyList.Width}px;height: ${item.PropertyList.Height}px;z-index: ${item.PropertyList.ZIndex};transform: rotate(${item.PropertyList.Rotate}deg);">
+          <div id="${item.Name}" style="width:100%;height:100%"></div>
+          </div>`
+        } else if(item.ControlType === 'linechart'){
+          html += `<div  class="commonModule" draggable="false" data-id="${index}"
+          style="left: ${item.PropertyList.Left}px;top: ${item.PropertyList.Top}px; width: ${item.PropertyList.Width}px;height: ${item.PropertyList.Height}px;z-index: ${item.PropertyList.ZIndex};transform: rotate(${item.PropertyList.Rotate}deg);">
+          <div id="${item.Name}" style="width:100%;height:100%"></div>
+          </div>`
+        }
+
+      
+       
+  
+    })
+    wrap.innerHTML = html
+    if (Common.BackSetting !== 'color') {
+      wrap.style.backgroundImage = `url(${Common.BackImg})`
+      wrap.style.backgroundRepeat = `norepear`
+      wrap.style.backgroundSize = `100% 100%`
+    } else {
+      
+      wrap.style.backgroundColor = Common.BackColor
+      wrap.style.backgroundImage = ''
+    }
+    // $(wrap).css({
+    //   width: Common.WrapWidth,
+    //   height: Common.WrapWidth
+    // })
+    if (parseInt(Common.WrapWidth) >= 100) {
+      $(wrap).css({
+        'transform-origin': '0% 0%',
+        'transform': `scale(${parseInt(Common.WrapWidth) * 0.01})`
+      })
+    } else {
+      $(wrap).css({
+        'transform-origin': 'unset',
+        'transform': `scale(${parseInt(Common.WrapWidth) * 0.01})`
+      })
+    }
+    
+    $(".el-input").click(function (e){
+            e.stopPropagation();
+            let inputLeft = $(this).offset().left;//输入框的left
+            let inputTop = $(this).offset().top + 20;//输入框的top
+            let inputHeight = $(this).outerHeight();//输入框的高度
+            let inputWidth = $(this).outerWidth();//输入框宽度
+            //判断是否存在下拉框select-drop-down
+            if(!$(".select-drop-down").length){
+                //不存在新增
+                $("body").append(`<div class="select-drop-down" style="left: ${inputLeft}px;top: ${inputTop + inputHeight-10}px;width: ${inputWidth}px;"><ul class="drop-down-list"></ul></div>`);
+            }else{
+                //存在则清空旧内容
+                $(".select-drop-down").css({"display":"block","left": inputLeft+"px","top": inputTop + inputHeight -10 +"px", "width": inputWidth+"px"})
+                $(".drop-down-list>li").remove()
+            }
+            // getList(1).then(res=>{
+             
+                // let data = res.data;
+                for (let i=1;i<=40;i++){
+                    $(".drop-down-list").append(`<li>${i*10+'%'}</li>`)
+                }
+            // }).then(()=>{
+            //     dropDownLoad();
+            // })
+
+        })
+
+        if(a !== 'init'){
+     $('.selected').removeClass('selected')
+     for(let i=0;i<$('.select-pass').find('li').length;i++){
+           if($($('.select-pass').find('li')[i]).attr('name') == password){
+            $($('.select-pass').find('li')[i]).attr('class', 'selected')
+           }
+     }
+     
+//      Controls.ControlList.forEach((item) => {
+
+//  item.PropertyList.Width = item.PropertyList.Width / (parseInt(password) / 100)
+// item.PropertyList.Height = item.PropertyList.Height / (parseInt(password) / 100)
+
+
+// })
+$('.viewpass')[0].innerText  = password
+  //注释Zoom 
+  if (parseInt($('.viewpass')[0].innerText) >= 100) {
+    $(wrap).css({
+      'transform-origin': '0% 0%',
+      'transform': `scale(${(parseInt($('.viewpass')[0].innerText) * 0.01)})`
+    })
+  } else {
+    $(wrap).css({
+      'transform-origin': 'unset',
+      'transform': `scale(${(parseInt($('.viewpass')[0].innerText) * 0.01)})`
+    })
+  }
+  
+}
+    // wrap.style.background = Common.BackColor
+  }
+   setTimeout(()=>{
+     PieChartDataFun()
+     DashChartDataFun()
+     BarChartDataFun()
+     LineChartDataFun()
+   },20)
+
+
+
+</script>

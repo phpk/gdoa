@@ -1,0 +1,22 @@
+.xselect,.InRadius,.unitIpt{
+    width:100px;
+}
+.mar_r{
+    margin-right:40px;
+}
+.lengthInpBox{
+    width:120px;
+    height: 32px;
+}
+.mar_t{
+    margin-top:24px
+}
+.mar_b{
+    margin-bottom:16px;
+}
+.mar_r2{
+    margin-right: 60px;
+}
+.layui-form-select dl dd.layui-this{
+    background-color: #a4ccf5 !important;
+}

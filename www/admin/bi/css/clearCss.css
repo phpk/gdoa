@@ -1,0 +1,92 @@
+body{
+  user-select: none;
+}
+a{ text-decoration:none;}
+a:link{
+    text-decoration:none;   /* 指正常的未被访问过的链接*/
+}
+a:visited{
+    text-decoration:none; /*指已经访问过的链接*/
+}
+a:hover{
+    text-decoration:none;/*指鼠标在链接*/
+}
+a:active{
+    text-decoration:none;/* 指正在点的链接*/
+}
+/*清除number的默认样式,就是那个上下加减的箭头*/
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button{
+  -webkit-appearance: none !important;
+  margin: 0;
+}
+input[type="number"]{-moz-appearance:textfield;}
+/*禁止textarea拉伸*/
+textarea[type="textarea"]{resize:none;}
+ul,ol{
+    padding:0;
+    margin:0;
+}
+ul li,ol li{
+    list-style: none;
+}
+body,p,dl,dd,h1,h2,h3,h4,h5,h6{font-size:12px;margin:0;}
+h1,h2,h3,h4,h5,h6{ font-weight:normal;}
+img{border:none; vertical-align:middle;}
+.clearfix:after{ content:""; display:block; clear:both;}/*清除浮动*/
+.clearfix{*zoom:1;}
+/* 表格边框和元素间距清空 */
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+.clearfix:after{/*伪元素是行内元素 正常浏览器清除浮动方法*/
+  content: "";
+  display: block;
+  height: 0;
+  clear:both;
+  visibility: hidden;
+}
+.clearfix{
+  *zoom: 1;/*ie6清除浮动的方式 *号只有IE6-IE7执行，其他浏览器不执行*/
+}
+.right {
+  float: right;
+}
+.left {
+  float: left;
+}
+.hide {
+  display: none;
+}
+.show {
+  display: block;
+}
+.showLin{
+  display: inline-block;
+}
+.btn{
+    width:80px;
+    height:30px;
+    line-height: 30px;
+    cursor: pointer;
+    user-select: none;
+    border-radius: 20px;
+    text-align: center;
+}
+
+/* 滚动条 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(144,147,153,.3);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #C7C9CC;
+}

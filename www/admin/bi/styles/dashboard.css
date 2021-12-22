@@ -1,0 +1,263 @@
+/* 仪表板列表页面 */
+
+.animated-flash {
+  -webkit-animation: twinkling 1s infinite ease-in-out
+}
+
+.animated {
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both
+}
+
+@-webkit-keyframes twinkling {
+  0% {
+    opacity: 0.5;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes twinkling {
+  0% {
+    opacity: 0.5;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+.right-wrap {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  overflow: auto;
+  z-index: 0;
+  margin: 0 auto;
+}
+
+.dashboard {
+  width: 100%;
+  height: 100%;
+  background: #F6F5F8;
+  /* padding: 20px; */
+  box-sizing: border-box;
+  display: flex;
+}
+
+.d-left {
+  width: 320px;
+  min-width: 320px;
+  margin-right: 20px;
+  box-sizing: border-box;
+  height: 100%;
+  background: #fff;
+  transition: all .5s;
+  box-sizing: border-box;
+  padding: 20px 15px 20px 15px;
+  overflow: auto;
+  position: relative;
+}
+
+/* .d-left-fold {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transition: all .5s;
+} */
+
+.d-left-fold {
+  position: fixed;
+  left: 320px;
+  top: 50%;
+  z-index: 9999;
+  transition: all .5s;
+}
+
+.d-left-fold img {
+  cursor: pointer;
+}
+
+.d-left-wrap-search {
+  margin-bottom: 15px;
+}
+
+.d-right {
+  width: 100%;
+  box-sizing: border-box;
+  height: 100%;
+  background: #fff;
+  transition: all .5s;
+  overflow: auto;
+  position: relative;
+  /* display: flex;
+  justify-content: center; */
+}
+
+/* tree  css*/
+.r-tree {
+  height: calc(100% - 50px);
+  overflow: auto;
+}
+
+.r-tree .ztree {
+  overflow: auto;
+  box-sizing: border-box;
+  height: 100%;
+}
+
+.r-tree .ztree li a:hover {
+  text-decoration: none;
+  background-color: #F5F7FB;
+  color: #409EFF !important;
+}
+
+.r-tree .ztree li a {
+  height: 30px;
+  padding-top: 7px;
+}
+
+.r-tree .ztree li span.button.noline_open {
+  width: 16px;
+  height: 16px;
+  background: url('./iconTool/icon_open.png');
+  position: relative;
+  top: 6px;
+  left: 3px;
+}
+
+.r-tree .ztree li span.button.noline_close {
+  width: 16px;
+  height: 16px;
+  background: url('./iconTool/icon_close.png');
+  position: relative;
+  top: 6px;
+  left: 3px;
+}
+
+.r-tree .ztree li span.button.ico_open,
+.r-tree .ztree li span.button.ico_close {
+  width: 16px;
+  height: 16px;
+  background: url('./iconTool/icon_file.png');
+  position: relative;
+  top: -1px;
+  margin: 0 6px 0 10px;
+}
+
+.r-tree .ztree li a:hover span.button.ico_open,
+.r-tree .ztree li a:hover span.button.ico_close {
+  width: 16px;
+  height: 16px;
+  background: url('./iconTool/icon_file2.png');
+  position: relative;
+  top: -1px;
+  margin: 0 6px 0 10px;
+}
+
+.r-tree .ztree li span.button.ico_docu {
+  width: 16px;
+  height: 16px;
+  background: url('./iconTool/icon_monitor_nor.png');
+  position: relative;
+  top: -1px;
+  margin: 0 6px 0 10px;
+}
+
+/* .r-tree .ztree li a:hover span.button.ico_docu {
+  background: url('./iconTool/icon_sel');
+} */
+.r-tree .ztree li a.curSelectedNode {
+  background-color: #F9FAFD;
+  color: #409EFF !important;
+  border: none;
+  opacity: 1;
+  height: 30px;
+  padding-top: 7px;
+}
+
+/* 弹窗部分 */
+.data-table {
+  display: none;
+}
+
+.data-chart {
+  height: 480px;
+}
+
+.data-input {
+  width: 330px;
+  height: 28px;
+  background: #FFFFFF;
+  border: 1px solid #DCDFE6;
+  border-radius: 4px;
+  text-align: center;
+}
+
+.divmagin {
+  position: relative;
+}
+
+.divmagin i {
+  position: absolute;
+  top: 3px;
+  left: 4px;
+}
+
+.d-left-conent {
+  height: 100%;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+.layui-layer-btn .layui-layer-btn0{
+  border: 1px solid #dedede !important;
+  background-color: #fff !important;
+  color: #333 !important;
+
+}
+.layui-layer-btn .layui-layer-btn1{
+  border-color: #1E9FFF;
+  background-color: #1E9FFF;
+  color: #fff;
+}
+.layui-laydate-content td.laydate-selected{
+  background: #c3e7ff!important;
+}
+
+.r-date-group {
+  display: flex;
+}
+
+.r-date-group .date-wrap {
+  flex: 1;
+  display: flex;
+}
+
+.r-date-group .date-wrap:first-child {
+  margin-right: 15px;
+}
+
+.r-date-group input {
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+}
+
+.d-zoom {
+  position: fixed;
+  right: 55px;
+  bottom: 20px;
+  width: 70px;
+}

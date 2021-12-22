@@ -1,0 +1,597 @@
+/* 图表共用样式 */
+.BarChart {
+    /* width:459px; */
+    height: 100%;
+    background: #fff;
+}
+
+.BarChart_head {
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    background: blue;
+}
+
+.icon {
+    width: 40px;
+    height: 40px;
+    background: #000;
+    cursor: pointer;
+}
+
+.Barchart_conter {
+    width: 100%;
+    height: 100%;
+    background: #fff;
+}
+
+.BarChart_left {
+    width: 100%;
+    height: 100%;
+}
+
+.BarChart_var {
+    width: 96%;
+    height: 100%;
+    margin-left: 2%;
+    display: none;
+}
+
+.BarChart_echarts {
+    width: 100%;
+    height: 100%;
+}
+
+.echarts_left {
+    /* width:calc(100% - 20px); */
+    height: 100%;
+    /* margin-left:10px; */
+}
+
+.echarts_left_title {
+    height: 6%;
+    width: 100%;
+    ;
+}
+
+.echarts_left_text {
+    font-size: 16px;
+    padding-top: 5px;
+}
+
+.echarts_attribute {
+    width: 100%;
+    min-height: 500px;
+}
+
+.yColor {
+    margin-right: 40px;
+}
+
+.xselect {
+    width: 80px;
+    margin-right: 40px;
+}
+
+.unit {
+    margin-left: 10px;
+}
+
+.topMar {
+    width: 128px;
+    margin-right: 33px;
+}
+
+.echartsTile {
+    width: 380px;
+    margin-top: 10px;
+    margin-bottom: 14px;
+}
+
+.echartsTile1 {
+    width: 330px;
+    margin-top: 10px;
+    margin-bottom: 14px;
+}
+
+.fgBlock {
+    width: 20px;
+    height: 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 2px;
+}
+
+.fgBox {
+    height: 25px;
+}
+
+.fgBoxChild {
+    height: 25px;
+    width: 150px;
+    vertical-align: middle;
+    cursor: pointer;
+}
+
+.fg11 {
+    background: #FFA3A3;
+}
+
+.fg12 {
+    background: #FFE08C;
+}
+
+.fg13 {
+    background: #55BAF9;
+}
+
+.fg14 {
+    background: #91E2FF;
+}
+
+.fg15 {
+    background: #81F4DC;
+}
+
+.fg16 {
+    background: #C4FFEE;
+}
+
+.fg21 {
+    background: #434D72;
+}
+
+.fg22 {
+    background: #376CF0;
+}
+
+.fg23 {
+    background: #4BC6E0;
+}
+
+.fg24 {
+    background: #BCCDD4;
+}
+
+.fg25 {
+    background: #89E217;
+}
+
+.fg26 {
+    background: #1B986C;
+}
+
+.fg31 {
+    background: #C3C5C9;
+}
+
+.fg32 {
+    background: #385CE3;
+}
+
+.fg33 {
+    background: #6096FE;
+}
+
+.fg34 {
+    background: #626894;
+}
+
+.fg35 {
+    background: #F06981;
+}
+
+.fg36 {
+    background: #FBA6B9;
+}
+
+.fg41 {
+    background: #567BF5;
+}
+
+.fg42 {
+    background: #5EB0FB;
+}
+
+.fg43 {
+    background: #FFC23E;
+}
+
+.fg44 {
+    background: #53596F;
+}
+
+.fg45 {
+    background: #89D331;
+}
+
+.fg46 {
+    background: #FFA351;
+}
+
+.echarts_right {
+    width: 46%;
+    height: 94%;
+}
+
+.echarts {
+    width: 640px;
+    height: 425px;
+    position: relative;
+    border: 1px solid #aaa;
+    box-sizing: border-box;
+    margin-left: 10px;
+}
+
+.echarts_text {
+    position: absolute;
+    top: -10px;
+    left: 50px;
+    width: 40px;
+    height: 20px;
+    line-height: 20px;
+    background: #e7e7e7;
+    text-align: center;
+}
+
+.echartsMain {
+    width: 600px;
+    height: 385px;
+    margin-left: 20px;
+    margin-top: 20px;
+}
+
+.BarChart_right {
+    width: 8%;
+    height: 100%;
+    border-left: 1px solid #aaa;
+    box-sizing: border-box;
+}
+
+.confirm {
+    border: 1px solid blue;
+    background: #ddd;
+    margin-left: calc(50% - 40px);
+    margin-top: 50px;
+}
+
+.close {
+    border: 1px solid #000;
+    margin-left: calc(50% - 40px);
+    margin-top: 10px;
+}
+
+.var_left {
+    width: 100%;
+    height: 100%;
+}
+
+.var_right {
+    width: 46%;
+    height: 100%;
+}
+
+.table {
+    width: 100%;
+    min-height: 215px;
+    margin: auto;
+    /* background: #aaa; */
+}
+
+.varSelect {
+    width: 97%;
+    height: 100%;
+    border: none;
+    padding-left: 5px;
+    background: transparent;
+    display: inline-block;
+    color: rgba(64, 158, 255, 1);
+}
+
+.varSelectBox {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    margin-left: 5px;
+}
+
+.DataDelete {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    margin-top: 0px;
+    margin-left: 12px;
+    cursor: pointer;
+}
+
+.nameSelect {
+    width: 100%;
+    height: 100%;
+    border: none;
+    padding-left: 5px;
+    background: transparent;
+    display: inline-block;
+}
+
+.selectAxis {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.selectAxis .select {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.layui-table-view select[lay-ignore] {
+    border: none;
+    background: transparent;
+}
+
+.layui-table-view .layui-table td {
+    padding: 0px !important
+}
+
+.layui-colorpicker {
+    padding: 0px !important;
+}
+
+.newAdd {
+    background: #fff;
+    width: 140px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    cursor: pointer;
+    border: #E9EEF1;
+    border: #E9EEF1;
+    color: rgba(64, 158, 255, 1);
+    margin: 10px auto auto auto;
+    position: absolute;
+    top: -49px;
+    right: 0px;
+}
+
+.LineType1 {
+    display: inline-block;
+}
+
+.LineType2 {
+    display: none;
+}
+
+.layui-form-checkbox i {
+    width: 18px;
+    height: 18px;
+    font-size: 10px;
+    color: #fff;
+    border-left: 1px solid #d2d2d2;
+    box-sizing: border-box;
+}
+
+.layui-form-checkbox {
+    height: 18px;
+    line-height: 18px;
+    padding-right: 18px;
+}
+
+.layui-form-radioed>i {
+    color: rgba(64, 158, 255, 1);
+}
+
+.layui-form-radio>i:hover {
+    color: rgba(64, 158, 255, 1);
+}
+
+.formBox {
+    background: #f9f9f9;
+    padding-top: 10px;
+    padding-left: 20px;
+    padding-bottom: 10px;
+    box-sizing: border-box;
+}
+
+.formBox1 {
+    background: #f9f9f9;
+    padding-top: 20px;
+    padding-left: 2px;
+    padding-bottom: 10px;
+    position: relative;
+}
+
+.titleText {
+    font-size: 14px;
+}
+
+.layui-input,
+.layui-select,
+.layui-textarea {
+    height: 30px;
+}
+
+.stron {
+    cursor: pointer;
+    color: #666666
+}
+
+.Titlep {
+    margin-top: 16px;
+    margin-bottom: 16px;
+}
+
+.bg {
+    margin-top: 16px;
+}
+
+.formText {
+    font-size: 14px;
+    font-weight: 500;
+    color: #333333;
+    line-height: 16px;
+    margin-bottom: 16px;
+}
+
+.formTextTop {
+    margin-top: 25px;
+}
+
+.axisText {
+    margin-top: 16px;
+    margin-bottom: 10px;
+}
+
+.left1 {
+    margin-left: 22px;
+}
+
+.left2 {
+    margin-left: 45px;
+}
+
+.left3 {
+    margin-left: 65px;
+}
+
+.left4 {
+    margin-left: 80px;
+}
+
+.axios_mar {
+    margin-top: 16px;
+}
+
+.layui-table-cell {
+    font-size: 12px;
+    height: 36px !important;
+    line-height: 36px;
+    padding: 0 9px;
+}
+
+.layui-table thead tr {
+    background: rgba(164, 204, 245, 1);
+    color: #fff;
+}
+
+.layui-table-view .layui-table th {
+    padding: 0px 0px;
+}
+
+.layui-table-view {
+    margin: 0;
+    background: #fff;
+}
+
+.varTitle {
+    width: 100%;
+    height: 42px;
+    line-height: 42px;
+    background: #fff;
+}
+
+.varType {
+    width: 460px;
+    height: 308px;
+    background: #F9F9F9;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+body {
+    background: #fff;
+}
+
+.xText {
+    font-size: 14px;
+    font-family: PingFang SC;
+    font-weight: 500;
+    color: #333333;
+}
+
+.inputBox {
+    width: 355px;
+    height: 32px;
+}
+
+.sizeInputBox {
+    width: 70px;
+    height: 32px;
+}
+
+.echartText {
+    height: 42px;
+    font-size: 15px;
+    font-weight: bold;
+    line-height: 42px;
+    position: relative;
+}
+
+.iconBox,
+.iconBox1 {
+    position: absolute;
+    top: 0px;
+    left: 69px;
+}
+
+.layui-form-select dl dd.layui-this {
+    background-color: #a4ccf5 !important;
+}
+
+.colorBlock1 {
+    width: 26px;
+    height: 26px;
+    margin: 0 5px;
+    border: 1px solid #fff;
+    /* background: #000; */
+    outline: 1px solid #CFD7E5;
+    box-sizing: border-box;
+    box-sizing: border-box;
+    cursor: pointer;
+    vertical-align: middle;
+}
+
+.colorBlock2 {
+    display: inline-block;
+    vertical-align: top;
+    margin-top: 5px;
+}
+
+.echartsTile .layui-form-select dl dd:hover{
+    color: #fff !important;
+    background: #1E90FF !important;
+}
+
+.echartsTile .layui-form-select dl dd.layui-this {
+    color: #fff !important;
+    background: #1E90FF !important;
+}
+
+.echartsTile .layui-form-select dl dd, .layui-form-select dl dt {
+    padding: inherit;
+    line-height: inherit;
+    white-space: inherit;
+    height: 20px;
+    line-height: 20px;
+    font-size: 14px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.echartsTile .layui-form-select dl {
+    top: 30px;
+    padding: 0;
+    border: 1px solid #767676;
+}
+
+.echartsTile .layui-form-select dl dd {
+    padding: 0 10px;
+}
+
+.echartsTile .layui-form-select .layui-input:focus {
+    border-color: #409eff !important;
+}

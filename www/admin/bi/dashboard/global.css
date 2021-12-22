@@ -1,0 +1,233 @@
+@charset "utf-8";
+html,
+body,
+div,
+table,
+ul,
+li,
+ol,
+dl,
+dd,
+dt,
+a,
+img,
+label,
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+span {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+}
+html {
+  height: 100%;
+}
+body {
+  height: 100%;
+  position: relative;
+}
+input {
+  margin: 0;
+  padding: 0;
+  /* outline: none; */
+}
+ul,
+ol {
+  list-style: none;
+}
+strong {
+  font-weight: normal;
+}
+em,
+i {
+  font-style: normal;
+  display: inline-block;
+}
+img {
+  max-width: 100%;
+  display: block;
+}
+textarea {
+  resize: none;
+}
+form {
+  margin: 0;
+}
+button {
+  outline: none!important;
+}
+button:focus {
+  outline: none!important;
+}
+a {
+  color: #0b9be3;
+  text-decoration: none;
+  outline: none;
+  cursor: pointer;
+}
+a:hover {
+  color: #06bdf2;
+  text-decoration: none;
+  outline: none;
+}
+a:focus {
+  outline: none;
+  text-decoration: none;
+}
+.btn:hover {
+  color: #06bdf2;
+  border-color: #06bdf2;
+}
+h3 {
+  font-size: 18px;
+}
+h4 {
+  font-size: 14px;
+}
+h5 {
+  font-size: 14px;
+}
+.fz24 {
+  font-size: 24px;
+}
+.fz20 {
+  font-size: 20px;
+}
+.fz18 {
+  font-size: 18px;
+}
+.fz16 {
+  font-size: 16px;
+}
+.fz14 {
+  font-size: 14px;
+}
+.clearfix:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+/* .clearfix {
+    *+height: 1%;
+} */
+.g-left{
+  float: left;
+}
+.g-right{
+  float: right;
+}
+/* 搜索框样式begin */
+   .g-search{
+     text-align:center;
+     position: relative;
+   }
+   .g-search-input{
+      height: 30px;
+      line-height: 30px;
+      padding: 0 15px 0 10px;
+      display: inline-block;
+      border: 1px solid #eee;
+      width: 240px;
+      color: #333333;
+      border-radius: 5px;
+      position: relative;
+   }
+   .g-search i{
+     width: 17px;
+     height: 17px;
+     background: url(./img/search.png);
+     cursor: pointer;
+     position: absolute;
+     top: 7px;
+     right: 15px;
+   }
+/* 搜索框样式end */
+
+/* *号样式begin */
+.g-star{
+    color:red;
+    font-size: 20px;
+    position: relative;
+    top: 6px;
+}
+/* *号样式end */
+.g-bluebtn{
+  width: 42px;
+  height: 24px;
+  line-height: 22px;
+  display: inline-block;
+  background: #ECF5FF;
+  border: 1px solid #409EFF;
+  border-radius: 4px;
+  font-size: 12px;
+  font-family: PingFang SC;
+  font-weight: 500;
+  color: #409EFF;
+  text-align: center;
+}
+.g-bluebtn:hover{
+  background: #409EFF;
+  color: #fff;
+}
+.g-redbtn{
+  width: 42px;
+  height: 24px;
+  line-height: 22px;
+  display: inline-block;
+  background: #fef0f0;
+  border: 1px solid #fbc4c4;
+  border-radius: 4px;
+  font-size: 12px;
+  font-family: PingFang SC;
+  font-weight: 500;
+  color: #F56C6C;
+  text-align: center;
+}
+.g-redbtn:hover{
+  background: #F56C6C;
+  color: #fff;
+}
+/* 滚动条 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(144,147,153,.3);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #C7C9CC;
+}
+.layui-table-grid-down { display: none; }
+/* 表格提示框样式 */
+.table-tips .layui-layer-content{
+  /* width: 300px; */
+  border-radius: 8px !important; 
+  left: -30px;
+}
+.layui-layer-tips i.layui-layer-TipsG {
+  position: absolute;
+  bottom: -27px;
+  left: 5px;
+  content: '';
+  width: 34px;
+  height: 49px;
+  background: rgba(0, 0, 0, 0);
+  transform: rotate(270deg);
+}
+.layui-layer-tips i.layui-layer-TipsT{
+  bottom: -15px !important;
+  left: 30px !important;
+}

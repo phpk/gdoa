@@ -1,0 +1,186 @@
+.BarChart{
+    font-size: 13px;
+    line-height: 40px;
+    color: #333333;
+}
+.inpBox{
+    width:70px;
+    /* height: 40px; */
+    position: relative;
+}
+.inpText{
+    /* width: 70px; */
+    /* margin-left:15px; */
+}
+.inpBox .layui-input{
+    padding-right:20px;
+}
+.inpBoxSpan{
+    position: absolute;
+    right: 5px;
+    top: 10px;
+}
+.xselect{
+    margin-right:20px;
+}
+.fgBoxChild{
+    width:260px;
+}
+
+.fg11{
+    background: #12a8fcff;
+}
+.fg12{
+    background: #8290e0ff;
+}
+.fg13{
+    background: #e60012ff;
+}
+.fg14{
+    background: #456812ff;
+}
+.fg15{
+    background: #df8445ff;
+}
+.fg16{
+    background: #46B467ff;
+}
+.fg17{
+    background: #EDE536ff;
+}
+.fg18{
+    background: #29F0B2ff;
+}
+.fg19{
+    background: #76E015ff;
+}
+.fg110{
+    background: #F7ED08ff;
+}
+
+
+
+.fg21{
+    background: #fcb977ff;
+}
+.fg22{
+    background: #434d72ff;
+}
+.fg23{
+    background: #87e0cdff;
+}
+.fg24{
+    background: #0D1CF7ff;
+}
+.fg25{
+    background: #03C64Dff;
+}
+.fg26{
+    background: #488E08ff;
+}
+.fg27{
+    background: #ba78ffff;
+}
+.fg28{
+    background: #2E9893ff;
+}
+.fg29{
+    background: #64C448ff;
+}
+.fg210{
+    background: #DE291Aff;
+}
+
+
+.fg31{
+    background: #61cad7ff;
+}
+.fg32{
+    background: #2377d8ff;
+}
+.fg33{
+    background: #82a0c0ff;
+}
+.fg34{
+    background: #F0CBA2ff;
+}
+.fg35{
+    background: #05E5F0ff;
+}
+.fg36{
+    background: #A5F576ff;
+}
+.fg37{
+    background: #E59BF2ff;
+}
+.fg38{
+    background: #EAEA9Bff;
+}
+.fg39{
+    background: #898989ff;
+}
+.fg310{
+    background: #95F2A0ff;
+}
+
+
+.fg41{
+    background: #ffc950ff;
+}
+.fg42{
+    background: #f49037ff;
+}
+.fg43{
+    background: #037de5ff;
+}
+.fg44{
+    background: #1FF034ff;
+}
+.fg45{
+    background: #DE0DADff;
+}
+.fg46{
+    background: #989B0Aff;
+}
+.fg47{
+    background: #7367baff;
+}
+.fg48{
+    background: #0A9898ff;
+}
+.fg49{
+    background: #83980Aff;
+}
+.fg410{
+    background: #DE2C0Dff;
+}
+
+
+.sectionDom{
+    width:70px;
+}
+.originalMax{
+    display: none;
+}
+.slideBar{
+    position: relative;
+    width:350px;
+    height: 8px;
+    border-radius: 4px;
+    background: #aaa;
+    margin-left:18px;
+}
+.slideBox{
+    position: absolute;
+    top: -7px;
+    left: 0;
+    width:20px;
+    height: 20px;
+    background: #12a8fcff;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 0;
+}
+.layui-form-select dl dd.layui-this{
+    background-color: #a4ccf5 !important;
+}
