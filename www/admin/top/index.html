@@ -1,0 +1,601 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>网络拓扑图</title>
+    <!-- css of 3rd party  -->
+    <link href="static/layui-2.3.0/css/layui.css" type="text/css" rel="stylesheet"/>
+    <link href="static/font-awesome-4.7.0/css/font-awesome.min.css" type="text/css" rel="stylesheet">
+    <!-- css of this project  -->
+    <link href="static/jtopo/css/jtopo-editor.css" type="text/css" rel="stylesheet">
+</head>
+
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header layui-bg-gray">
+        <!-- 顶部工具栏 -->
+        <div class="layui-nav layui-layout-right">
+            <i class="fa fa-pencil-square-o toolbar-icon" aria-hidden="true" title="编辑"
+               onClick="editor.utils.setEditMode()"></i>
+            <i class="fa fa-arrows toolbar-icon" aria-hidden="true" title="全屏查看"
+               onClick="editor.utils.showInFullScreen(editor.stage.canvas,'RequestFullScreen')"></i>
+            <i class="fa fa-align-center toolbar-icon" aria-hidden="true" title="居中显示"
+               onClick="editor.utils.showInCenter()"></i>
+            <i class="fa fa-eye toolbar-icon" aria-hidden="true" title="预览"
+               onClick="editor.utils.showPic()"></i>
+            <i class="fa fa-floppy-o toolbar-icon" aria-hidden="true" title="保存"
+               onClick="editor.saveTopology(true)"></i>
+            <i class="fa fa-clipboard toolbar-icon" aria-hidden="true" title="复制"
+               onClick="editor.utils.cloneSelectedNodes()"></i>
+            <i class="fa fa-times toolbar-icon" aria-hidden="true" title="删除"
+               onClick="editor.utils.deleteSelectedNodes()"></i>
+            <i class="fa fa-trash-o toolbar-icon" aria-hidden="true" title="清空"
+               onClick="editor.utils.clearTopology()"></i>
+            <i class="fa fa-search-plus toolbar-icon" aria-hidden="true" title="放大"
+               onClick="editor.utils.scalingBig()"></i>
+            <i class="fa fa-search-minus toolbar-icon" aria-hidden="true" title="缩小"
+               onClick="editor.utils.scalingSmall()"></i>
+        </div>
+    </div>
+    <div class="container">
+        <div class="layui-row">
+            <div class="layui-col-md2">
+                <div class="layui-side-scroll">
+                    <div class="layui-collapse" lay-accordion>
+                        <div class="layui-colla-item">
+                            <h2 class="layui-colla-title">连线</h2>
+                            <div class="layui-colla-content layui-show">
+                                <table width="100%">
+                                    <tr>
+                                        <td width="100%" align="center">
+                                            <div topo-div-type="topo-link" topo-linktype="line"
+                                                 draggable="false"
+                                                 onclick="editor.lineType='line'">
+                                                <img class="link-icon-style" id="link-line"
+                                                     src="static/jtopo/img/line.png"/>
+                                                <br><span>连线</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="100%" align="center">
+                                            <div topo-div-type="topo-link" topo-linktype="foldline"
+                                                 draggable="false"
+                                                 onclick="editor.lineType='foldLine';editor.config.direction='horizontal';">
+                                                <img class="link-icon-style" id="link-foldline-h"
+                                                     src="static/jtopo/img/foldline_horizontal.png"/>
+                                                <br><span>折线(横向)</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="100%" align="center">
+                                            <div topo-div-type="topo-link" topo-linktype="foldline"
+                                                 draggable="false"
+                                                 onclick="editor.lineType='foldLine';editor.config.direction='vertical';">
+                                                <img class="link-icon-style" id="link-foldline-v"
+                                                     src="static/jtopo/img/foldline_vertical.png"/>
+                                                <br><span>折线(纵向)</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="100%" align="center">
+                                            <div topo-div-type="topo-link" topo-linktype="flexline"
+                                                 draggable="false"
+                                                 onclick="editor.lineType='flexLine';editor.config.direction='horizontal';">
+                                                <img class="link-icon-style" id="link-flexline-h"
+                                                     src="static/jtopo/img/flexline_horizontal.png"/>
+                                                <br><span>二次折线(横向)</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="100%" align="center">
+                                            <div topo-div-type="topo-link" topo-linktype="flexline"
+                                                 draggable="false"
+                                                 onclick="editor.lineType='flexLine';editor.config.direction='vertical';">
+                                                <img class="link-icon-style" id="link-flexline-v"
+                                                     src="static/jtopo/img/flexline_vertical.png"/>
+                                                <br><span>二次折线(纵向)</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="100%" align="center">
+                                            <div topo-div-type="topo-link" topo-linktype="curveline" draggable="false"
+                                                 onclick="editor.lineType='curveLine'">
+                                                <img class="link-icon-style" id="link-curveline"
+                                                     src="static/jtopo/img/line_curveline.png"/>
+                                                <br><span>曲线</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="layui-colla-item">
+                            <h2 class="layui-colla-title">网络设备</h2>
+                            <div class="layui-colla-content">
+                                <table width="100%">
+                                    <tr>
+                                        <td width="100%" align="center">
+                                            <div topo-div-type="topo-node" topo-nodetype="SWITCH" draggable="true"
+                                                 title="直接面向用户连接或访问网络的交换机">
+                                                <img class="node-icon-style"
+                                                     src="static/jtopo/img/icon_access_switch.png"/>
+                                                <br><span>接入层交换机</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="100%" align="center">
+                                            <div topo-div-type="topo-node" topo-nodetype="SWITCH" draggable="true"
+                                                 title="多台接入层交换机的汇聚点">
+                                                <img class="node-icon-style"
+                                                     src="static/jtopo/img/icon_convergence_switch.png"/>
+                                                <br><span>汇聚层交换机</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="100%" align="center">
+                                            <div topo-div-type="topo-node" topo-nodetype="SWITCH" draggable="true"
+                                                 title="位于核心层（网络主干部分的交换机）">
+                                                <img class="node-icon-style"
+                                                     src="static/jtopo/img/icon_core_switch.png"/>
+                                                <br><span>核心交换机</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="100%" align="center">
+                                            <div topo-div-type="topo-node" topo-nodetype="SWITCH" draggable="true"
+                                                 title="无线网路的接入点（Access Point）">
+                                                <img class="node-icon-style"
+                                                     src="static/jtopo/img/icon_router.png"/>
+                                                <br><span>无线AP</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="100%" align="center">
+                                            <div topo-div-type="topo-node" topo-nodetype="SWITCH" draggable="true"
+                                                 title="路由器">
+                                                <img class="node-icon-style"
+                                                     src="static/jtopo/img/icon_ap.png"/>
+                                                <br><span>路由器</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="layui-colla-item">
+                            <h2 class="layui-colla-title">安全设备</h2>
+                            <div class="layui-colla-content">
+                                <table width="100%">
+                                    <tr>
+                                        <td width="100%" align="center">
+                                            <div topo-div-type="topo-node" topo-nodetype="SECURITY" draggable="true"
+                                                 title="入侵防御系统">
+                                                <img class="node-icon-style"
+                                                     src="static/jtopo/img/icon_ips.png"/>
+                                                <br><span>IPS</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="100%" align="center">
+                                            <div topo-div-type="topo-node" topo-nodetype="SECURITY" draggable="true"
+                                                 title="Web应用防火墙">
+                                                <img class="node-icon-style" src="static/jtopo/img/icon_waf.png"/>
+                                                <br><span>WAF</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="100%" align="center">
+                                            <div topo-div-type="topo-node" topo-nodetype="SECURITY" draggable="true"
+                                                 title="防火墙">
+                                                <img class="node-icon-style" src="static/jtopo/img/icon_firewall.png"/>
+                                                <br><span>防火墙</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="100%" align="center">
+                                            <div topo-div-type="topo-node" topo-nodetype="SECURITY" draggable="true"
+                                                 title="漏洞扫描">
+                                                <img class="node-icon-style"
+                                                     src="static/jtopo/img/icon_xscan.png"/>
+                                                <br><span>漏洞扫描</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="100%" align="center">
+                                            <div topo-div-type="topo-node" topo-nodetype="SECURITY" draggable="true"
+                                                 title="负载均衡">
+                                                <img class="node-icon-style"
+                                                     src="static/jtopo/img/icon_balancing.png"/>
+                                                <br><span>负载均衡</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="layui-colla-item">
+                            <h2 class="layui-colla-title">服务器设备</h2>
+                            <div class="layui-colla-content">
+                                <table width="100%">
+                                    <tr>
+                                        <td width="100%" align="center">
+                                            <div topo-div-type="topo-node" topo-nodetype="SERVER" draggable="true"
+                                                 title="网络服务器">
+                                                <img class="node-icon-style"
+                                                     src="static/jtopo/img/icon_server.png"/>
+                                                <br><span>服务器</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="100%" align="center">
+                                            <div topo-div-type="topo-node" topo-nodetype="SERVER" draggable="true"
+                                                 title="跳板机/堡垒机">
+                                                <img class="node-icon-style"
+                                                     src="static/jtopo/img/icon_proxy_server.png"/>
+                                                <br><span>代理服务器</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="100%" align="center">
+                                            <div topo-div-type="topo-node" topo-nodetype="SERVER" draggable="true"
+                                                 title="数据库节点，用于存储数据">
+                                                <img class="node-icon-style"
+                                                     src="static/jtopo/img/icon_data_server.png"/>
+                                                <br><span>数据库服务器</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="100%" align="center">
+                                            <div topo-div-type="topo-node" topo-nodetype="SERVER" draggable="true"
+                                                 title="WEB服务器">
+                                                <img class="node-icon-style"
+                                                     src="static/jtopo/img/icon_web_server.png"/>
+                                                <br><span>WEB服务器</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-md10">
+                <div id="topology-body" class="topology-context">
+                    <!-- 节点右键菜单 -->
+                    <div id="node-menu" class="right-click-menu" style="z-index: 9">
+                        <div class="fa fa-wrench menu-item"
+                             onMouseMove="this.style.backgroundColor='#c5e7f6'"
+                             onMouseOut="this.style.backgroundColor=''">
+                            <span>节点设置</span>
+                        </div>
+                        <div class="fa fa-th-large menu-item"
+                             onMouseMove="this.style.backgroundColor='#c5e7f6'"
+                             onMouseOut="this.style.backgroundColor=''">
+                            <span>应用布局</span>
+                        </div>
+                        <div class="fa fa-th-list menu-item" id="change-node-text-pos"
+                             onMouseMove="this.style.backgroundColor='#c5e7f6'"
+                             onMouseOut="this.style.backgroundColor=''">
+                            <span>文字位置</span>
+                        </div>
+                        <div class="fa fa-search-plus menu-item"
+                             onMouseMove="this.style.backgroundColor='#c5e7f6'"
+                             onMouseOut="this.style.backgroundColor=''">
+                            <span>放大(Shift+)</span>
+                        </div>
+                        <div class="fa fa-search-minus menu-item"
+                             onMouseMove="this.style.backgroundColor='#c5e7f6'"
+                             onMouseOut="this.style.backgroundColor=''">
+                            <span>缩小(Shift-)</span>
+                        </div>
+                        <div class="fa fa-rotate-right menu-item"
+                             onMouseMove="this.style.backgroundColor='#c5e7f6'"
+                             onMouseOut="this.style.backgroundColor=''">
+                            <span>顺时针旋转(Shift+U)</span>
+                        </div>
+                        <div class="fa fa-rotate-left menu-item"
+                             onMouseMove="this.style.backgroundColor='#c5e7f6'"
+                             onMouseOut="this.style.backgroundColor=''">
+                            <span>逆时针旋转(Shift+I)</span>
+                        </div>
+                        <div class="fa fa-times menu-item"
+                             onMouseMove="this.style.backgroundColor='#c5e7f6'"
+                             onMouseOut="this.style.backgroundColor=''">
+                            <span>删除节点(Delete)</span>
+                        </div>
+                        <div class="fa fa-files-o menu-item"
+                             onMouseMove="this.style.backgroundColor='#c5e7f6'"
+                             onMouseOut="this.style.backgroundColor=''">
+                            <span>复制节点(Shift+C)</span>
+                        </div>
+                        <div class="fa fa-mail-reply menu-item"
+                             onMouseMove="this.style.backgroundColor='#c5e7f6'"
+                             onMouseOut="this.style.backgroundColor=''">
+                            <span>撤销(Shift+Z)</span></div>
+                        <div class="fa fa-mail-forward menu-item"
+                             onMouseMove="this.style.backgroundColor='#c5e7f6'"
+                             onMouseOut="this.style.backgroundColor=''">
+                            <span>重做(Shift+R)</span></div>
+                    </div>
+                    <!-- 应用布局选项(二级菜单) -->
+                    <div id="layout-menu" class="right-click-menu" style="z-index: 9">
+                        <div class="fa fa-minus-circle menu-item"
+                             onMouseMove="this.style.backgroundColor='#c5e7f6'"
+                             onMouseOut="this.style.backgroundColor=''">
+                            <span>取消布局</span>
+                        </div>
+                        <div class="fa fa-object-group menu-item"
+                             onMouseMove="this.style.backgroundColor='#c5e7f6'"
+                             onMouseOut="this.style.backgroundColor=''">
+                            <span>分组布局</span>
+                        </div>
+                        <div class="fa fa-share-alt menu-item"
+                             onMouseMove="this.style.backgroundColor='#c5e7f6'"
+                             onMouseOut="this.style.backgroundColor=''">
+                            <span>树形布局</span>
+                        </div>
+                        <div class="fa fa-dot-circle-o menu-item"
+                             onMouseMove="this.style.backgroundColor='#c5e7f6'"
+                             onMouseOut="this.style.backgroundColor=''">
+                            <span>圆形布局</span>
+                        </div>
+                    </div>
+                    <!-- 文字位置选项(二级菜单) -->
+                    <div id="node-text-pos-menu" class="right-click-menu" style="z-index: 9">
+                        <div class="menu-item"
+                             onMouseMove="this.style.backgroundColor='#c5e7f6'"
+                             onMouseOut="this.style.backgroundColor=''">
+                            <span>顶部居左</span>
+                        </div>
+                        <div class="menu-item"
+                             onMouseMove="this.style.backgroundColor='#c5e7f6'"
+                             onMouseOut="this.style.backgroundColor=''">
+                            <span>顶部居中</span>
+                        </div>
+                        <div class="menu-item"
+                             onMouseMove="this.style.backgroundColor='#c5e7f6'"
+                             onMouseOut="this.style.backgroundColor=''">
+                            <span>顶部居右</span>
+                        </div>
+                        <div class="menu-item"
+                             onMouseMove="this.style.backgroundColor='#c5e7f6'"
+                             onMouseOut="this.style.backgroundColor=''">
+                            <span>中间居左</span>
+                        </div>
+                        <div class="menu-item"
+                             onMouseMove="this.style.backgroundColor='#c5e7f6'"
+                             onMouseOut="this.style.backgroundColor=''">
+                            <span>居中</span>
+                        </div>
+                        <div class="menu-item"
+                             onMouseMove="this.style.backgroundColor='#c5e7f6'"
+                             onMouseOut="this.style.backgroundColor=''">
+                            <span>中间居右</span></div>
+                        <div class="menu-item"
+                             onMouseMove="this.style.backgroundColor='#c5e7f6'"
+                             onMouseOut="this.style.backgroundColor=''">
+                            <span>底部居左</span>
+                        </div>
+                        <div class="menu-item"
+                             onMouseMove="this.style.backgroundColor='#c5e7f6'"
+                             onMouseOut="this.style.backgroundColor=''">
+                            <span>底部居中</span>
+                        </div>
+                        <div class="menu-item"
+                             onMouseMove="this.style.backgroundColor='#c5e7f6'"
+                             onMouseOut="this.style.backgroundColor=''">
+                            <span>底部居右</span>
+                        </div>
+                    </div>
+                    <!-- 连线右键菜单 -->
+                    <div id="line-menu" class="right-click-menu" style="z-index: 9">
+                        <!--<div class="modeRightEdit" onMouseMove="this.style.backgroundColor='#c5e7f6'"-->
+                        <!--onMouseOut="this.style.backgroundColor=''"><span class="menuSpan">添加描述</span></div>-->
+                        <div class="fa fa-wrench menu-item"
+                             onMouseMove="this.style.backgroundColor='#c5e7f6'"
+                             onMouseOut="this.style.backgroundColor=''">
+                            <span>连线设置</span>
+                        </div>
+                        <div class="fa fa-times menu-item"
+                             onMouseMove="this.style.backgroundColor='#c5e7f6'"
+                             onMouseOut="this.style.backgroundColor=''">
+                            <span>删除连线</span></div>
+                    </div>
+                    <!-- 舞台右键菜单 -->
+                    <div id="main-menu" class="right-click-menu" style="z-index: 9">
+                        <div class="fa fa-search-plus menu-item"
+                             onClick="editor.utils.scalingBig()"
+                             onMouseMove="this.style.backgroundColor='#c5e7f6'"
+                             onMouseOut="this.style.backgroundColor=''">
+                            <span>放大(Shift+)</span>
+                        </div>
+                        <div class="fa fa-search-minus menu-item" onClick="editor.utils.scalingSmall()"
+                             onMouseMove="this.style.backgroundColor='#c5e7f6'"
+                             onMouseOut="this.style.backgroundColor=''">
+                            <span>缩小(Shift-)</span>
+                        </div>
+                        <div class="fa fa-trash-o menu-item" onClick="editor.utils.clearTopology();"
+                             onMouseMove="this.style.backgroundColor='#c5e7f6'"
+                             onMouseOut="this.style.backgroundColor=''">
+                            <span>清空(Shift+Y)</span>
+                        </div>
+                        <div class="fa fa-eye menu-item" onClick="editor.utils.showPic();"
+                             onMouseMove="this.style.backgroundColor='#c5e7f6'"
+                             onMouseOut="this.style.backgroundColor=''">
+                            <span>预览(Shift+P)</span>
+                        </div>
+                        <div class="fa fa-arrows menu-item"
+                             onClick="editor.utils.showInFullScreen(editor.stage.canvas,'RequestFullScreen')"
+                             onMouseMove="this.style.backgroundColor='#c5e7f6'"
+                             onMouseOut="this.style.backgroundColor=''">
+                            <span>全屏查看(Shift+F)</span>
+                        </div>
+                        <div class="fa fa-align-center menu-item" onClick="editor.utils.showInCenter()"
+                             onMouseMove="this.style.backgroundColor='#c5e7f6'"
+                             onMouseOut="this.style.backgroundColor=''">
+                            <span>居中显示(Shift+G)</span>
+                        </div>
+                        <div class="fa fa-floppy-o menu-item" onClick="editor.saveTopology(true)"
+                             onMouseMove="this.style.backgroundColor='#c5e7f6'"
+                             onMouseOut="this.style.backgroundColor=''">
+                            <span>保存(Shift+S)</span>
+                        </div>
+                        <div class="fa fa-question-circle menu-item" onclick="alert('帮助文档')"
+                             onMouseMove="this.style.backgroundColor='#c5e7f6'"
+                             onMouseOut="this.style.backgroundColor=''">
+                            <span id="showHelp">查看帮助(Shift+H)</span>
+                        </div>
+                        <div class="fa fa-info-circle menu-item"
+                             onclick="window.open('json_view.html', '当前拓扑结构JSON展示', '').document.write(editor.stage.toJson())"
+                             onMouseMove="this.style.backgroundColor='#c5e7f6'"
+                             onMouseOut="this.style.backgroundColor=''">
+                            <span id="showJSON">查看拓扑JSON结构</span></div>
+                    </div>
+                    <!-- 分组选项(二级菜单) -->
+                    <div id="group-mange-menu" class="right-click-menu" style="z-index: 9">
+                        <div class="fa fa-pencil-square-o menu-item"
+                             onMouseMove="this.style.backgroundColor='#c5e7f6'"
+                             onMouseOut="this.style.backgroundColor=''">
+                            <span>新建分组</span>
+                        </div>
+                        <div class="fa fa-align-left menu-item" id="align-group"
+                             onMouseMove="this.style.backgroundColor='#c5e7f6'"
+                             onMouseOut="this.style.backgroundColor=''">
+                            <span>对齐方式</span>
+                        </div>
+                    </div>
+                    <div class="right-click-menu" id="group-align-menu" style="z-index: 9">
+                        <div class="menu-item"
+                             onMouseMove="this.style.backgroundColor='#c5e7f6'"
+                             onMouseOut="this.style.backgroundColor=''">
+                            <span>水平对齐</span>
+                        </div>
+                        <div class="menu-item"
+                             onMouseMove="this.style.backgroundColor='#c5e7f6'"
+                             onMouseOut="this.style.backgroundColor=''">
+                            <span>垂直对齐</span>
+                        </div>
+                    </div>
+                    <div class="right-click-menu" id="container-mange-menu" style="z-index: 9">
+                        <div class="fa fa-columns menu-item"
+                             onMouseMove="this.style.backgroundColor='#c5e7f6'"
+                             onMouseOut="this.style.backgroundColor=''">
+                            <span>拆分</span>
+                        </div>
+                    </div>
+
+                    <canvas class="topology-context" id="topology-canvas">
+                        您的浏览器不支持HTML5!
+                    </canvas>
+                </div>
+            </div>
+            <!-- 鼠标悬浮显示节点信息 -->
+            <!--div class="layui-col-md2">
+                <p style="text-align: center;font-size: 14px;padding-top: 20px;">节点名称：</p>
+                <p id="node-name" style="text-align: center;font-size: 14px;">（鼠标悬浮节点查看）</p>
+                <p style="text-align: center;font-size: 14px;">当前时间：</p>
+                <p id="current-time" style="text-align: center;font-size: 14px;">（鼠标悬浮节点查看）</p>
+                <p style="text-align: center;font-size: 20px;padding-top: 50%;">还可以放置其他信息:</p>
+                <p style="text-align: center;font-size: 20px;">比如结合highcharts放一些节点联动的图表信息</p>
+            </div-->
+        </div>
+    </div>
+</div>
+
+</body>
+
+<!-- js of 3rd party  -->
+<script src="static/jquery-3.3.1/jquery-3.3.1.min.js" type="text/javascript"></script>
+<script src="static/layui-2.3.0/layui.all.js" type="text/javascript"></script>
+<!-- js of this project  -->
+<script src="static/jtopo/js/util.js" type="text/javascript"></script>
+<script src="static/jtopo/js/jtopo-0.4.8-dev.js" type="text/javascript"></script>
+<script src="static/jtopo/js/jtopo-editor.js" type="text/javascript"></script>
+<script type="text/javascript">
+    // 设置canvas画布大小
+    var canvas = document.getElementById("topology-canvas");
+    canvas.height = $(window).height() - $('.layui-header').height();
+
+    $(document).ready(function () {
+        // 选择连线方式后的css样式
+        $("#link-line").click(function () {
+            $(this).css("background-color", "darkgray");
+            $("#link-foldline-h").css("background-color", "white");
+            $("#link-foldline-v").css("background-color", "white");
+            $("#link-flexline-h").css("background-color", "white");
+            $("#link-flexline-v").css("background-color", "white");
+            $("#link-curveline").css("background-color", "white");
+        });
+        $("#link-foldline-h").click(function () {
+            $(this).css("background-color", "darkgray");
+            $("#link-line").css("background-color", "white");
+            $("#link-foldline-v").css("background-color", "white");
+            $("#link-flexline-h").css("background-color", "white");
+            $("#link-flexline-v").css("background-color", "white");
+            $("#link-curveline").css("background-color", "white");
+        });
+        $("#link-foldline-v").click(function () {
+            $(this).css("background-color", "darkgray");
+            $("#link-line").css("background-color", "white");
+            $("#link-foldline-h").css("background-color", "white");
+            $("#link-flexline-h").css("background-color", "white");
+            $("#link-flexline-v").css("background-color", "white");
+            $("#link-curveline").css("background-color", "white");
+        });
+        $("#link-flexline-h").click(function () {
+            $(this).css("background-color", "darkgray");
+            $("#link-line").css("background-color", "white");
+            $("#link-foldline-h").css("background-color", "white");
+            $("#link-foldline-v").css("background-color", "white");
+            $("#link-flexline-v").css("background-color", "white");
+            $("#link-curveline").css("background-color", "white");
+        });
+        $("#link-flexline-v").click(function () {
+            $(this).css("background-color", "darkgray");
+            $("#link-line").css("background-color", "white");
+            $("#link-foldline-h").css("background-color", "white");
+            $("#link-foldline-v").css("background-color", "white");
+            $("#link-flexline-h").css("background-color", "white");
+            $("#link-curveline").css("background-color", "white");
+        });
+        $("#link-curveline").click(function () {
+            $(this).css("background-color", "darkgray");
+            $("#link-line").css("background-color", "white");
+            $("#link-foldline-h").css("background-color", "white");
+            $("#link-foldline-v").css("background-color", "white");
+            $("#link-flexline-h").css("background-color", "white");
+            $("#link-flexline-v").css("background-color", "white");
+        });
+
+        // 节点树中每个节点的拖放动作定义给拓扑图编辑器
+        var nodes = $("[topo-div-type='topo-node']");
+        var nodeLength = nodes.length;
+        for (var i = 0; i < nodeLength; i++) {
+            var text = $(nodes[i]).find("span").eq(0).text();
+            editor.drag(nodes[i], document.getElementById('topology-canvas'), text);
+        }
+        // 加载网络拓扑图
+        editor.loadTopology('/admin/top/json/network.json', "img/backimg.png");
+
+    });
+
+</script>
+</html>
