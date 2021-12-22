@@ -7,22 +7,23 @@ module.exports = class extends think.Controller {
     constructor(ctx) {
         super(ctx);
     }
-    
     async __before() {
-        //this.userId = await this.chkToken();
-        //console.log(this.userId)
-        //if (!this.userId) return;
         this.io = this.ctx.req.io;
         this.socket = this.ctx.req.websocket;
     }
-    
-    
     async openAction() {
         //console.log(this.get())
-        console.log('open')
+        console.log('open', this.wsData)
         //console.log(this.wsData)
         //console.log(this.socket.id)
-        this.socket.emit('open', 'websocket success')
+        //let salt = await this.getSession('salt');
+        //console.log(salt)
+        //this.socket.emit('open', { data: { pingInterval: 500, pingTimeout: 800 } })
+    }
+    async onlineAction() {
+        console.log('online')
+        let userId = await this.chkToken(this.wsData.rttoken);
+        this.socket.emit('online', userId)
     }
     async addUserAction() {
         //console.log(this.wsData)
@@ -40,6 +41,7 @@ module.exports = class extends think.Controller {
     }
     async closeAction() {
         console.log('close')
+        //this.socket.emit('open', 'websocket close')
         //this.socket.emit('close', 'websocket close')
         //console.log(this.socket)
         //this.io.disconnect(true);
@@ -52,12 +54,11 @@ module.exports = class extends think.Controller {
     //       this.socket.broadcast.emit(action, data);
     //     }
     // }
-    async chkToken() {
-        let headers = this.ctx.req.rawHeaders,
-            index = headers.indexOf('rttoken') + 1;
-        let token = headers[index];
+    async chkToken(token) {
         //console.log(token)
         let userId = await this.cache('token_' + think.md5(token));
+        //let userId = await this.getSession('adminId');
+        console.log(userId)
         if (!userId) return false;
         //console.log(userId)
         let salt = await this.cache('admin_' + userId);
@@ -74,7 +75,7 @@ module.exports = class extends think.Controller {
             cookies[k] = v;
           });
         
-        var sessionId = cookies['thinkjs'];
+        var sessionId = cookies['csrf_token'];
         if(sessionId){
           var session = await this.redis.get(sessionId);
           session = JSON.parse(session|| '{}');

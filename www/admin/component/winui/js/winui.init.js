@@ -1,5 +1,6 @@
-layui.define(['layer', 'winui','dragmove'], function (exports) {
+layui.define(['layer', 'winui', 'dragmove', 'winchat'], function (exports) {
     let $ = layui.$,
+        winchat = layui.winchat,
         dragmove = layui.dragmove;
     let initWindows = () => {
         winui.config({
@@ -65,6 +66,11 @@ layui.define(['layer', 'winui','dragmove'], function (exports) {
         }, function () {
             //初始化完毕回调
             //this.render()
+            //winui.startSocket && winui.startSocket();
+            winui.hasSocket = false;
+            winui.startSocket && winui.startSocket();
+            winchat();
+
         });
 
         $('.startmenu').on('click', e => {

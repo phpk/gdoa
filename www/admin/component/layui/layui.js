@@ -71,7 +71,7 @@
     ,util: 'util' //工具块
     ,code: 'code' //代码修饰器
     ,jquery: 'jquery' //DOM 库（第三方）
-    
+    ,layim : 'layim'
     ,all: 'all'
     ,'layui.all': 'layui.all' //聚合标识（功能性的，非真实模块）
   };

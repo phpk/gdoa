@@ -5,6 +5,7 @@ layui.define(['layer', 'winui','winuiInit'], function (exports) {
         loginKey = '_godocmsLoginKey';
     
     let showBox = () => {
+        layer.closeAll();
         $('.winui-taskbar').css('zIndex', '0');
         if (!winui.loginNum) winui.loginNum = 0;
         winui.loginNum++;
@@ -43,6 +44,10 @@ layui.define(['layer', 'winui','winuiInit'], function (exports) {
                                 showTimeDiv();
                             }
                         });
+                        let au = document.createElement("audio");
+                        au.preload = "auto";
+                        au.src = './component/winui/audio/unlock.mp3';
+                        au.play();
                     }, showTimeDiv = function () {
                         index = winui.sysTime('#date_time', '<p id="time">!HH:!mm</p><p id="date">!M月!d日,星期!w</p>')
                         $('#date_time').toggleClass('layui-hide');
@@ -136,6 +141,7 @@ layui.define(['layer', 'winui','winuiInit'], function (exports) {
                             //winui.desktop.data = res.routeData.desktops;
                             //winui.desktop.init()
                             //winui.start.init()
+                            
                             winuiInit();
                         }, err => {
                             if (err.code == 201) {

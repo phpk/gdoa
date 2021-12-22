@@ -5,7 +5,7 @@ layui.define(['layer', 'winui','form'], function (exports) {
         lockKey = '_godocmsLockScreenPassword';
     
     let showBox = () => {
-        layer.closeAll();
+        //layer.closeAll();
         let lockData = localStorage.getItem(lockKey);
         $('.winui-taskbar').css('zIndex', '0');
         if (!lockData) {
@@ -30,6 +30,7 @@ layui.define(['layer', 'winui','form'], function (exports) {
                 zIndex: layer.zIndex,
                 content: content,
                 success: function (layero, layerindex) {
+                    winui.closeSocket && winui.closeSocket()
                     $('.lock-body').css('background-image', 'url(' + bgimg + ')');
                     window.localStorage.setItem("lockscreen", true);
                     var index = winui.sysTime('#date_time', '<p id="time">!HH:!mm</p><p id="date">!M月!d日,星期!w</p>');
@@ -39,7 +40,7 @@ layui.define(['layer', 'winui','form'], function (exports) {
                         $('#login_div').toggleClass('layui-hide');
                         //解绑旧的鼠标键盘事件
                         $(document).off('mouseup', docMouseup);
-                        $(document).off(' keydown', docKeydown);
+                        $(document).off('keydown', docKeydown);
                         //绑定新的键盘事件
                         $(document).on('keydown', function (e) {
                             var ev = document.all ? window.event : e;
@@ -48,6 +49,10 @@ layui.define(['layer', 'winui','form'], function (exports) {
                                 showTimeDiv();
                             }
                         });
+                        let au = document.createElement("audio");
+                        au.preload = "auto";
+                        au.src = './component/winui/audio/unlock.mp3';
+                        au.play();
                         $('#password').focus();
                     }, showTimeDiv = function () {
                         index = winui.sysTime('#date_time', '<p id="time">!HH:!mm</p><p id="date">!M月!d日,星期!w</p>')
@@ -89,6 +94,8 @@ layui.define(['layer', 'winui','form'], function (exports) {
                         layer.close(layerindex);
                         window.localStorage.setItem("lockscreen", false);
                         winui.initLockScreen();
+                        winui.hasSocket = false;
+                        winui.startSocket && winui.startSocket();
                     }
                     $('#password').on('keydown', setDown);
                     $('#password').on('keyup', e => {

@@ -127,6 +127,8 @@ exports.websocket = {
   type: 'socketio',
   common: {
     // common config
+    pingInterval: 5000,
+    pingTimeout: 2000
   },
   socketio: {
     handle: socketio,
@@ -137,6 +139,7 @@ exports.websocket = {
     messages: [{
       open: '/server/chat/open', // websocket action when connected
       close: '/server/chat/close', // websocket action when close
+      online : '/server/chat/online',
       addUser: '/server/chat/addUser', //websocket addUser action when event is addUser
     }]
   }

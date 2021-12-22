@@ -2553,6 +2553,7 @@
   Socket.prototype.onHeartbeat = function (timeout) {
     clearTimeout(this.pingTimeoutTimer);
     var self = this;
+    
     self.pingTimeoutTimer = setTimeout(function () {
       if ('closed' == self.readyState) return;
       self.onClose('ping timeout');

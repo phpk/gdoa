@@ -196,7 +196,7 @@
                 //绑定开始菜单左面按钮鼠标移出事件
                 common.resetMouseout('.winui-start-left>.winui-start-item', call.startLeftBtnMouseout);
                 //绑定右下角控制中心点击事件
-                common.resetClick('.winui-taskbar-console', call.consoleClick);
+                //common.resetClick('.winui-taskbar-console', call.consoleClick);
                 //绑定控制中心展开与折叠事件
                 //common.resetClick('.winui-console .extend-switch', call.consoleExtendClick);
                 //绑定右下角显示桌面点击事件
@@ -462,8 +462,8 @@
             },
             //开始
             initLockScreen : () => {
-                this.systemLocked = false;
-                setSystemNowTime();
+                winui.systemLocked = false;
+                winui.setSystemNowTime();
             },
             taskLockScreen: (now, that) => {
                 //console.log(winui)

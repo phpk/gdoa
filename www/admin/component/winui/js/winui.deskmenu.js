@@ -27,6 +27,7 @@ layui.define(['layer', 'winui', 'laytpl', 'winuiInit', 'desklogin', 'desklock'],
                     winui.loginNum = 0;
                     desklogin.showBox();
                     loginOutToken();
+                    winui.closeSocket && winui.closeSocket()
                     //localStorage.setItem('lockscreen', true);
                     //winui.lockScreen();
                     

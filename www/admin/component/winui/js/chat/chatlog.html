@@ -7,7 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <title>聊天记录</title>
 
-<link rel="stylesheet" href="http://local.res.layui.com/layui/src/css/layui.css">
+<link href="/admin/component/layui/css/layui.css" rel="stylesheet" />
+<script src="/admin/config/config.js"></script>
+<script src="/admin/component/layui/layui.js"></script>
 <style>
 body .layim-chat-main{height: auto;}
 </style>
@@ -31,13 +33,6 @@ body .layim-chat-main{height: auto;}
 }); }}
 </textarea>
 
-<!-- 
-上述模版采用了 laytpl 语法，不了解的同学可以去看下文档：http://www.layui.com/doc/modules/laytpl.html
-
--->
-
-
-<script src="http://local.res.layui.com/layui/src/layui.js"></script>
 <script>
 layui.use(['layim', 'laypage'], function(){
   var layim = layui.layim
@@ -45,7 +40,6 @@ layui.use(['layim', 'laypage'], function(){
   ,laytpl = layui.laytpl
   ,$ = layui.jquery
   ,laypage = layui.laypage;
-  
   //聊天记录的分页此处不做演示，你可以采用laypage，不了解的同学见文档：http://www.layui.com/doc/modules/laypage.html
   
   

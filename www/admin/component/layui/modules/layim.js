@@ -5,14 +5,14 @@
     
  */
  
-layui.define(['layer', 'laytpl', 'upload', 'winui'], function(exports){
+layui.define(['layer', 'laytpl', 'upload'], function(exports){
   
   var v = '3.9.5';
   var $ = layui.$;
   var layer = layui.layer;
   var laytpl = layui.laytpl;
   var device = layui.device();
-  let winLayer = winui.window;
+  //let winLayer = winui.window;
   
   var SHOW = 'layui-show', THIS = 'layim-this', MAX_ITEM = 20;
   
@@ -127,7 +127,7 @@ layui.define(['layer', 'laytpl', 'upload', 'winui'], function(exports){
   LAYIM.prototype.content = function(content){
     return layui.data.content(content);
   };
-
+  
 
   //主模板
   var listTpl = function(options){
@@ -232,9 +232,9 @@ layui.define(['layer', 'laytpl', 'upload', 'winui'], function(exports){
       ,'<li class="layui-icon layim-tool-find" layim-event="find" title="查找">&#xe608;</li>'
       ,'{{# } }}'
       ,'<li class="layui-icon layim-tool-skin" layim-event="skin" title="更换背景">&#xe61b;</li>'
-      ,'{{# if(!d.base.copyright){ }}'
-      ,'<li class="layui-icon layim-tool-about" layim-event="about" title="关于">&#xe60b;</li>'
-      ,'{{# } }}'
+      //,'{{# if(!d.base.copyright){ }}'
+      //,'<li class="layui-icon layim-tool-about" layim-event="about" title="关于">&#xe60b;</li>'
+      //,'{{# } }}'
     ,'</ul>'
     ,'<div class="layui-layim-search"><input><label class="layui-icon" layim-event="closeSearch">&#x1007;</label></div>'
   ,'</div>'].join('');
@@ -412,7 +412,8 @@ layui.define(['layer', 'laytpl', 'upload', 'winui'], function(exports){
   };
   
   //处理初始化信息
-  var cache = {message: {}, chat: []}, init = function(options){
+  var cache = { message: {}, chat: [] },
+    init = function (options) {
     var init = options.init || {}
      mine = init.mine || {}
     ,local = layui.data('layim')[mine.id] || {}
@@ -545,6 +546,7 @@ layui.define(['layer', 'laytpl', 'upload', 'winui'], function(exports){
       layimMain.hide();
     }
     cache.mine = cache.mine || {};
+    
     $('.winui-taskbar-console').on('click', function () {
       layimMain.show();
       var local = layui.data('layim')[cache.mine.id] || {};
@@ -554,8 +556,6 @@ layui.define(['layer', 'laytpl', 'upload', 'winui'], function(exports){
         , value: local
       });
       //layer.close(index);
-      
-      
     })
     /*
     return layer.open({
@@ -578,7 +578,7 @@ layui.define(['layer', 'laytpl', 'upload', 'winui'], function(exports){
         }
         console.log(layero)
         
-        layero.css('top', '42px')
+        layero.css('top', '0px')
         
         //('.winui-taskbar-console').on('click', function () {
         layero.on('click', function(){
@@ -592,9 +592,9 @@ layui.define(['layer', 'laytpl', 'upload', 'winui'], function(exports){
           });
         });
       }
-    });*/
+    });
+    */
   };
-  
   //显示聊天面板
   var layimChat, layimMin, chatIndex, To = {}, popchat = function(data){
     data = data || {};
@@ -1504,10 +1504,10 @@ layui.define(['layer', 'laytpl', 'upload', 'winui'], function(exports){
         ,title: '查找'
         ,shade: false
         ,maxmin: true
-        ,area: ['1000px', '520px']
+        ,area: ['800px', '520px']
         ,skin: 'layui-box layui-layer-border'
         ,resize: false
-        ,content: cache.base.find
+        , content: cache.base.find
       });
     }
     
@@ -1530,10 +1530,10 @@ layui.define(['layer', 'laytpl', 'upload', 'winui'], function(exports){
     
     //关于
     ,about: function(){
-      layer.alert('版本： '+ v + '<br>版权所有：© LayIM', {
-        title: '关于 LayIM'
-        ,shade: false
-      });
+      // layer.alert('版本： '+ v + '<br>版权所有：© LayIM', {
+      //   title: '关于 LayIM'
+      //   ,shade: false
+      // });
     }
     
     //生成换肤

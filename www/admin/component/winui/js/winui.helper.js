@@ -111,7 +111,7 @@ layui.define(['jquery', 'layer', 'winui'], function (exports) {
                             layer.msg('最多只能存五条便签', { zIndex: layer.zIndex });
                             return;
                         }
-                        $(CONTENT).append('<hr /><div class="tags-content"><textarea placeholder="输入内容，如：桌面助手真牛逼"></textarea></div>');
+                        $(CONTENT).append('<hr /><div class="tags-content"><textarea placeholder="输入内容"></textarea></div>');
                         var $currTextarea = $(CONTENT).children('.tags-content').eq(tagsCount).children('textarea');
                         $currTextarea.focus();
                         $currTextarea.on('blur', function () {
