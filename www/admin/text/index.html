@@ -40,15 +40,14 @@
 <link rel="apple-touch-startup-image" media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="resources/startup-ipadpro3-portrait.png">
 <link rel="apple-touch-startup-image" media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="resources/startup-ipadpro2-landscape.png">
 <link rel="apple-touch-startup-image" media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="resources/startup-ipadpro2-portrait.png">
-<link rel="preconnect" href="https://fonts.gstatic.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cousine&family=Rubik&display=swap">
-<link rel="preload" as="fetch" crossorigin href="https://offroaders123.github.io/Num-Text-Component/vanilla-layout.css">
-<link rel="preload" as="fetch" crossorigin href="https://offroaders123.github.io/Num-Text-Component/vanilla-appearance.css">
-<link rel="preload" as="fetch" crossorigin href="https://offroaders123.github.io/Num-Text-Component/vanilla-highlighting.css">
-<script src="https://offroaders123.github.io/Num-Text-Component/script.js"></script>
-<script src="https://offroaders123.github.io/Menu-Drop-Component/script.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/prism.min.js" data-manual></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/components/prism-json.min.js"></script>
+<link rel="stylesheet" href="css/css2.css?family=Cousine&family=Rubik&display=swap">
+<link rel="stylesheet" href="css/vanilla-layout.css">
+<link rel="stylesheet" href="css/vanilla-appearance.css">
+<link rel="stylesheet" href="css/vanilla-highlighting.css">
+<script src="js/script.js"></script>
+<script src="js/script2.js"></script>
+<script src="js/prism.min.js" data-manual></script>
+<script src="js/prism-json.min.js"></script>
 
 <script>
   window.Editor = {
@@ -1766,22 +1765,22 @@
   </div>
   <div class="app-menubar">
     <menu-drop id="file_menu">
-      <button>File</button>
+      <button>文件</button>
       <ul>
-        <li onclick="createEditor({ auto_replace: false });" data-shortcuts='{ "default": "Ctrl+Shift+X", "macOS": "Shift+Cmd+X" }'>New Editor</li>
-        <li part="create-window-option" onclick="createWindow();" data-shortcuts='{ "default": "Ctrl+Shift+C", "macOS": "Shift+Cmd+C" }'>New Window</li>
-        <li onclick="openFiles();" data-shortcuts='{ "default": "Ctrl+O", "macOS": "Cmd+O" }'>Open</li>
-        <li onclick="window.setTimeout(renameEditor,10);" data-shortcuts='{ "default": "Ctrl+Shift+R", "macOS": "Shift+Cmd+R" }'>Rename</li>
-        <li onclick="saveFile();" data-shortcuts='{ "default": "Ctrl+S", "macOS": "Cmd+S" }'>Save</li>
-        <li>Save As...
+        <li onclick="createEditor({ auto_replace: false });" data-shortcuts='{ "default": "Ctrl+Shift+X", "macOS": "Shift+Cmd+X" }'>新建文件</li>
+        <li part="create-window-option" onclick="createWindow();" data-shortcuts='{ "default": "Ctrl+Shift+C", "macOS": "Shift+Cmd+C" }'>打开新窗口</li>
+        <li onclick="openFiles();" data-shortcuts='{ "default": "Ctrl+O", "macOS": "Cmd+O" }'>打开文件</li>
+        <li onclick="window.setTimeout(renameEditor,10);" data-shortcuts='{ "default": "Ctrl+Shift+R", "macOS": "Shift+Cmd+R" }'>重命名</li>
+        <li onclick="saveFile();" data-shortcuts='{ "default": "Ctrl+S", "macOS": "Cmd+S" }'>保存文件</li>
+        <li>另存为...
           <ul>
-            <li onclick="saveFile('txt');" data-shortcuts='{ "default": ".txt" }'>Plain Text</li>
+            <li onclick="saveFile('txt');" data-shortcuts='{ "default": ".txt" }'>Text</li>
             <li onclick="saveFile('html');" data-shortcuts='{ "default": ".html" }'>HTML</li>
             <li onclick="saveFile('css');" data-shortcuts='{ "default": ".css" }'>CSS</li>
             <li onclick="saveFile('js');" data-shortcuts='{ "default": ".js" }'>JavaScript</li>
             <li onclick="saveFile('json');" data-shortcuts='{ "default": ".json" }'>JSON</li>
             <li onclick="saveFile('svg');" data-shortcuts='{ "default": ".svg" }'>SVG</li>
-            <li>More...
+            <li>更多...
               <ul>
                 <li onclick="saveFile('webmanifest');" data-shortcuts='{ "default": ".webmanifest" }'>Web Manifest</li>
                 <li onclick="saveFile('md');" data-shortcuts='{ "default": ".md" }'>Markdown</li>
@@ -1794,68 +1793,54 @@
       </ul>
     </menu-drop>
     <menu-drop id="view_menu" data-select="no-appearance">
-      <button>View</button>
+      <button>查看</button>
       <ul>
-        <li data-selected onclick="setView({ type: 'code' });" data-shortcuts='{ "default": "Ctrl+Shift+1", "macOS": "Ctrl+Cmd+1" }' data-value="code">Code</li>
-        <li onclick="setView({ type: 'split' });" data-shortcuts='{ "default": "Ctrl+Shift+2", "macOS": "Ctrl+Cmd+2" }' data-value="split">Split</li>
-        <li onclick="setView({ type: 'preview' });" data-shortcuts='{ "default": "Ctrl+Shift+3", "macOS": "Ctrl+Cmd+3" }' data-value="preview">Preview</li>
+        <li data-selected onclick="setView({ type: 'code' });" data-shortcuts='{ "default": "Ctrl+Shift+1", "macOS": "Ctrl+Cmd+1" }' data-value="code">代码</li>
+        <li onclick="setView({ type: 'split' });" data-shortcuts='{ "default": "Ctrl+Shift+2", "macOS": "Ctrl+Cmd+2" }' data-value="split">左右分屏</li>
+        <li onclick="setView({ type: 'preview' });" data-shortcuts='{ "default": "Ctrl+Shift+3", "macOS": "Ctrl+Cmd+3" }' data-value="preview">全屏</li>
         <li><hr></li>
-        <li onclick="setOrientation();" data-shortcuts='{ "default": "Ctrl+Shift+4", "macOS": "Ctrl+Cmd+4" }' data-no-select>Orientation</li>
-        <li onclick="createDisplay();" data-shortcuts='{ "default": "Ctrl+Shift+5", "macOS": "Ctrl+Cmd+5" }' data-no-select>Display</li>
+        <li onclick="setOrientation();" data-shortcuts='{ "default": "Ctrl+Shift+4", "macOS": "Ctrl+Cmd+4" }' data-no-select>上下分屏</li>
+        <li onclick="createDisplay();" data-shortcuts='{ "default": "Ctrl+Shift+5", "macOS": "Ctrl+Cmd+5" }' data-no-select>弹窗</li>
       </ul>
     </menu-drop>
     <menu-drop id="preview_menu" data-select="no-appearance">
-      <button>Preview</button>
+      <button>预览</button>
       <ul>
-        <li onclick="refreshPreview({ force: true });" data-shortcuts='{ "default": "Ctrl+Shift+Enter", "macOS": "Ctrl+Cmd+Return" }' data-no-select>Refresh</li>
-        <li onclick="preview_base_card.open();" data-shortcuts='{ "default": "Ctrl+Shift+B", "macOS": "Ctrl+Cmd+B" }' data-no-select>Base URL</li>
+        <li onclick="refreshPreview({ force: true });" data-shortcuts='{ "default": "Ctrl+Shift+Enter", "macOS": "Ctrl+Cmd+Return" }' data-no-select>刷新</li>
+        <li onclick="preview_base_card.open();" data-shortcuts='{ "default": "Ctrl+Shift+B", "macOS": "Ctrl+Cmd+B" }' data-no-select>基础地址</li>
         <li><hr></li>
-        <li data-value="active-editor" data-selected onclick="setPreviewSource({ active_editor: true });">Active Editor</li>
+        <li data-value="active-editor" data-selected onclick="setPreviewSource({ active_editor: true });">当前编辑页</li>
       </ul>
     </menu-drop>
     <menu-drop id="tools_menu">
-      <button>Tools</button>
+      <button>工具</button>
       <ul>
-        <li onclick="replace_text_card.open();" data-shortcuts='{ "default": "Ctrl+Shift+F", "macOS": "Shift+Cmd+F" }'>Replace Text</li>
+        <li onclick="replace_text_card.open();" data-shortcuts='{ "default": "Ctrl+Shift+F", "macOS": "Shift+Cmd+F" }'>查找替换</li>
         <!--li onclick="color_picker_card.open();" data-shortcuts='{ "default": "Ctrl+Shift+K", "macOS": "Shift+Cmd+K" }'>Color Picker</li-->
-        <li onclick="json_formatter_card.open();" data-shortcuts='{ "default": "Ctrl+Shift+G", "macOS": "Shift+Cmd+G" }'>JSON Formatter</li>
-        <li onclick="uri_encoder_card.open();" data-shortcuts='{ "default": "Ctrl+Shift+Y", "macOS": "Shift+Cmd+Y" }'>URI Encoder</li>
-        <li onclick="uuid_generator_card.open();" data-shortcuts='{ "default": "Ctrl+Shift+O", "macOS": "Shift+Cmd+O" }'>UUID Generator</li>
-        <li>Insert Templates...
+        <li onclick="json_formatter_card.open();" data-shortcuts='{ "default": "Ctrl+Shift+G", "macOS": "Shift+Cmd+G" }'>JSON格式化</li>
+        <li onclick="uri_encoder_card.open();" data-shortcuts='{ "default": "Ctrl+Shift+Y", "macOS": "Shift+Cmd+Y" }'>URI加密</li>
+        <li onclick="uuid_generator_card.open();" data-shortcuts='{ "default": "Ctrl+Shift+O", "macOS": "Shift+Cmd+O" }'>UUID生成</li>
+        <li>插入代码块...
           <ul>
             <li onclick="Tools.insertTemplate({ type: 'html' });" data-shortcuts='{ "default": "Ctrl+Shift+H", "macOS": "Shift+Cmd+H" }'>HTML</li>
             <li onclick="Tools.insertTemplate({ type: 'pack-manifest-bedrock' });">Pack Manifest - Bedrock</li>
           </ul>
         </li>
-        <li>Online Resources...
-          <ul data-show-icons>
-            <li><a href="https://webformatter.com"><img src="resources/web-formatter.svg" alt="">Code Formatter</a></li>
-            <li><a href="https://www.sharedrop.io"><img part="invert" src="resources/sharedrop.svg" alt="">File Transferer</a></li>
-            <li><a href="https://www.diffchecker.com/"><img src="resources/diffchecker.svg" alt="">Difference Finder</a></li>
-            <li><a href="https://caniuse.com/"><img src="resources/caniuse.svg" alt="">Compatibility Checker</a></li>
-            <li><a href="https://web.dev/measure/"><img src="resources/webdev.svg" alt="">Performance Tester</a></li>
-            <li><a href="https://realfavicongenerator.net/"><img part="rounded" src="resources/real-favicon-generator.svg" alt="">Favicon Generator</a></li>
-            <li><a href="https://appsco.pe/developer/splash-screens/"><img part="invert" src="resources/appscope.svg" alt="">Splash Generator</a></li>
-            <li><a href="https://www.svgminify.com/"><img src="resources/svgminify.svg" alt="">SVG Simplifier</a></li>
-            <li><a href="https://cryptii.com/"><img src="resources/cryptii.svg" alt="">Text Encryptor</a></li>
-          </ul>
-        </li>
       </ul>
     </menu-drop>
     <menu-drop id="settings_menu" data-alternate>
-      <button onclick="settings_card.open();">Settings</button>
+      <button onclick="settings_card.open();">设置</button>
       <ul data-show-icons>
-        <li part="install-option" onclick="showInstallPrompt();"><img src="resources/install.svg" alt="">Install</li>
-        <li onclick="theme_card.open();"><img src="resources/template.svg" alt="">Theme Settings</li>
-        <li part="clear-site-caches-option" onclick="clearSiteCaches();"><img src="resources/settings.svg" alt="">Clear Cache</li>
-        <li onclick="Editor.settings.reset({ confirm: true });"><img src="resources/settings.svg" alt="">Reset Settings</li>
+        <li part="install-option" onclick="showInstallPrompt();"><img src="resources/install.svg" alt="">安装</li>
+        <li onclick="theme_card.open();"><img src="resources/template.svg" alt="">模版设置</li>
+        <li part="clear-site-caches-option" onclick="clearSiteCaches();"><img src="resources/settings.svg" alt="">清除缓冲</li>
+        <li onclick="Editor.settings.reset({ confirm: true });"><img src="resources/settings.svg" alt="">重置设置</li>
       </ul>
     </menu-drop>
   </div>
   <div class="app-omnibox">
     <button id="install_option" class="option" title="Install" onclick="showInstallPrompt();"><svg><use href="#install_icon"/></svg></button>
     <button class="option" title="Refresh Preview" onclick="refreshPreview({ force: true });"><svg><use href="#refresh_icon"/></svg></button>
-    <a class="option" href="https://github.com/Offroaders123/Smart-Text-Editor" title="Smart Text Editor on GitHub"><svg><use href="#github_icon"/></svg></a>
   </div>
 </header>
 
@@ -1871,49 +1856,49 @@
   <div id="card_backdrop" class="card-backdrop"></div>
   <ste-card id="settings_card" class="card dialog" data-type="dialog">
     <div class="header">
-      <span class="heading">Settings</span>
+      <span class="heading">设置</span>
     </div>
     <div class="main">
       <div class="content">
         <div class="item list start">
           <div class="select">
-            <label>Default Orientation:</label>
+            <label>默认方向:</label>
             <menu-drop id="default_orientation_setting" data-select>
-              <button>Horizontal</button>
+              <button>水平</button>
               <ul>
-                <li data-value="horizontal" onclick="Editor.settings.set('default-orientation','horizontal');" data-selected>Horizontal</li>
-                <li data-value="vertical" onclick="Editor.settings.set('default-orientation','vertical');">Vertical</li>
+                <li data-value="horizontal" onclick="Editor.settings.set('default-orientation','horizontal');" data-selected>水平</li>
+                <li data-value="vertical" onclick="Editor.settings.set('default-orientation','vertical');">垂直</li>
               </ul>
             </menu-drop>
           </div>
           <div class="checkbox">
             <input id="syntax_highlighting_setting" type="checkbox" oninput="setSyntaxHighlighting(this.checked);">
-            <label for="syntax_highlighting_setting"><svg class="check"><use href="#check_icon"/></svg>Syntax Highlighting (Beta)</label>
+            <label for="syntax_highlighting_setting"><svg class="check"><use href="#check_icon"/></svg>语法突出显示</label>
           </div>
           <div class="checkbox">
             <input id="automatic_refresh_setting" type="checkbox" oninput="Editor.settings.set('automatic-refresh',this.checked);" checked>
-            <label for="automatic_refresh_setting"><svg class="check"><use href="#check_icon"/></svg>Automatically Refresh Preview</label>
+            <label for="automatic_refresh_setting"><svg class="check"><use href="#check_icon"/></svg>自动刷新预览</label>
           </div>
         </div>
       </div>
+      <!--div class="options">
+        <button id="install_button" onclick="showInstallPrompt();"><svg><use href="#install_icon"/></svg>安装</button>
+        <button id="theme_button" onclick="theme_card.open();" data-card-previous="theme_card">其他模版<svg><use href="#arrow_icon"/></svg></button>
+      </div-->
       <div class="options">
-        <button id="install_button" onclick="showInstallPrompt();"><svg><use href="#install_icon"/></svg>Install</button>
-        <button id="theme_button" onclick="theme_card.open();" data-card-previous="theme_card">Customize Theme<svg><use href="#arrow_icon"/></svg></button>
-      </div>
-      <div class="options">
-        <button id="clear_site_caches_button" class="warning" onclick="clearSiteCaches();">Clear Cache</button>
-        <button class="warning" onclick="Editor.settings.reset({ confirm: true });">Reset Settings</button>
+        <button id="clear_site_caches_button" class="warning" onclick="clearSiteCaches();">清除缓存</button>
+        <button class="warning" onclick="Editor.settings.reset({ confirm: true });">重置设置</button>
       </div>
     </div>
   </ste-card>
   <ste-card id="theme_card" class="card dialog" data-type="dialog">
     <div class="header" data-card-parent="settings_card">
-      <span class="heading">Theme</span>
+      <span class="heading">模版</span>
     </div>
     <div class="main">
       <div class="content">
         <div class="item list">
-          <span style="line-height: 1.6;">Custom workspace theme settings<br>will be featured in a later update.</span>
+          <span style="line-height: 1.6;">暂无</span>
         </div>
         <!--div class="item list expand">
           <num-text id="theme_setting" placeholder="CSS to modify..."></num-text>
@@ -1935,47 +1920,47 @@
         </div>
       </div>
       <div class="options">
-        <button onclick="preview_base_input.reset();">Reset</button>
+        <button onclick="preview_base_input.reset();">重置</button>
       </div>
     </div>
   </ste-card>
   <ste-card id="reset_settings_card" class="card alert" data-type="alert">
     <div class="header">
       <img class="icon" src="resources/settings.svg" alt="">
-      <span class="heading">Reset Settings</span>
+      <span class="heading">重置设置</span>
     </div>
     <div class="main">
       <div class="content">
-        <div class="item">Your settings have been reset!</div>
+        <div class="item">设置已重置!</div>
       </div>
     </div>
   </ste-card>
   <ste-card id="cleared_cache_card" class="card alert" data-type="alert">
     <div class="header">
       <img class="icon" src="resources/template.svg" alt="">
-      <span class="heading">Cleared Cache</span>
+      <span class="heading">清除缓存</span>
     </div>
     <div class="main">
       <div class="content">
-        <div class="item">Successfully cleared offline cache!</div>
+        <div class="item">缓存清除成功!</div>
       </div>
     </div>
   </ste-card>
   <ste-card id="replace_text_card" class="card widget" data-type="widget">
     <div class="header">
-      <span class="heading">Replace Text</span>
+      <span class="heading">替换文字</span>
     </div>
     <div class="main">
       <div class="content">
         <div class="item list expand">
-          <num-text id="replacer_find" placeholder="Text to find..."></num-text>
-          <num-text id="replacer_replace" placeholder="Replace with..."></num-text>
+          <num-text id="replacer_find" placeholder="查找文字..."></num-text>
+          <num-text id="replacer_replace" placeholder="替换为..."></num-text>
         </div>
       </div>
       <div class="options">
-        <button onclick="Tools.replaceText.replace();">Replace</button>
-        <button onclick="Tools.replaceText.flip();">Flip</button>
-        <button onclick="Tools.replaceText.clear();">Clear</button>
+        <button onclick="Tools.replaceText.replace();">替换</button>
+        <button onclick="Tools.replaceText.flip();">置换</button>
+        <button onclick="Tools.replaceText.clear();">清除</button>
       </div>
     </div>
   </ste-card>
@@ -2007,7 +1992,7 @@
   </ste-card>
   <ste-card id="json_formatter_card" class="card widget" data-type="widget">
     <div class="header">
-      <span class="heading">JSON Formatter</span>
+      <span class="heading">JSON格式化</span>
     </div>
     <div class="main">
       <div class="content">
@@ -2016,9 +2001,9 @@
         </div>
       </div>
       <div class="options">
-        <button onclick="Tools.jsonFormatter.format();">Format</button>
-        <button onclick="Tools.jsonFormatter.collapse();">Collapse</button>
-        <button onclick="Tools.jsonFormatter.clear();">Clear</button>
+        <button onclick="Tools.jsonFormatter.format();">格式化</button>
+        <button onclick="Tools.jsonFormatter.collapse();">折叠</button>
+        <button onclick="Tools.jsonFormatter.clear();">清除</button>
       </div>
     </div>
   </ste-card>
@@ -3017,7 +3002,7 @@
     if (change) editor.tab.removeAttribute("data-editor-refresh");
   }
   function setTitle({ content, reset = false } = {}){
-    document.title = `${(content && !reset) ? `${content} - ` : ""}Smart Text Editor`;
+    document.title = `${(content && !reset) ? `${content} - ` : ""}文本编辑器`;
   }
   function addQueryParameters(entries){
     var parameters = new URLSearchParams(window.location.search);
@@ -3044,7 +3029,7 @@
     });
   }
   function clearSiteCaches(){
-    if (confirm("Are you sure you would like to clear all app caches?\nSmart Text Editor will no longer work offline until an Internet connection is available.")) navigator.serviceWorker.controller.postMessage({ action: "clear-site-caches" });
+    if (confirm("你要清除所有缓存吗?\n在Internet连接可用之前，文本编辑器将不再脱机工作。 ")) navigator.serviceWorker.controller.postMessage({ action: "clear-site-caches" });
   }
   function setScaling(event){
     var { safe_area_insets: safeAreaInsets } = Editor.appearance(), scalingOffset, scalingRange = { minimum: ((Editor.orientation() == "vertical") ? workspace_tabs.offsetHeight : safeAreaInsets.left) + 80, maximum: ((Editor.orientation() == "horizontal") ? window.innerWidth - safeAreaInsets.right : (Editor.orientation() == "vertical") ? (window.innerHeight - header.offsetHeight - safeAreaInsets.bottom) : 0) - 80 }, touchEvent = (Editor.environment().touch_device && event instanceof TouchEvent);
