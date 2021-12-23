@@ -5,7 +5,7 @@ tinymce.addI18n('zh_CN',{
 "Copy": "\u590d\u5236",
 "Paste": "\u7c98\u8d34",
 "Select all": "\u5168\u9009",
-"New document": "\u65b0\u6587\u4ef6",
+"New document": "清空",
 "Ok": "\u786e\u5b9a",
 "Cancel": "\u53d6\u6d88",
 "Visual aids": "\u7f51\u683c\u7ebf",

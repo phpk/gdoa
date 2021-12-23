@@ -21,7 +21,7 @@ layui.define(['jquery'],function (exports) {
         , language: 'zh_CN'//语言，可在option传入，也可在这里修改，option的值优先
         , response: {//后台返回数据格式设置
             statusName: response.statusName || 'code'//返回状态字段
-            , msgName: response.msgName || 'msg'//返回消息字段
+            , msgName: response.msgName || 'message'//返回消息字段
             , dataName: response.dataName || 'data'//返回的数据
             , statusCode: response.statusCode || {
                 ok: 0//数据正常
@@ -116,9 +116,9 @@ layui.define(['jquery'],function (exports) {
 
         option.quickbars_selection_toolbar = isset(option.quickbars_selection_toolbar) ? option.quickbars_selection_toolbar : 'cut copy | bold italic underline strikethrough '
 
-        option.plugins = isset(option.plugins) ? option.plugins : 'code quickbars print preview searchreplace autolink fullscreen image link media codesample table charmap hr advlist lists wordcount imagetools indent2em';
+        option.plugins = isset(option.plugins) ? option.plugins : 'openFile saveFile importword saveToPdf layout letterspacing lineheight upfile code quickbars print preview searchreplace autolink fullscreen image link media codesample table charmap hr advlist lists wordcount imagetools indent2em';
 
-        option.toolbar = isset(option.toolbar) ? option.toolbar : 'code undo redo | forecolor backcolor bold italic underline strikethrough | indent2em alignleft aligncenter alignright alignjustify outdent indent | link bullist numlist image table codesample | formatselect fontselect fontsizeselect';
+        option.toolbar = isset(option.toolbar) ? option.toolbar : 'importword saveToPdf layout letterspacing lineheight upfile | code undo redo | forecolor backcolor bold italic underline strikethrough | indent2em alignleft aligncenter alignright alignjustify outdent indent | link bullist numlist image table codesample | formatselect fontselect fontsizeselect';
 
         option.resize = isset(option.resize) ? option.resize : false;
 
@@ -131,7 +131,7 @@ layui.define(['jquery'],function (exports) {
         option.menubar = isset(option.menubar) ? option.menubar : 'file edit insert format table';
 
         option.menu = isset(option.menu) ? option.menu : {
-            file: {title: '文件', items: 'newdocument | print preview fullscreen | wordcount'},
+            file: {title: '文件', items: 'openFile saveFile newdocument | print preview fullscreen | wordcount'},
             edit: {title: '编辑', items: 'undo redo | cut copy paste pastetext selectall | searchreplace'},
             format: {
                 title: '格式',
@@ -178,6 +178,51 @@ layui.define(['jquery'],function (exports) {
                 $.ajax(ajaxOpt);
             }
         }
+
+        option.layout_options = {
+            style: {
+               'text-align':'justify',
+               'text-indent':'2em',
+               'line-height': 1.5
+            },
+            filterTags:['table>*','tbody'], //'table，'tbody','td','tr' 将会忽略掉 同时 table>*，忽略table 标签 以及所有子标签
+            clearStyle: ['text-indent'],//text-indent 将会被清除掉
+            tagsStyle: {
+               'table': {
+                   'line-height': 3,
+                   'text-align': 'center'
+               },
+              'table,tbody,tr,td': { //支持并集选择
+                'line-height': 2
+               },
+               'tr>td,table>tbody': { //支持, 精准定位 通过 ' > '
+                'line-height': 3,
+                'text-align': 'center'
+               }
+           }
+        };
+        option.importword_handler = function(editor,files,next){
+            var file_name = files[0].name
+            if(file_name.substr(file_name.lastIndexOf(".")+1)=='docx'){
+                editor.notificationManager.open({
+                    text: '正在转换中...',
+                    type: 'info',
+                    closeButton: false,
+                });
+                 next(files);
+            }else{
+                editor.notificationManager.open({
+                    text: '目前仅支持docx文件格式，若为doc111，请将扩展名改为docx',
+                    type: 'warning',
+                });
+            }
+            // next(files);
+        }
+        option.importword_filter = function(result,insert,message){ 
+            // 自定义操作部分
+            insert(result) //回插函数
+        };
+
 
         layui.sessionData('layui-tinymce',{
             key:option.selector,
