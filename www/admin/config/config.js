@@ -189,7 +189,7 @@ const getTree = (arr) => {
 const _msg = (msg) => {
     let m = document.createElement('div');
     m.innerHTML = msg;
-    m.style.cssText = "font-size: .9rem;color: rgb(255, 255, 255);background-color: rgba(0, 0, 0, 0.6);padding: 10px 15px;margin: 0 0 0 -60px;border-radius: 4px;position: fixed;    top: 50%;left: 50%;text-align: center;";
+    m.style.cssText = "font-size: .9rem;color: rgb(255, 255, 255);background-color: rgba(0, 0, 0, 0.6);padding: 10px 15px;margin: 0 0 0 -60px;border-radius: 4px;position: fixed;    top: 50%;left: 50%;text-align: center;z-index:20211223";
     document.body.appendChild(m);
     setTimeout(() => {
         let d = 0.5;

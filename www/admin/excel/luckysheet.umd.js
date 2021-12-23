@@ -2854,6 +2854,15 @@ field\u53EF\u4EE5\u662F\u8207database\u7B2C\u4E00\u884C\u4E2D\u67D0\u500B\u5217\
                                 <i style="color:#444D5A;" class="fa fa-angle-left fa-2x" aria-hidden="true"></i> 
                             </div> 
                             <div class="luckysheet-share-logo" title="\${logotitle}"></div-->
+                            <div data-tips="\u4FDD\u5B58" id="luckysheet_op_save" class="luckysheet_info_detail_back">
+                                <i style="color:#444D5A;" class="fa fa-save" aria-hidden="true"></i>
+                            </div>
+                            <div data-tips="\u5BFC\u51FA" id="luckysheet_op_export" class="luckysheet_info_detail_back">
+                                <i style="color:#444D5A;" class="fa fa-mail-forward" aria-hidden="true"></i>
+                            </div>
+                            <div data-tips="\u5BFC\u5165" id="luckysheet_op_import" class="luckysheet_info_detail_back">
+                                <i style="color:#444D5A;" class="fa fa-mail-reply" aria-hidden="true"></i>
+                            </div>
                             <div class="luckysheet_info_detail_back"></div>
                             <div class="sheet-name"> 
                                 <input data-tips="${a.tips}" id="luckysheet_info_detail_input" class="luckysheet_info_detail_input luckysheet-mousedown-cancel" value="${a.noName}" tabindex="0" dir="ltr" aria-label="${a.rename}" style="visibility: visible; width: 149px;" data-tooltip="${a.rename}"> 

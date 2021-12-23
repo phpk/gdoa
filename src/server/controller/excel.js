@@ -75,4 +75,31 @@ module.exports = class extends Base {
         }
         
     }
+    async importAction() {
+        const file = this.file('file');
+        //console.log(file);
+        if (!file) return this.fail('请上传文件');
+        let end = file.path.split(".").pop();
+        if (end != 'xlsx') return this.fail('请选择xlsx格式');
+        let fileData = fs.readFileSync(file.path);
+        let filename = file.name.replace('.' + end, '');
+        //console.log(file.path)
+        //console.log(fileData)
+        try {
+            let getData = (fileData) => {
+                return new Promise((reslove, reject) => {
+                    LuckyExcel.transformExcelToLucky(fileData, (exportJson, luckysheetfile) => {
+                        //console.log(exportJson.sheets)
+                        return reslove(exportJson.sheets);
+                    });
+                })
+            }
+            let res = await getData(fileData)
+            //console.log(res)
+            return this.success({title : filename, content : res});
+            
+        } catch (e) {
+            return this.fail(e.message)
+        }
+    }
 }

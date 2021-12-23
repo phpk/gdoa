@@ -265,7 +265,9 @@ body {
 	background-color: rgba(255, 255, 255, .1);
 	overflow: visible;
 	height: auto;
-	cursor : move;
+	/*cursor : move;*/
+	cursor : pointer;
+	cursor : hand;
 }
 
 .winui-desktop-item.winui-this,.ui-selected {
