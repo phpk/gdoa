@@ -47,8 +47,8 @@ body{
 <body>
     <div class="main">
         <div class="title">
-            <input type="text" name="title" placeholder="请输入标题">
-            <span>
+            <input type="text" name="title" id="title" placeholder="请输入标题">
+            <span id="saveBtn">
                 <img src="tinymce/save.png">
             </span>
         </div>
@@ -60,6 +60,9 @@ body{
 
 <script src="/admin/component/layui/layui.js"></script>
 <script src="/admin/config/config.js"></script>
+<script src="libs/Blob.js"></script>
+<script src="libs/pdf-lib.min.js"></script>
+<script src="libs/pdf.min.js"></script>
 <script src="libs/easyuploader.js"></script>
 <script src="libs/FileSaver.js"></script>
 <script>

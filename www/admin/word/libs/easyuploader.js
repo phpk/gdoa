@@ -3,7 +3,7 @@ let _lastLoaded = 0;    //上传进度增量
 
 // 上传配置项
 let uploadOption = {
-    action:"word/upload", //上传接口
+    action:"word/openFile", //上传接口
     filter:"",                          //文件类型过滤器
     maxsize:50,                         //文件上传大小限制，单位：M
     params:null,                        //请求参数
@@ -33,7 +33,7 @@ let config = (action, params, filter, maxsize, startcb)=>{
 //设置配置对象，建议使用
 let setOption = (opt)=>{
     if(opt!=undefined && opt!=null){
-        uploadOption.action = opt.action || apiUrl + "word/upload";
+        uploadOption.action = opt.action || "word/openFile";
         uploadOption.filter = opt.filter || "";
         uploadOption.maxsize = opt.maxsize || 50;
         uploadOption.params = opt.params || null;
@@ -48,6 +48,7 @@ let setOption = (opt)=>{
 let upload = (resolve, reject)=>{
     let input = document.createElement("input");
     input.type = "file";
+    input.name = "file";
     input.click();
     input.onchange = function(){
         let file = input.files[0];
@@ -90,7 +91,8 @@ let upload = (resolve, reject)=>{
             }
         }
         var xhr = new XMLHttpRequest();
-        var action = uploadOption.action;
+        var action = apiUrl + uploadOption.action;
+        console.log(action)
         xhr.open("POST", action);
         xhr.withCredentials = true;
         // ****** 各种事件的监听 ******
