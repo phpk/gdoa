@@ -116,9 +116,9 @@ layui.define(['jquery'],function (exports) {
 
         option.quickbars_selection_toolbar = isset(option.quickbars_selection_toolbar) ? option.quickbars_selection_toolbar : 'cut copy | bold italic underline strikethrough '
 
-        option.plugins = isset(option.plugins) ? option.plugins : 'openFile saveFile importword saveToPdf layout letterspacing lineheight upfile code quickbars print preview searchreplace autolink fullscreen image link media codesample table charmap hr advlist lists wordcount imagetools indent2em';
+        option.plugins = isset(option.plugins) ? option.plugins : 'openFile saveFile layout letterspacing lineheight upfile code quickbars print preview searchreplace autolink fullscreen image link media codesample table charmap hr advlist lists wordcount imagetools indent2em';
 
-        option.toolbar = isset(option.toolbar) ? option.toolbar : 'importword saveToPdf layout letterspacing lineheight upfile | code undo redo | forecolor backcolor bold italic underline strikethrough | indent2em alignleft aligncenter alignright alignjustify outdent indent | link bullist numlist image table codesample | formatselect fontselect fontsizeselect';
+        option.toolbar = isset(option.toolbar) ? option.toolbar : 'layout letterspacing lineheight upfile | code undo redo | forecolor backcolor bold italic underline strikethrough | indent2em alignleft aligncenter alignright alignjustify outdent indent | link bullist numlist image table codesample | formatselect fontselect fontsizeselect';
 
         option.resize = isset(option.resize) ? option.resize : false;
 
