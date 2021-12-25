@@ -4,13 +4,13 @@ const rename = think.promisify(fs.rename, fs);
 //const pdfreader = require('pdfreader');
 // HACK few hacks to let PDF.js be loaded not as a module in global space.
 require("./pdf/domstubs.js").setStubs(global);
-const pdfjsLib = require("pdfjs-dist/legacy/build/pdf.js");
-const { document } = require('./pdf/domstubs.js');
+//const pdfjsLib = require("pdfjs-dist/legacy/build/pdf.js");
+//const { document } = require('./pdf/domstubs.js');
 const CMAP_URL = think.ROOT_PATH + "node_modules/pdfjs-dist/cmaps/";
 const STANDARD_FONT_DATA_URL = think.ROOT_PATH + "node_modules/pdfjs-dist/standard_fonts/";
 const CMAP_PACKED = true;
 const SVG_NS = "http://www.w3.org/2000/svg";
-const Canvas = require("canvas");
+//const Canvas = require("canvas");
 
 function NodeCanvasFactory() { }
 NodeCanvasFactory.prototype = {
