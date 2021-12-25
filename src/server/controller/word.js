@@ -3,13 +3,13 @@ const fs = require('fs');
 const path = require('path')
 const rename = think.promisify(fs.rename, fs);
 const mammoth = require('mammoth');
-const pdf2html = require('pdf2html');
+//const pdf2html = require('pdf2html');
 /**
  * @class
  * @apiDefine word 文档编辑器管理
  */
-module.exports = class extends Base {
-
+module.exports = class extends think.Controller {
+//module.exports = class extends Base {
     async listAction() {
         let { page, limit, param } = this.get();
         let wsql = {};
@@ -52,6 +52,7 @@ module.exports = class extends Base {
         //console.log(file);
         if (!file) return this.fail('请上传文件');
         let ext = this.post('ext');
+        let type = this.post('type');
         let end = file.path.split(".").pop();
         if (ext.indexOf(',') !== -1) {
             if (!ext.split(',').includes(end)) return this.fail('上传格式错误');
@@ -68,12 +69,16 @@ module.exports = class extends Base {
         //console.log(fileData)
         try {
             let res;
-            
-            if (end == 'doc' || end == 'docx') {
+            console.log(type)
+            if (type == 'doc') {
                 res = await this.toWord(file);
             }
-            else if (end == 'pdf') {
-                res = await this.toPdf(file);
+            else if (type == 'pdfimg') {
+                res = await this.toPdfPng(file);
+                //console.log(JSON.stringify(res))
+            }
+            else if (type == 'pdftext') {
+                res = await this.service('pdf').toText(file);
             }
             //console.log(res)
             return this.success(res);
@@ -116,13 +121,17 @@ module.exports = class extends Base {
         }
         return rt;
     }
-    async toPdf(file) {
+    async toPdfPng(file) {
         let now = Date.now(),
             fpath = 'www/upload/word/cache/',
             pdfpath = path.join(think.ROOT_PATH, fpath + now + ".pdf");
         
         think.mkdir(path.dirname(pdfpath));
         await rename(file.path, pdfpath);
+        let rt = await this.service('pdf').readSvg(pdfpath);
+        fs.unlink(pdfpath, a => { })
+        return {value:rt};
+        /*
         return new Promise((reslove, reject) => { 
             return pdf2html.html(pdfpath, (err, value) => {
                 if (err) {
@@ -134,7 +143,7 @@ module.exports = class extends Base {
                     reslove({value})
                 }
             })
-        })
+        })*/
         
         
         

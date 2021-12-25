@@ -12,6 +12,7 @@
     "lint-fix": "eslint --fix src/"
   },
   "dependencies": {
+    "canvas": "^2.8.0",
     "json2md": "^1.12.0",
     "jsonwebtoken": "^8.5.1",
     "koa-helmet": "^6.1.0",
@@ -21,6 +22,8 @@
     "mysql-import": "^5.0.21",
     "mysql-ssh": "^1.0.6",
     "mysqldump": "^3.2.0",
+    "pdf-parse": "^1.1.1",
+    "pdfjs-dist": "^2.12.313",
     "socket.io-redis": "^6.1.1",
     "svg-captcha": "^1.4.0",
     "think-cache": "^1.0.0",
