@@ -68,15 +68,11 @@ body{
 <script src="libs/pdfmgr.js"></script>
 <script src="libs/marked.min.js"></script>
 <script src="libs/rtftohtml.js"></script>
-
-<script type="text/javascript" src="libs/ppt/jszip.min.js"></script>
-<script type="text/javascript" src="libs/ppt/filereader.js"></script>
-<script type="text/javascript" src="libs/ppt/d3.min.js"></script>
-<script type="text/javascript" src="libs/ppt/nv.d3.min.js"></script>
-<script type="text/javascript" src="libs/ppt/pptxjs.js"></script>
-
-<script src="libs/easyuploader.js"></script>
+<script src="libs/html2docx.js"></script>
+<script src="libs/html2pdf.js"></script>
+<script src="libs/html2md.js"></script>
 <script src="libs/FileSaver.js"></script>
+<script src="libs/easyuploader.js"></script>
 <script>
     layui.extend({
         tinymce: '{/}./tinymce/tinymce'
@@ -87,10 +83,8 @@ body{
         , $ = layui.$
 
         var edit = t.render({
-            elem: "#content"
-            , height: 780
-            // ...
-            // 其余配置可参考官方文档
+            elem: "#content", 
+            height: 780
         },function(opt,edit){
             //加载完成后回调
         });

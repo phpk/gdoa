@@ -1,5 +1,3 @@
-//  http://tinymce.ax-z.cn/   中文文档
-
 layui.define(['jquery'],function (exports) {
     var $ = layui.$
 
@@ -17,7 +15,7 @@ layui.define(['jquery'],function (exports) {
 
     var settings = {
         base_url: modPath
-        , images_upload_url: ''//图片上传接口，可在option传入，也可在这里修改，option的值优先
+        , images_upload_url: 'word/upload'//图片上传接口，可在option传入，也可在这里修改，option的值优先
         , language: 'zh_CN'//语言，可在option传入，也可在这里修改，option的值优先
         , response: {//后台返回数据格式设置
             statusName: response.statusName || 'code'//返回状态字段
@@ -116,7 +114,7 @@ layui.define(['jquery'],function (exports) {
 
         option.quickbars_selection_toolbar = isset(option.quickbars_selection_toolbar) ? option.quickbars_selection_toolbar : 'cut copy | bold italic underline strikethrough '
 
-        option.plugins = isset(option.plugins) ? option.plugins : 'openFile saveFile layout letterspacing lineheight upfile code quickbars print preview searchreplace autolink fullscreen image link media codesample table charmap hr advlist lists wordcount imagetools indent2em';
+        option.plugins = isset(option.plugins) ? option.plugins : 'openFile saveFile openAll layout letterspacing lineheight upfile code quickbars print preview searchreplace autolink fullscreen image link media codesample table charmap hr advlist lists wordcount imagetools indent2em';
 
         option.toolbar = isset(option.toolbar) ? option.toolbar : 'layout letterspacing lineheight upfile | code undo redo | forecolor backcolor bold italic underline strikethrough | indent2em alignleft aligncenter alignright alignjustify outdent indent | link bullist numlist image table codesample | formatselect fontselect fontsizeselect';
 
@@ -131,7 +129,7 @@ layui.define(['jquery'],function (exports) {
         option.menubar = isset(option.menubar) ? option.menubar : 'file edit insert format table';
 
         option.menu = isset(option.menu) ? option.menu : {
-            file: {title: '文件', items: 'openFile saveFile newdocument | print preview fullscreen | wordcount'},
+            file: { title: '文件', items: 'openAll openFile saveFile newdocument | print preview fullscreen | wordcount'},
             edit: {title: '编辑', items: 'undo redo | cut copy paste pastetext selectall | searchreplace'},
             format: {
                 title: '格式',
@@ -148,16 +146,21 @@ layui.define(['jquery'],function (exports) {
 
         option.images_upload_handler = isset(option.images_upload_handler) ? option.images_upload_handler : function(blobInfo, succFun, failFun) {
             if(isEmpty(option.images_upload_url)){
-                failFun("上传接口未配置");
-                return console.error('images_upload_url未配置');
+                //failFun("上传接口未配置");
+                return console.log('images_upload_url未配置');
             }
             var formData = new FormData();
             formData.append(file_field, blobInfo.blob());
-            if(typeof form_data == 'object'){
-                for(var key in form_data){
+            if (typeof form_data == 'object') {
+                for (var key in form_data) {
                     formData.append(key, form_data[key]);
                 }
             }
+            //console.log(form_data)
+            return;
+            
+            
+            
             var ajaxOpt = {
                 url: option.images_upload_url,
                 dataType: 'json',
@@ -201,27 +204,7 @@ layui.define(['jquery'],function (exports) {
                }
            }
         };
-        option.importword_handler = function(editor,files,next){
-            var file_name = files[0].name
-            if(file_name.substr(file_name.lastIndexOf(".")+1)=='docx'){
-                editor.notificationManager.open({
-                    text: '正在转换中...',
-                    type: 'info',
-                    closeButton: false,
-                });
-                 next(files);
-            }else{
-                editor.notificationManager.open({
-                    text: '目前仅支持docx文件格式，若为doc111，请将扩展名改为docx',
-                    type: 'warning',
-                });
-            }
-            // next(files);
-        }
-        option.importword_filter = function(result,insert,message){ 
-            // 自定义操作部分
-            insert(result) //回插函数
-        };
+       
         option.extended_valid_elements = "svg[*],defs[*],pattern[*],desc[*],metadata[*],g[*],mask[*],path[*],line[*],marker[*],rect[*],circle[*],ellipse[*],polygon[*],polyline[*],linearGradient[*],radialGradient[*],stop[*],image[*],view[*],text[*],textPath[*],title[*],tspan[*],glyph[*],symbol[*],switch[*],use[*]";
 
         layui.sessionData('layui-tinymce',{

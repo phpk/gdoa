@@ -2,7 +2,8 @@ const Base = require('./base.js');
 const fs = require('fs');
 const path = require('path')
 const rename = think.promisify(fs.rename, fs);
-const mammoth = require('mammoth');
+const textract = require('textract');
+const { createWorker } = require('tesseract.js');
 //const pdf2html = require('pdf2html');
 /**
  * @class
@@ -51,101 +52,51 @@ module.exports = class extends think.Controller {
         const file = this.file('file');
         //console.log(file);
         if (!file) return this.fail('请上传文件');
-        let ext = this.post('ext');
-        let type = this.post('type');
         let end = file.path.split(".").pop();
-        if (ext.indexOf(',') !== -1) {
-            if (!ext.split(',').includes(end)) return this.fail('上传格式错误');
-        } else {
-            if (end != ext) return this.fail('上传格式错误');
-        }
-        
-        let enableExt = ['doc', 'docx', 'pdf', 'txt', 'md', 'rtf'];
-
-        if (!enableExt.includes(end)) return this.fail('不在系统可上传范围内');
-        //let fileData = fs.readFileSync(file.path);
-        let filename = file.name.replace('.' + end, '');
-        //console.log(file.path)
-        //console.log(fileData)
+        let filename = Date.now() + '.' + end,
+            filepath = path.join(think.ROOT_PATH, 'www/upload/word/cache/' + filename)
         try {
+            think.mkdir(path.dirname(filepath));
+            await rename(file.path, filepath);
             let res;
-            console.log(type)
-            if (type == 'doc') {
-                res = await this.toWord(file);
+            let imgs = ['bmp', 'jpg', 'png', 'pbm'];
+            if (imgs.includes(end)) {
+                res = await this.openPic(filepath);
+            } else {
+                res = await this.openText(filepath);
             }
-            else if (type == 'pdfimg') {
-                res = await this.toPdfPng(file);
-                //console.log(JSON.stringify(res))
-            }
-            else if (type == 'pdftext') {
-                res = await this.service('pdf').toText(file);
-            }
+            
+            //console.log(err)
             //console.log(res)
+            fs.unlink(filepath, e => { })
             return this.success(res);
 
         } catch (e) {
             return this.fail(e.message)
         }
     }
-    async toWord(file) {
-        let name = Date.now() + ".docx",
-            filepath = path.join(think.ROOT_PATH, 'www/upload/word/cache/' + name);
-        think.mkdir(path.dirname(filepath));
-        await rename(file.path, filepath);
-
-
-        let options = {
-            //transformDocument: mammoth.transforms.paragraph(transformParagraph),
-            styleMap: [
-                "p[style-name='Intro'] => p.intro",
-                "p[style-name='List Bullet'] => ul > li:fresh",
-                "b => em"
-            ],
-            includeDefaultStyleMap: true,
-            convertImage: mammoth.images.imgElement(function (image) {
-                return image.read("base64").then(function (imageBuffer) {
-                    return {
-                        src: "data:" + image.contentType + ";base64," + imageBuffer
-                    };
-                });
+    async openText(filepath) {
+        return new Promise((reslove, reject) => {
+            textract.fromFileWithPath(filepath, function (error, text) {
+                reslove(text)
+                console.log(error)
             })
-        };
-        let rt;
-        try {
-            rt = await mammoth.convertToHtml({ path: filepath, options });
-            fs.unlink(filepath, a => { })
-        } catch (e) {
-            fs.unlink(filepath, a => { })
-            console.log(e.message)
-            rt.message = e.message;
-        }
-        return rt;
+        })
     }
-    async toPdfPng(file) {
-        let now = Date.now(),
-            fpath = 'www/upload/word/cache/',
-            pdfpath = path.join(think.ROOT_PATH, fpath + now + ".pdf");
-        
-        think.mkdir(path.dirname(pdfpath));
-        await rename(file.path, pdfpath);
-        let rt = await this.service('pdf').readSvg(pdfpath);
-        fs.unlink(pdfpath, a => { })
-        return {value:rt};
-        /*
-        return new Promise((reslove, reject) => { 
-            return pdf2html.html(pdfpath, (err, value) => {
-                if (err) {
-                    console.error('Conversion error: ' + err)
-                    fs.unlink(pdfpath, a => { })
-                    reject(err)
-                } else {
-                    fs.unlink(pdfpath, a => { })
-                    reslove({value})
-                }
-            })
-        })*/
-        
-        
-        
+    async openPic(filepath) {
+        const worker = createWorker({
+            logger: m => console.log(m)
+        });
+        await worker.load();
+        await worker.loadLanguage('eng');
+        await worker.initialize('eng');
+        //onst { data: { text } } = await worker.recognize(filepath);
+        const { data: { text } } = await worker.recognize('https://tesseract.projectnaptha.com/img/eng_bw.png');
+
+        console.log(text)
+        await worker.terminate();
+        return text;
+            
     }
+    
 }
