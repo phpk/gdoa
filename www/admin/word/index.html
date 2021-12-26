@@ -61,8 +61,6 @@ body{
 <script src="/admin/component/layui/layui.js"></script>
 <script src="/admin/config/config.js"></script>
 <script src="libs/Blob.js"></script>
-<!--script src="libs/pdf-lib.min.js"></script>
-<script src="libs/pdf.min.js"></script-->
 <script src="libs/mammoth.js"></script>
 <script src="libs/pdf.js"></script>
 <script src="libs/pdfmgr.js"></script>
@@ -84,7 +82,8 @@ body{
 
         var edit = t.render({
             elem: "#content", 
-            height: 780
+            height: 780,
+            //images_upload_url : apiUrl + 'word/upload'
         },function(opt,edit){
             //加载完成后回调
         });

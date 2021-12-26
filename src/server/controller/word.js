@@ -2,15 +2,17 @@ const Base = require('./base.js');
 const fs = require('fs');
 const path = require('path')
 const rename = think.promisify(fs.rename, fs);
+const PDFParser = require("pdf2json");
 const textract = require('textract');
-const { createWorker } = require('tesseract.js');
+const getWorker = require('tesseract.js-node');//图片ocr
+//const okrabyte = require('okrabyte');
 //const pdf2html = require('pdf2html');
 /**
  * @class
  * @apiDefine word 文档编辑器管理
  */
-module.exports = class extends think.Controller {
-//module.exports = class extends Base {
+//module.exports = class extends think.Controller {
+module.exports = class extends Base {
     async listAction() {
         let { page, limit, param } = this.get();
         let wsql = {};
@@ -48,6 +50,35 @@ module.exports = class extends think.Controller {
         await this.model('word').where({ id }).delete()
         return this.success()
     }
+    async uploadAction() {
+        const file = this.file('edit');
+        console.log(file)
+        //console.log(this.file());
+        if (!file) return this.fail(100, '请上传文件');
+        let canupload = ["xls", "xlsx", "doc", "docx", "pdf", "ppt", "pptx", "zip", "png", "jpg", "jpeg", "gif", "pem"],
+            end = file.path.split(".").pop();
+        if (file.type == 'image/png' && file.name == 'blob') {
+            end = 'png';
+        }
+        if (!canupload.includes(end)) return this.fail(100, '上传文件格式错误')
+        let name = Date.now() + "." + end,
+            day = think.datetime(Date.now(), 'YYYY-MM-DD'),
+            rpath = '/upload/word/' + end + '/' + day + '/',
+            filepath = path.join(think.ROOT_PATH, 'www' + rpath + name);
+        think.mkdir(path.dirname(filepath));
+        await rename(file.path, filepath);
+
+        let host = this.ctx.host || this.ctx.hostname;
+        let filename = host + rpath + name;
+        return this.success({
+            name: file.name,
+            filename,
+            filepath,
+            path: rpath + name
+        })
+
+
+    }
     async openFileAction() {
         const file = this.file('file');
         //console.log(file);
@@ -55,23 +86,24 @@ module.exports = class extends think.Controller {
         let end = file.path.split(".").pop();
         let filename = Date.now() + '.' + end,
             filepath = path.join(think.ROOT_PATH, 'www/upload/word/cache/' + filename)
+        think.mkdir(path.dirname(filepath));
+        await rename(file.path, filepath);
         try {
-            think.mkdir(path.dirname(filepath));
-            await rename(file.path, filepath);
             let res;
-            let imgs = ['bmp', 'jpg', 'png', 'pbm'];
+            let imgs = ['jpg', 'png', 'bmp','pbm'];
             if (imgs.includes(end)) {
                 res = await this.openPic(filepath);
-            } else {
+            }
+            else if (end == 'pdf') {
+                res = await this.openPdf(filepath);
+            }
+            else {
                 res = await this.openText(filepath);
             }
-            
-            //console.log(err)
-            //console.log(res)
             fs.unlink(filepath, e => { })
             return this.success(res);
-
         } catch (e) {
+            fs.unlink(filepath, e => { })
             return this.fail(e.message)
         }
     }
@@ -84,19 +116,23 @@ module.exports = class extends think.Controller {
         })
     }
     async openPic(filepath) {
-        const worker = createWorker({
-            logger: m => console.log(m)
+        const worker = await getWorker({
+            tessdata: path.join(think.ROOT_PATH, 'data/ocr/lang'),
+            languages: ['chi_sim']  
         });
-        await worker.load();
-        await worker.loadLanguage('eng');
-        await worker.initialize('eng');
-        //onst { data: { text } } = await worker.recognize(filepath);
-        const { data: { text } } = await worker.recognize('https://tesseract.projectnaptha.com/img/eng_bw.png');
-
-        console.log(text)
-        await worker.terminate();
-        return text;
-            
+        return await worker.recognize(filepath, 'chi_sim');
+    }
+    async openPdf(filepath) {
+        return new Promise((reslove, reject) => { 
+            const pdfParser = new PDFParser(this,1);
+            pdfParser.loadPDF(filepath);
+            pdfParser.on("pdfParser_dataReady", pdfData => {
+                //console.log(pdfData)
+                let data = pdfParser.getRawTextContent()
+                reslove(data)
+            });
+        })
+        
     }
     
 }

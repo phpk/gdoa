@@ -15,7 +15,7 @@ layui.define(['jquery'],function (exports) {
 
     var settings = {
         base_url: modPath
-        , images_upload_url: 'word/upload'//图片上传接口，可在option传入，也可在这里修改，option的值优先
+        , images_upload_url: apiUrl + 'word/upload'//图片上传接口，可在option传入，也可在这里修改，option的值优先
         , language: 'zh_CN'//语言，可在option传入，也可在这里修改，option的值优先
         , response: {//后台返回数据格式设置
             statusName: response.statusName || 'code'//返回状态字段
@@ -26,10 +26,17 @@ layui.define(['jquery'],function (exports) {
             }
         }
         , success: function (res, succFun, failFun) {//图片上传完成回调 根据自己需要修改
-            if (res[this.response.statusName] == this.response.statusCode.ok) {
-                succFun(res[this.response.dataName]);
+            //console.log(this.response)
+            //console.log(res)
+            // if (res[this.response.statusName] == this.response.statusCode.ok) {
+            //     succFun(res[this.response.dataName]);
+            // } else {
+            //     failFun(res[this.response.msgName]);
+            // }
+            if (res.code == 0) {
+                succFun(res.data.path);
             } else {
-                failFun(res[this.response.msgName]);
+                layer.msg(res.message, {icon:2})
             }
         }
     };
@@ -114,9 +121,9 @@ layui.define(['jquery'],function (exports) {
 
         option.quickbars_selection_toolbar = isset(option.quickbars_selection_toolbar) ? option.quickbars_selection_toolbar : 'cut copy | bold italic underline strikethrough '
 
-        option.plugins = isset(option.plugins) ? option.plugins : 'openFile saveFile openAll layout letterspacing lineheight upfile code quickbars print preview searchreplace autolink fullscreen image link media codesample table charmap hr advlist lists wordcount imagetools indent2em';
+        option.plugins = isset(option.plugins) ? option.plugins : 'openFile saveFile openAll layout letterspacing lineheight upfile code quickbars print preview searchreplace autolink fullscreen image link media codesample table charmap hr advlist lists wordcount imagetools indent2em insertdatetime emoticons anchor pagebreak axupimgs formatpainter autosave';
 
-        option.toolbar = isset(option.toolbar) ? option.toolbar : 'layout letterspacing lineheight upfile | code undo redo | forecolor backcolor bold italic underline strikethrough | indent2em alignleft aligncenter alignright alignjustify outdent indent | link bullist numlist image table codesample | formatselect fontselect fontsizeselect';
+        option.toolbar = isset(option.toolbar) ? option.toolbar : 'layout letterspacing lineheight upfile | code undo redo | forecolor backcolor bold italic underline strikethrough | indent2em alignleft aligncenter alignright alignjustify outdent indent | link bullist numlist image table codesample formatpainter | formatselect fontselect fontsizeselect axupimgs';
 
         option.resize = isset(option.resize) ? option.resize : false;
 
@@ -129,7 +136,7 @@ layui.define(['jquery'],function (exports) {
         option.menubar = isset(option.menubar) ? option.menubar : 'file edit insert format table';
 
         option.menu = isset(option.menu) ? option.menu : {
-            file: { title: '文件', items: 'openAll openFile saveFile newdocument | print preview fullscreen | wordcount'},
+            file: { title: '文件', items: 'openAll openFile saveFile newdocument restoredraft | print preview fullscreen | wordcount'},
             edit: {title: '编辑', items: 'undo redo | cut copy paste pastetext selectall | searchreplace'},
             format: {
                 title: '格式',
@@ -157,15 +164,20 @@ layui.define(['jquery'],function (exports) {
                 }
             }
             //console.log(form_data)
-            return;
+            //return;
             
             
-            
+            $.ajaxSetup({
+                xhrFields: {
+                    withCredentials: true
+                }
+            });
             var ajaxOpt = {
                 url: option.images_upload_url,
                 dataType: 'json',
                 type: 'POST',
                 data: formData,
+                headers : getHeader(),
                 processData: false,
                 contentType: false,
                 success: function (res) {
@@ -175,11 +187,7 @@ layui.define(['jquery'],function (exports) {
                     failFun("网络错误：" + res.status);
                 }
             };
-            if (typeof admin.req == 'function') {
-                admin.req(ajaxOpt);
-            } else {
-                $.ajax(ajaxOpt);
-            }
+            $.ajax(ajaxOpt);
         }
 
         option.layout_options = {
@@ -204,9 +212,36 @@ layui.define(['jquery'],function (exports) {
                }
            }
         };
+        option.file_callback = function (file, succFun) {
+            // 自定义处理文件操作部分
+            var data = new FormData();
+            data.append("edit", file);
+            $.ajax({
+                data: data,
+                type: 'POST',
+                url: apiUrl + 'word/upload',
+                cache: false,
+                contentType: false,
+                processData: false,
+                headers: {
+                    //'Content-Type': 'multipart/form-data',
+                    'rttoken': getToken()
+                },
+                dataType: 'json'
+            }).then(function (res) {
+                console.log(res)
+                if (res.code == 0) {
+                    succFun(res.data.path, { text: res.data.name });
+                }
+            }).fail(function (error) {
+                layer.msg(error.message, {icon : 2})
+                // failFun('上传失败:' + error.message)
+            });
+        }
        
         option.extended_valid_elements = "svg[*],defs[*],pattern[*],desc[*],metadata[*],g[*],mask[*],path[*],line[*],marker[*],rect[*],circle[*],ellipse[*],polygon[*],polyline[*],linearGradient[*],radialGradient[*],stop[*],image[*],view[*],text[*],textPath[*],title[*],tspan[*],glyph[*],symbol[*],switch[*],use[*]";
 
+        option.font_formats = '微软雅黑=Microsoft YaHei,Helvetica Neue,PingFang SC,sans-serif;苹果苹方=PingFang SC,Microsoft YaHei,sans-serif;宋体=simsun,serif;仿宋体=FangSong,serif;黑体=SimHei,sans-serif;Arial=arial,helvetica,sans-serif;Symbol=symbol;Tahoma=tahoma,arial,helvetica,sans-serif;Terminal=terminal,monaco;Times New Roman=times new roman,times;Verdana=verdana,geneva;Webdings=webdings;Wingdings=wingdings,zapf dingbats;';
         layui.sessionData('layui-tinymce',{
             key:option.selector,
             value:option
