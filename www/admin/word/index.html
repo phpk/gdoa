@@ -83,10 +83,13 @@ body{
         var edit = t.render({
             elem: "#content", 
             height: 780,
-            //images_upload_url : apiUrl + 'word/upload'
         },function(opt,edit){
             //加载完成后回调
         });
+        $('#saveBtn').on('click', e => {
+            let val = edit.getContent()
+            console.log(val)
+        })
 
     });
 
