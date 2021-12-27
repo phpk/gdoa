@@ -46,15 +46,15 @@
       dragItems: true, //whether can drag cards or not, useful when set permissions on it.
       itemAddOptions: __DEFAULT_ITEM_ADD_OPTIONS,
       itemHandleOptions: __DEFAULT_ITEM_HANDLE_OPTIONS,
-      dragEl: function (el, source) {},
-      dragendEl: function (el) {},
-      dropEl: function (el, target, source, sibling) {},
-      dragBoard: function (el, source) {},
-      dragendBoard: function (el) {},
-      dropBoard: function (el, target, source, sibling) {},
-      click: function (el) {},
-      context: function (el, e) {},
-      buttonClick: function (el, boardId) {},
+      dragEl: function (el, source) { },
+      dragendEl: function (el) { },
+      dropEl: function (el, target, source, sibling) { },
+      dragBoard: function (el, source) { },
+      dragendBoard: function (el) { },
+      dropBoard: function (el, target, source, sibling) { },
+      click: function (el) { },
+      context: function (el, e) { },
+      buttonClick: function (el, boardId) { },
       propagationHandlers: [],
     }
 
@@ -297,7 +297,7 @@
           headerBoard.classList.add(value)
         })
         headerBoard.innerHTML =
-          '<div class="kanban-title-board">' + board.title + '</div>'
+          '<div class="kanban-title-board">' + board.title + '</div><i class="layui-icon layui-icon-more-vertical kb-header-i" data-id="' + boardNode.dataset.id + '"></i>'
         //content board
         var contentBoard = document.createElement('main')
         contentBoard.classList.add('kanban-drag')
@@ -362,11 +362,11 @@
         boardNode.appendChild(contentBoard)
         boardNode.appendChild(footerBoard)
         //board add
-        self.container.appendChild(boardNode)
+        //self.container.appendChild(boardNode)
+        self.container.insertBefore(boardNode, self.container.firstChild)
       }
       return self
     }
-
     this.findBoard = function (id) {
       var el = self.element.querySelector('[data-id="' + id + '"]')
       return el
@@ -460,10 +460,10 @@
     }
 
     // board button on click function
-    this.onButtonClick = function (el) {}
+    this.onButtonClick = function (el) { }
 
     //PRIVATE FUNCTION
-    function __extendDefaults (source, properties) {
+    function __extendDefaults(source, properties) {
       var property
       for (property in properties) {
         if (properties.hasOwnProperty(property)) {
@@ -473,7 +473,7 @@
       return source
     }
 
-    function __setBoard () {
+    function __setBoard() {
       self.element = document.querySelector(self.options.element)
       //create container
       var boardContainer = document.createElement('div')
@@ -506,7 +506,7 @@
       self.element.appendChild(self.container)
     }
 
-    function __onclickHandler (nodeItem, clickfn) {
+    function __onclickHandler(nodeItem, clickfn) {
       nodeItem.addEventListener('click', function (e) {
         if (!self.options.propagationHandlers.includes('click')) e.preventDefault()
         self.options.click(this)
@@ -516,11 +516,11 @@
 
     function __onContextHandler(nodeItem, contextfn) {
       if (nodeItem.addEventListener) {
-          nodeItem.addEventListener('contextmenu', function (e) {
-            if (!self.options.propagationHandlers.includes('context')) e.preventDefault()
-            self.options.context(this, e)
-            if (typeof this.contextfn === 'function') this.contextfn(this, e)
-          }, false)
+        nodeItem.addEventListener('contextmenu', function (e) {
+          if (!self.options.propagationHandlers.includes('context')) e.preventDefault()
+          self.options.context(this, e)
+          if (typeof this.contextfn === 'function') this.contextfn(this, e)
+        }, false)
       } else {
         nodeItem.attachEvent('oncontextmenu', function () {
           self.options.context(this)
@@ -528,9 +528,9 @@
           if (!self.options.propagationHandlers.includes('context')) window.event.returnValue = false
         })
       }
-  }
+    }
 
-    function __onButtonClickHandler (nodeItem, boardId) {
+    function __onButtonClickHandler(nodeItem, boardId) {
       nodeItem.addEventListener('click', function (e) {
         e.preventDefault()
         self.options.buttonClick(this, boardId)
@@ -539,7 +539,7 @@
       })
     }
 
-    function __findBoardJSON (id) {
+    function __findBoardJSON(id) {
       var el = []
       self.options.boards.map(function (board) {
         if (board.id === id) {
@@ -549,7 +549,7 @@
       return el[0]
     }
 
-    function __appendCustomProperties (element, parentObject) {
+    function __appendCustomProperties(element, parentObject) {
       for (var propertyName in parentObject) {
         if (self._disallowedItemProperties.indexOf(propertyName) > -1) {
           continue
@@ -562,7 +562,7 @@
       }
     }
 
-    function __updateBoardsOrder () {
+    function __updateBoardsOrder() {
       var index = 1
       for (var i = 0; i < self.container.childNodes.length; i++) {
         self.container.childNodes[i].dataset.order = index++
@@ -573,32 +573,31 @@
       var result = 'title' in item ? item.title : '';
 
       if (self.options.itemHandleOptions.enabled) {
-          if ((self.options.itemHandleOptions.customHandler || undefined) === undefined) {
-              var customCssHandler = self.options.itemHandleOptions.customCssHandler
-              var customCssIconHandler = self.options.itemHandleOptions.customCssIconHandler
-              var customItemLayout = self.options.itemHandleOptions.customItemLayout
-              if ((customCssHandler || undefined) === undefined) {
-                  customCssHandler = 'drag_handler';
-              }
-
-              if ((customCssIconHandler || undefined) === undefined) {
-                  customCssIconHandler = customCssHandler + '_icon';
-              }
-
-              if ((customItemLayout || undefined) === undefined) {
-                  customItemLayout = '';
-              }
-
-              result = '<div class=\'item_handle ' + customCssHandler + '\'><i class=\'item_handle ' + customCssIconHandler + '\'></i></div><div>' + result + '</div>'
-          } else {
-              result = '<div> ' + self.options.itemHandleOptions.customHandler.replace(/%([^%]+)%/g, function (match, key) 
-                      { return item[key] !== undefined ? item[key] : '' }) + ' </div>'
-              return result
+        if ((self.options.itemHandleOptions.customHandler || undefined) === undefined) {
+          var customCssHandler = self.options.itemHandleOptions.customCssHandler
+          var customCssIconHandler = self.options.itemHandleOptions.customCssIconHandler
+          var customItemLayout = self.options.itemHandleOptions.customItemLayout
+          if ((customCssHandler || undefined) === undefined) {
+            customCssHandler = 'drag_handler';
           }
+
+          if ((customCssIconHandler || undefined) === undefined) {
+            customCssIconHandler = customCssHandler + '_icon';
+          }
+
+          if ((customItemLayout || undefined) === undefined) {
+            customItemLayout = '';
+          }
+
+          result = '<div class=\'item_handle ' + customCssHandler + '\'><i class=\'item_handle ' + customCssIconHandler + '\'></i></div><div>' + result + '</div>'
+        } else {
+          result = '<div> ' + self.options.itemHandleOptions.customHandler.replace(/%([^%]+)%/g, function (match, key) { return item[key] !== undefined ? item[key] : '' }) + ' </div>'
+          return result
+        }
       }
 
       return result
-  }
+    }
 
     //init plugin
     this.init()

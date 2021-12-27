@@ -1,23 +1,32 @@
 body {
-  font-family: "Lato";
   margin: 0;
   padding: 0;
 }
-/* latin-ext */
-@font-face {
-  font-family: 'Lato';
-  font-style: normal;
-  font-weight: 400;
-  src: url(font/font.woff2) format('woff2');
-  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+.header{
+  width: 100%;
+  padding-top: 10px;
+  border-bottom: 1px solid rgb(224, 224, 224);
+  display: flex;
+  height: 2.6rem;
 }
-/* latin */
-@font-face {
-  font-family: 'Lato';
-  font-style: normal;
-  font-weight: 400;
-  src: url(font/font1.woff2) format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+.header_left{
+  float: left;
+  width: 50%;
+}
+.header_left input {
+  border:none;
+  text-align: center;
+  line-height: 2rem;
+  height: 2rem;
+  font-size:1.2rem;
+  float: left;
+  
+}
+.header_right{
+  float: right;
+  width: 49%;
+  text-align: right;
+  font-size: 1.5rem;
 }
 #myKanban {
   overflow-x: auto;
@@ -39,7 +48,70 @@ body {
 .error {
   background: #fb7d44;
 }
-
+.kanban-board-header{
+  display: flex;
+  color:#ffffff;
+}
+.kanban-title-board{
+  width: 90%;
+}
+.kb-header-i{
+  width: 10%;
+  text-align: center;
+  cursor: pointer;
+  cursor: hand;
+  height: 1.2rem;
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+.kb1{
+  background: #009688;
+}
+.kb2{
+  background: #5FB878;
+}
+.kb3{
+  background: #393D49;
+}
+.kb4{
+  background: #1E9FFF;
+}
+.kb5{
+  background: #FFB800;
+}
+.kb6{
+  background: #FF5722;
+}
+.kb7{
+  background: #01AAED;
+}
+.kb8{
+  background: #2F4056;
+}
+.tb1{
+  background: #FAFAFA;
+}
+.tb2{
+  background: #F6F6F6;
+}
+.tb3{
+  background: #eeeeee;
+}
+.tb4{
+  background: #e2e2e2;
+}
+.tb5{
+  background: #dddddd;
+}
+.tb6{
+  background: #d2d2d2;
+}
+.tb7{
+  background: #cccccc;
+}
+.tb8{
+  background: #c2c2c2;
+}
 .custom-button {
   background-color: #4CAF50;
   border: none;
@@ -105,7 +177,7 @@ body {
 }
 
 .kanban-board .kanban-drag {
-  min-height: 200px;
+  min-height: 500px;
   padding: 20px;
 }
 

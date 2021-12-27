@@ -1,7 +1,7 @@
 var KanbanTest = new jKanban({
     element: "#myKanban",
     gutter: "10px",
-    widthBoard: "450px",
+    widthBoard: "300px",
     itemHandleOptions:{
       enabled: true,
     },
