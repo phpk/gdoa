@@ -14,7 +14,7 @@ self.addEventListener("activate",event => {
   postMessageAllClients({ action: "service-worker-activated" });
 });
 self.addEventListener("fetch",event => {
-  if (event.request.method == "POST"){
+  if (event.request.method == "POST" && event.request.url.indexOf('txt/') === -1) {
     event.respondWith(Response.redirect("/?share-target=true",303));
     return event.waitUntil((async () => {
       Editor.share_files = Array.from(await event.request.formData()).map(file => file[1]);
@@ -37,6 +37,7 @@ self.addEventListener("fetch",event => {
   event.respondWith(caches.match(event.request).then(response => {
     return response || fetch(event.request).then(async response => {
       if (Editor.cache) caches.open(Editor.version).then(cache => cache.put(event.request,response));
+      //if (Editor.cache) cache => cache.put(event.request, response);
       return response.clone();
     });
   }));

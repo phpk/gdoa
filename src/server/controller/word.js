@@ -24,15 +24,29 @@ module.exports = class extends Base {
 
     async addAction() {
         let post = this.post();
-        let id = await this.model('word').add(post);
+        let data = {
+            title: post.title,
+            content: post.content,
+            add_time: this.now(),
+            update_time: this.now(),
+            user_id : this.adminId
+        }
+        console.log(data)
+        let id = await this.model('word').add(data);
         return this.success(id);
     }
 
     async editAction() {
         let post = this.post();
+        let id = post.id;
         let has = await this.model('word').where({ id: post.id }).find();
         if (think.isEmpty(has)) return this.fail('编辑的数据不存在');
-        await this.model('word').update(post);
+        let data = {
+            title: post.title,
+            content: post.content,
+            update_time: this.now()
+        }
+        await this.model('word').where({id}).update(data);
         return this.success()
     }
 

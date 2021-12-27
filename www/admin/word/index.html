@@ -48,7 +48,7 @@ body{
     <div class="main">
         <div class="title">
             <input type="text" name="title" id="title" placeholder="请输入标题">
-            <span id="saveBtn">
+            <span id="saveBtn" title="保存">
                 <img src="tinymce/save.png">
             </span>
         </div>
@@ -75,20 +75,62 @@ body{
     layui.extend({
         tinymce: '{/}./tinymce/tinymce'
     }).use(['tinymce', 'util', 'layer'], function () {
-        var t = layui.tinymce
+        let t = layui.tinymce
         , util = layui.util
         , layer = layui.layer
         , $ = layui.$
+        , id = _req('id')
 
         var edit = t.render({
             elem: "#content", 
             height: 780,
         },function(opt,edit){
             //加载完成后回调
+            if(id) {
+                __get('word/editBefore?id=' + id, res => {
+                    if(res.code == 0) {
+                        //console.log(res.data)
+                        $('#title').val(res.data.title);
+                        edit.setContent(res.data.content);
+                    }
+                    
+                })
+            }
         });
+        
+        
         $('#saveBtn').on('click', e => {
-            let val = edit.getContent()
-            console.log(val)
+            let content = edit.getContent(),
+            title = $('#title').val();
+            
+            if(!content || content == '') {
+                layer.msg('内容不能为空', {icon:2});
+                return;
+            }
+            if(!title || title == '') {
+                layer.msg('标题不能为空', {icon:2});
+                return;
+            }
+            if(!id) {
+                __post('word/add', {title,content}, res => {
+                    if(res.code == 0) {
+                        id = res.data;
+                        layer.msg('添加成功',{icon:1});
+                    }else {
+                        layer.msg(res.message, {icon : 2} );
+                    }
+                    
+                })
+            }else{
+                __post('word/edit', {id, title,content}, res => {
+                    if(res.code == 0) {
+                        layer.msg('编辑成功',{icon:1})
+                    }else{
+                        layer.msg(res.message,{icon : 2})
+                    }
+                })
+            }
+            
         })
 
     });

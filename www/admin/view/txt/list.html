@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>文档编辑器管理</title>
+		<title>文本编辑器管理</title>
 		<link rel="stylesheet" href="../../component/ui/css/ui.css" />
 	</head>
 	<body class="pear-container">
@@ -32,22 +32,22 @@
 		</div>
 		<div class="layui-card">
 			<div class="layui-card-body">
-				<table id="word-table" lay-filter="word-table"></table>
+				<table id="txt-table" lay-filter="txt-table"></table>
 			</div>
 		</div>
 
-		<script type="text/html" id="word-toolbar">
+		<script type="text/html" id="txt-toolbar">
 			<button class="layui-btn layui-btn-primary layui-border-red layui-btn-sm" lay-event="add">
 		        <i class="layui-icon layui-icon-add-1"></i>
 		        新增
 		    </button>
 		</script>
 
-		<script type="text/html" id="word-bar">
+		<script type="text/html" id="txt-bar">
 			<button class="pear-btn pear-btn-primary pear-btn-sm" lay-event="edit"><i class="layui-icon layui-icon-edit"></i></button>
 		    <button class="pear-btn pear-btn-danger pear-btn-sm" lay-event="remove"><i class="layui-icon layui-icon-delete"></i></button>
 		</script>
-		<script type="text/html" id="word-time">
+		<script type="text/html" id="txt-time">
 			{{layui.util.toDateString(d.add_time*1000, 'yyyy-MM-dd HH:mm:ss')}}
 		</script>
 		<script src="../../config/config.js"></script>
@@ -78,11 +78,11 @@
 							title: '添加时间',
 							field: 'add_time',
 							align: 'center',
-							templet: '#word-time'
+							templet: '#txt-time'
 						},
 						{
 							title: '操作',
-							toolbar: '#word-bar',
+							toolbar: '#txt-bar',
 							align: 'center',
 							width: 130
 						}
@@ -90,8 +90,8 @@
 				]
 
 				table.render({
-					elem: '#word-table',
-					url: apiUrl + 'word/list',
+					elem: '#txt-table',
+					url: apiUrl + 'txt/list',
 					headers : getHeader(),
 					parseData: function(res) {
 						//console.log(res)
@@ -106,7 +106,7 @@
 					cols: cols,
 					skin: 'line',
 
-					toolbar: '#word-toolbar',
+					toolbar: '#txt-toolbar',
 					defaultToolbar: [{
 						title: '刷新',
 						layEvent: 'refresh',
@@ -114,7 +114,7 @@
 					}, 'filter', 'print', 'exports']
 				});
 
-				table.on('tool(word-table)', function(obj) {
+				table.on('tool(txt-table)', function(obj) {
 					if (obj.event === 'remove') {
 						window.remove(obj);
 					} else if (obj.event === 'edit') {
@@ -122,7 +122,7 @@
 					}
 				});
 
-				table.on('toolbar(word-table)', function(obj) {
+				table.on('toolbar(txt-table)', function(obj) {
 					if (obj.event === 'add') {
 						window.add();
 					} else if (obj.event === 'refresh') {
@@ -131,8 +131,8 @@
 				});
 				// 监听搜索操作
 
-				form.on('submit(word-query)', function(data) {
-					table.reload('word-table', {
+				form.on('submit(txt-query)', function(data) {
+					table.reload('txt-table', {
 						where: {
 							param : $('form').serialize()
 						},
@@ -142,8 +142,8 @@
 					})
 					return false;
 				});
-				form.on('submit(word-reset)', function(data){
-					table.reload('word-table', {
+				form.on('submit(txt-reset)', function(data){
+					table.reload('txt-table', {
 						where: {
 							param : ''
 						},
@@ -157,15 +157,15 @@
 				window.add = function() {
 					layer.open({
 						type: 2,
-						title: '新增文档',
+						title: '新增',
 						shade: 0.1,
 						offset: 'rt',
 						area: ['90%', '100%'],
 						anim: 1,
 						maxmin: true,
-						content: '/admin/word/index.html',
+						content: '/admin/text/index.html',
 						cancel: function(index, layero){ 
-							table.reload('word-table');
+							table.reload('txt-table');
 							layer.close(index);
 							return false; 
 						} 
@@ -175,15 +175,15 @@
 				window.edit = function(obj) {
 					layer.open({
 						type: 2,
-						title: '修改文档',
+						title: '修改',
 						shade: 0.1,
 						offset: 'rt',
 						area: ['90%', '100%'],
 						anim: 1,
 						maxmin: true,
-						content: '/admin/word/index.html?id=' + obj.data.id,
+						content: '/admin/text/index.html?id=' + obj.data.id,
 						cancel: function(index, layero){ 
-							table.reload('word-table');
+							table.reload('txt-table');
 							layer.close(index);
 							return false; 
 						} 
@@ -192,7 +192,7 @@
 				window.remove = function(obj){
 		            layer.confirm('确定要删除', {icon: 3, title:'提示'}, function(index){
 		                layer.close(index);
-		                _post(layui, 'word/del',{id : obj.data.id}, res => {
+		                _post(layui, 'txt/del',{id : obj.data.id}, res => {
 							layer.msg('删除成功',{icon:1,time:1000},() => {
 								obj.del();
 							});
@@ -204,7 +204,7 @@
 
 
 				window.refresh = function(param) {
-					table.reload('word-table');
+					table.reload('txt-table');
 				}
 			})
 		</script>

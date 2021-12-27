@@ -73,11 +73,18 @@ layui.define(['jquery', 'layer', 'winui'], function (exports) {
     };
     //定位桌面应用
     Desktop.prototype.locaApp = function () {
-        if (!menuPostionData) {
+        try {
+            let posData = JSON.parse(menuPostionData);
+            if (!posData) {
+                this.initPos(this)
+            } else {
+                this.setPos(this, posData)
+            }
+        } catch (error) {
             this.initPos(this)
-        } else {
-            this.setPos(this)
         }
+        
+        
 
     }
     Desktop.prototype.initPos = (that) => {
@@ -105,8 +112,8 @@ layui.define(['jquery', 'layer', 'winui'], function (exports) {
         });
         localStorage.setItem('_deskTopMenuPostion', JSON.stringify(res))
     };
-    Desktop.prototype.setPos = (that) => {
-        let posData = JSON.parse(menuPostionData);
+    Desktop.prototype.setPos = (that, posData) => {
+        
         //console.log(that)
         //console.log(posData)
         //console.log(that.data)

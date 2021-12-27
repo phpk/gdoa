@@ -149,7 +149,7 @@ const _post = (layui, url, data, suc, err) => {
         }
     });
 }
-const _req = () => {
+const _req = (param = '') => {
     var url = location.search; //获取url中"?"符后的字串
     var theRequest = new Object();
     if (url.indexOf("?") != -1) {
@@ -159,7 +159,16 @@ const _req = () => {
             theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
         }
     }
-    return theRequest;
+    if (param == '') {
+        return theRequest;
+    } else {
+        if (theRequest[param]) {
+            return theRequest[param];
+        } else {
+            return false;
+        }
+    }
+    
 }
 const treeIds = (arr) => {
     for (const item of arr) {
