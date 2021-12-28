@@ -7,7 +7,10 @@ layui.use(['layer', 'dropdown'], function () {
         kanbanClsId = 0,
         kanban,
         dropEl,
-        taskData = [];
+        taskDataInfo = {
+            maxid : 0
+        },
+        taskDataList = [];
     let dropDownOptions = {
         elem: '.kb-header-i',
         trigger: 'hover',
@@ -35,17 +38,30 @@ layui.use(['layer', 'dropdown'], function () {
             }
         }
     };
-    if (!id) {
+    let initKanban = () => {
         kanban = new jKanban({
             element: "#myKanban",
             gutter: "10px",
             widthBoard: "300px",
             itemHandleOptions: {
                 enabled: true,
+                customCssIconHandler: 'layui-icon layui-icon-slider'
             },
             boards: []
         });
         dropdown.render(dropDownOptions)
+    }
+    let initParams = () => {
+        if (taskDataList.length > 0) {
+            kanbanId = taskDataInfo.maxid;
+            kanbanClsId = kanbanId;
+            if (kanbanClsId > 8) {
+                kanbanClsId = 1;
+            }
+        }
+    }
+    if (!id) {
+        initKanban()
     } else {
         $.get('/admin/kanban/js/data.json', res => {
             if (res.code == 0) {
@@ -55,18 +71,32 @@ layui.use(['layer', 'dropdown'], function () {
                     widthBoard: "300px",
                     itemHandleOptions: {
                         enabled: true,
+                        customCssIconHandler: 'layui-icon layui-icon-templeate-1'
                     },
                     boards: res.data.list
                 });
-                taskData = res.data.list;
+                taskDataInfo = $.extend(taskDataInfo, res.data.info);
+                taskDataList = res.data.list;
                 initParams();
                 dropdown.render(dropDownOptions)
+            } else {
+                layer.msg('加载数据失败！', { icon: 2 })
+                initKanban()
             }
         })
     }
-    let initParams = () => {
-        if (taskData.length > 0) {
-
+    
+    let getItemData = (title, boardId) => {
+        let tbId;
+        taskDataList.forEach(d => {
+            if (d.id = boardId) {
+                d.maxid++;
+                tbId = d.maxid;
+            }
+        })
+        return {
+            id: 'tbitem_' + boardId + '_' + tbId,
+            title
         }
     }
     let addEl = (boardId) => {
@@ -77,9 +107,8 @@ layui.use(['layer', 'dropdown'], function () {
             area: ['300px', '35px']
         }, function (value, index, elem) {
             if (value && value != '') {
-                kanban.addElement(boardId, {
-                    title: value
-                });
+                let data = getItemData(value, boardId);
+                kanban.addElement(boardId, data);
                 layer.close(index);
             }
 
@@ -100,14 +129,17 @@ layui.use(['layer', 'dropdown'], function () {
                 if (kanbanClsId > 8) {
                     kanbanClsId = 1;
                 }
-                kanban.addBoards([
-                    {
-                        id: 'taskboard_' + kanbanId,
-                        title: value,
-                        class: 'kb' + kanbanClsId,
-                        item: []
-                    }
-                ]);
+                let kanbanData = {
+                    id: 'taskboard_' + kanbanId,
+                    title: value,
+                    class: 'kb' + kanbanClsId,
+                    item: [],
+                    maxid : 1
+                };
+                taskDataList.push(kanbanData);
+                taskDataInfo.maxid = kanbanId;
+
+                kanban.addBoards([kanbanData]);
                 dropdown.render(dropDownOptions)
                 layer.close(index);
             }

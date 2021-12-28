@@ -1,0 +1,1 @@
+module.exports = [{"interval":"1s","handle":"server/demo/index","type":"all","immediate":true}]

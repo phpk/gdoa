@@ -37,25 +37,25 @@ const errorStatus = (xhr, layui) => {
         layui.layer.msg('访问接口未带token！', {
             icon: 2, time: 2000
         });
-        top.location.href = '/admin/login.html';
+        top.location.href = '/admin/index.html';
     }
     else if (xhr.status === 402) {
         layui.layer.msg('token校验失败！', {
             icon: 2, time: 2000
         });
-        top.location.href = '/admin/login.html';
+        top.location.href = '/admin/index.html';
     }
     else if (xhr.status === 403) {
         layui.layer.msg('一段时间未操作，超过保活时间！', {
             icon: 2, time: 2000
         });
-        top.location.href = '/admin/login.html';
+        top.location.href = '/admin/index.html';
     }
     else if (xhr.status === 406) {
         layui.layer.msg('一段时间未操作，超过保活时间！', {
             icon: 2, time: 2000
         });
-        top.location.href = '/admin/login.html';
+        top.location.href = '/admin/index.html';
     }
     else if (xhr.status === 404) {
         layui.layer.msg('请求的地址不存在！', {

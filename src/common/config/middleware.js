@@ -24,10 +24,13 @@ module.exports = [
     enable: conf.ratelimit.enable,
     match: /^\/server/,
   },
-  // {
-  //   handle: 'socket',
-  //   enable: true,
-  // },
+  {
+    handle: 'plugins',
+    enable: true,
+    options: {
+      enable : true//插件是否开启
+    }
+  },
   {
     handle: 'meta',
     match: /^\/server/,

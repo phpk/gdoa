@@ -136,7 +136,7 @@
             self.options.dragEl(el, source)
 
             var boardJSON = __findBoardJSON(source.parentNode.dataset.id)
-            if (boardJSON.dragTo !== undefined) {
+            if (boardJSON && boardJSON.dragTo !== undefined) {
               self.options.boards.map(function (board) {
                 if (
                   boardJSON.dragTo.indexOf(board.id) === -1 &&

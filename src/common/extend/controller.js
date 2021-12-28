@@ -45,7 +45,17 @@ function parseSearch(param, where = {}, isTime = true) {
     })
     return where;
 }
+async function err(name, msg) {
+    let data = {
+        name: name,
+        url: this.ctx.path,
+        msg: msg,
+        addtime: think.now()
+    };
+    await think.model('error').add(data);
+}
 module.exports = {
     now,
-    parseSearch
+    parseSearch,
+    err
 }

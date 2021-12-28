@@ -6,7 +6,7 @@ module.exports = {
     adminDir: 'server', //后端目录
     csrf: {
         headerName: 'csrf_token',
-        enable: true
+        enable: false
     },
     helmet: {
         enable: true
