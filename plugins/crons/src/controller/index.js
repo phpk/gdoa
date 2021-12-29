@@ -1,5 +1,5 @@
 const path = require('path');
-const Base = require(path.join(think.ROOT_PATH, 'src/server/controller/base.js'));
+//const Base = require(path.join(think.ROOT_PATH, 'src/server/controller/base.js'));
 const parser = require('cron-parser');
 
 const fs = require('fs');
@@ -7,8 +7,8 @@ const fs = require('fs');
  * @class
  * @apiDefine crons 计划任务管理
  */
-module.exports = class extends Base {
-    async listAction() {
+module.exports = class extends think.adminBase {
+    async indexAction() {
         let { page, limit, param } = this.get();
         let wsql = {};
         if (param) wsql = this.parseSearch(param, wsql);

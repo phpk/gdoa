@@ -21,6 +21,14 @@ module.exports = class extends think.Controller {
    */
   async checkAuth() {
     let url = `${this.ctx.controller}/${this.ctx.action}`;
+    //console.log(url)
+    if (this.ctx.module) {
+      url = this.ctx.module + '/' + url;
+    }
+    if (this.ctx.pluginName) {
+      url = this.ctx.pluginName + '/' + url;
+    }
+    console.log(url)
     let perms = await this.cache('perms_' + this.adminId);
     if (!perms.includes(url)) {
       this.status = 400;

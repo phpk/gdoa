@@ -211,5 +211,27 @@ module.exports = class extends Base {
         await this.adminOpLog('删除菜单');
         return this.success(rt);
     }
+    /**
+     *
+     * @api {post} menu/sql 导出菜单
+     * @apiGroup menu
+     *
+     * @apiHeader {string} rttoken 必填
+     *
+     * @apiParam  {Number} id 菜单id
+     * 
+     * @apiSuccess (200) name description
+     *
+     */
+    async sqlAction() {
+        let id = this.get('id');
+        let fields = "title,key,route,href,type,order_num,icon,lid,ifshow,desktop";
+        let data = await this.model('menu').field(fields).where({ id }).find();
+        data.child = await this.model('menu')
+            .field(fields)
+            .where({ pid: id })
+            .select();
+        return this.success(data);
+    }
 
 };

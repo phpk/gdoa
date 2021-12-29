@@ -3,6 +3,9 @@
   "description": "godo",
   "version": "1.0.0",
   "author": "ruitao",
+  "bin": {
+    "godo": "./bin/godo"
+  },
   "scripts": {
     "start": "node development.js",
     "test": "THINK_UNIT_TEST=1 nyc ava test/ && nyc report --reporter=html",
@@ -13,6 +16,7 @@
   },
   "dependencies": {
     "cron-parser": "^4.2.1",
+    "godo-crons": "^1.0.0",
     "json2md": "^1.12.0",
     "jsonwebtoken": "^8.5.1",
     "koa-helmet": "^6.1.0",
@@ -46,6 +50,7 @@
     "ava": "^0.18.0",
     "babel-cli": "^6.24.1",
     "babel-preset-think-node": "^1.0.0",
+    "commander": "^8.3.0",
     "eslint": "^4.2.0",
     "eslint-config-think": "^1.0.0",
     "node-notifier": "^5.0.2",

@@ -35,6 +35,9 @@
             <button class="pear-btn pear-btn-danger pear-btn-sm" lay-event="remove">
                 <i class="layui-icon layui-icon-delete"></i>
             </button>
+            <button class="pear-btn pear-btn-success pear-btn-sm" lay-event="sql">
+                <i class="layui-icon layui-icon-rss"></i>
+            </button>
         </script>
 
         <script type="text/html" id="power-type">
@@ -118,6 +121,9 @@
                     } else if (obj.event === 'edit') {
                         window.edit(obj);
                     }
+                    else if(obj.event === 'sql') {
+                        window.sql(obj);
+                    }
                 })
 
                 table.on('toolbar(power-table)', function (obj) {
@@ -179,6 +185,20 @@
                         anim: 1,
                         maxmin: true,
                         content: MODULE_PATH + 'add.html'
+                    });
+                }
+                window.sql = function (obj) {
+                    layer.open({
+                        type: 2,
+                        title: '导出',
+                        shade: 0.1,
+                        offset: 'rt',
+                        area: [
+                            '80%', '100%'
+                        ],
+                        anim: 1,
+                        maxmin: true,
+                        content: MODULE_PATH + 'json.html?id=' + obj.data.id
                     });
                 }
 
