@@ -1,7 +1,18 @@
 const serve = require('koa-static-router');
 const path = require('path');
+const pluginConfig = require(think.ROOT_PATH + '/data/plugin.json');
 const getFilePath = (pluginsName) => {
-    
+    //console.log(pluginsName)
+    //console.log(pluginConfig)
+    if (!pluginConfig[pluginsName]) return false;
+    let data = pluginConfig[pluginsName];
+    if (data.isTest) {
+        data.filePath = think.ROOT_PATH + '/plugins/' + data.path + '/';
+    } else {
+        data.filePath = think.ROOT_PATH + '/node_modules/' + data.path + '/';
+    }
+    return data;
+    /*
     let filePath = path.join(think.ROOT_PATH, 'plugins/' + pluginsName);
     if (think.isDirectory(filePath)) {
         return { filePath : filePath + '/src/', isTest : true}
@@ -12,7 +23,7 @@ const getFilePath = (pluginsName) => {
         } else {
             return false;
         }
-    }
+    }*/
 }
 module.exports = (options = {}, app) => {
     return (ctx, next) => {
@@ -22,23 +33,25 @@ module.exports = (options = {}, app) => {
             return next();
         }
         let urls = ctx.request.url.split('/');
-        //console.log(urls)
+        console.log(urls)
         if (urls.length < 3 && urls[1] !== 'p') { 
             return next();
         }
         let pluginsName = urls[2],
             fileData = getFilePath(pluginsName);
-        //console.log(fileData)
+        console.log(fileData)
         if (fileData === false) {
             return next();
         }
         let filePath = fileData.filePath;
-        //console.log(filePath)
+        console.log(filePath)
+        console.log('plugins/' + fileData.path + '/public/')
+        console.log('/p/' + pluginsName + '/')
         //处理静态路由
         if (fileData.isTest) {
-            app.use(serve({ dir: 'plugins/' + pluginsName + '/public/', router: '/p/' + pluginsName + '/' }));
+            app.use(serve({ dir: 'plugins/' + fileData.path + '/public/', router: '/p/' + pluginsName + '/' }));
         } else {
-            app.use(serve({ dir: 'node_modules/' + pluginsName + '/public/', router: '/p/' + pluginsName + '/' }));
+            app.use(serve({ dir: 'node_modules/' + fileData.path + '/public/', router: '/p/' + pluginsName + '/' }));
         }
         ctx.pluginName = pluginsName;
 
