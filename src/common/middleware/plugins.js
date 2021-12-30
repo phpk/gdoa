@@ -25,14 +25,20 @@ const getFilePath = (pathName) => {
             router: '/p/' + pathName + '/'
         };
     } else {
-        let modData = require(data.key + "/info.js");
-        //console.log(modData);
-        data.filePath = modData.dir + '/src/';
-        data.path = modData.dir.replace(think.ROOT_PATH + '/node_modules/', '');
-        data.route = {
-            dir: 'node_modules/' + data.path + '/public/',
-            router: '/p/' + pathName + '/'
-        };
+        try {
+            let modData = require(data.key + "/info.js");
+            //console.log(modData);
+            data.filePath = modData.dir + '/src/';
+            data.path = modData.dir.replace(think.ROOT_PATH + '/node_modules/', '');
+            data.route = {
+                dir: 'node_modules/' + data.path + '/public/',
+                router: '/p/' + pathName + '/'
+            };
+        } catch (error) {
+            console.log(error.message)
+            return false;
+        }
+        
     }
     //console.log(data)
     return data;
