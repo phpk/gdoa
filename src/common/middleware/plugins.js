@@ -50,7 +50,7 @@ const checkExt = (url) => {
     if (str.indexOf('?') !== -1) {
         str = str.split('?')[0];
     }
-    let exts = ['css', 'js', 'html', 'png', 'jpg', 'gif', 'wav', 'eot','svg','ttf','woff','woff2','md','mp3','mp4','json'];
+    let exts = ['css', 'js', 'html', 'png', 'jpg', 'gif', 'wav', 'eot','svg','ttf','woff','woff2','md','mp3','mp4','json','ico'];
     if (exts.includes(str)) {
         return true;
     }
