@@ -16,7 +16,10 @@
   },
   "dependencies": {
     "cron-parser": "^4.2.1",
-    "godo-crons": "^1.0.0",
+    "godo-crons": "^1.0.1",
+    "godo-gifcap": "^1.0.0",
+    "godo-layui": "^1.0.0",
+    "godo-pearui": "^1.0.0",
     "json2md": "^1.12.0",
     "jsonwebtoken": "^8.5.1",
     "koa-helmet": "^6.1.0",

@@ -1,0 +1,8 @@
+{
+    "key": "godo-login",
+    "url": "login",
+    "path": "godo-login",
+    "isTest": false,
+    "type": "sys",
+    "name": "登录模块"
+}
