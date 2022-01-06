@@ -402,10 +402,18 @@ layui.use([
             hasCache.forEach(d => {
                 let data = table.cache['deeptable_' + d];
                 console.log(data)
+                let ck = $('#deep-' + d + ' .layui-this');
+                console.log(ck)
+                ck.each((i, ek) => {
+                    //console.log(c)
+                    console.log(ek)
+                    data[i].dtype = $(ek).val()
+                })
+                console.log(data)
                 
             })
         }
-        console.log($('#deep-data .layui-this'))
+        //console.log($('#deep-data .layui-this'))
         //console.log(hasCache)
     }
     form.on('submit(api-save)', function (data) {
