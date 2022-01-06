@@ -23,6 +23,8 @@ layui.define(['layer', 'winui', 'desklogin'], function (exports) {
     let init = () => {
         return new Promise((resolve) => {
             //$('.winui-taskbar').css('zIndex', '0');
+            
+            
             __get('index/isLogin', res => {
                 //console.log(res)
                 if (res.data && res.data === 'ok') {
