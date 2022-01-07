@@ -68,14 +68,14 @@
                 </form>
 
             </div>
-            <div class="layui-tab">
+            <div class="layui-tab"  lay-filter="test_tab">
                 <ul class="layui-tab-title">
-                    <li class="layui-this">发送参数</li>
-                    <li>Headers</li>
-                    <li>预想</li>
+                    <li class="layui-this" lay-id="1">发送参数</li>
+                    <li lay-id="2">Headers</li>
+                    <li lay-id="3">预想</li>
                     <!--li>回写</li-->
-                    <li>结果</li>
-                    <li>备注</li>
+                    <li lay-id="4">结果</li>
+                    <li lay-id="5">备注</li>
                 </ul>
                 <div class="layui-tab-content">
                     <div class="layui-tab-item layui-show">
@@ -182,6 +182,18 @@
       <label class="layui-form-label">状态Status</label>
       <div class="layui-input-inline" style="width: 200px;">
         <input type="text" name="status" id="status" value="200" lay-verify="status" autocomplete="off" placeholder="请输入status" class="layui-input">
+      </div>
+    
+      <label class="layui-form-label">预期类型</label>
+      <div class="layui-input-inline" style="width: 200px;">
+        <select name="dataType" id="dataType">
+            <option value="json">json</option>
+            <option value="text">text</option>
+            <option value="jsonp">jsonp</option>
+            <option value="script">script</option>
+            <option value="html">html</option>
+            <option value="xml">xml</option>
+        </select>
       </div>
     </div>
 </form>
@@ -305,6 +317,10 @@
                     <!--</div>-->
                     <div class="layui-tab-item">
 <!-- 结果开始-->
+<blockquote class="layui-elem-quote">状态码：<span id="resCode"></span></blockquote>
+  <div class="layui-form-text">
+    <textarea name="resResult" id="resResult" placeholder="结果" class="layui-textarea" style="height:300px"></textarea>
+  </div>
 <!-- 结果结束-->
                     </div>
                     <div class="layui-tab-item">

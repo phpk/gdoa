@@ -23,19 +23,19 @@ layui.define(['jquery', 'element', 'layer', 'winui'], function (exports) {
     //渲染HTML
     Menu.prototype.render = function (callback) {
         if (!this.data) {
-            winui.lockScreen();
+            //winui.lockScreen();
             return;
         };
         var html = '';
         //console.log(this.data)
         let leftHtml = '',
             chtml = '',
-            bottomNum = 428;
+            bottomNum = 438;
         
         this.data.forEach((d, i) => {
             if (d.type < 2) {
                 bottomNum = bottomNum - 48;
-                leftHtml += `<div class="winui-start-item startmenu" data-text="${d.title}" data-id="${i}"" style="bottom:${bottomNum}px"><i class="layui-icon ${d.icon}"></i></div>`;
+                leftHtml += `<div class="winui-start-item startmenu" data-text="${d.title}" data-id="${i}" style="bottom:${bottomNum}px"><i class="layui-icon ${d.icon}"></i></div>`;
                 //let chtml = '';
                 if (d.children && d.children.length > 0) {
                     d.children.forEach(el => {

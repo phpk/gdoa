@@ -373,20 +373,22 @@ layui.use([
         }
     })
     //监听发送
-    function getSelect(list, type) {
-        list.forEach(el => {
-            el[type] = $(el[type]).val();
-        })
-        return list;
-    }
     function getData() {
-        let formtest = form.val('testform'),
+        let formData = form.val('testform'),
             paramsData = table.cache['data-table'],
-            headerData = table.cache['head-table'],
+            headData = table.cache['head-table'],
+            headerData = {},
             hasCookie = $("input[name='withCredentials']").is(':checked'),
             statusCode = $('#status').val(),
+            dataType = $('dataType').val(),
             topData = table.cache['restop-table'],
-            dataTopField = $("input[name='dataTopField']:checked").val(),deepData = [];
+            dataTopField = $("input[name='dataTopField']:checked").val(), deepData = {};
+        if (headData.length > 0) {
+            headData.forEach(d => {
+                if (d.val == 'godoSystem') d.val = getToken();
+                headerData[d.key] = d.val; 
+            })
+        }
         if (topData.length > 0) {
             topData.forEach(el => {
                 el.stype = $(el.stype).val();
@@ -406,34 +408,99 @@ layui.use([
                 console.log(ck)
                 ck.each((i, ek) => {
                     //console.log(c)
-                    console.log(ek)
-                    data[i].dtype = $(ek).val()
+                    //console.log(ek)
+                    data[i].dtype = $(ek).attr('lay-value')
                 })
-                console.log(data)
-                
+                if (!deepData[d]) deepData[d] = data;
+                //console.log(data) 
             })
         }
+        let descData = vditor.getValue(),
+            name = $('#name').val();
+
+        return { formData, paramsData, hasCookie, headerData, statusCode, dataType, deepData, descData, name };
         //console.log($('#deep-data .layui-this'))
         //console.log(hasCache)
     }
-    form.on('submit(api-save)', function (data) {
-        data = data.field;
-        let formdata = getData();
-        //console.log(data);
-        return false;
+    //json格式美化
+    function prettyFormat(json) {
+        try {
+            // 设置缩进为2个空格
+            str = JSON.stringify(json, null, 2);
+            str = str
+                .replace(/&/g, '&')
+                .replace(/</g, '<')
+                .replace(/>/g, '>');
+            return str.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+                var cls = 'number';
+                if (/^"/.test(match)) {
+                    if (/:$/.test(match)) {
+                        cls = 'key';
+                    } else {
+                        cls = 'string';
+                    }
+                } else if (/true|false/.test(match)) {
+                    cls = 'boolean';
+                } else if (/null/.test(match)) {
+                    cls = 'null';
+                }
+                //return '<span class="' + cls + '">' + match + '</span>';
+                return match;
+            });
+        } catch (e) {
+            alert("异常信息:" + e);
+        }
 
+    }
+    //发送测试
+    form.on('submit(api-save)', function () {
+        element.tabChange('test_tab', '4');
+        let data = getData();
+        if (data.hasCookie) {
+            $.ajaxSetup({
+                xhrFields: {
+                    withCredentials: true
+                }
+            })
+        }
+        $.ajax({
+            method: data.formData.method,
+            url: data.formData.test_path,
+            headers : data.headerData,
+            data: data.paramsData,
+            dataType: data.dataType,
+            complete: (res, textStatus) => {
+                console.log(res)
+                //console.log(textStatus)
+                $('#resCode').text(res.status)
+                if (res.responseJSON) {
+                    $('#resResult').val(prettyFormat(res.responseJSON))
+                } else {
+                    $('#resResult').val(res.responseText);
+                }
+            }
+        })
 
     });
         
     //保存数据
     $('#saveData').on('click', e => {
-
-        _post(layui, 'apitest/add', data, res => {
+        let data = getData();
+        
+        if (!data.name) {
+            layer.msg('请输入用例名称', { icon: 2 });
+            $('#name').focus()
+            return false;
+        }
+        data.resCode = $('#resCode').text();
+        data.resResult = $('#resResult').val();
+        data.aid = req.aid;
+        _post(layui, 'apitest/add', {data : JSON.stringify(data)}, res => {
             //console.log(res)
             parent
                 .layui
                 .table
-                .reload("api-table");
+                .reload("test-table");
             parent
                 .layer
                 .close(parent.layer.getFrameIndex(window.name)); //关闭当前页

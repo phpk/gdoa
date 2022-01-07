@@ -101,11 +101,12 @@ module.exports = class extends Base {
     }
     async addRule(data) {
         if (data.pid < 0) return;
+        let serverDir = 'server/';
         let topData = {
             pid: data.pid,
             title: data.name,
             href: 'view/' + data.key + '/list.html',
-            route: data.key + '/list',
+            route: serverDir + data.key + '/list',
             icon: data.icon,
             type: 1,
             order_num: 0
@@ -127,7 +128,7 @@ module.exports = class extends Base {
                 pid: topId,
                 title: name + names[i],
                 href: tpls[i] != '' ? 'view/' + key + '/' + tpls[i] + '.html' : '',
-                route: key + '/' + k,
+                route: serverDir + key + '/' + k,
                 icon: '',
                 type: 3,
                 order_num: 0
@@ -195,7 +196,7 @@ module.exports = class extends Base {
             return this.fail('数据不存在')
         await this.service('mod').del(data);
         await this.model('mod').where({ id }).delete();
-        let route = data.key + '/list';
+        let route = 'server/' + data.key + '/list';
         let topRuleId = await this.model('menu').where({ route}).getField('id', true);
         //删除权限
         if (topRuleId) {
