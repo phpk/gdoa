@@ -7,7 +7,8 @@
     "godo": "./bin/godo"
   },
   "scripts": {
-    "start": "node development.js",
+    "start": "node production.js",
+    "dev": "node development.js",
     "test": "THINK_UNIT_TEST=1 nyc ava test/ && nyc report --reporter=html",
     "compile": "babel --no-babelrc src/ --presets think-node --out-dir app/",
     "doc": "apidoc-markdown -i src -t data/doc/tpl.md -o www/docs/doc --multi",
@@ -55,6 +56,7 @@
     "eslint-config-think": "^1.0.0",
     "node-notifier": "^5.0.2",
     "nyc": "^7.0.0",
+    "open": "^8.4.0",
     "think-babel": "^1.0.3",
     "think-inspect": "0.0.2",
     "think-watcher": "^3.0.0"
