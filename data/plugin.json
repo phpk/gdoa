@@ -1,7 +1,6 @@
 {
-    "crons": {
-        "key": "godo-crons",
-        "path": "godo-crons",
+    "gifcap": {
+        "key": "godo-gifcap",
         "isTest" : false,
         "type": "sys",
         "name": "计划任务",

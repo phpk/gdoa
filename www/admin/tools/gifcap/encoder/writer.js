@@ -1,4 +1,4 @@
-importScripts('/p/gitcap/encoder/encoder.js');
+importScripts('/admin/tools/gifcap/encoder/encoder.js');
 
 let initialized = false;
 let opts;
