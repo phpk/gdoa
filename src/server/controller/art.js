@@ -24,5 +24,6 @@ module.exports = class extends Base {
 	* @name 文章分类列表
 	*/
 	async artcateAction(){
-	}
+		let data
+			}
 };

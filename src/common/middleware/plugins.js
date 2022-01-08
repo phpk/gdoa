@@ -1,23 +1,66 @@
 const serve = require('koa-static-router');
 const path = require('path');
-const getFilePath = (pluginsName) => {
-    
-    let filePath = path.join(think.ROOT_PATH, 'plugins/' + pluginsName);
-    if (think.isDirectory(filePath)) {
-        return { filePath : filePath + '/src/', isTest : true}
+
+const getFilePath = (pathName) => {
+    //console.log(pathName)
+    //console.log(pluginConfig)
+    //后期包多的时候要做整包处理
+    const commonConfig = require(think.ROOT_PATH + '/data/plugin.json');
+    let data;
+    if (commonConfig[pathName]) {
+        data = commonConfig[pathName];
     } else {
-        filePath = path.join(think.ROOT_PATH, 'node_modules/' + pluginsName);
-        if (think.isDirectory(filePath)) { 
-            return { filePath: filePath + '/src/', isTest: false }
-        } else {
+        //分包处理易维护开发 添加完后要重启服务才能生效
+        let pluginsConfigFile = think.ROOT_PATH + '/data/plugins/' + pathName + '.json';
+        //console.log(pluginsConfigFile)
+        if (!think.isFile(pluginsConfigFile)) return false;
+        data = require(pluginsConfigFile);
+    }
+    //if (!pluginConfig[pathName]) return false;
+    //let data = pluginConfig[pathName];
+    if (data.isTest) {
+        data.filePath = think.ROOT_PATH + '/plugins/' + data.path + '/src/';
+        data.route = {
+            dir: 'plugins/' + data.path + '/public/',
+            router: '/p/' + pathName + '/'
+        };
+    } else {
+        try {
+            let modData = require(data.key + "/info.js");
+            //console.log(modData);
+            data.filePath = modData.dir + '/src/';
+            data.path = modData.dir.replace(think.ROOT_PATH + '/node_modules/', '');
+            data.route = {
+                dir: 'node_modules/' + data.path + '/public/',
+                router: '/p/' + pathName + '/'
+            };
+        } catch (error) {
+            console.log(error.message)
             return false;
         }
+        
     }
+    //console.log(data)
+    return data;
+}
+const checkExt = (url) => {
+    let arr = url.split('.');
+    if (!arr || arr.length < 1) return false;
+    let str = arr.pop()
+    if (str.indexOf('?') !== -1) {
+        str = str.split('?')[0];
+    }
+    let exts = ['css', 'js', 'html', 'png', 'jpg', 'gif', 'wav', 'eot','svg','ttf','woff','woff2','md','mp3','mp4','json','ico'];
+    if (exts.includes(str)) {
+        return true;
+    }
+    return false;
 }
 module.exports = (options = {}, app) => {
     return (ctx, next) => {
         //console.log(ctx.controller)
         //return;
+        //console.log(ctx.request.url)
         if (!options.enable || ctx.request.url.indexOf('/p/') === -1) {
             return next();
         }
@@ -26,21 +69,24 @@ module.exports = (options = {}, app) => {
         if (urls.length < 3 && urls[1] !== 'p') { 
             return next();
         }
-        let pluginsName = urls[2],
-            fileData = getFilePath(pluginsName);
+        let pathName = urls[2],
+            fileData = getFilePath(pathName);
         //console.log(fileData)
         if (fileData === false) {
             return next();
         }
         let filePath = fileData.filePath;
-        //console.log(filePath)
+        // console.log(filePath)
+        // console.log('plugins/' + fileData.path + '/public/')
+        // console.log('/p/' + pathName + '/')
         //处理静态路由
-        if (fileData.isTest) {
-            app.use(serve({ dir: 'plugins/' + pluginsName + '/public/', router: '/p/' + pluginsName + '/' }));
-        } else {
-            app.use(serve({ dir: 'node_modules/' + pluginsName + '/public/', router: '/p/' + pluginsName + '/' }));
+        app.use(serve(fileData.route));
+        //如果是静态文件则跳出
+        if (checkExt(ctx.request.url)) {
+            return next();
         }
-        ctx.pluginName = pluginsName;
+
+        ctx.pluginName = pathName;
 
         let controllerName = urls[3] || 'index',
             actionName = urls[4] || 'index';
@@ -58,7 +104,7 @@ module.exports = (options = {}, app) => {
         }
         
         //处理逻辑层
-        let logicFile = filePath + '/logic/' + controllerName + '.js';
+        let logicFile = filePath + 'logic/' + controllerName + '.js';
         if (think.isFile(logicFile)) {
             let Logic = require(logicFile);
             const logicInstance = new Logic(ctx);
@@ -84,7 +130,7 @@ module.exports = (options = {}, app) => {
 
         }
         //处理控制层
-        let controllerFile = filePath + '/controller/' + controllerName + '.js';
+        let controllerFile = filePath + 'controller/' + controllerName + '.js';
         if (!think.isFile(controllerFile)) {
             return next();
         }

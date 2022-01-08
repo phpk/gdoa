@@ -2,6 +2,7 @@ const Base = require('./base.js');
 const fs = require('fs');
 const path = require('path');
 const rename = think.promisify(fs.rename, fs);
+const axios = require('axios');
 module.exports = class extends Base {
     async listAction() {
         let aid = this.get('aid');
@@ -20,10 +21,10 @@ module.exports = class extends Base {
                 key : 'Accept',
                 val : '*/*'
             },
-            {
-                key : 'Cookie',
-                val : 'godoSystem'
-            },
+            // {
+            //     key : 'Cookie',
+            //     val : 'godoSystem'
+            // },
             {
                 key : 'rttoken',
                 val : 'godoSystem'
@@ -53,6 +54,27 @@ module.exports = class extends Base {
         let fields = await this.model('api').getFields(tabs);
 
         return this.success({ api, mod, params, headers, restop, fields})
+    }
+    async testRunAction() {
+        //let res = await axios('https://www.baidu.com');
+        let post = this.post('data'),
+            data = JSON.parse(post);
+        console.log(data)
+    }
+    async addAction() {
+        let post = this.post('data'),
+            data = JSON.parse(post);
+        let add = {
+            aid: data.aid,
+            name: data.name,
+            method: data.formData.method,
+            add_time: this.now(),
+            update_time : 0,
+            data: post
+        };
+        //console.log(add)
+        await this.model('api_test').add(add);
+        return this.success()
     }
     async uploadAction() {
         const file = this.file('file[]');

@@ -6,13 +6,13 @@ module.exports = {
     adminDir: 'server', //后端目录
     csrf: {
         headerName: 'csrf_token',
-        enable: false
+        enable: true
     },
     helmet: {
         enable: true
     },
     ratelimit: {
-        enable: false,
+        enable: true,
         interval: 1 * 60 * 1000, // 1 minutes
         max: 100,
         prefixKey: 'login/captcha'

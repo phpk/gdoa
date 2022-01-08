@@ -2,32 +2,53 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>接口测试管理</title>
+		<title>部门管理</title>
 		<link rel="stylesheet" href="../../component/ui/css/ui.css" />
 	</head>
 	<body class="pear-container">
-		
 		<div class="layui-card">
 			<div class="layui-card-body">
-				<table id="test-table" lay-filter="test-table"></table>
+				<form class="layui-form" action="">
+					<div class="layui-form-item">
+						<div class="layui-form-item layui-inline">
+							<label class="layui-form-label">名称</label>
+							<div class="layui-input-inline">
+								<input type="text" name="title" placeholder="" class="layui-input">
+							</div>
+						</div>
+						<div class="layui-form-item layui-inline">
+							<button class="pear-btn pear-btn-md pear-btn-primary" lay-submit lay-filter="user-query">
+								<i class="layui-icon layui-icon-search"></i>
+								查询
+							</button>
+							<button type="reset" class="pear-btn pear-btn-md" lay-filter="user-reset" lay-submit>
+								<i class="layui-icon layui-icon-refresh"></i>
+								重置
+							</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+		<div class="layui-card">
+			<div class="layui-card-body">
+				<table id="department-table" lay-filter="department-table"></table>
 			</div>
 		</div>
 
-		<script type="text/html" id="test-toolbar">
+		<script type="text/html" id="department-toolbar">
 			<button class="layui-btn layui-btn-primary layui-border-red layui-btn-sm" lay-event="add">
 		        <i class="layui-icon layui-icon-add-1"></i>
 		        新增
 		    </button>
 		</script>
-		<script type="text/html" id="test-bar">
-			<!--button class="pear-btn pear-btn-primary pear-btn-sm" lay-event="edit"><i class="layui-icon layui-icon-edit"></i></button-->
+
+		<script type="text/html" id="department-bar">
+			<button class="pear-btn pear-btn-primary pear-btn-sm" lay-event="edit"><i class="layui-icon layui-icon-edit"></i></button>
 		    <button class="pear-btn pear-btn-danger pear-btn-sm" lay-event="remove"><i class="layui-icon layui-icon-delete"></i></button>
 		</script>
-		<script type="text/html" id="test-time">
+		<script type="text/html" id="department-time">
 			{{layui.util.toDateString(d.add_time*1000, 'yyyy-MM-dd HH:mm:ss')}}
-		</script>
-		<script type="text/html" id="op-time">
-			{{layui.util.toDateString(d.update_time*1000, 'yyyy-MM-dd HH:mm:ss')}}
 		</script>
 		<script src="../../config/config.js"></script>
 		<script src="../../component/layui/layui.js"></script>
@@ -37,8 +58,7 @@
 				let table = layui.table;
 				let form = layui.form;
 				let $ = layui.jquery;
-				let common = layui.common,
-                req = _req();
+				let common = layui.common;
 
 				let MODULE_PATH = "./";
 
@@ -51,29 +71,18 @@
 						},
 						{
 							title: '名称',
-							field: 'name',
-							align: 'center'
-						},
-						{
-							title: '类型',
-							field: 'method',
+							field: 'title',
 							align: 'center'
 						},
 						{
 							title: '添加时间',
 							field: 'add_time',
 							align: 'center',
-							templet: '#test-time'
-						},
-						{
-							title: '修改时间',
-							field: 'update_time',
-							align: 'center',
-							templet: '#op-time'
+							templet: '#department-time'
 						},
 						{
 							title: '操作',
-							toolbar: '#test-bar',
+							toolbar: '#department-bar',
 							align: 'center',
 							width: 130
 						}
@@ -81,8 +90,8 @@
 				]
 
 				table.render({
-					elem: '#test-table',
-					url: apiUrl + 'apitest/list?aid=' + req.aid,
+					elem: '#department-table',
+					url: apiUrl + 'department/list',
 					headers : getHeader(),
 					parseData: function(res) {
 						//console.log(res)
@@ -97,7 +106,7 @@
 					cols: cols,
 					skin: 'line',
 
-					toolbar: '#test-toolbar',
+					toolbar: '#department-toolbar',
 					defaultToolbar: [{
 						title: '刷新',
 						layEvent: 'refresh',
@@ -105,7 +114,7 @@
 					}, 'filter', 'print', 'exports']
 				});
 
-				table.on('tool(test-table)', function(obj) {
+				table.on('tool(department-table)', function(obj) {
 					if (obj.event === 'remove') {
 						window.remove(obj);
 					} else if (obj.event === 'edit') {
@@ -113,7 +122,7 @@
 					}
 				});
 
-				table.on('toolbar(test-table)', function(obj) {
+				table.on('toolbar(department-table)', function(obj) {
 					if (obj.event === 'add') {
 						window.add();
 					} else if (obj.event === 'refresh') {
@@ -121,6 +130,29 @@
 					}
 				});
 				// 监听搜索操作
+
+				form.on('submit(department-query)', function(data) {
+					table.reload('department-table', {
+						where: {
+							param : $('form').serialize()
+						},
+						page: {
+					        curr: 1
+					    }
+					})
+					return false;
+				});
+				form.on('submit(department-reset)', function(data){
+					table.reload('department-table', {
+						where: {
+							param : ''
+						},
+						page: {
+					        curr: 1
+					    }
+					});
+					return false;
+				})
 
 				window.add = function() {
 					layer.open({
@@ -131,7 +163,7 @@
 						area: ['80%', '100%'],
 						anim: 1,
 						maxmin: true,
-						content: MODULE_PATH + 'testadd.html?aid='+req.aid
+						content: MODULE_PATH + 'edit.html'
 					});
 				}
 
@@ -144,13 +176,13 @@
 						area: ['80%', '100%'],
 						anim: 1,
 						maxmin: true,
-						content: MODULE_PATH + 'testedit.html?id=' + obj.data.id
+						content: MODULE_PATH + 'edit.html?id=' + obj.data.id
 					});
 				}
 				window.remove = function(obj){
 		            layer.confirm('确定要删除', {icon: 3, title:'提示'}, function(index){
 		                layer.close(index);
-		                _post(layui, 'code/del',{id : obj.data.id}, res => {
+		                _post(layui, 'department/del',{id : obj.data.id}, res => {
 							layer.msg('删除成功',{icon:1,time:1000},() => {
 								obj.del();
 							});
@@ -162,7 +194,7 @@
 
 
 				window.refresh = function(param) {
-					table.reload('test-table');
+					table.reload('department-table');
 				}
 			})
 		</script>

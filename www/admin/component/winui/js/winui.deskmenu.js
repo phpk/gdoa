@@ -188,6 +188,22 @@ layui.define(['layer', 'winui', 'laytpl', 'winuiInit', 'desklogin', 'desklock'],
                 , refresh: true    //显示刷新按钮
             });
         },
+        toolsgifcap: () => {
+            winui.window.open({
+                id: 'godocmstoolsgifcap',
+                type: 2,
+                title: '录屏',
+                shade: 0,
+                moveOut: true,
+                area: ['520px', '520px'],
+                anim: 1,
+                content: '/admin/tools/gifcap/index.html',
+                offset: 'auto'  //居中
+                , min: true  //显示最小化按钮
+                , max: true  //显示最大化按钮
+                , refresh: true    //显示刷新按钮
+            });
+        },
     }
     let toolsObj = [
         {
@@ -245,6 +261,12 @@ layui.define(['layer', 'winui', 'laytpl', 'winuiInit', 'desklogin', 'desklock'],
             icon: 'fa-tint',
             startcss: 'winui-tile-normal',
             clickActioin: toolsAction.toolsFontEditor
+        },
+        {
+            tips: '录屏',
+            icon: 'fa-ravelry',
+            startcss: 'winui-tile-normal',
+            clickActioin: toolsAction.toolsgifcap
         },
     ];
     laytpl($('#startCenterTpl').html()).render(toolsObj, function (html) {

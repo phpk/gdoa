@@ -1,85 +1,9 @@
-[
-    {
-        "key" : "godo_crons",
-        "path" : "plugins/crons",
-        "url" : "cron",
-        "type" : "sys",
-        "name" : "计划任务",
-        "sql" : "src/data/data.sql",
-        "topMenuId" : 2,
-        "menu" : {
-            "title": "计划任务",
-            "key": "crons",
-            "route": "crons/list",
-            "href": "/p/crons/list.html",
-            "type": 1,
-            "order_num": 9,
-            "icon": "layui-icon layui-icon-android",
-            "lid": 1,
-            "ifshow": 0,
-            "desktop": 0,
-            "child": [
-                {
-                    "title": "计划任务添加",
-                    "key": "crons",
-                    "route": "crons/add",
-                    "href": "",
-                    "type": 3,
-                    "order_num": 0,
-                    "icon": "",
-                    "lid": 1,
-                    "ifshow": 0,
-                    "desktop": 0
-                },
-                {
-                    "title": "计划任务编辑",
-                    "key": "crons",
-                    "route": "crons/edit",
-                    "href": "",
-                    "type": 3,
-                    "order_num": 0,
-                    "icon": "",
-                    "lid": 1,
-                    "ifshow": 0,
-                    "desktop": 0
-                },
-                {
-                    "title": "计划任务删除",
-                    "key": "crons",
-                    "route": "crons/del",
-                    "href": "",
-                    "type": 3,
-                    "order_num": 0,
-                    "icon": "",
-                    "lid": 1,
-                    "ifshow": 0,
-                    "desktop": 0
-                },
-                {
-                    "title": "计划任务编辑前",
-                    "key": "crons",
-                    "route": "crons/editBefore",
-                    "href": "",
-                    "type": 3,
-                    "order_num": 0,
-                    "icon": "",
-                    "lid": 1,
-                    "ifshow": 0,
-                    "desktop": 0
-                },
-                {
-                    "title": "开启关闭计划任务",
-                    "key": null,
-                    "route": "crons/enable",
-                    "href": "",
-                    "type": 3,
-                    "order_num": 0,
-                    "icon": "layui-icon layui-icon-mute",
-                    "lid": 1,
-                    "ifshow": 0,
-                    "desktop": 0
-                }
-            ]
-        }
+{
+    "gifcap": {
+        "key": "godo-gifcap",
+        "isTest" : false,
+        "type": "sys",
+        "name": "计划任务",
+        "sql": "src/data/data.sql"
     }
-]
+}
