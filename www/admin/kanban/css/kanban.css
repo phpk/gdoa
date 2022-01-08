@@ -16,6 +16,7 @@ body {
 .header_left input {
   border:none;
   text-align: center;
+  width: 95%;
   line-height: 2rem;
   height: 2rem;
   font-size:1.2rem;

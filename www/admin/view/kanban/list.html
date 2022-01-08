@@ -155,7 +155,9 @@
 				})
 
 				window.add = function() {
-					
+					parent.layui.admin.addTab('godocmskanbanadd',
+					'添加看板',
+					'/admin/kanban/index.html')
 					/*
 					layer.open({
 						type: 2,
@@ -170,6 +172,10 @@
 				}
 
 				window.edit = function(obj) {
+					parent.layui.admin.addTab('godocmskanbanedit_' + obj.data.id,
+					obj.data.title + '-编辑看板',
+					'/admin/kanban/index.html?id=' + obj.data.id)
+					/*
 					layer.open({
 						type: 2,
 						title: '修改',
@@ -179,7 +185,7 @@
 						anim: 1,
 						maxmin: true,
 						content: MODULE_PATH + 'edit.html?id=' + obj.data.id
-					});
+					});*/
 				}
 				window.remove = function(obj){
 		            layer.confirm('确定要删除', {icon: 3, title:'提示'}, function(index){

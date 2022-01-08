@@ -36,8 +36,33 @@ layui.use(['layer', 'dropdown'], function () {
             if (data.id == 1) {
                 addEl(boardId)
             }
+            else if(data.id == 2) {
+                editEl(boardId)
+            }
+            else if(data.id == 3) {
+                delEl(boardId)
+            }
         }
     };
+    function editEl(boardId) {
+        layer.prompt({
+            formType: 0,
+            value: '',
+            title: '编辑看板',
+            area: ['300px', '35px']
+        }, function (value, index, elem) {
+            if (value && value != '') {
+                let data = getItemData(value, boardId);
+                kanban.addElement(boardId, data);
+
+                layer.close(index);
+            }
+
+        });
+    }
+    function delEl(boardId) {
+        kanban.removeBoard(boardId);
+    }
     let initKanban = () => {
         kanban = new jKanban({
             element: "#myKanban",
@@ -109,6 +134,7 @@ layui.use(['layer', 'dropdown'], function () {
             if (value && value != '') {
                 let data = getItemData(value, boardId);
                 kanban.addElement(boardId, data);
+
                 layer.close(index);
             }
 
