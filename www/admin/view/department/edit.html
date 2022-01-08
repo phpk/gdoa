@@ -14,9 +14,31 @@
         <div class="main-container">
             <div class="main-container">
             <div class="layui-form-item">
-                <label class="layui-form-label">名称</label>
+                <label class="layui-form-label">部门名称</label>
                 <div class="layui-input-block">
-                    <input type="text" name="title" lay-verify="required|len" autocomplete="off" min="3" placeholder="请输入名称" class="layui-input">
+                    <input type="text" name="title" lay-verify="required|len" autocomplete="off" min="2" placeholder="请输入部门名称" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">部门上级</label>
+                <div class="layui-input-block">
+                    <span class="layui-btn pear-btn-success pear-btn-md" id="chooseRule">
+                            <span id="ruleText">顶层部门</span>
+                            <i class="layui-icon layui-icon-down layui-font-12"></i>
+                    </span>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">权限列表</label>
+                <div class="layui-input-block">
+                   <div id="treearea"></div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">是否启用</label>
+                <div class="layui-input-block">
+                <input type="radio" name="status" value="1" title="启用" checked="">
+                <input type="radio" name="status" value="0" title="禁用">
                 </div>
             </div>
 			<div class="layui-form-item layui-form-text">
@@ -31,6 +53,7 @@
     </div>
     <div class="bottom">
         <div class="button-container">
+            <input type="hidden" name="pid" id="pid" value="0" lay-verify="required|number">
             <button type="submit" class="pear-btn pear-btn-primary pear-btn-sm" lay-submit="" lay-filter="department-save">
                 <i class="layui-icon layui-icon-ok"></i>
                 提交
@@ -42,10 +65,12 @@
 <script src="../../component/layui/layui.js"></script>
 <script src="../../component/ui/ui.js"></script>
 <script>
-    layui.use(['form','layer','tree'], function () {
+    layui.use(['form','layer','dropdown','tree'], function () {
         let form = layui.form
             , layer = layui.layer
 			, $ = layui.$
+            , tree = layui.tree
+            , dropdown = layui.dropdown
             , req = _req();
         form.verify({
             len : (val, item) => {
@@ -55,25 +80,58 @@
                 }
             }
         })
+        const renderSelect = (res) => {
+            tree.render({
+			     elem: '#treearea'//绑定元素
+					,showCheckbox : true
+					,data: res.menus
+					,id: 'trees' //定义索引
+				});
+                dropdown.render({
+                        elem: '#chooseRule',
+                        data: res.list,
+                        trigger: 'hover',
+                        click: (d, el) => {
+                            $('#ruleText').text(d.title);
+                            $('#pid').val(d.id);
+                            return;
+                        }
+                })
+        }
         if(req.id) {
             //渲染
             _get(layui, 'department/editBefore?id=' + req.id, res => {
                 form.val('editform', res)
+                renderSelect(res)
+                if(res.rules.length > 0){
+                    tree.setChecked('trees', res.rules.split(','));
+                }
+                $('#ruleText').text(res.topname);
             });
+        }else{
+            _get(layui, 'department/addBefore', res => {
+                renderSelect(res)
+            })
         }
 
         //监听提交
         form.on('submit(department-save)', function (data) {
 			data = data.field;
+            let arr = tree.getChecked('trees');
+            data.rules = getTree(arr);
             let postUrl;
             if(req.id) {
                 postUrl = 'department/edit';
+                if(data.pid == req.id){
+                    layer.msg('不能选择同一层');
+                    return false;
+                }
             }else{
                 postUrl = 'department/add';
             }
 			_post(layui, postUrl, data, res => {
 				//console.log(res)
-				parent.layui.table.reload("department-table");
+				parent.render();
 				parent.layer.close(parent.layer.getFrameIndex(window.name));//关闭当前页
 
 			})

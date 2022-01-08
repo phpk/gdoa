@@ -54,11 +54,12 @@
 		<script src="../../component/layui/layui.js"></script>
 		<script src="../../component/ui/ui.js"></script>
 		<script>
-			layui.use(['table', 'form', 'jquery','common'], function() {
+			layui.use(['table', 'form', 'jquery','common','treetable'], function() {
 				let table = layui.table;
 				let form = layui.form;
 				let $ = layui.jquery;
 				let common = layui.common;
+				let treetable = layui.treetable;
 
 				let MODULE_PATH = "./";
 
@@ -88,32 +89,27 @@
 						}
 					]
 				]
-
-				table.render({
-					elem: '#department-table',
-					url: apiUrl + 'department/list',
-					headers : getHeader(),
-					parseData: function(res) {
-						//console.log(res)
-						return {
-							"code": res.code, //解析接口状态
-							"msg": res.message, //解析提示文本
-							"count": res.data.count, //解析数据长度
-							"data": res.data.list //解析数据列表
-						};
-					},
-					page: true,
-					cols: cols,
-					skin: 'line',
-
-					toolbar: '#department-toolbar',
-					defaultToolbar: [{
-						title: '刷新',
-						layEvent: 'refresh',
-						icon: 'layui-icon-refresh',
-					}, 'filter', 'print', 'exports']
-				});
-
+			    window.render = function () {
+					treetable.render({
+						elem: '#department-table',
+						url: 'department/list',
+						treeColIndex: 1,
+						treeSpid: 0,
+						treeIdName: 'id',
+						treePidName: 'pid',
+						skin: 'line',
+                        treeDefaultClose: true,
+						page: false,
+						cols: cols,
+						toolbar: '#department-toolbar',
+						defaultToolbar: [{
+							title: '刷新',
+							layEvent: 'refresh',
+							icon: 'layui-icon-refresh',
+						}, 'filter', 'print', 'exports']
+					});
+				}
+				render();
 				table.on('tool(department-table)', function(obj) {
 					if (obj.event === 'remove') {
 						window.remove(obj);
@@ -157,7 +153,7 @@
 				window.add = function() {
 					layer.open({
 						type: 2,
-						title: '新增',
+						title: '新增部门',
 						shade: 0.1,
 						offset: 'rt',
 						area: ['80%', '100%'],
@@ -170,7 +166,7 @@
 				window.edit = function(obj) {
 					layer.open({
 						type: 2,
-						title: '修改',
+						title: '修改部门',
 						shade: 0.1,
 						offset: 'rt',
 						area: ['80%', '100%'],

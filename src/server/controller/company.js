@@ -6,25 +6,26 @@ const Base = require('./base.js');
 module.exports = class extends Base {
 
     async listAction() {
-        let { page, limit, param } = this.get();
-        let wsql = {};
-        if (param) wsql = this.parseSearch(param, wsql);
-        let list = await this.model('company').where(wsql).page(page, limit).order('id desc').select();
-        let count = await this.model('company').where(wsql).count();
-        return this.success({ list, count })
+        let list = await this.model('company').order('id desc').select();
+        return this.success(list)
     }
 
     async addAction() {
         let post = this.post();
+        //console.log(post)
         let id = await this.model('company').add(post);
         return this.success(id);
     }
-
+    async addBeforeAction() {
+        let list = await this.model('auth').getTree('company');
+        let menus = await this.model('menu').tree();
+        return this.success({list, menus})
+    }
     async editAction() {
         let post = this.post();
         let has = await this.model('company').where({ id: post.id }).find();
         if (think.isEmpty(has)) return this.fail('编辑的数据不存在');
-        await this.model('company').update(post);
+        await this.model('company').where({id : post.id}).update(post);
         return this.success()
     }
 
@@ -32,6 +33,13 @@ module.exports = class extends Base {
         let id = this.get('id');
         let data = await this.model('company').where({ id }).find()
         if (think.isEmpty(data)) return this.fail('数据为空')
+        data.list = await this.model('auth').getTree('department');
+        data.menus = await this.model('menu').tree();
+        if(data.pid > 0) {
+            data.topname = await this.model('department').where({id : data.pid}).getField('title', true);
+        }else{
+            data.topname = '顶层'
+        }
         return this.success(data);
     }
 

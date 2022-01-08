@@ -55,7 +55,6 @@
     "eslint-config-think": "^1.0.0",
     "node-notifier": "^5.0.2",
     "nyc": "^7.0.0",
-    "open": "^8.4.0",
     "think-babel": "^1.0.3",
     "think-inspect": "0.0.2",
     "think-watcher": "^3.0.0"

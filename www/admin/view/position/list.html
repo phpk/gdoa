@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>岗位管理管理</title>
+		<title>岗位管理</title>
 		<link rel="stylesheet" href="../../component/ui/css/ui.css" />
 	</head>
 	<body class="pear-container">
@@ -70,15 +70,9 @@
 							align: 'center'
 						},
 						{
-							title: '名称',
+							title: '岗位名称',
 							field: 'title',
 							align: 'center'
-						},
-						{
-							title: '添加时间',
-							field: 'add_time',
-							align: 'center',
-							templet: '#position-time'
 						},
 						{
 							title: '操作',
@@ -157,7 +151,7 @@
 				window.add = function() {
 					layer.open({
 						type: 2,
-						title: '新增',
+						title: '新增岗位',
 						shade: 0.1,
 						offset: 'rt',
 						area: ['80%', '100%'],
@@ -170,7 +164,7 @@
 				window.edit = function(obj) {
 					layer.open({
 						type: 2,
-						title: '修改',
+						title: '修改岗位',
 						shade: 0.1,
 						offset: 'rt',
 						area: ['80%', '100%'],

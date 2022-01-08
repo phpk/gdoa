@@ -1,7 +1,7 @@
 const Base = require('./base.js');
 /**
  * @class
- * @apiDefine position 岗位管理管理
+ * @apiDefine position 岗位管理
  */
 module.exports = class extends Base {
 
@@ -16,10 +16,14 @@ module.exports = class extends Base {
 
     async addAction() {
         let post = this.post();
+        console.log(post)
         let id = await this.model('position').add(post);
         return this.success(id);
     }
-
+    async addBeforeAction() {
+        let menus = await this.model('menu').tree();
+        return this.success({menus})
+    }
     async editAction() {
         let post = this.post();
         let has = await this.model('position').where({ id: post.id }).find();
@@ -32,6 +36,7 @@ module.exports = class extends Base {
         let id = this.get('id');
         let data = await this.model('position').where({ id }).find()
         if (think.isEmpty(data)) return this.fail('数据为空')
+        data.menus = await this.model('menu').tree();
         return this.success(data);
     }
 

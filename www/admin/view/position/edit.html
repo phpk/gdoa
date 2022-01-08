@@ -14,9 +14,22 @@
         <div class="main-container">
             <div class="main-container">
             <div class="layui-form-item">
-                <label class="layui-form-label">名称</label>
+                <label class="layui-form-label">岗位名称</label>
                 <div class="layui-input-block">
-                    <input type="text" name="title" lay-verify="required|len" autocomplete="off" min="3" placeholder="请输入名称" class="layui-input">
+                    <input type="text" name="title" lay-verify="required|len" autocomplete="off" min="2" placeholder="请输入岗位名称" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">权限列表</label>
+                <div class="layui-input-block">
+                   <div id="treearea"></div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">是否启用</label>
+                <div class="layui-input-block">
+                <input type="radio" name="status" value="1" title="启用" checked="">
+                <input type="radio" name="status" value="0" title="禁用">
                 </div>
             </div>
 			<div class="layui-form-item layui-form-text">
@@ -42,10 +55,12 @@
 <script src="../../component/layui/layui.js"></script>
 <script src="../../component/ui/ui.js"></script>
 <script>
-    layui.use(['form','layer','tree'], function () {
+    layui.use(['form','layer','dropdown','tree'], function () {
         let form = layui.form
             , layer = layui.layer
 			, $ = layui.$
+            , tree = layui.tree
+            , dropdown = layui.dropdown
             , req = _req();
         form.verify({
             len : (val, item) => {
@@ -55,25 +70,47 @@
                 }
             }
         })
+        const renderSelect = (res) => {
+            tree.render({
+			     elem: '#treearea'//绑定元素
+					,showCheckbox : true
+					,data: res.menus
+					,id: 'trees' //定义索引
+				});
+        }
         if(req.id) {
             //渲染
             _get(layui, 'position/editBefore?id=' + req.id, res => {
                 form.val('editform', res)
+                renderSelect(res)
+                if(res.rules.length > 0){
+                    tree.setChecked('trees', res.rules.split(','));
+                }
             });
+        }else{
+            _get(layui, 'position/addBefore', res => {
+                renderSelect(res)
+            })
         }
 
         //监听提交
         form.on('submit(position-save)', function (data) {
 			data = data.field;
+            let arr = tree.getChecked('trees');
+            data.rules = getTree(arr);
             let postUrl;
             if(req.id) {
                 postUrl = 'position/edit';
+                data.id = req.id;
             }else{
                 postUrl = 'position/add';
             }
 			_post(layui, postUrl, data, res => {
 				//console.log(res)
-				parent.layui.table.reload("position-table");
+				parent
+                                .layui
+                                .table
+                                .reload("position-table");
 				parent.layer.close(parent.layer.getFrameIndex(window.name));//关闭当前页
 
 			})
