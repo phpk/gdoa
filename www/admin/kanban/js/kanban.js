@@ -589,7 +589,7 @@
             customItemLayout = '';
           }
 
-          result = '<div class=\'item_handle ' + customCssHandler + '\'><i class=\'item_handle ' + customCssIconHandler + '\'></i></div><div>' + result + '</div>'
+          result = '<div class=\'item_handle ' + customCssHandler + '\'><i class=\'item_handle ' + customCssIconHandler + '\'></i><i class="layui-icon layui-icon-more-vertical"></i></div><div class="item_kanban">' + result + '</div>'
         } else {
           result = '<div> ' + self.options.itemHandleOptions.customHandler.replace(/%([^%]+)%/g, function (match, key) { return item[key] !== undefined ? item[key] : '' }) + ' </div>'
           return result

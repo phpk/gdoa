@@ -165,10 +165,11 @@
                     //return false;
                     _post(layui, 'doc/editmd', data, res => {
                         //console.log(res)
-                        parent.render();
+                        
                         layer.msg('保存成功',{
                             icon: 1, time: 1000
                         });
+                        //parent.reload();
                     })
                     return false;
                 }

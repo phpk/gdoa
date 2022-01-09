@@ -2,6 +2,7 @@ layui.define(['layim', 'layer', 'winui','winuisocket'], function (exports) {
     let layim = layui.layim,
         layer = layui.layer;
     const init = () => {
+        return;
         //演示自动回复
         /*
         var autoReplay = [

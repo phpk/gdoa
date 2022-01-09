@@ -8,7 +8,8 @@ layui.use(['layer', 'dropdown'], function () {
         kanban,
         dropEl,
         taskDataInfo = {
-            maxid : 0
+            maxid: 0,
+            title : '我的看板'
         },
         taskDataList = [];
     let dropDownOptions = {
@@ -63,7 +64,7 @@ layui.use(['layer', 'dropdown'], function () {
     function delEl(boardId) {
         kanban.removeBoard(boardId);
     }
-    let initKanban = () => {
+    function initKanban(){
         kanban = new jKanban({
             element: "#myKanban",
             gutter: "10px",
@@ -72,11 +73,15 @@ layui.use(['layer', 'dropdown'], function () {
                 enabled: true,
                 customCssIconHandler: 'layui-icon layui-icon-slider'
             },
-            boards: []
+            boards: [],
+            dropBoard: function (el, target, source, sibling) {
+                console.log(taskDataList)
+                console.log(el, target, source, sibling)
+            }
         });
         dropdown.render(dropDownOptions)
     }
-    let initParams = () => {
+    function initParams() {
         if (taskDataList.length > 0) {
             kanbanId = taskDataInfo.maxid;
             kanbanClsId = kanbanId;
@@ -111,7 +116,7 @@ layui.use(['layer', 'dropdown'], function () {
         })
     }
     
-    let getItemData = (title, boardId) => {
+    function getItemData(title, boardId){
         let tbId;
         taskDataList.forEach(d => {
             if (d.id = boardId) {
@@ -119,12 +124,19 @@ layui.use(['layer', 'dropdown'], function () {
                 tbId = d.maxid;
             }
         })
-        return {
+        let rt = {
             id: 'tbitem_' + boardId + '_' + tbId,
             title
         }
+        taskDataList.forEach(d => {
+            if (d.id = boardId) {
+                d.item.push(rt);
+            }
+        })
+        return rt;
     }
-    let addEl = (boardId) => {
+    //添加看板任务
+    function addEl(boardId){
         layer.prompt({
             formType: 0,
             value: '',
@@ -141,7 +153,7 @@ layui.use(['layer', 'dropdown'], function () {
         });
     }
 
-
+    //添加看板
     $('#addKanban').on('click', e => {
         layer.prompt({
             formType: 0,

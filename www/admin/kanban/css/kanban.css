@@ -284,3 +284,9 @@ body {
 .drag_handler_icon:after {
     bottom: 6px;
 }
+.item_kanban{
+  display: block;
+  width: 99%;
+  text-align: left;
+  word-wrap:break-word
+}
