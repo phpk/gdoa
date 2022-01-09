@@ -14,7 +14,7 @@ module.exports = {
     ratelimit: {
         enable: true,
         interval: 1 * 60 * 1000, // 1 minutes
-        max: 100,
+        max: 1000,
         prefixKey: 'login/captcha'
     },
     cache: {
