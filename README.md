@@ -23,7 +23,7 @@ godocms是刚东科技开发的一套开源办公套件，遵从Apache License 2
 登录名：admin
 密码 ：admin
 
-![recording.gif](/docs/oplogs/img/1641868653561.gif)
+[看图片演示](https://godocms.com/static/gif/imgall.gif)
 
 ## 功能介绍
 
