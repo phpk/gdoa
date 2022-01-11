@@ -1,14 +1,18 @@
 ## 关于godocms
 
-godocms是刚东科技开发的一套开源办公套件，遵从Apache License 2.0开源协议，非常适合二次开发，内含word/excel/ppt/pdf/svg/思维导图/流程图/日程管理等多个办公系统解决方案。godocms也是一套低代码开发套件，内含模块管理/接口管理/代码拖拽/数据库管理/表单管理等一套完善的低代码开发工具流。内含两套风格界面，win10和传统软件界面，可随时切换。内置了很多对开发者有用的实用工具，也可以当作一个工具箱使用。
+godocms是刚东科技开发的一套开源办公套件，遵从Apache License 2.0开源协议，非常适合二次开发，内含word/excel/ppt/pdf/svg/思维导图/流程图/日程管理等多个办公系统解决方案。godocms也是一套低代码开发套件，内含模块管理/接口管理/代码拖拽/数据库管理/表单管理等一套完善的低代码开发工具流。内含两套风格界面，win10和传统软件界面，可随时切换。
 
 ## 为什么做？
 
 现在主流的办公套件要么不开源，要么需要授权，而且安装异常复杂。随着技术的日新月异，很多开源组件基本能够解决办公套件商用化的痛点甚至更好，但都是零碎的/单一的解决方案，为此我们沉心静气花耗半年时间打磨了这套产品。godocms基本实现了办公三套件（word/ppt/excel）的编辑流，无需服务器安装底层的模块。
+
 低代码现在处在一个发展阶段，国内也涌现了一大批优秀的低代码套件，更接地气更平民化。但是要解决大型复杂的业务流时总是感觉有那么有点力不从心，为什么呢？我们做了认真的思考和研究，发现很多低代码套件都忽视了软件开发的基本流程和本质，一套软件的开发流程包含很多，需求分析/架构设计/开发/测试/交付等，这是一个大工程，因为每个子流程里面又包含很多小流程。反过来想，如果把每个流程都加进去那就还是低代码吗？其实google走在最前面，他们开发了blockly。但是blockly在国内并没有得到大面积的推广？why？学习成本和开发成本！blockly不能拿过来直接上项目，很多公司的开发都有自己的底层平台，如果要用那就要做二开。godocms基层很多模块都是用blockly开发的，并且完美的集成了进来。我们完全遵从控制层/模型层/逻辑层/服务层的基础软件开发框架，只要明白mvc的思想，就很容易上手。
+
 为什么要用nodejs开发？godocms开发原则是“**易上手，容易改**”。前端工程师和后端工程师都可以上手，没有复杂的包，学习成本低，简单的做一下二次开发，可以实现大型的复杂项目。
 
 ## 项目地址
+
+[https://github.com/godocms/godocms](https://github.com/godocms/godocms)
 
 [https://gitee.com/ruitao_admin/godocms](https://gitee.com/ruitao_admin/godocms)
 
@@ -20,8 +24,6 @@ godocms是刚东科技开发的一套开源办公套件，遵从Apache License 2
 密码 ：admin
 
 ![recording.gif](/docs/oplogs/img/1641868653561.gif)
-
-
 
 ## 功能介绍
 
@@ -182,43 +184,24 @@ pm2 start pm2.json
 ## 特别鸣谢
 
 [https://thinkjs.org](https://thinkjs.org/)
-
 [https://github.com/google/blockly](https://github.com/google/blockly)
-
 [https://gitee.com/sentsin/layui](https://gitee.com/sentsin/layui)
-
 [https://gitee.com/pear-admin/Pear-Admin-Layui](https://gitee.com/pear-admin/Pear-Admin-Layui)
-
 [https://docsify.js.org/#/zh-cn/](https://docsify.js.org/#/zh-cn/)
-
 [https://gitee.com/ayq947/ayq-layui-form-designer](https://gitee.com/ayq947/ayq-layui-form-designer)
-
 [https://github.com/wanglin2/mind-map](https://github.com/wanglin2/mind-map)
-
 [https://github.com/mengshukeji/Luckysheet](https://github.com/mengshukeji/Luckysheet)
-
 [https://github.com/pipipi-pikachu/PPTist](https://github.com/pipipi-pikachu/PPTist)
-
 [https://github.com/jgraph/mxgraph](https://github.com/jgraph/mxgraph)
-
 [https://github.com/Vanessa219/vditor](https://github.com/Vanessa219/vditor)
-
 [https://github.com/nhn/tui.image-editor](https://github.com/nhn/tui.image-editor)
-
 [https://github.com/nhn/tui.calendar](https://github.com/nhn/tui.calendar)
-
 [https://github.com/joaomoreno/gifcap](https://github.com/joaomoreno/gifcap)
-
 [https://github.com/naptha/tesseract.js](https://github.com/naptha/tesseract.js)
-
 [https://github.com/qunee/graph.editor_vue](https://github.com/qunee/graph.editor_vue)
-
 [https://github.com/SVG-Edit/svgedit](https://github.com/SVG-Edit/svgedit)
-
 [https://github.com/robicch/jQueryGantt](https://github.com/robicch/jQueryGantt)
-
 [https://gitee.com/karson/tinytools](https://gitee.com/karson/tinytools)
-
 [https://github.com/ecomfe/fonteditor](https://github.com/ecomfe/fonteditor)
 [https://github.com/tldraw/tldraw](https://github.com/tldraw/tldraw)
 
