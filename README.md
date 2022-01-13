@@ -20,8 +20,12 @@ godocms是刚东科技开发的一套开源办公套件，遵从Apache License 2
 
 [https://demo.godocms.com](https://demo.godocms.com)
 
-登录名：admin
-密码 ：admin
+- 登录名：admin
+- 密码 ：admin
+
+- 联系方式：13885863355(手机/微信)
+- QQ交流群: 123699813
+- Email : xpbb@qq.com
 
 [看图片演示](https://godocms.com/static/gif/imgall.gif)
 
@@ -91,9 +95,9 @@ svg在线编辑器，基于svgedit。支持增/删/改/查，支持导入/导出
 
 一个小型的办公白板工具。支持画笔/橡皮擦/便签等。
 
-#### 十七 录屏工具
+#### 十七 录屏/截屏工具
 
-一个实用的在线录屏工具。支持谷歌/火狐浏览器，直接生成gif。
+一个实用的在线录屏工具。支持谷歌/火狐浏览器，直接生成gif。截屏工具快捷键command+j。
 
 #### 十八 其他小工具
 
@@ -205,5 +209,5 @@ pm2 start pm2.json
 - [https://github.com/ecomfe/fonteditor](https://github.com/ecomfe/fonteditor)
 - [https://github.com/tldraw/tldraw](https://github.com/tldraw/tldraw)
 
-如需二次开发请联系微信**ruitao580** 邮箱 xpbb@qq.com
+
 

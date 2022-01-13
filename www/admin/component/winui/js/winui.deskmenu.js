@@ -204,6 +204,17 @@ layui.define(['layer', 'winui', 'laytpl', 'winuiInit', 'desklogin', 'desklock'],
                 , refresh: true    //显示刷新按钮
             });
         },
+        toosjpgshot: () => {
+            // 截图确认按钮回调函数
+            const callback = (base64) => {
+                console.log(base64);
+            }
+            // 截图取消时的回调函数
+            const closeFn = () => {
+                console.log("截图窗口关闭");
+            }
+            new screenShotPlugin({ enableWebRtc: false, completeCallback: callback, closeCallback: closeFn });
+        }
     }
     let toolsObj = [
         {
@@ -268,7 +279,21 @@ layui.define(['layer', 'winui', 'laytpl', 'winuiInit', 'desklogin', 'desklock'],
             startcss: 'winui-tile-normal',
             clickActioin: toolsAction.toolsgifcap
         },
+        {
+            tips: '截屏',
+            icon: 'fa-crop',
+            startcss: 'winui-tile-normal',
+            clickActioin: toolsAction.toosjpgshot
+        },
     ];
+    //截屏 ctrl+j command+j
+    document.addEventListener('keydown', (e) => {
+        if (e.keyCode == 74 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
+            e.preventDefault();
+            toolsAction.toosjpgshot();
+            //alert('saved');
+        }
+    });
     laytpl($('#startCenterTpl').html()).render(toolsObj, function (html) {
         $('#winui-tilebox-body').html(html)
         let clickAct = (obj) => {
@@ -341,6 +366,9 @@ layui.define(['layer', 'winui', 'laytpl', 'winuiInit', 'desklogin', 'desklock'],
     })
     $('#rightmenu-changeBg').on('click', e => {
         toolsAction.changeBg()
+    })
+    $('#rightmenu-changeTheme').on('click', e => {
+        toolsAction.changeTheme()
     })
     let showHelperKey = '_windowsHelperTips'
     let windowShowHelper = localStorage.getItem(showHelperKey);
