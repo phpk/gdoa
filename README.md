@@ -27,7 +27,55 @@ godocms是刚东科技开发的一套开源办公套件，遵从Apache License 2
 - QQ交流群: 123699813
 - Email : xpbb@qq.com
 
-[看图片演示](https://godocms.com/static/gif/imgall.gif)
+[看动图演示](https://godocms.com/static/gif/imgall.gif)
+
+![1.jpg](https://godocms.com/static/jpg/1.jpg)
+![2.jpg](https://godocms.com/static/jpg/2.jpg)
+![3.jpg](https://godocms.com/static/jpg/3.jpg)
+![4.jpg](https://godocms.com/static/jpg/4.jpg)
+![5.jpg](https://godocms.com/static/jpg/5.jpg)
+![6.jpg](https://godocms.com/static/jpg/6.jpg)
+![7.jpg](https://godocms.com/static/jpg/7.jpg)
+![8.jpg](https://godocms.com/static/jpg/8.jpg)
+![9.jpg](https://godocms.com/static/jpg/9.jpg)
+![10.jpg](https://godocms.com/static/jpg/10.jpg)
+![11.jpg](https://godocms.com/static/jpg/11.jpg)
+![12.jpg](https://godocms.com/static/jpg/12.jpg)
+![13.jpg](https://godocms.com/static/jpg/13.jpg)
+![14.jpg](https://godocms.com/static/jpg/14.jpg)
+![15.jpg](https://godocms.com/static/jpg/15.jpg)
+![16.jpg](https://godocms.com/static/jpg/16.jpg)
+![17.jpg](https://godocms.com/static/jpg/17.jpg)
+![18.jpg](https://godocms.com/static/jpg/18.jpg)
+![19.jpg](https://godocms.com/static/jpg/19.jpg)
+![20.jpg](https://godocms.com/static/jpg/20.jpg)
+![21.jpg](https://godocms.com/static/jpg/21.jpg)
+![22.jpg](https://godocms.com/static/jpg/22.jpg)
+![23.jpg](https://godocms.com/static/jpg/23.jpg)
+![24.jpg](https://godocms.com/static/jpg/24.jpg)
+![25.jpg](https://godocms.com/static/jpg/25.jpg)
+![26.jpg](https://godocms.com/static/jpg/26.jpg)
+![27.jpg](https://godocms.com/static/jpg/27.jpg)
+![28.jpg](https://godocms.com/static/jpg/28.jpg)
+![29.jpg](https://godocms.com/static/jpg/29.jpg)
+![30.jpg](https://godocms.com/static/jpg/30.jpg)
+![41.jpg](https://godocms.com/static/jpg/41.jpg)
+![42.jpg](https://godocms.com/static/jpg/42.jpg)
+![43.jpg](https://godocms.com/static/jpg/43.jpg)
+![44.jpg](https://godocms.com/static/jpg/44.jpg)
+![45.jpg](https://godocms.com/static/jpg/45.jpg)
+![46.jpg](https://godocms.com/static/jpg/46.jpg)
+![47.jpg](https://godocms.com/static/jpg/47.jpg)
+![48.jpg](https://godocms.com/static/jpg/48.jpg)
+![49.jpg](https://godocms.com/static/jpg/49.jpg)
+![50.jpg](https://godocms.com/static/jpg/50.jpg)
+![51.jpg](https://godocms.com/static/jpg/51.jpg)
+![52.jpg](https://godocms.com/static/jpg/52.jpg)
+![53.jpg](https://godocms.com/static/jpg/53.jpg)
+![54.jpg](https://godocms.com/static/jpg/54.jpg)
+![55.jpg](https://godocms.com/static/jpg/55.jpg)
+![56.jpg](https://godocms.com/static/jpg/56.jpg)
+
 
 ## 功能介绍
 
@@ -173,8 +221,14 @@ mysql: {
 
 ## 本地预览
 
-通过运行 `npm start` 启动一个本地服务器。默认访问地址 http://localhost:8200 。
+通过运行 `npm run dev` 启动一个本地服务器。默认访问地址 http://localhost:8200 。
 
+开发环境
+```bash
+npm run dev
+```
+
+正式环境
 ```bash
 npm start
 ```

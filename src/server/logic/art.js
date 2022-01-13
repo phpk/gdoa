@@ -69,5 +69,31 @@ module.exports = class extends think.Logic {
 	*/
 	artcateAction(){
 		this.allowMethods = 'get';
+		this.rules = {
+			 id : {
+				int : true,
+				aliasName : '文章id'
+			},
+			 category_id : {
+				required : true,
+				int : true,
+				defalut: 0,
+				aliasName : '分类id'
+			},
+			 page : {
+				int : true,
+				defalut: 1,
+				aliasName : '分页页数'
+			},
+			 limit : {
+				int : true,
+				defalut: 20,
+				aliasName : '每页数据量'
+			},
+			 param : {
+				string : true,
+				aliasName : '分页参数'
+			},
+		}
 	}
 };
