@@ -264,9 +264,7 @@ pm2 start pm2.json
 - [https://github.com/tldraw/tldraw](https://github.com/tldraw/tldraw)
 - [https://github.com/likaia/js-screen-shot/](https://github.com/likaia/js-screen-shot/)
 
-#### 微信交流群
-
-![wxqr.png](https://godocms.com/static/wxqr.png)
+#### 如对您有帮助，请高抬贵手Star！
 
 
 

@@ -123,7 +123,7 @@ layui.define(['layer', 'winui'], function (exports) {
             },
             //还原回调
             restore: function (window) {
-                $(window).find('.layui-layer-max').html('<i class="layui-icon" style="font-size:12px;left:18px;" >&#xe626;<i>');
+                $(window).find('.layui-layer-max').html('<i class="layui-icon" style="font-size:12px;left:18px;" >&#xe638;<i>');
                 common.setWindowBody(window);
             },
             //拉伸回调
@@ -146,7 +146,7 @@ layui.define(['layer', 'winui'], function (exports) {
                 }
             });
         }
-        $(windowDom).find('.layui-layer-max').html('<i class="layui-icon" style="font-size:12px;left:18px;" >&#xe626;<i>');
+        $(windowDom).find('.layui-layer-max').html('<i class="layui-icon" style="font-size:12px;left:18px;" >&#xe638;<i>');
         $(windowDom).find('.layui-layer-close').html('<i class="layui-icon">&#x1006;<i>');
         //打开最大化
         switch ((options.maxOpen || this.settings.maxOpen)) {
