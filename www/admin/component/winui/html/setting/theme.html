@@ -16,10 +16,16 @@
         </div>
     </div>
     <div class="winui-tab-right">
+        <form class="layui-form" action="" lay-filter="editform">
         <div class="winui-scroll-y">
             <div class="winui-tab-content">
                 <!-- 背景设置 -->
                 <div class="winui-tab-item layui-show">
+                    <h1>自动切换</h1>
+                    <div class="layui-form winui-radio taskbar-position">
+                        <input type="radio" name="autoChangeBg" value="1" title="自动切换" lay-filter="autoChangeBg">
+                        <input type="radio" name="autoChangeBg" value="0" title="不切换" lay-filter="autoChangeBg" checked>
+                    </div>
                     <h1>预览</h1>
                     <div class="background-preview">
                         <div class="preview-start">
@@ -84,6 +90,7 @@
                         </div>
                         <div class="preview-taskbar"></div>
                     </div>
+                    
                     <h2>选择图片</h2>
                     <div class="background-choose">
                         <img src="/admin/component/winui/images/bg/bg1.jpg" />
@@ -113,12 +120,13 @@
                         <img src="/admin/component/winui/images/bg/img20.webp" />
                         <img src="/admin/component/winui/images/bg/img21.webp" />
                     </div>
+                    
                     <!-- 上传图片 -->
                     <input type="file" name="file" class="layui-upload-file" style="display:none;">
                     <div class="background-upload">
                         浏览
                     </div>
-                    <div style="color:#ff6a00;margin-top:50px;">Tips：主题的相关设置存储于本地，下次打开可直接使用</div>
+                    
                 </div>
                 <!-- 颜色设置 -->
                 <div class="winui-tab-item">
@@ -387,6 +395,7 @@
                 </div>
             </div>
         </div>
+        </form>
     </div>
 </div>
 

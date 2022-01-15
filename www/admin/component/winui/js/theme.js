@@ -123,10 +123,22 @@ layui.use(['layer', 'form'], function (exports) {
     form.on('radio(startSize)', function (data) {
         winui.resetStartSize(data.value);
     });
+    //锁屏
     form.on('radio(taskLocktime)', function (data) {
         localStorage.setItem('_godocmsLockScreenTime', data.value);
     });
     $('#taskLockpassword').on('blur keydown', e => {
         localStorage.setItem('_godocmsLockScreenPassword', $('#taskLockpassword').val());
     })
+    //自动切换
+    let autoChangeBg = localStorage.getItem('_godocmsScreenAutoChangeBg');
+    //console.log(autoChangeBg)
+    if (autoChangeBg && autoChangeBg > 0) {
+        form.val('editform', { "autoChangeBg": 1})
+    }
+    form.on('radio(autoChangeBg)', function (data) {
+        //console.log(data)
+        localStorage.setItem('_godocmsScreenAutoChangeBg', data.value*1);
+    });
+    
 });

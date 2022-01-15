@@ -1,6 +1,11 @@
 ; !function () {
     "use strict";
-    var THIS = 'winui-this', SHOW = 'layui-show', MOVE = '.layui-layer-title', MOD_NAME = 'winui', taskbarHeight = 40
+    let THIS = 'winui-this',
+        SHOW = 'layui-show',
+        MOVE = '.layui-layer-title',
+        MOD_NAME = 'winui',
+        taskbarHeight = 40,
+        changeBgCountNum = 0
 
         //获取winui路径
         , getPath = function () {
@@ -458,12 +463,26 @@
                     //将时间显示到指定的位置，时间格式形如：19:18:02
                     $(selector).html(str);
                     this.taskLockScreen(dateTime, this);
+                    this.changeThemeBg();
                 }, 1000);
             },
             //开始
             initLockScreen : () => {
                 winui.systemLocked = false;
                 winui.setSystemNowTime();
+            },
+            //更换背景图片
+            changeThemeBg: () => {
+                let autoSet = localStorage.getItem('_godocmsScreenAutoChangeBg');
+                if (!autoSet || autoSet < 1) return;
+                changeBgCountNum++;
+                let cNum = 8;
+                if (changeBgCountNum > cNum) changeBgCountNum = 0;
+                if (changeBgCountNum == cNum) {
+                    let id = parseInt(Math.random() * 21 + 1, 10);
+                    let bgSrc = '/admin/component/winui/images/bg/img' + id + '.webp';
+                    winui.resetBg(bgSrc);
+                }
             },
             taskLockScreen: (now, that) => {
                 //console.log(winui)
