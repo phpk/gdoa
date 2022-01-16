@@ -11,6 +11,7 @@ module.exports = class extends Base {
         if (param) wsql = this.parseSearch(param, wsql);
         let list = await this.model('ppt').where(wsql).order('id desc').page(page, limit).select();
         let count = await this.model('ppt').where(wsql).count();
+        await this.adminViewLog('演示文稿列表');
         return this.success({ list, count })
     }
 
@@ -20,6 +21,7 @@ module.exports = class extends Base {
         post.user_id = this.adminId;
         post.update_time = this.now();
         let id = await this.model('ppt').add(post);
+        await this.adminOpLog('添加ppt');
         return this.success(id);
     }
 
@@ -29,6 +31,7 @@ module.exports = class extends Base {
         if (think.isEmpty(has)) return this.fail('编辑的数据不存在');
         post.update_time = this.now();
         await this.model('ppt').update(post);
+        await this.adminOpLog('编辑ppt');
         return this.success()
     }
 
@@ -44,6 +47,7 @@ module.exports = class extends Base {
         if (!await this.hasData('ppt', { id }))
             return this.fail('数据不存在')
         await this.model('ppt').where({ id }).delete()
+        await this.adminOpLog('删除ppt');
         return this.success()
     }
 }

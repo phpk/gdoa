@@ -11,6 +11,7 @@ module.exports = class extends Base {
         if (param) wsql = this.parseSearch(param, wsql);
         let list = await this.model('txt').where(wsql).page(page, limit).order('id desc').select();
         let count = await this.model('txt').where(wsql).count();
+        await this.adminViewLog('文本编辑器列表');
         return this.success({ list, count })
     }
 
@@ -24,6 +25,7 @@ module.exports = class extends Base {
             update_time : this.now()
         }
         let id = await this.model('txt').add(data);
+        await this.adminOpLog('添加文本');
         return this.success(id);
     }
 
@@ -38,6 +40,7 @@ module.exports = class extends Base {
             update_time: this.now()
         }
         await this.model('txt').where({id}).update(data);
+        await this.adminOpLog('编辑文本');
         return this.success()
     }
 
@@ -54,6 +57,7 @@ module.exports = class extends Base {
         if (!await this.hasData('txt', { id }))
             return this.fail('数据不存在')
         await this.model('txt').where({ id }).delete()
+        await this.adminOpLog('删除文本');
         return this.success()
     }
 }

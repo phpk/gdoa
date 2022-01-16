@@ -22,6 +22,23 @@ module.exports = class extends Base {
         return this.success({ list, count })
     }
     /**
+     * @api {get} logs/login 操作日志列表
+     * @apiGroup logs
+     *
+     * @apiHeader {string} rttoken 必填
+     *
+     * @apiParam  {number} page 页码
+     * @apiParam  {number} limit 每页显示数据
+     *
+     * @apiSuccess (200) {type} name description
+     *
+     */
+     async loginAction() {
+        const { list, count } = await this.coms('admin_loginlog')
+        await this.adminViewLog('管理员登陆日志');
+        return this.success({ list, count })
+    }
+    /**
      * @api {get} logs/view 行为日志列表
      * @apiGroup logs
      *

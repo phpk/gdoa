@@ -19,6 +19,7 @@ module.exports = class extends Base {
         if (param) wsql = this.parseSearch(param, wsql);
         let list = await this.model('word').where(wsql).page(page, limit).order('id desc').select();
         let count = await this.model('word').where(wsql).count();
+        await this.adminViewLog('文档编辑器列表');
         return this.success({ list, count })
     }
 
@@ -31,8 +32,9 @@ module.exports = class extends Base {
             update_time: this.now(),
             user_id : this.adminId
         }
-        console.log(data)
+        //console.log(data)
         let id = await this.model('word').add(data);
+        await this.adminOpLog('添加文档');
         return this.success(id);
     }
 
@@ -47,6 +49,7 @@ module.exports = class extends Base {
             update_time: this.now()
         }
         await this.model('word').where({id}).update(data);
+        await this.adminOpLog('编辑文档');
         return this.success()
     }
 
@@ -61,7 +64,8 @@ module.exports = class extends Base {
         let id = this.post('id');
         if (!await this.hasData('word', { id }))
             return this.fail('数据不存在')
-        await this.model('word').where({ id }).delete()
+        await this.model('word').where({ id }).delete();
+        await this.adminOpLog('删除文档');
         return this.success()
     }
     async uploadAction() {

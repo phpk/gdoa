@@ -113,7 +113,7 @@ module.exports = class extends think.Controller {
             method: this.ctx.method,
             addtime: this.now()
         };
-        await think.model('admin_oplog').add(logData);
+        await think.model('admin_loginlog').add(logData);
         return this.success({ token, routeData });
     }
     /**

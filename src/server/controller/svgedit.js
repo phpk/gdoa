@@ -13,6 +13,7 @@ module.exports = class extends Base {
         if (param) wsql = this.parseSearch(param, wsql);
         let list = await this.model('svg').where(wsql).page(page, limit).order('id desc').select();
         let count = await this.model('svg').where(wsql).count();
+        await this.adminViewLog('svg编辑器列表');
         return this.success({ list, count })
     }
 
@@ -28,6 +29,7 @@ module.exports = class extends Base {
             url: name
         }
         let id = await this.model('svg').add(save);
+        await this.adminOpLog('添加svg');
         return this.success(id);
     }
 
@@ -42,6 +44,7 @@ module.exports = class extends Base {
             title: post.title
         }
         await this.model('svg').where({id : post.id}).update(save);
+        await this.adminOpLog('编辑svg');
         return this.success()
     }
 
@@ -60,6 +63,7 @@ module.exports = class extends Base {
         await this.model('svg').where({ id }).delete()
         let filepath = path.join(think.ROOT_PATH, 'www/upload/svg/' + data.url)
         fs.unlink(filepath, res => { })
+        await this.adminOpLog('删除svg');
         return this.success()
     }
 }
