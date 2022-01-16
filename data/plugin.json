@@ -1,9 +1,23 @@
 {
-    "gifcap": {
-        "key": "godo-gifcap",
-        "isTest" : false,
-        "type": "sys",
-        "name": "计划任务",
-        "sql": "src/data/data.sql"
+    "crm": {
+        "key": "godo-crm",
+        "isDev" : true,
+        "type": "office",
+        "name": "客户关系管理",
+        "sql": "src/data/crm.sql"
+    },
+    "erp": {
+        "key": "godo-erp",
+        "isDev" : true,
+        "type": "office",
+        "name": "ERP管理",
+        "sql": "src/data/erp.sql"
+    },
+    "oa": {
+        "key": "godo-oa",
+        "isDev" : true,
+        "type": "office",
+        "name": "办公管理",
+        "sql": "src/data/oa.sql"
     }
 }

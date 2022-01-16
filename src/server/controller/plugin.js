@@ -8,4 +8,10 @@ const Base = require('./base.js');
     async listAction() {
         
     }
+    async addAction() {
+
+    }
+    async editAction() {
+
+    }
  }
