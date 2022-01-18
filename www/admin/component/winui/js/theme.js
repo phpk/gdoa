@@ -124,6 +124,10 @@ layui.use(['layer', 'form'], function (exports) {
         winui.resetStartSize(data.value);
     });
     //锁屏
+    let taskLocktime = localStorage.getItem('_godocmsLockScreenTime');
+    if (taskLocktime && taskLocktime > 0) {
+        form.val('editform', { "taskLocktime": 1 })
+    }
     form.on('radio(taskLocktime)', function (data) {
         localStorage.setItem('_godocmsLockScreenTime', data.value);
     });
