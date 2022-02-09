@@ -3,17 +3,7 @@ const Base = require('./base.js');
  * @class
  * @apiDefine plugins 应用市场管理
  */
-const cateList = {
-    'sys': '系统',
-    'cms': '内容',
-    'code': '开发',
-    'shop': '商务',
-    'tools': '工具',
-    'ps': '设计',
-    'office': '办公',
-    'ui': '组件',
-    'other' : '其他'
-}
+const cateList = require(think.ROOT_PATH + '/data/plugins/cate.js')
 module.exports = class extends Base {
 
     async listAction() {
@@ -29,7 +19,9 @@ module.exports = class extends Base {
     }
 
     async addBeforeAction() {
-        let url = 'https://godocms.com/plugins/list';
+        //let url = 'https://godocms.com/plugins/list';
+        let url = '/plugin/index/list';
+        
 
     }
 

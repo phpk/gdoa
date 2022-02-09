@@ -37,6 +37,10 @@
 		</div>
 
 		<script type="text/html" id="plugins-toolbar">
+			<button class="layui-btn layui-btn-primary layui-border-red layui-btn-sm" lay-event="create">
+		        <i class="layui-icon layui-icon-add-1"></i>
+		        创建
+		    </button>
 			<button class="layui-btn layui-btn-primary layui-border-red layui-btn-sm" lay-event="add">
 		        <i class="layui-icon layui-icon-add-1"></i>
 		        新增
@@ -125,7 +129,11 @@
 				table.on('toolbar(plugins-table)', function(obj) {
 					if (obj.event === 'add') {
 						window.add();
-					} else if (obj.event === 'refresh') {
+					} 
+					else if(obj.event === 'create') {
+						window.create();
+					}
+					else if (obj.event === 'refresh') {
 						window.refresh();
 					}
 				});
@@ -154,6 +162,18 @@
 					return false;
 				})
 
+				window.create = function() {
+					layer.open({
+						type: 2,
+						title: '创建',
+						shade: 0.1,
+						offset: 'rt',
+						area: ['80%', '100%'],
+						anim: 1,
+						maxmin: true,
+						content: MODULE_PATH + 'create.html'
+					});
+				}
 				window.add = function() {
 					layer.open({
 						type: 2,
