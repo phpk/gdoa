@@ -11,7 +11,7 @@
  Target Server Version : 50732
  File Encoding         : 65001
 
- Date: 18/01/2022 19:12:45
+ Date: 13/02/2022 13:37:17
 */
 
 SET NAMES utf8mb4;
@@ -42,7 +42,7 @@ CREATE TABLE `rt_admin` (
 -- Records of rt_admin
 -- ----------------------------
 BEGIN;
-INSERT INTO `rt_admin` VALUES ('admin', 'd7e1d8d4e927f0dfbe7df36806cea6bc', 1, 'yFteHnRN4MKw7mYS', 0, NULL, NULL, 0, 1642504206, 360, 0);
+INSERT INTO `rt_admin` VALUES ('admin', '0fb157e6a7ea57417310ddbc651c93ab', 1, '4pha42mM6CRPHrHx', 0, NULL, NULL, 0, 1644567481, 363, 0);
 INSERT INTO `rt_admin` VALUES ('test', 'c7b30ad98095b7b560585ffd6371aa47', 2, 'x6pdhRYF4f6bHpFc', 1636948516, '1test', '13873150575', 0, 0, 0, 0);
 INSERT INTO `rt_admin` VALUES ('test12', 'c108dd09fba019c8b9681248c876bb4e', 5, 'Ahn7EScJBw3R2TZR', 1636948870, '222', '13885863355', 0, 0, 0, 1636958930);
 COMMIT;
@@ -84,7 +84,7 @@ CREATE TABLE `rt_admin_loginlog` (
   `method` varchar(100) CHARACTER SET utf8 DEFAULT NULL COMMENT '方法',
   `addtime` int(10) unsigned DEFAULT '0' COMMENT '添加时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='管理登录日志表';
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='管理登录日志表';
 
 -- ----------------------------
 -- Records of rt_admin_loginlog
@@ -116,6 +116,9 @@ INSERT INTO `rt_admin_loginlog` VALUES (23, 1, 'admin用户登录', '{\"username
 INSERT INTO `rt_admin_loginlog` VALUES (24, 1, 'admin用户登录', '{\"username\":\"admin\",\"captcha\":\"s5xx\"}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:95.0) Gecko/20100101 Firefox/95.0', '/server/login/do', 'POST', 1642479260);
 INSERT INTO `rt_admin_loginlog` VALUES (25, 1, 'admin用户登录', '{\"username\":\"admin\",\"captcha\":\"zdcr\"}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:95.0) Gecko/20100101 Firefox/95.0', '/server/login/do', 'POST', 1642480971);
 INSERT INTO `rt_admin_loginlog` VALUES (26, 1, 'admin用户登录', '{\"username\":\"admin\",\"captcha\":\"4lre\"}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:95.0) Gecko/20100101 Firefox/95.0', '/server/login/do', 'POST', 1642504206);
+INSERT INTO `rt_admin_loginlog` VALUES (27, 1, 'admin用户登录', '{\"username\":\"admin\",\"captcha\":\"lwv5\"}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:96.0) Gecko/20100101 Firefox/96.0', '/server/login/do', 'POST', 1642722277);
+INSERT INTO `rt_admin_loginlog` VALUES (28, 1, 'admin用户登录', '{\"username\":\"admin\",\"captcha\":\"jgxm\"}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:96.0) Gecko/20100101 Firefox/96.0', '/server/login/do', 'POST', 1644543120);
+INSERT INTO `rt_admin_loginlog` VALUES (29, 1, 'admin用户登录', '{\"username\":\"admin\",\"captcha\":\"juxh\"}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:96.0) Gecko/20100101 Firefox/96.0', '/server/login/do', 'POST', 1644567481);
 COMMIT;
 
 -- ----------------------------
@@ -784,7 +787,7 @@ CREATE TABLE `rt_admin_viewlog` (
   `addtime` int(10) unsigned DEFAULT '0' COMMENT '添加时间',
   `leavetime` int(10) unsigned DEFAULT '0' COMMENT '离开时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=556 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='管理员查看日志';
+) ENGINE=InnoDB AUTO_INCREMENT=557 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='管理员查看日志';
 
 -- ----------------------------
 -- Records of rt_admin_viewlog
@@ -1343,7 +1346,8 @@ INSERT INTO `rt_admin_viewlog` VALUES (551, 1, '查看计划任务列表', '::ff
 INSERT INTO `rt_admin_viewlog` VALUES (552, 1, '菜单列表', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:95.0) Gecko/20100101 Firefox/95.0', '/server/menu/oplist', 'GET', 1642480945, 1642480954);
 INSERT INTO `rt_admin_viewlog` VALUES (553, 1, '编辑菜单', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:95.0) Gecko/20100101 Firefox/95.0', '/server/menu/one', 'GET', 1642480954, 1642480958);
 INSERT INTO `rt_admin_viewlog` VALUES (554, 1, '菜单列表', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:95.0) Gecko/20100101 Firefox/95.0', '/server/menu/oplist', 'GET', 1642480958, 1642504225);
-INSERT INTO `rt_admin_viewlog` VALUES (555, 1, '演示文稿列表', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:95.0) Gecko/20100101 Firefox/95.0', '/server/ppt/list', 'GET', 1642504225, 0);
+INSERT INTO `rt_admin_viewlog` VALUES (555, 1, '演示文稿列表', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:95.0) Gecko/20100101 Firefox/95.0', '/server/ppt/list', 'GET', 1642504225, 1644543125);
+INSERT INTO `rt_admin_viewlog` VALUES (556, 1, '文档编辑器列表', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:96.0) Gecko/20100101 Firefox/96.0', '/server/word/list', 'GET', 1644543125, 0);
 COMMIT;
 
 -- ----------------------------
@@ -2657,6 +2661,7 @@ CREATE TABLE `rt_plugins` (
   `info` text COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '包详情',
   `perms` text COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '权限',
   `url` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '安装源',
+  `is_dev` tinyint(2) unsigned DEFAULT '0' COMMENT '是否是开发环境',
   PRIMARY KEY (`id`),
   UNIQUE KEY `key` (`key`),
   KEY `type` (`type`)
@@ -2763,6 +2768,29 @@ INSERT INTO `rt_svg` VALUES (11, 1639811074, 0, 1, '1639811074222.svg', '555');
 COMMIT;
 
 -- ----------------------------
+-- Table structure for rt_tenant
+-- ----------------------------
+DROP TABLE IF EXISTS `rt_tenant`;
+CREATE TABLE `rt_tenant` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `tenant_id` bigint(20) DEFAULT NULL COMMENT '用户id',
+  `login_name` varchar(255) CHARACTER SET utf8 DEFAULT NULL COMMENT '登录名',
+  `user_num_limit` int(11) DEFAULT NULL COMMENT '用户数量限制',
+  `type` varchar(1) CHARACTER SET utf8 DEFAULT '0' COMMENT '租户类型，0免费租户，1付费租户',
+  `enabled` bit(1) DEFAULT b'1' COMMENT '启用 0-禁用  1-启用',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `expire_time` datetime DEFAULT NULL COMMENT '到期时间',
+  `remark` varchar(500) CHARACTER SET utf8 DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='租户';
+
+-- ----------------------------
+-- Records of rt_tenant
+-- ----------------------------
+BEGIN;
+COMMIT;
+
+-- ----------------------------
 -- Table structure for rt_txt
 -- ----------------------------
 DROP TABLE IF EXISTS `rt_txt`;
@@ -2786,6 +2814,442 @@ INSERT INTO `rt_txt` VALUES (3, 0, 0, 0, 'my.php', '<?php\necho phpinfo();\nvar_
 INSERT INTO `rt_txt` VALUES (4, 0, 0, 0, 'dddbbb.js', 'fdsafdsafdsa\n\nfdsafdsa\nfdsafdas\n\nfdsafdas\n\n\nfdsafdas\nfdsafa\n\n\nfdasfasdafs111');
 INSERT INTO `rt_txt` VALUES (8, 0, 0, 0, 'Untitled.txt', 'fdsafas\nfdsafdsa\n\n\n\nfdsafdsafdsa\nfdsafdsa\n\n\nfdsaf\nfdsafsa\n\n\n\n');
 INSERT INTO `rt_txt` VALUES (9, 0, 0, 0, 'Untitled.txt', 'dddd\n\ndddd');
+COMMIT;
+
+-- ----------------------------
+-- Table structure for rt_user
+-- ----------------------------
+DROP TABLE IF EXISTS `rt_user`;
+CREATE TABLE `rt_user` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `username` varchar(255) CHARACTER SET utf8 NOT NULL COMMENT '用户姓名--例如张三',
+  `login_name` varchar(255) CHARACTER SET utf8 NOT NULL COMMENT '登录用户名',
+  `password` varchar(50) CHARACTER SET utf8 DEFAULT NULL COMMENT '登陆密码',
+  `position` varchar(200) CHARACTER SET utf8 DEFAULT NULL COMMENT '职位',
+  `department` varchar(255) CHARACTER SET utf8 DEFAULT NULL COMMENT '所属部门',
+  `email` varchar(100) CHARACTER SET utf8 DEFAULT NULL COMMENT '电子邮箱',
+  `phonenum` varchar(100) CHARACTER SET utf8 DEFAULT NULL COMMENT '手机号码',
+  `ismanager` tinyint(4) NOT NULL DEFAULT '1' COMMENT '是否为管理者 0==管理者 1==员工',
+  `isystem` tinyint(4) NOT NULL DEFAULT '0' COMMENT '是否系统自带数据 ',
+  `Status` tinyint(4) DEFAULT '0' COMMENT '状态，0：正常，1：删除，2封禁',
+  `description` varchar(500) CHARACTER SET utf8 DEFAULT NULL COMMENT '用户描述信息',
+  `remark` varchar(500) CHARACTER SET utf8 DEFAULT NULL COMMENT '备注',
+  `tenant_id` bigint(20) DEFAULT NULL COMMENT '租户id',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='用户表';
+
+-- ----------------------------
+-- Records of rt_user
+-- ----------------------------
+BEGIN;
+COMMIT;
+
+-- ----------------------------
+-- Table structure for rt_user_auth
+-- ----------------------------
+DROP TABLE IF EXISTS `rt_user_auth`;
+CREATE TABLE `rt_user_auth` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `rules` text CHARACTER SET utf8,
+  `status` tinyint(2) unsigned DEFAULT '0' COMMENT '是否可用0可用1不可用',
+  `remark` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '描述',
+  `user_id` int(10) unsigned DEFAULT '0' COMMENT '用户id',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='管理权限表';
+
+-- ----------------------------
+-- Records of rt_user_auth
+-- ----------------------------
+BEGIN;
+INSERT INTO `rt_user_auth` VALUES (1, '总管理员', '-1', 0, NULL, 0);
+INSERT INTO `rt_user_auth` VALUES (2, 'aaa', '1,4,5,7,37,53', 0, 'aaa', 0);
+INSERT INTO `rt_user_auth` VALUES (15, 'test2', '1,4,5,7,37,53,2,9,20,21,22,23,57,10,26,27,56,58,59,60,61,11,24,25,62,63,64,65,12,66,67,68,13,28,29,30,31,32,14,33,34,35,36,3,15', 1, '', 0);
+COMMIT;
+
+-- ----------------------------
+-- Table structure for rt_user_config
+-- ----------------------------
+DROP TABLE IF EXISTS `rt_user_config`;
+CREATE TABLE `rt_user_config` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `company_name` varchar(50) CHARACTER SET utf8 DEFAULT NULL COMMENT '公司名称',
+  `company_contacts` varchar(20) CHARACTER SET utf8 DEFAULT NULL COMMENT '公司联系人',
+  `company_address` varchar(50) CHARACTER SET utf8 DEFAULT NULL COMMENT '公司地址',
+  `company_tel` varchar(20) CHARACTER SET utf8 DEFAULT NULL COMMENT '公司电话',
+  `company_fax` varchar(20) CHARACTER SET utf8 DEFAULT NULL COMMENT '公司传真',
+  `company_post_code` varchar(20) CHARACTER SET utf8 DEFAULT NULL COMMENT '公司邮编',
+  `depot_flag` varchar(1) CHARACTER SET utf8 DEFAULT '0' COMMENT '仓库启用标记，0未启用，1启用',
+  `customer_flag` varchar(1) CHARACTER SET utf8 DEFAULT '0' COMMENT '客户启用标记，0未启用，1启用',
+  `minus_stock_flag` varchar(1) CHARACTER SET utf8 DEFAULT '0' COMMENT '负库存启用标记，0未启用，1启用',
+  `tenant_id` bigint(20) DEFAULT NULL COMMENT '租户id',
+  `delete_flag` varchar(1) CHARACTER SET utf8 DEFAULT '0' COMMENT '删除标记，0未删除，1删除',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPACT COMMENT='租户系统参数';
+
+-- ----------------------------
+-- Records of rt_user_config
+-- ----------------------------
+BEGIN;
+COMMIT;
+
+-- ----------------------------
+-- Table structure for rt_user_loginlog
+-- ----------------------------
+DROP TABLE IF EXISTS `rt_user_loginlog`;
+CREATE TABLE `rt_user_loginlog` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `user_id` int(10) unsigned NOT NULL COMMENT '管理员账号',
+  `log` varchar(255) CHARACTER SET utf8 NOT NULL COMMENT '日志名称',
+  `data` text CHARACTER SET utf8 COMMENT '返回记录',
+  `ip` varchar(64) CHARACTER SET utf8 DEFAULT '' COMMENT 'IP地址',
+  `agent` varchar(255) CHARACTER SET utf8 DEFAULT '' COMMENT '客户端信息',
+  `url` varchar(255) CHARACTER SET utf8 DEFAULT NULL COMMENT '地址',
+  `method` varchar(100) CHARACTER SET utf8 DEFAULT NULL COMMENT '方法',
+  `addtime` int(10) unsigned DEFAULT '0' COMMENT '添加时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='用户登录日志表';
+
+-- ----------------------------
+-- Records of rt_user_loginlog
+-- ----------------------------
+BEGIN;
+COMMIT;
+
+-- ----------------------------
+-- Table structure for rt_user_map
+-- ----------------------------
+DROP TABLE IF EXISTS `rt_user_map`;
+CREATE TABLE `rt_user_map` (
+  `map_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `admin_id` int(10) unsigned NOT NULL,
+  `auth_id` int(10) unsigned NOT NULL,
+  `type` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '0角色1集团2公司3门店4部门5区域',
+  PRIMARY KEY (`map_id`),
+  UNIQUE KEY `admin_id` (`admin_id`,`auth_id`,`type`) USING HASH
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='管理员权限映射表';
+
+-- ----------------------------
+-- Records of rt_user_map
+-- ----------------------------
+BEGIN;
+INSERT INTO `rt_user_map` VALUES (1, 1, 1, 0);
+INSERT INTO `rt_user_map` VALUES (4, 2, 2, 0);
+INSERT INTO `rt_user_map` VALUES (10, 5, 1, 0);
+COMMIT;
+
+-- ----------------------------
+-- Table structure for rt_user_menu
+-- ----------------------------
+DROP TABLE IF EXISTS `rt_user_menu`;
+CREATE TABLE `rt_user_menu` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `key` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `route` varchar(255) CHARACTER SET utf8 DEFAULT NULL COMMENT '权限标志',
+  `href` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '前端地址',
+  `type` tinyint(2) DEFAULT '0' COMMENT '0目录1菜单2按钮3权限',
+  `order_num` int(10) DEFAULT '0' COMMENT '排序',
+  `icon` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `open_type` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `pid` int(10) DEFAULT '0',
+  `lid` tinyint(3) DEFAULT '1',
+  `ifshow` tinyint(3) unsigned DEFAULT '0' COMMENT '是否显示0显示1不显示',
+  `desktop` tinyint(2) unsigned NOT NULL DEFAULT '0' COMMENT '桌面推荐',
+  PRIMARY KEY (`id`) USING BTREE,
+  KEY `url` (`route`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=295 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='用户菜单';
+
+-- ----------------------------
+-- Records of rt_user_menu
+-- ----------------------------
+BEGIN;
+INSERT INTO `rt_user_menu` VALUES (1, '内容管理', 'sys', 'content', NULL, 0, 2, 'layui-icon layui-icon-theme', '_self', 0, 0, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (2, '系统管理', 'sys', 'system', '', 0, 1, 'layui-icon layui-icon-set', '_self', 0, 0, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (3, '权限管理', 'auth', 'auth', '', 0, 1, 'layui-icon layui-icon-vercode', '_self', 0, 0, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (6, '公共模块', 'sys', 'common', '', 0, 3, 'layui-icon layui-icon-at', '_self', 0, 0, 1, 0);
+INSERT INTO `rt_user_menu` VALUES (9, '菜单管理', 'menu', 'server/menu/oplist', 'view/menu/index.html', 1, 1, 'layui-icon layui-icon-gift', '_self', 3, 1, 0, 1);
+INSERT INTO `rt_user_menu` VALUES (10, '角色管理', 'auth', 'server/auth/list', 'view/auth/index.html', 1, 10, 'layui-icon layui-icon-service', '_self', 3, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (11, '管理员管理', 'admin', 'server/admin/list', 'view/admin/list.html', 1, 11, 'layui-icon layui-icon-key', '_self', 3, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (12, '日志管理', 'logs', 'logs', '', 0, 12, 'layui-icon layui-icon-spread-left', '_self', 2, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (13, '系统设置', 'set', 'server/set/list', 'view/set/list.html', 1, 13, 'layui-icon layui-icon-find-fill', '_self', 2, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (15, '前端菜单', 'menu', 'server/menu/list', '', 3, 0, 'layui-icon layui-icon-transfer', NULL, 6, 1, 1, 0);
+INSERT INTO `rt_user_menu` VALUES (20, '新增菜单', 'menu', 'server/menu/add', '', 2, 20, 'layui-icon layui-icon-cols', '_self', 9, 2, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (21, '编辑菜单', 'menu', 'server/menu/edit', '', 2, 20, 'layui-icon layui-icon-add-1', '_self', 9, 2, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (22, '删除菜单', 'menu', 'server/menu/del', '', 2, 21, 'layui-icon layui-icon-delete', '_self', 9, 2, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (23, '查看菜单', 'menu', 'server/menu/one', '', 3, 20, 'layui-icon layui-icon-slider', '_self', 9, 2, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (24, '编辑管理员', 'admin', 'server/admin/edit', '', 2, 20, 'layui-icon layui-icon-time', '_self', 11, 2, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (25, '删除管理员', 'admin', 'server/admin/del', '', 2, 21, 'layui-icon layui-icon-more-vertical', '_self', 11, 2, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (26, '编辑角色', 'auth', 'server/auth/edit', '', 2, 22, 'layui-icon layui-icon-key', '_self', 10, 2, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (27, '删除角色', 'auth', 'server/auth/del', '', 2, 23, 'layui-icon layui-icon-mute', '_self', 10, 2, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (28, '添加配置', 'auth', 'server/set/add', '', 2, 24, 'layui-icon layui-icon-at', '_self', 13, 2, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (29, '删除配置', 'set', 'server/set/delete', '', 2, 25, 'layui-icon layui-icon-mute', '_self', 13, 2, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (31, '编辑配置', 'set', 'server/set/edit', '', 2, 27, 'layui-icon layui-icon-export', '_self', 13, 2, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (32, '编辑配置前', 'set', 'server/set/editBefore', '', 3, 28, 'layui-icon layui-icon-rate-half', '_self', 13, 2, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (35, '数据库设计器', 'db', 'server/db/list', 'view/db/list.html', 1, 3, 'layui-icon layui-icon-template-1', '_self', 2, 1, 0, 1);
+INSERT INTO `rt_user_menu` VALUES (53, '首页工作台', 'common', 'server/index/welcome', 'view/index/welcome.html', 1, 1, 'layui-icon layui-icon-rate-solid', NULL, 1, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (56, '查看角色', 'auth', 'server/auth/one', '', 2, 0, 'layui-icon layui-icon-camera', NULL, 10, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (57, '菜单显示', 'menu', 'server/menu/ifshow', '', 2, 0, 'layui-icon layui-icon-mike', NULL, 9, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (58, '添加查看菜单', 'auth', 'server/auth/addTree', '', 3, 1, 'layui-icon layui-icon-heart-fill', NULL, 10, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (59, '添加角色', 'auth', 'server/auth/add', '', 2, 1, 'layui-icon layui-icon-logout', NULL, 10, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (60, '角色编辑前', 'auth', 'server/auth/beforEdit', '', 3, 0, 'layui-icon layui-icon-email', NULL, 10, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (61, '设置角色可用', 'auth', 'server/auth/enable', '', 2, 0, 'layui-icon layui-icon-at', NULL, 10, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (62, '管理员添加前', 'admin', 'server/admin/addBefore', '', 3, 0, '', NULL, 11, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (63, '添加管理员', 'admin', 'server/admin/add', '', 2, 0, 'layui-icon layui-icon-windows', NULL, 11, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (64, '管理员编辑前', 'admin', 'server/admin/editBefore', '', 3, 0, 'layui-icon layui-icon-export', NULL, 11, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (65, '管理员启用禁用', 'admin', 'server/admin/enable', '', 2, 0, 'layui-icon layui-icon-slider', NULL, 11, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (66, '操作日志', 'logs', 'server/logs/op', 'view/logs/op.html', 1, 0, 'layui-icon layui-icon-date', NULL, 12, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (67, '行为日志', 'logs', 'server/logs/view', 'view/logs/view.html', 1, 0, 'layui-icon layui-icon-cols', NULL, 12, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (68, '错误日志', 'logs', 'server/logs/err', 'view/logs/err.html', 1, 0, 'layui-icon layui-icon-survey', NULL, 12, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (82, '表单设计器', NULL, 'server/form/list', 'view/form/list.html', 1, 9, 'layui-icon layui-icon-form', NULL, 2, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (83, '添加表单', NULL, 'server/form/add', 'view/form/add.html', 2, 0, 'layui-icon layui-icon-auz', NULL, 82, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (84, '设置配置可用', 'set', 'server/set/enable', '', 3, 0, '', NULL, 13, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (85, '添加表单前', NULL, 'server/form/addBefore', '', 3, 0, 'layui-icon layui-icon-headset', NULL, 82, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (86, '设置配置前', NULL, 'server/set/setBefore', '', 3, 0, 'layui-icon layui-icon-at', NULL, 13, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (87, '设置配置', NULL, 'server/set/setConf', '', 3, 0, 'layui-icon layui-icon-404', NULL, 13, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (88, '更新表缓存', NULL, 'server/db/update', '', 2, 0, 'layui-icon layui-icon-refresh', NULL, 35, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (89, '备份数据', NULL, 'server/db/backup', '', 2, 0, 'layui-icon layui-icon-templeate-1', NULL, 35, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (90, '还原数据列表', NULL, 'server/db/backupFile', '', 2, 0, 'layui-icon layui-icon-list', NULL, 35, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (91, '数据还原', NULL, 'server/db/reback', '', 2, 0, 'layui-icon layui-icon-water', NULL, 35, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (92, '删除备份', NULL, 'server/db/delback', '', 2, 0, 'layui-icon layui-icon-down', NULL, 35, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (93, '数据库文档', NULL, 'server/db/doc', '', 2, 0, 'layui-icon layui-icon-service', NULL, 35, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (94, '编辑列表内容', NULL, 'server/db/editTable', '', 2, 0, 'layui-icon layui-icon-link', NULL, 35, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (95, '优化表', NULL, 'server/db/optimize', '', 2, 0, 'layui-icon layui-icon-rss', NULL, 35, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (96, '修复表', NULL, 'server/db/repair', '', 2, 0, 'layui-icon layui-icon-rate-solid', NULL, 35, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (97, '删除表', NULL, 'server/db/delTable', '', 2, 0, 'layui-icon layui-icon-subtraction', NULL, 35, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (98, '清空表', NULL, 'server/db/clear', '', 2, 0, 'layui-icon layui-icon-unlink', NULL, 35, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (99, '字段列表', NULL, 'server/db/fieldList', '', 2, 0, 'layui-icon layui-icon-star-fill', NULL, 35, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (100, '展示表数据', NULL, 'server/db/listData', '', 2, 0, 'layui-icon layui-icon-transfer', NULL, 35, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (101, '编辑数据', NULL, 'server/db/editData', '', 3, 0, 'layui-icon layui-icon-mike', NULL, 35, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (102, '删除数据', NULL, 'server/db/delData', '', 2, 0, 'layui-icon layui-icon-fonts-del', NULL, 35, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (103, '数据库字段列表', NULL, 'server/db/fields', 'view/db/edit.html', 2, 0, 'layui-icon layui-icon-auz', NULL, 35, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (104, '删除字段', NULL, 'server/db/delField', '', 2, 0, 'layui-icon layui-icon-subtraction', NULL, 35, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (105, '字段排序', NULL, 'server/db/sortField', '', 2, 0, 'layui-icon layui-icon-slider', NULL, 35, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (106, '更改字段名', NULL, 'server/db/changeFieldName', '', 2, 0, 'layui-icon layui-icon-find-fill', NULL, 35, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (107, '设置字段', NULL, 'server/db/setStatus', '', 2, 0, 'layui-icon layui-icon-camera', NULL, 35, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (108, '添加字段', NULL, 'server/db/addField', '', 2, 0, 'layui-icon layui-icon-website', NULL, 35, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (109, '表索引列表', NULL, 'server/db/keysList', '', 2, 0, 'layui-icon layui-icon-wifi', NULL, 35, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (110, '删除索引', NULL, 'server/db/delKey', '', 2, 0, 'layui-icon layui-icon-download-circle', NULL, 35, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (111, '设置索引', NULL, 'server/db/setKey', '', 2, 0, 'layui-icon layui-icon-layer', NULL, 35, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (112, '创建表', NULL, 'server/db/createTable', '', 2, 0, 'layui-icon layui-icon-transfer', NULL, 35, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (113, '复制表', NULL, 'server/db/opcopy', '', 2, 0, 'layui-icon layui-icon-fonts-clear', NULL, 35, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (114, '执行Sql', NULL, 'server/db/runSql', '', 2, 0, 'layui-icon layui-icon-light', NULL, 35, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (115, '获取创建Sql', NULL, 'server/db/getSql', '', 2, 0, 'layui-icon layui-icon-service', NULL, 35, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (116, '模块管理', NULL, 'server/mod/list', 'view/mod/list.html', 1, 2, 'layui-icon layui-icon-slider', NULL, 2, 1, 0, 1);
+INSERT INTO `rt_user_menu` VALUES (117, '添加模块', NULL, 'server/mod/add', '', 2, 0, 'layui-icon layui-icon-read', NULL, 116, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (118, '模块编辑前', NULL, 'server/mod/editBefore', '', 2, 0, 'layui-icon layui-icon-set-sm', NULL, 116, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (119, '编辑模块', NULL, 'server/mod/edit', '', 2, 0, 'layui-icon layui-icon-share', NULL, 116, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (120, '删除模块', NULL, 'server/mod/delete', '', 2, 0, 'layui-icon layui-icon-chat', NULL, 116, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (121, '模块添加前', NULL, 'server/mod/addBefore', '', 3, 0, 'layui-icon layui-icon-slider', NULL, 116, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (122, '批量删除表', NULL, 'server/db/batchRemove', '', 2, 0, 'layui-icon layui-icon-fonts-del', NULL, 35, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (123, '列表编辑字段', NULL, 'server/menu/editData', '', 2, 0, 'layui-icon layui-icon-key', NULL, 9, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (124, '全局常量管理', NULL, 'server/mod/params', '', 2, 0, 'layui-icon layui-icon-dollar', NULL, 116, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (125, '常量编辑前', NULL, 'server/mod/paramsBefore', '', 2, 0, 'layui-icon layui-icon-at', NULL, 116, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (126, '添加全局常量', NULL, 'server/mod/paramsAdd', '', 2, 0, 'layui-icon layui-icon-addition', NULL, 116, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (127, '编辑全局常量', NULL, 'server/mod/paramsEdit', '', 2, 0, 'layui-icon layui-icon-print', NULL, 116, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (128, '删除全局常量', NULL, 'server/mod/paramDelete', '', 2, 0, 'layui-icon layui-icon-subtraction', NULL, 116, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (130, '添加数据', NULL, 'server/db/addData', 'views/db/data-add.html', 2, 0, 'layui-icon layui-icon-mike', NULL, 35, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (131, '数据库列表', NULL, 'server/db/confList', '', 2, 0, 'layui-icon layui-icon-wifi', NULL, 35, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (132, '添加数据库', NULL, 'server/db/confAdd', '', 2, 0, 'layui-icon layui-icon-email', NULL, 35, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (133, '编辑数据库', NULL, 'server/db/confEdit', '', 2, 0, 'layui-icon layui-icon-rss', NULL, 35, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (134, '测试数据库连接', NULL, 'server/db/confTest', '', 2, 0, 'layui-icon layui-icon-logout', NULL, 35, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (135, '删除数据库', NULL, 'server/db/confDel', '', 2, 0, 'layui-icon layui-icon-subtraction', NULL, 35, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (136, '更换数据库', NULL, 'server/db/confChange', '', 2, 0, 'layui-icon layui-icon-transfer', NULL, 35, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (137, '编辑数据库前', NULL, 'server/db/confEditBefore', '', 3, 0, 'layui-icon layui-icon-snowflake', NULL, 35, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (138, '保护列表', NULL, 'server/db/safeList', '', 2, 0, 'layui-icon layui-icon-camera', NULL, 35, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (139, '添加保护', NULL, 'server/db/safeAdd', '', 2, 0, 'layui-icon layui-icon-addition', NULL, 35, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (140, '删除保护', NULL, 'server/db/safeDel', '', 2, 0, 'layui-icon layui-icon-subtraction', NULL, 35, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (141, '添加数据库', NULL, 'server/db/creatDatabase', '', 2, 0, 'layui-icon layui-icon-align-left', NULL, 35, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (142, '上传文件', NULL, 'server/upload/index', '', 3, 0, 'layui-icon layui-icon-upload-drag', NULL, 6, 1, 1, 0);
+INSERT INTO `rt_user_menu` VALUES (143, '注销登录', NULL, 'server/admin/loginOut', '', 2, 0, 'layui-icon layui-icon-delete', NULL, 6, 1, 1, 0);
+INSERT INTO `rt_user_menu` VALUES (144, '计划任务', 'crons', 'server/crons/list', 'view/crons/list.html', 1, 9, 'layui-icon layui-icon-android', NULL, 2, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (145, '计划任务添加', 'crons', 'server/crons/add', 'view/crons/edit.html', 3, 0, '', NULL, 144, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (146, '计划任务编辑', 'crons', 'server/crons/edit', 'view/crons/edit.html', 3, 0, '', NULL, 144, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (147, '计划任务删除', 'crons', 'server/crons/del', '', 3, 0, '', NULL, 144, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (148, '计划任务编辑前', 'crons', 'server/crons/editBefore', '', 3, 0, '', NULL, 144, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (149, '演示文稿', NULL, 'server/ppt/list', 'view/ppt/list.html', 1, 20, 'layui-icon layui-icon-transfer', NULL, 1, 1, 0, 1);
+INSERT INTO `rt_user_menu` VALUES (150, '演示文稿添加', NULL, 'server/ppt/add', 'view/ppt/edit.html', 3, 0, '', NULL, 149, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (151, '演示文稿编辑', NULL, 'server/ppt/edit', 'view/ppt/edit.html', 3, 0, '', NULL, 149, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (152, '演示文稿删除', NULL, 'server/ppt/del', '', 3, 0, '', NULL, 149, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (153, '演示文稿编辑前', NULL, 'server/ppt/editBefore', '', 3, 0, '', NULL, 149, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (154, '思维导图', NULL, 'server/mind/list', 'view/mind/list.html', 1, 0, 'layui-icon layui-icon-auz', NULL, 1, 1, 0, 1);
+INSERT INTO `rt_user_menu` VALUES (155, '思维导图添加', NULL, 'server/mind/add', 'view/mind/edit.html', 3, 0, '', NULL, 154, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (156, '思维导图编辑', NULL, 'server/mind/edit', 'view/mind/edit.html', 3, 0, '', NULL, 154, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (157, '思维导图删除', NULL, 'server/mind/del', '', 3, 0, '', NULL, 154, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (158, '思维导图编辑前', NULL, 'server/mind/editBefore', '', 3, 0, '', NULL, 154, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (159, '表格管理', NULL, 'server/excel/list', 'view/excel/list.html', 1, 0, 'layui-icon layui-icon-tabs', NULL, 1, 1, 0, 1);
+INSERT INTO `rt_user_menu` VALUES (160, 'excel管理添加', NULL, 'server/excel/add', 'view/excel/edit.html', 3, 0, '', NULL, 159, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (161, 'excel管理编辑', NULL, 'server/excel/edit', 'view/excel/edit.html', 3, 0, '', NULL, 159, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (162, 'excel管理删除', NULL, 'server/excel/del', '', 3, 0, '', NULL, 159, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (163, 'excel管理编辑前', NULL, 'server/excel/editBefore', '', 3, 0, '', NULL, 159, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (164, '导入EXCEL并存库', NULL, 'server/excel/upload', '', 3, 0, 'layui-icon layui-icon-fonts-code', NULL, 159, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (165, '流程图', NULL, 'server/flow/list', 'view/flow/list.html', 1, 0, 'layui-icon layui-icon-spread-left', NULL, 1, 1, 0, 1);
+INSERT INTO `rt_user_menu` VALUES (166, '流程图添加', NULL, 'server/flow/add', 'view/flow/edit.html', 3, 0, '', NULL, 165, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (167, '流程图编辑', NULL, 'server/flow/edit', 'view/flow/edit.html', 3, 0, '', NULL, 165, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (168, '流程图删除', NULL, 'server/flow/del', '', 3, 0, '', NULL, 165, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (169, '流程图编辑前', NULL, 'server/flow/editBefore', '', 3, 0, '', NULL, 165, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (170, '文档管理', NULL, 'server/doc/list', 'view/doc/list.html', 1, 0, 'layui-icon layui-icon-email', NULL, 1, 1, 0, 1);
+INSERT INTO `rt_user_menu` VALUES (171, '文档管理添加', NULL, 'server/doc/add', 'view/doc/edit.html', 3, 0, '', NULL, 170, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (172, '文档管理编辑', NULL, 'server/doc/edit', 'view/doc/edit.html', 3, 0, '', NULL, 170, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (173, '文档管理删除', NULL, 'server/doc/del', '', 3, 0, '', NULL, 170, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (174, '文档管理编辑前', NULL, 'server/doc/editBefore', '', 3, 0, '', NULL, 170, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (175, '文档添加前', NULL, 'server/doc/addBefore', '', 3, 0, 'layui-icon layui-icon-at', NULL, 170, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (176, '上传文件', NULL, 'server/doc/upload', '', 3, 0, 'layui-icon layui-icon-addition', NULL, 170, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (177, '新增文档', NULL, 'server/doc/addmd', '', 2, 0, 'layui-icon layui-icon-praise', NULL, 170, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (178, '文档列表', NULL, 'server/doc/listmd', '', 3, 0, 'layui-icon layui-icon-link', NULL, 170, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (179, '编辑文档前', NULL, 'server/doc/editmdBefore', '', 3, 0, 'layui-icon layui-icon-read', NULL, 170, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (180, '编辑文档', NULL, 'server/doc/editmd', '', 3, 0, 'layui-icon layui-icon-transfer', NULL, 170, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (181, '删除文档', NULL, 'server/doc/delmd', '', 3, 0, 'layui-icon layui-icon-logout', NULL, 170, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (182, '编辑文档列表', NULL, 'server/doc/editData', '', 3, 0, 'layui-icon layui-icon-email', NULL, 170, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (183, '回写数据', NULL, 'server/doc/back', '', 3, 0, 'layui-icon layui-icon-windows', NULL, 170, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (184, '接口设计', NULL, 'server/api/list', 'view/api/list.html', 1, 0, 'layui-icon layui-icon-website', NULL, 2, 1, 0, 1);
+INSERT INTO `rt_user_menu` VALUES (185, '接口设计添加', NULL, 'server/api/add', 'view/api/edit.html', 3, 0, '', NULL, 184, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (186, '接口设计编辑', NULL, 'server/api/edit', 'view/api/edit.html', 3, 0, '', NULL, 184, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (187, '接口设计删除', NULL, 'server/api/del', '', 3, 0, '', NULL, 184, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (188, '接口设计编辑前', NULL, 'server/api/editBefore', '', 3, 0, '', NULL, 184, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (189, '接口添加前', NULL, 'server/api/addBefore', '', 3, 0, 'layui-icon layui-icon-key', NULL, 184, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (190, '文章管理', NULL, 'server/art', '', 1, 0, 'layui-icon layui-icon-slider', NULL, 1, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (194, '文章列表', NULL, 'server/art/list', '', 3, 0, 'layui-icon layui-icon-username', NULL, 190, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (195, '添加文章', NULL, 'server/art/add', '', 3, 0, 'layui-icon layui-icon-username', NULL, 190, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (196, '编辑文章', NULL, 'server/art/edit', '', 3, 0, 'layui-icon layui-icon-username', NULL, 190, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (197, '接口参数列表', NULL, 'server/apiparams/list', '', 2, 0, 'layui-icon layui-icon-key', NULL, 184, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (198, '从数据库添加参数', NULL, 'server/apiparams/addFromDb', '', 2, 0, 'layui-icon layui-icon-logout', NULL, 184, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (199, '编辑参数列表名字', NULL, 'server/apiparams/editData', '', 3, 0, 'layui-icon layui-icon-transfer', NULL, 184, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (200, '删除接口参数', NULL, 'server/apiparams/del', '', 3, 0, 'layui-icon layui-icon-subtraction', NULL, 184, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (201, '接口参数编辑前', NULL, 'server/apiparams/editBefore', '', 3, 0, 'layui-icon layui-icon-rate', NULL, 184, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (202, '添加接口参数', NULL, 'server/apiparams/add', '', 3, 0, 'layui-icon layui-icon-service', NULL, 184, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (203, '编辑接口参数', NULL, 'server/apiparams/edit', '', 3, 0, 'layui-icon layui-icon-camera', NULL, 184, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (204, '更新接口代码', NULL, 'server/api/addLogic', '', 3, 0, 'layui-icon layui-icon-android', NULL, 184, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (205, '获取接口代码', NULL, 'server/api/getLogic', '', 3, 0, 'layui-icon layui-icon-share', NULL, 184, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (206, '程序设计', NULL, 'server/code/list', 'view/code/list.html', 1, 0, 'layui-icon layui-icon-template', NULL, 1, 1, 0, 1);
+INSERT INTO `rt_user_menu` VALUES (207, '程序设计器添加', NULL, 'server/code/add', 'view/code/edit.html', 3, 0, '', NULL, 206, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (208, '程序设计器编辑', NULL, 'server/code/edit', 'view/code/edit.html', 3, 0, '', NULL, 206, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (209, '程序设计器删除', NULL, 'server/code/del', '', 3, 0, '', NULL, 206, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (210, '程序设计器编辑前', NULL, 'server/code/editBefore', '', 3, 0, '', NULL, 206, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (211, '设计程序', NULL, 'server/code/editCode', '', 3, 0, 'layui-icon layui-icon-spread-left', NULL, 206, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (212, '参数分页新增', NULL, 'server/apiparams/addPage', '', 3, 0, 'layui-icon layui-icon-wifi', NULL, 184, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (213, '接口测试列表', NULL, 'server/apitest/list', '', 2, 0, 'layui-icon layui-icon-read', NULL, 184, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (214, '接口测试添加前', NULL, 'server/apitest/addBefore', '', 3, 0, 'layui-icon layui-icon-email', NULL, 184, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (215, '文章分类列表', NULL, 'server/art/artcate', '', 3, 0, 'layui-icon layui-icon-username', NULL, 190, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (216, '甘特图', NULL, 'server/gant/list', 'view/gant/list.html', 1, 0, 'layui-icon layui-icon-survey', NULL, 1, 1, 0, 1);
+INSERT INTO `rt_user_menu` VALUES (217, '甘特图添加', NULL, 'server/gant/add', 'view/gant/edit.html', 3, 0, '', NULL, 216, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (218, '甘特图编辑', NULL, 'server/gant/edit', 'view/gant/edit.html', 3, 0, '', NULL, 216, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (219, '甘特图删除', NULL, 'server/gant/del', '', 3, 0, '', NULL, 216, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (220, '甘特图编辑前', NULL, 'server/gant/editBefore', '', 3, 0, '', NULL, 216, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (221, '日程计划', NULL, 'server/planday/list', 'planday/index.html', 1, 0, 'layui-icon layui-icon-date', NULL, 1, 1, 0, 1);
+INSERT INTO `rt_user_menu` VALUES (222, '日程计划添加', NULL, 'server/planday/add', '', 3, 0, '', NULL, 221, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (223, '日程计划编辑', NULL, 'server/planday/edit', '', 3, 0, '', NULL, 221, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (224, '日程计划删除', NULL, 'server/planday/del', '', 3, 0, '', NULL, 221, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (225, '日程计划编辑前', NULL, 'server/planday/editBefore', '', 3, 0, '', NULL, 221, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (226, '图片编辑器', NULL, 'server/picedit/list', 'view/picedit/list.html', 1, 0, 'layui-icon layui-icon-camera', NULL, 1, 1, 0, 1);
+INSERT INTO `rt_user_menu` VALUES (227, '图片编辑器添加', NULL, 'server/picedit/add', 'view/picedit/edit.html', 3, 0, '', NULL, 226, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (228, '图片编辑器编辑', NULL, 'server/picedit/edit', 'view/picedit/edit.html', 3, 0, '', NULL, 226, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (229, '图片编辑器删除', NULL, 'server/picedit/del', '', 3, 0, '', NULL, 226, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (230, '图片编辑器编辑前', NULL, 'server/picedit/editBefore', '', 3, 0, '', NULL, 226, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (231, '编辑图片名字', NULL, 'server/picedit/editName', '', 3, 0, 'layui-icon layui-icon-rss', NULL, 226, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (237, 'svg编辑器', NULL, 'server/svgedit/list', 'view/svgedit/list.html', 1, 0, 'layui-icon layui-icon-diamond', NULL, 1, 1, 0, 1);
+INSERT INTO `rt_user_menu` VALUES (238, 'svg编辑器添加', NULL, 'server/svgedit/add', 'view/svgedit/edit.html', 3, 0, '', NULL, 237, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (239, 'svg编辑器编辑', NULL, 'server/svgedit/edit', 'view/svgedit/edit.html', 3, 0, '', NULL, 237, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (240, 'svg编辑器删除', NULL, 'server/svgedit/del', '', 3, 0, '', NULL, 237, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (241, 'svg编辑器编辑前', NULL, 'server/svgedit/editBefore', '', 3, 0, '', NULL, 237, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (242, '判断登录', NULL, 'server/index/isLogin', '', 3, 0, 'layui-icon layui-icon-at', NULL, 6, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (244, '聊天', NULL, 'server/chat/open', '', 3, 0, 'layui-icon layui-icon-username', NULL, 1, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (245, '关闭聊天socket', NULL, 'server/chat/close', '', 3, 0, 'layui-icon layui-icon-username', NULL, 244, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (246, '导入', NULL, 'server/excel/import', '', 3, 0, 'layui-icon layui-icon-username', NULL, 159, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (247, '文档编辑器', NULL, 'server/word/list', 'view/word/list.html', 1, 0, 'layui-icon layui-icon-read', NULL, 1, 1, 0, 1);
+INSERT INTO `rt_user_menu` VALUES (248, '文档编辑器添加', NULL, 'server/word/add', 'view/word/edit.html', 3, 0, '', NULL, 247, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (249, '文档编辑器编辑', NULL, 'server/word/edit', 'view/word/edit.html', 3, 0, '', NULL, 247, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (250, '文档编辑器删除', NULL, 'server/word/del', '', 3, 0, '', NULL, 247, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (251, '文档编辑器编辑前', NULL, 'server/word/editBefore', '', 3, 0, '', NULL, 247, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (252, '打开文档', NULL, 'server/word/openFile', '', 3, 0, 'layui-icon layui-icon-android', NULL, 247, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (253, '上传文件', NULL, 'server/word/upload', '', 3, 0, 'layui-icon layui-icon-print', NULL, 247, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (254, '文本编辑器', NULL, 'server/txt/list', 'view/txt/list.html', 1, 0, 'layui-icon layui-icon-fonts-code', NULL, 1, 1, 0, 1);
+INSERT INTO `rt_user_menu` VALUES (255, '文本编辑器添加', NULL, 'server/txt/add', 'view/txt/edit.html', 3, 0, '', NULL, 254, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (256, '文本编辑器编辑', NULL, 'server/txt/edit', 'view/txt/edit.html', 3, 0, '', NULL, 254, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (257, '文本编辑器删除', NULL, 'server/txt/del', '', 3, 0, '', NULL, 254, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (258, '文本编辑器编辑前', NULL, 'server/txt/editBefore', '', 3, 0, '', NULL, 254, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (259, '任务看板', NULL, 'server/kanban/list', 'view/kanban/list.html', 1, 0, 'layui-icon layui-icon-file-b', NULL, 1, 1, 1, 0);
+INSERT INTO `rt_user_menu` VALUES (260, '任务看板添加', NULL, 'server/kanban/add', 'view/kanban/edit.html', 3, 0, '', NULL, 259, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (261, '任务看板编辑', NULL, 'server/kanban/edit', 'view/kanban/edit.html', 3, 0, '', NULL, 259, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (262, '任务看板删除', NULL, 'server/kanban/del', '', 3, 0, '', NULL, 259, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (263, '任务看板编辑前', NULL, 'server/kanban/editBefore', '', 3, 0, '', NULL, 259, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (264, '开启关闭计划任务', NULL, 'server/crons/enable', '', 3, 0, 'layui-icon layui-icon-mute', NULL, 144, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (265, '导出', NULL, 'server/menu/sql', '', 3, 0, 'layui-icon layui-icon-email', NULL, 9, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (266, '接口发送测试', NULL, 'server/apitest/testRun', '', 3, 0, 'layui-icon layui-icon-at', NULL, 184, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (267, '添加接口测试', NULL, 'server/apitest/add', '', 3, 0, 'layui-icon layui-icon-email', NULL, 184, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (268, '地区管理', NULL, 'server/area/list', 'view/area/list.html', 1, 0, 'layui-icon layui-icon-website', NULL, 3, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (269, '地区管理添加', NULL, 'server/area/add', 'view/area/edit.html', 3, 0, '', NULL, 268, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (270, '地区管理编辑', NULL, 'server/area/edit', 'view/area/edit.html', 3, 0, '', NULL, 268, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (271, '地区管理删除', NULL, 'server/area/del', '', 3, 0, '', NULL, 268, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (272, '地区管理编辑前', NULL, 'server/area/editBefore', '', 3, 0, '', NULL, 268, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (273, '地区管理添加前', NULL, 'server/area/addBefore', '', 3, 0, 'layui-icon layui-icon-username', NULL, 268, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (274, '设置地区可用', NULL, 'server/area/enable', '', 3, 0, 'layui-icon layui-icon-username', NULL, 268, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (275, '部门管理', NULL, 'server/department/list', 'view/department/list.html', 1, 0, 'layui-icon layui-icon-cols', NULL, 3, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (276, '部门管理添加', NULL, 'server/department/add', 'view/department/edit.html', 3, 0, '', NULL, 275, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (277, '部门管理编辑', NULL, 'server/department/edit', 'view/department/edit.html', 3, 0, '', NULL, 275, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (278, '部门管理删除', NULL, 'server/department/del', '', 3, 0, '', NULL, 275, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (279, '部门管理编辑前', NULL, 'server/department/editBefore', '', 3, 0, '', NULL, 275, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (280, '公司管理', NULL, 'server/company/list', 'view/company/list.html', 1, 0, 'layui-icon layui-icon-cellphone', NULL, 3, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (281, '公司管理添加', NULL, 'server/company/add', 'view/company/edit.html', 3, 0, '', NULL, 280, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (282, '公司管理编辑', NULL, 'server/company/edit', 'view/company/edit.html', 3, 0, '', NULL, 280, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (283, '公司管理删除', NULL, 'server/company/del', '', 3, 0, '', NULL, 280, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (284, '公司管理编辑前', NULL, 'server/company/editBefore', '', 3, 0, '', NULL, 280, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (285, '岗位管理', NULL, 'server/position/list', 'view/position/list.html', 1, 0, 'layui-icon layui-icon-note', NULL, 3, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (286, '岗位管理添加', NULL, 'server/position/add', 'view/position/edit.html', 3, 0, '', NULL, 285, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (287, '岗位管理编辑', NULL, 'server/position/edit', 'view/position/edit.html', 3, 0, '', NULL, 285, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (288, '岗位管理删除', NULL, 'server/position/del', '', 3, 0, '', NULL, 285, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (289, '岗位管理编辑前', NULL, 'server/position/editBefore', '', 3, 0, '', NULL, 285, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (290, '应用市场', NULL, 'server/plugins/list', 'view/plugins/list.html', 1, 0, 'layui-icon layui-icon-app', NULL, 2, 1, 0, 1);
+INSERT INTO `rt_user_menu` VALUES (291, '应用市场添加', NULL, 'server/plugins/add', 'view/plugins/edit.html', 3, 0, '', NULL, 290, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (292, '应用市场编辑', NULL, 'server/plugins/edit', 'view/plugins/edit.html', 3, 0, '', NULL, 290, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (293, '应用市场删除', NULL, 'server/plugins/del', '', 3, 0, '', NULL, 290, 1, 0, 0);
+INSERT INTO `rt_user_menu` VALUES (294, '应用市场编辑前', NULL, 'server/plugins/editBefore', '', 3, 0, '', NULL, 290, 1, 0, 0);
+COMMIT;
+
+-- ----------------------------
+-- Table structure for rt_user_oplog
+-- ----------------------------
+DROP TABLE IF EXISTS `rt_user_oplog`;
+CREATE TABLE `rt_user_oplog` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `user_id` int(10) unsigned NOT NULL COMMENT '管理员账号',
+  `log` varchar(255) CHARACTER SET utf8 NOT NULL COMMENT '日志名称',
+  `data` text CHARACTER SET utf8 COMMENT '返回记录',
+  `ip` varchar(64) CHARACTER SET utf8 DEFAULT '' COMMENT 'IP地址',
+  `agent` varchar(255) CHARACTER SET utf8 DEFAULT '' COMMENT '客户端信息',
+  `url` varchar(255) CHARACTER SET utf8 DEFAULT NULL COMMENT '地址',
+  `method` varchar(100) CHARACTER SET utf8 DEFAULT NULL COMMENT '方法',
+  `addtime` int(10) unsigned DEFAULT '0' COMMENT '添加时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='用户操作日志';
+
+-- ----------------------------
+-- Records of rt_user_oplog
+-- ----------------------------
+BEGIN;
+COMMIT;
+
+-- ----------------------------
+-- Table structure for rt_user_viewlog
+-- ----------------------------
+DROP TABLE IF EXISTS `rt_user_viewlog`;
+CREATE TABLE `rt_user_viewlog` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `user_id` int(10) unsigned NOT NULL COMMENT '管理员账号',
+  `log` varchar(255) CHARACTER SET utf8 NOT NULL COMMENT '日志名称',
+  `ip` varchar(64) CHARACTER SET utf8 DEFAULT '' COMMENT 'IP地址',
+  `agent` varchar(255) CHARACTER SET utf8 DEFAULT '' COMMENT '客户端信息',
+  `url` varchar(255) CHARACTER SET utf8 DEFAULT NULL COMMENT '地址',
+  `method` varchar(100) CHARACTER SET utf8 DEFAULT NULL COMMENT '方法',
+  `addtime` int(10) unsigned DEFAULT '0' COMMENT '添加时间',
+  `leavetime` int(10) unsigned DEFAULT '0' COMMENT '离开时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='用户查看日志';
+
+-- ----------------------------
+-- Records of rt_user_viewlog
+-- ----------------------------
+BEGIN;
 COMMIT;
 
 -- ----------------------------
