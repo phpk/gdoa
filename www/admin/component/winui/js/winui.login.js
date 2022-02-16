@@ -122,6 +122,10 @@ layui.define(['layer', 'winui','winuiInit'], function (exports) {
                             captcha: data.captcha
                         };
                         __post('login/do', postData, res => {
+                            if (res.code != 0) {
+                                layer.msg(res.message, { icon: 2 });
+                                return false;
+                            }
                             layer.close(layerindex);
                             //console.log(res)
                             let au = document.createElement("audio");

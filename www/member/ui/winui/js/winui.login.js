@@ -122,8 +122,16 @@ layui.define(['layer', 'winui','winuiInit'], function (exports) {
                             captcha: data.captcha
                         };
                         __post('login/do', postData, res => {
-                            layer.close(layerindex);
+                            //
                             //console.log(res)
+                            if (res.code == 101) {
+                                
+                            }
+                            if (res.code != 0) {
+                                layer.msg(res.message, { icon: 2 });
+                                return false;
+                            }
+                            layer.close(layerindex);
                             let au = document.createElement("audio");
                             au.preload = "auto";
                             //au.autoplay = "autoplay";

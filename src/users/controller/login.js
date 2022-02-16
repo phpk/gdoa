@@ -41,7 +41,7 @@ module.exports = class extends think.Controller {
         let userId = user.user_id;
         if (think.isEmpty(user)) {
             await this.session('userLoginNum', userLoginNum + 1);
-            return this.fail('用户不存在');
+            return this.fail(101, '用户不存在');
         }
         if (user.status != 0) {
             await this.session('userLoginNum', userLoginNum + 1);
