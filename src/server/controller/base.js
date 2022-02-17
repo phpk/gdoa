@@ -165,9 +165,10 @@ module.exports = class extends think.Controller {
         agent: this.ctx.userAgent,
         url: this.ctx.path,
         method: this.ctx.method,
-        addtime: this.now()
+        addtime: this.now(),
+        type : 'admin_op'
       };
-      await think.model('admin_oplog').add(saveData);
+      await this.mg('adminlog').add(saveData);
     } catch (error) {
       console.log(error)
     }
@@ -181,8 +182,9 @@ module.exports = class extends think.Controller {
     try {
       let url = this.ctx.path,
         ip = this.ctx.ip;
-      let has = await this.model('admin_viewlog').where({
-        admin_id: this.adminId
+      let has = await this.mg('adminlog').where({
+        admin_id: this.adminId,
+        type : 'admin_view'
       }).order("addtime desc").find();
       let saveData = {
         admin_id: this.adminId,
@@ -191,18 +193,19 @@ module.exports = class extends think.Controller {
         agent: this.ctx.userAgent,
         url,
         method: this.ctx.method,
-        addtime: this.now()
+        addtime: this.now(),
+        type: 'admin_view'
       };
       //如果之前没有访问
       if (think.isEmpty(has)) {
-        await think.model('admin_viewlog').add(saveData);
+        await this.mg('adminlog').add(saveData);
       } else {
         //过滤掉刷新
         if (has.url != url || has.log != msg) {
           //先添加新访问的页面
-          await think.model('admin_viewlog').add(saveData);
+          await this.mg('adminlog').add(saveData);
           //更新离开时间
-          await think.model('admin_viewlog')
+          await this.mg('adminlog')
             .where({ id: has.id })
             .update({
               leavetime: this.now()

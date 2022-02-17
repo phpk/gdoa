@@ -2,6 +2,7 @@ const fileCache = require('think-cache-file');
 //const nunjucks = require('think-view-nunjucks');
 const fileSession = require('think-session-file');
 const mysql = require('think-model-mysql');
+const mongo = require('think-mongo');
 const { Console, File, DateFile } = require('think-logger3');
 const path = require('path');
 const isDev = think.env === 'development';
@@ -56,6 +57,21 @@ exports.model = {
     password: conf.mysql.password,
     dateStrings: conf.mysql.dateStrings
   },
+  //mongod --dbpath 
+  mongo: {
+    handle: mongo,
+    host: conf.mongo.host,
+    port: conf.mongo.port,
+    user: conf.mongo.user,
+    password: conf.mongo.password,
+    database: conf.mongo.database, // 数据库名称
+    useCollectionPlural: false,
+    options: {
+      // 身份验证相关
+      // replicaSet: 'mgset-3074013',
+      // authSource: 'admin'
+    }
+  }
   // sqlite: {
   //   handle: sqlite, // Adapter handle
   //   path: path.join(think.ROOT_PATH, 'data/db/sqlite'), // sqlite 保存的目录

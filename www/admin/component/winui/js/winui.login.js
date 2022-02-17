@@ -122,6 +122,7 @@ layui.define(['layer', 'winui','winuiInit'], function (exports) {
                             captcha: data.captcha
                         };
                         __post('login/do', postData, res => {
+                            //console.log(res)
                             if (res.code != 0) {
                                 layer.msg(res.message, { icon: 2 });
                                 return false;

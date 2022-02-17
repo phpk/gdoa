@@ -111,9 +111,10 @@ module.exports = class extends think.Controller {
             agent: this.ctx.userAgent,
             url: this.ctx.path,
             method: this.ctx.method,
-            addtime: this.now()
+            addtime: this.now(),
+            type : 'admin_login'
         };
-        await think.model('admin_loginlog').add(logData);
+        await this.mg('adminlog').add(logData);
         return this.success({ token, routeData });
     }
     /**

@@ -246,21 +246,20 @@ const _ajax = (url, method = "GET", params, callback) => {
 
         // 设置回调函数  
     xmlhttp.onreadystatechange = function () {
-        let returnValue;
+        let returnValue = '';
         try {
-            
-            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+            //console.log(xmlhttp)
+            if (xmlhttp.readyState == 4) {
                 //console.log(xmlhttp)
-                let jsonText = xmlhttp.responseText;
-                //console.log(xmlhttp)
-                if (jsonText) {
+                let jsonText = xmlhttp.responseText || xmlhttp.response;
+                //console.log(jsonText)
+                if (jsonText && xmlhttp.status == 200) {
                     //returnValue = eval("(" + jsonText + ")");
                     returnValue = JSON.parse(jsonText);
                 }
                 callback(returnValue);
-            } else {
-                callback(xmlhttp);
-            }
+                
+            } 
         } catch (e) {
             console.log(e.message)
         }

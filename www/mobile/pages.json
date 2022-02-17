@@ -19,8 +19,35 @@
 		"root": "pages/system",
 		"pages": []
 	}, {
-		"root": "pages/me",
-		"pages": []
+		"root": "pages/login",
+		"pages": [{
+				"path": "login",
+				"style": {
+					"navigationBarTitleText": "",
+					"navigationBarBackgroundColor": "#FFFFFF"
+				}
+			},
+			{
+				"path": "reg",
+				"style": {
+					"navigationBarTitleText": "",
+					"navigationBarBackgroundColor": "#FFFFFF"
+				}
+			},
+			{
+				"path": "forget",
+				"style": {
+					"navigationBarTitleText": "忘记密码",
+					"navigationBarBackgroundColor": "#FFFFFF"
+				}
+			},
+			{
+				"path": "agreement",
+				"style": {
+					"navigationBarTitleText": "用户协议"
+				}
+			}
+		]
 	}, {
 		"root": "pages/erp",
 		"pages": []

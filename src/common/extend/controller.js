@@ -54,8 +54,12 @@ async function err(name, msg) {
     };
     await think.model('error').add(data);
 }
+function mg(tabname) {
+    return think.mongo(tabname, 'mongo');
+}
 module.exports = {
     now,
+    mg,
     parseSearch,
     err
 }
