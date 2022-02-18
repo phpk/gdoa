@@ -20,6 +20,10 @@
                 <input type="password" name="password" id="password" value="" placeholder="密码" height="36" />
                 <button id="unlock"><i class="fa fa-arrow-right"></i></button>
             </div>
+			<div class="winui-from-txt">
+				<a class="left">忘记密码</a>
+				<a class="right" herf="#" onclick="reg()">注册租户</a>
+			</div>
         </div>
     </div>
     <div id="date_time" class="animated fadeIn"></div>
@@ -29,4 +33,15 @@
     var dateTime = new Date();
     document.getElementById('date_time').innerHTML = '<p id="time">' + (dateTime.getHours() > 9 ? dateTime.getHours().toString() : '0' + dateTime.getHours()) + ':' + (dateTime.getMinutes() > 9 ? dateTime.getMinutes().toString() : '0' + dateTime.getMinutes()) + '</p><p id="date">' + (dateTime.getMonth() + 1) + '月' + dateTime.getDate() + '日,星期' + Week[dateTime.getDay()] + '</p>';
     //console.log($)
+	function reg(){
+		layer.open({
+			type: 2,
+			title: '注册租户',
+		    area: [
+		        '50%', '80%'
+		    ],
+		    anim: 1,
+			content: '/member/ui/winui/html/system/reg.html'
+		});
+	}
 </script>

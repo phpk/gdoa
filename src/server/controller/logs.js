@@ -17,7 +17,7 @@ module.exports = class extends Base {
      *
      */
     async opAction() {
-        const { list, count } = await this.coms('admin_oplog')
+        const { list, count } = await this.coms('admin_op')
         await this.adminViewLog('管理员操作日志');
         return this.success({ list, count })
     }
@@ -34,7 +34,7 @@ module.exports = class extends Base {
      *
      */
      async loginAction() {
-        const { list, count } = await this.coms('admin_loginlog')
+        const { list, count } = await this.coms('admin_login')
         await this.adminViewLog('管理员登陆日志');
         return this.success({ list, count })
     }
@@ -51,7 +51,7 @@ module.exports = class extends Base {
      *
      */
     async viewAction() {
-        const { list, count } = await this.coms('admin_viewlog')
+        const { list, count } = await this.coms('admin_view')
         await this.adminViewLog('管理员行为日志');
         return this.success({ list, count })
     }
@@ -74,9 +74,15 @@ module.exports = class extends Base {
     }
     async coms(tableName) {
         let { page, limit, param } = this.get();
-        let wsql = {};
+        let wsql = {type : tableName};
         if (param) wsql = this.parseSearch(param, wsql);
-
+        let list = await this.mg('adminlog').where(wsql).page(page, limit).order('addtime desc').select();
+        for(let p in list){
+            list[p].username = await this.model('admin').where({ admin_id: list[p].admin_id }).getField('username', true);
+        };
+        //console.log(list)
+        let count = await this.mg('adminlog').where(wsql).count();
+        /*
         let list = await this.model(tableName)
             .alias('l')
             .field('l.*,u.admin_id,u.username')
@@ -99,7 +105,7 @@ module.exports = class extends Base {
                 as: 'u',
                 on: ['admin_id', 'admin_id']
             })
-            .where(wsql).count();
+            .where(wsql).count();*/
         return { list, count }
     }
 };

@@ -14,6 +14,7 @@ module.exports = class extends Base {
             d.modname = await this.model('mod').where({id : d.mod_id}).getField('name', true)
         })
         let count = await this.model('api').where(wsql).count();
+        await this.adminViewLog('接口设计列表');
         return this.success({ list, count })
     }
     async addBeforeAction() {

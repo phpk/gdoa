@@ -1,19 +1,21 @@
 const Base = require('./base.js');
 /**
  * @class
- * @apiDefine area 地区管理管理
+ * @apiDefine area 地区管理
  */
 module.exports = class extends Base {
 
     async listAction() {
         let list = await this.model('area').order('order_num asc').select();
         //let count = await this.model('area').where({pid : 0}).count()
+        await this.adminViewLog('地区管理列表');
         return this.success(list)
     }
 
     async addAction() {
         let post = this.post();
         let id = await this.model('area').add(post);
+        await this.adminOpLog('添加地区');
         return this.success(id);
     }
     async addBeforeAction() {
