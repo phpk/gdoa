@@ -147,5 +147,18 @@ module.exports = class extends think.Controller {
         await this.session('verifyCaptcha', null);
         return true;
     }
+    async sendEmailAction() {
+        let num = Math.floor(Math.random() * (9999 - 1000)) + 1000;
+        try {
+            let to = this.post('email');
+            await this.session('verifyEmail', num + to);
+            let title = 'godocms您的验证码是' + num;
+            await this.service('email').send(to, title, title);
+            return this.success()
+        } catch (error) {
+            return this.fail(error.message)
+        }
+        
+    }
 
 };

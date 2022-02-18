@@ -45,7 +45,7 @@ module.exports = {
         password: '',
         db: 1
     },
-    
+
     mongo: {
         host: '127.0.0.1',
         port: 27017,
@@ -58,4 +58,17 @@ module.exports = {
     defaultErrno: 201, // default errno
     validateDefaultErrno: 202, // validate default errno
     stickyCluster: true,//websocket
+    email: {
+        host: 'smtp.163.com',//邮箱服务的主机，如smtp.qq.com
+        port: '25',//对应的端口号
+        from: '"godocms.com" <godocms@163.com>',
+        //开启安全连接
+        secure: false,
+        //secureConnection:false,
+        //用户信息
+        auth: {
+            user: 'godocms@163.com',
+            pass: 'HUTGFDVQFTSXRXFK'
+        }
+    }
 };
