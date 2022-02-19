@@ -31,7 +31,7 @@
 						<div class="layui-form-item">
 							<label class="layui-form-label">邮箱验证码</label>
 							<div class="layui-input-inline">
-								<input type="text" name="code" id="code" lay-verify="required" autocomplete="off"
+								<input type="text" name="code" id="code" lay-verify="required|code" autocomplete="off"
 									placeholder="请输入邮箱验证码" class="layui-input">
 							</div>
 							<div class="layui-input-inline">
@@ -41,14 +41,14 @@
 						<div class="layui-form-item">
 							<label class="layui-form-label">密码</label>
 							<div class="layui-input-block">
-								<input type="password" name="password" lay-verify="required|len" autocomplete="off"
+								<input type="password" name="password" lay-verify="required|pass" autocomplete="off"
 									placeholder="请输入登录密码" min="6" class="layui-input">
 							</div>
 						</div>
 						<div class="layui-form-item">
 							<label class="layui-form-label">重复密码</label>
 							<div class="layui-input-block">
-								<input type="password" name="repassword" lay-verify="required|len" autocomplete="off"
+								<input type="password" name="repassword" lay-verify="required|pass" autocomplete="off"
 									placeholder="请输入重复密码" min="6" class="layui-input">
 							</div>
 						</div>
@@ -76,11 +76,28 @@
 				let form = layui.form,
 					layer = layui.layer,
 					$ = layui.$;
-                const emailExp = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+				const emailExp = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+                form.verify({
+                    pass: [
+                        /^[\S]{6,20}$/
+                        ,'密码必须6到20位，且不能出现空格'
+                    ],
+                    code : (v) => {
+                        if(v.length != 4) {
+                            return '请输入正确的验证码'
+                        }
+                    },
+                    email : (v) => {
+                        if (!emailExp.test(v)) {
+                            return '请输入正确的邮箱格式'
+                        }
+                    }
+
+                })
 				//监听提交
 				form.on('submit(user-save)', function(data) {
 					data = data.field;
-					_post(layui, 'set/cateAdd', data, res => {
+					_post(layui, 'login/reg', data, res => {
 						//console.log(res)
 						parent
 							.layui
@@ -94,22 +111,38 @@
 
 					return false;
 				});
-                $('#send_code').on('click', () => {
-                    let emailVal = $('#email').val();
-                    //console.log(emailVal)
-                    //console.log(emailExp.test(emailVal))
-                    if(!emailExp.test(emailVal)) {
-                        layer.msg('请输入正确的邮箱格式', {icon:2});
-                        $('#email').focus();
-                        return false;
-                    }
-					__post('login/sendEmail', {email : emailVal}, res => {
-                        if(res.code == 0) {
-                            
-                        }
-                    })
-					
-                });
+				$('#send_code').on('click', () => {
+					let emailVal = $('#email').val();
+					//console.log(emailVal)
+					//console.log(emailExp.test(emailVal))
+					if (!emailExp.test(emailVal)) {
+						layer.msg('请输入正确的邮箱格式', {
+							icon: 2
+						});
+						$('#email').focus();
+						return false;
+					}
+					__post('login/sendEmail', {
+						email: emailVal
+					}, res => {
+						if (res.code == 0) {
+							let times = 60;
+							$('#send_code').attr('disabled', true);
+							let setTime = setInterval(() => {
+								if (times <= 0) {
+									$("#send_code").text("重新发送");
+									$('#send_code').attr('disabled', false);
+									clearInterval(setTime);
+									times = 60;
+									return;
+								}
+								times--;
+								$("#send_code").text(times);
+							}, 1000);
+						}
+					})
+
+				});
 
 			});
 		</script>

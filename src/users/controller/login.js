@@ -160,5 +160,13 @@ module.exports = class extends think.Controller {
         }
         
     }
+    async regAction() {
+        let data = this.post(),
+            verifyEmail = await this.session('verifyEmail');
+        if (data.code + data.email != verifyEmail) {
+            return this.fail('验证码错误');
+        }
+
+    }
 
 };
