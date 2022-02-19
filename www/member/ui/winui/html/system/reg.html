@@ -100,10 +100,6 @@
 					_post(layui, 'login/reg', data, res => {
 						//console.log(res)
 						parent
-							.layui
-							.table
-							.reload("user-table");
-						parent
 							.layer
 							.close(parent.layer.getFrameIndex(window.name)); //关闭当前页
 
