@@ -166,7 +166,11 @@ module.exports = class extends think.Controller {
         if (data.code + data.email != verifyEmail) {
             return this.fail('验证码错误');
         }
-
+        //生成一个16位的随机数
+        let salt = this.service('login', 'admin').randomString(),
+            md5Salt = think.md5(salt);
+        let pwd = this.service('login', 'admin').createPassword(data.password, salt);
+        
     }
 
 };

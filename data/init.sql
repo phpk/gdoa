@@ -11,7 +11,7 @@
  Target Server Version : 50732
  File Encoding         : 65001
 
- Date: 13/02/2022 13:37:17
+ Date: 19/02/2022 18:01:14
 */
 
 SET NAMES utf8mb4;
@@ -42,7 +42,7 @@ CREATE TABLE `rt_admin` (
 -- Records of rt_admin
 -- ----------------------------
 BEGIN;
-INSERT INTO `rt_admin` VALUES ('admin', '0fb157e6a7ea57417310ddbc651c93ab', 1, '4pha42mM6CRPHrHx', 0, NULL, NULL, 0, 1644567481, 363, 0);
+INSERT INTO `rt_admin` VALUES ('admin', 'ca5b521ebf28828bf6f2c0326a4065a1', 1, 'NHQWh5eeprejdrdw', 0, NULL, NULL, 0, 1645148993, 413, 0);
 INSERT INTO `rt_admin` VALUES ('test', 'c7b30ad98095b7b560585ffd6371aa47', 2, 'x6pdhRYF4f6bHpFc', 1636948516, '1test', '13873150575', 0, 0, 0, 0);
 INSERT INTO `rt_admin` VALUES ('test12', 'c108dd09fba019c8b9681248c876bb4e', 5, 'Ahn7EScJBw3R2TZR', 1636948870, '222', '13885863355', 0, 0, 0, 1636958930);
 COMMIT;
@@ -2825,17 +2825,20 @@ CREATE TABLE `rt_user` (
   `username` varchar(255) CHARACTER SET utf8 NOT NULL COMMENT '用户姓名--例如张三',
   `login_name` varchar(255) CHARACTER SET utf8 NOT NULL COMMENT '登录用户名',
   `password` varchar(50) CHARACTER SET utf8 DEFAULT NULL COMMENT '登陆密码',
+  `salt` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'salt校验',
   `position` varchar(200) CHARACTER SET utf8 DEFAULT NULL COMMENT '职位',
   `department` varchar(255) CHARACTER SET utf8 DEFAULT NULL COMMENT '所属部门',
   `email` varchar(100) CHARACTER SET utf8 DEFAULT NULL COMMENT '电子邮箱',
-  `phonenum` varchar(100) CHARACTER SET utf8 DEFAULT NULL COMMENT '手机号码',
+  `phone` varchar(100) CHARACTER SET utf8 DEFAULT NULL COMMENT '手机号码',
   `ismanager` tinyint(4) NOT NULL DEFAULT '1' COMMENT '是否为管理者 0==管理者 1==员工',
   `isystem` tinyint(4) NOT NULL DEFAULT '0' COMMENT '是否系统自带数据 ',
-  `Status` tinyint(4) DEFAULT '0' COMMENT '状态，0：正常，1：删除，2封禁',
+  `status` tinyint(4) DEFAULT '0' COMMENT '状态，0：正常，1：删除，2封禁',
   `description` varchar(500) CHARACTER SET utf8 DEFAULT NULL COMMENT '用户描述信息',
   `remark` varchar(500) CHARACTER SET utf8 DEFAULT NULL COMMENT '备注',
   `tenant_id` bigint(20) DEFAULT NULL COMMENT '租户id',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `login_name` (`login_name`) USING BTREE,
+  UNIQUE KEY `email` (`email`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='用户表';
 
 -- ----------------------------

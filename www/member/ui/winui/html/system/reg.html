@@ -97,8 +97,13 @@
 				//监听提交
 				form.on('submit(user-save)', function(data) {
 					data = data.field;
+					if(data.password != data.repassword) {
+						layer.msg('两次输入的密码不一致', {icon : 2});
+						return false;
+					}
 					_post(layui, 'login/reg', data, res => {
 						//console.log(res)
+						layer.msg('注册成功');
 						parent
 							.layer
 							.close(parent.layer.getFrameIndex(window.name)); //关闭当前页
