@@ -79,19 +79,9 @@ module.exports = class extends think.Controller {
         //添加缓存
         await this.session('adminId', adminId);
         //只允许一个帐号在一个端下登录
-        await this.cache('admin_' + adminId, md5Salt, {
-            type: 'redis',
-            redis: {
-                timeout: 2 * 60 * 60 * 1000
-            }
-        });
+        await this.cache('admin_' + adminId, md5Salt);
         //聊天服务器用
-        await this.cache('token_' + think.md5(token), adminId, {
-            type: 'redis',
-            redis: {
-                timeout: 2 * 60 * 60 * 1000
-            }
-        });
+        await this.cache('token_' + think.md5(token), adminId);
         //console.log('token_' + think.md5(token))
         //设置路由缓存
         let routeData = await this.model('menu').cacheData(adminId);
@@ -114,7 +104,8 @@ module.exports = class extends think.Controller {
             addtime: this.now(),
             type : 'admin_login'
         };
-        await this.mg('adminlog').add(logData);
+        //await this.mg('adminlog').add(logData);
+        await this.model('adminlog').add(logData);
         return this.success({ token, routeData });
     }
     /**

@@ -18,7 +18,8 @@ module.exports = {
         prefixKey: 'login/captcha'
     },
     cache: {
-        type: 'redis', //or 'file'
+        //type: 'redis', //or 'file'
+        type : 'file',
         timeout: 24 * 3600 * 1000
     },
     cookie: {
@@ -26,7 +27,8 @@ module.exports = {
         maxAge: 12 * 3600 * 1000
     },
     session: {
-        type: 'redis', //or 'file'
+        //type: 'redis', //or 'file'
+        type : 'file',
         maxAge: 12 * 3600 * 1000
     },
     mysql: {

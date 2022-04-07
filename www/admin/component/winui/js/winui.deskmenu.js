@@ -19,7 +19,7 @@ layui.define(['layer', 'winui', 'laytpl', 'winuiInit', 'desklogin', 'desklock'],
                 method: 'get',
                 headers: getHeader(),
                 url: apiUrl + 'admin/loginOut',
-                success: (res) => {
+                complete: (res) => {
                     let au = document.createElement("audio");
                     au.preload = "auto";
                     au.src = './component/winui/audio/out.mp3';
