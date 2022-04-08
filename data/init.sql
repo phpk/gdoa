@@ -11,7 +11,7 @@
  Target Server Version : 50732
  File Encoding         : 65001
 
- Date: 19/02/2022 18:01:14
+ Date: 08/04/2022 08:38:57
 */
 
 SET NAMES utf8mb4;
@@ -36,15 +36,16 @@ CREATE TABLE `rt_admin` (
   PRIMARY KEY (`admin_id`),
   UNIQUE KEY `username` (`username`) USING HASH,
   UNIQUE KEY `mobile` (`mobile`) USING HASH
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='管理员表';
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='管理员表';
 
 -- ----------------------------
 -- Records of rt_admin
 -- ----------------------------
 BEGIN;
-INSERT INTO `rt_admin` VALUES ('admin', 'ca5b521ebf28828bf6f2c0326a4065a1', 1, 'NHQWh5eeprejdrdw', 0, NULL, NULL, 0, 1645148993, 413, 0);
+INSERT INTO `rt_admin` VALUES ('admin', '762173a222221d0a5a92f71ed9d382c5', 1, 'PYEEpKFjWAY3Pdp5', 0, NULL, NULL, 0, 1649320952, 423, 0);
 INSERT INTO `rt_admin` VALUES ('test', 'c7b30ad98095b7b560585ffd6371aa47', 2, 'x6pdhRYF4f6bHpFc', 1636948516, '1test', '13873150575', 0, 0, 0, 0);
 INSERT INTO `rt_admin` VALUES ('test12', 'c108dd09fba019c8b9681248c876bb4e', 5, 'Ahn7EScJBw3R2TZR', 1636948870, '222', '13885863355', 0, 0, 0, 1636958930);
+INSERT INTO `rt_admin` VALUES ('aaa', '1346d69df5d3dffe92893949656f22f1', 6, 'GxrPmfN4eb5Esr5a', 1649313727, 'aaa', '13873150571', 0, 1649316691, 14, 0);
 COMMIT;
 
 -- ----------------------------
@@ -65,7 +66,7 @@ CREATE TABLE `rt_admin_auth` (
 -- ----------------------------
 BEGIN;
 INSERT INTO `rt_admin_auth` VALUES (1, '总管理员', '-1', 0, NULL);
-INSERT INTO `rt_admin_auth` VALUES (2, 'aaa', '1,4,5,7,37,53', 0, 'aaa');
+INSERT INTO `rt_admin_auth` VALUES (2, 'aaa', '1,53,149,150,151,152,153,154,155,156,157,158,159,160,161,162,163,164,246,165,166,167,168,169,170,171,172,173,174,175,176,177,178,179,180,181,182,183,190,194,195,196,215,206,207,208,209,210,211,216,217,218,219,220,221,222,223,224,225,226,227,228,229,230,231,237,238,239,240,241,244,245,247,248,249,250,251,252,253,254,255,256,257,258,259,260,261,262,263', 0, 'aaa');
 INSERT INTO `rt_admin_auth` VALUES (15, 'test2', '1,4,5,7,37,53,2,9,20,21,22,23,57,10,26,27,56,58,59,60,61,11,24,25,62,63,64,65,12,66,67,68,13,28,29,30,31,32,14,33,34,35,36,3,15', 1, '');
 COMMIT;
 
@@ -132,7 +133,7 @@ CREATE TABLE `rt_admin_map` (
   `type` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '0角色1集团2公司3门店4部门5区域',
   PRIMARY KEY (`map_id`),
   UNIQUE KEY `admin_id` (`admin_id`,`auth_id`,`type`) USING HASH
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='管理员权限映射表';
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='管理员权限映射表';
 
 -- ----------------------------
 -- Records of rt_admin_map
@@ -141,6 +142,7 @@ BEGIN;
 INSERT INTO `rt_admin_map` VALUES (1, 1, 1, 0);
 INSERT INTO `rt_admin_map` VALUES (4, 2, 2, 0);
 INSERT INTO `rt_admin_map` VALUES (10, 5, 1, 0);
+INSERT INTO `rt_admin_map` VALUES (11, 6, 2, 0);
 COMMIT;
 
 -- ----------------------------
@@ -1348,6 +1350,45 @@ INSERT INTO `rt_admin_viewlog` VALUES (553, 1, '编辑菜单', '::ffff:127.0.0.1
 INSERT INTO `rt_admin_viewlog` VALUES (554, 1, '菜单列表', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:95.0) Gecko/20100101 Firefox/95.0', '/server/menu/oplist', 'GET', 1642480958, 1642504225);
 INSERT INTO `rt_admin_viewlog` VALUES (555, 1, '演示文稿列表', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:95.0) Gecko/20100101 Firefox/95.0', '/server/ppt/list', 'GET', 1642504225, 1644543125);
 INSERT INTO `rt_admin_viewlog` VALUES (556, 1, '文档编辑器列表', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:96.0) Gecko/20100101 Firefox/96.0', '/server/word/list', 'GET', 1644543125, 0);
+COMMIT;
+
+-- ----------------------------
+-- Table structure for rt_adminlog
+-- ----------------------------
+DROP TABLE IF EXISTS `rt_adminlog`;
+CREATE TABLE `rt_adminlog` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `admin_id` int(10) unsigned NOT NULL COMMENT '管理员账号',
+  `log` varchar(255) CHARACTER SET utf8 NOT NULL COMMENT '日志名称',
+  `data` text CHARACTER SET utf8 COMMENT '返回记录',
+  `ip` varchar(64) CHARACTER SET utf8 DEFAULT '' COMMENT 'IP地址',
+  `agent` varchar(255) CHARACTER SET utf8 DEFAULT '' COMMENT '客户端信息',
+  `url` varchar(255) CHARACTER SET utf8 DEFAULT NULL COMMENT '地址',
+  `method` varchar(100) CHARACTER SET utf8 DEFAULT NULL COMMENT '方法',
+  `addtime` int(10) unsigned DEFAULT '0' COMMENT '添加时间',
+  `type` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '日志类型',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='管理操作日志';
+
+-- ----------------------------
+-- Records of rt_adminlog
+-- ----------------------------
+BEGIN;
+INSERT INTO `rt_adminlog` VALUES (1, 1, 'admin用户登录', '{\"username\":\"admin\",\"captcha\":\"jhhn\"}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:98.0) Gecko/20100101 Firefox/98.0', '/server/login/do', 'POST', 1649313601, 'admin_login');
+INSERT INTO `rt_adminlog` VALUES (2, 6, 'aaa用户登录', '{\"username\":\"aaa\",\"captcha\":\"mwht\"}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:98.0) Gecko/20100101 Firefox/98.0', '/server/login/do', 'POST', 1649314540, 'admin_login');
+INSERT INTO `rt_adminlog` VALUES (3, 6, 'aaa用户登录', '{\"username\":\"aaa\",\"captcha\":\"xwgt\"}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:98.0) Gecko/20100101 Firefox/98.0', '/server/login/do', 'POST', 1649314848, 'admin_login');
+INSERT INTO `rt_adminlog` VALUES (4, 6, 'aaa用户登录', '{\"username\":\"aaa\",\"captcha\":\"ckwe\"}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:98.0) Gecko/20100101 Firefox/98.0', '/server/login/do', 'POST', 1649315113, 'admin_login');
+INSERT INTO `rt_adminlog` VALUES (5, 6, 'aaa用户登录', '{\"username\":\"aaa\",\"captcha\":\"SKZW\"}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:98.0) Gecko/20100101 Firefox/98.0', '/server/login/do', 'POST', 1649315373, 'admin_login');
+INSERT INTO `rt_adminlog` VALUES (6, 6, 'aaa用户登录', '{\"username\":\"aaa\",\"captcha\":\"vuyg\"}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:98.0) Gecko/20100101 Firefox/98.0', '/server/login/do', 'POST', 1649315615, 'admin_login');
+INSERT INTO `rt_adminlog` VALUES (7, 1, 'admin用户登录', '{\"username\":\"admin\",\"captcha\":\"a4gn\"}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:98.0) Gecko/20100101 Firefox/98.0', '/server/login/do', 'POST', 1649315807, 'admin_login');
+INSERT INTO `rt_adminlog` VALUES (8, 6, 'aaa用户登录', '{\"username\":\"aaa\",\"captcha\":\"fdhv\"}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:98.0) Gecko/20100101 Firefox/98.0', '/server/login/do', 'POST', 1649315901, 'admin_login');
+INSERT INTO `rt_adminlog` VALUES (9, 6, 'aaa用户登录', '{\"username\":\"aaa\",\"captcha\":\"sauk\"}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:98.0) Gecko/20100101 Firefox/98.0', '/server/login/do', 'POST', 1649316050, 'admin_login');
+INSERT INTO `rt_adminlog` VALUES (10, 6, 'aaa用户登录', '{\"username\":\"aaa\",\"captcha\":\"3crm\"}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:98.0) Gecko/20100101 Firefox/98.0', '/server/login/do', 'POST', 1649316126, 'admin_login');
+INSERT INTO `rt_adminlog` VALUES (11, 6, 'aaa用户登录', '{\"username\":\"aaa\",\"captcha\":\"sbuc\"}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:98.0) Gecko/20100101 Firefox/98.0', '/server/login/do', 'POST', 1649316199, 'admin_login');
+INSERT INTO `rt_adminlog` VALUES (12, 6, 'aaa用户登录', '{\"username\":\"aaa\",\"captcha\":\"e335\"}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:98.0) Gecko/20100101 Firefox/98.0', '/server/login/do', 'POST', 1649316257, 'admin_login');
+INSERT INTO `rt_adminlog` VALUES (13, 6, 'aaa用户登录', '{\"username\":\"aaa\",\"captcha\":\"d3vf\"}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:98.0) Gecko/20100101 Firefox/98.0', '/server/login/do', 'POST', 1649316408, 'admin_login');
+INSERT INTO `rt_adminlog` VALUES (14, 6, 'aaa用户登录', '{\"username\":\"aaa\",\"captcha\":\"u5xn\"}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:98.0) Gecko/20100101 Firefox/98.0', '/server/login/do', 'POST', 1649316691, 'admin_login');
+INSERT INTO `rt_adminlog` VALUES (15, 1, 'admin用户登录', '{\"username\":\"admin\",\"captcha\":\"xubn\"}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:98.0) Gecko/20100101 Firefox/98.0', '/server/login/do', 'POST', 1649320952, 'admin_login');
 COMMIT;
 
 -- ----------------------------
@@ -2888,7 +2929,7 @@ CREATE TABLE `rt_user_config` (
   `tenant_id` bigint(20) DEFAULT NULL COMMENT '租户id',
   `delete_flag` varchar(1) CHARACTER SET utf8 DEFAULT '0' COMMENT '删除标记，0未删除，1删除',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPACT COMMENT='租户系统参数';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPACT COMMENT='租户系统参数';
 
 -- ----------------------------
 -- Records of rt_user_config
