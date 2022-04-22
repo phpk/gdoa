@@ -6,5 +6,6 @@ logs/
 source/
 app/
 www/web/
+www/docs/
 todo.md
 .github/

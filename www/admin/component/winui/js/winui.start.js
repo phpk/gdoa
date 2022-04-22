@@ -1,11 +1,4 @@
-﻿/**
-
- @Name：winui.start 开始菜单模块
- @Author：Leo
- @License：MIT
-    
- */
-layui.define(['jquery', 'element', 'layer', 'winui'], function (exports) {
+﻿layui.define(['jquery', 'element', 'layer', 'winui'], function (exports) {
     "use strict";
 
     var $ = layui.jquery,

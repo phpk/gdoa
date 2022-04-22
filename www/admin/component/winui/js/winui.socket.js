@@ -10,7 +10,7 @@ layui.define(['layer', 'winui'], function (exports) {
     const serverUrl = winui.getDomain();
     winui.hasSocket = false;
     winui.startSocket = () => {
-        return;
+        //return;
         if (winui.hasSocket) return;
         winui.hasSocket = true;
         if (window.localStorage.getItem("lockscreen") == "true") return;
