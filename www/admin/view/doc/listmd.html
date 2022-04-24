@@ -20,7 +20,15 @@
             </button>
             <button class="pear-btn pear-btn-success pear-btn-md" lay-event="back">
                 <i class="layui-icon layui-icon-senior"></i>
-                回写
+                md2mysql
+            </button>
+            <button class="pear-btn pear-btn-danger pear-btn-md" lay-event="down">
+                <i class="layui-icon layui-icon-app"></i>
+                预览/下载
+            </button>
+            <button class="pear-btn pear-btn-success pear-btn-md" lay-event="view">
+                <i class="layui-icon layui-icon-camera"></i>
+                查看
             </button>
         </script>
 
@@ -120,9 +128,17 @@
                 table.on('toolbar(power-table)', function (obj) {
                     if (obj.event === 'add') {
                         window.addmd();
-                    } else if (obj.event === 'back') {
+                    } 
+                    else if (obj.event === 'back') {
                         window.back();
-                    } else if (obj.event === 'refresh') {
+                    } 
+                    else if (obj.event === 'view') {
+                        window.open('/docs/'+req.file+'/index.html');
+                    }
+                    else if (obj.event === 'down') {
+                        window.open('/admin/view/doc/down.html?did=' + req.did);
+                    }
+                    else if (obj.event === 'refresh') {
                         window.refresh();
                     }
                 });
@@ -185,7 +201,7 @@
                     });*/
                 }
                 window.back = function (obj) {
-                    layer.confirm('回写将按summary.md结构重置数据！', {
+                    layer.confirm('回写将按summary.md结构的md文件重置写入数据库！', {
                         icon: 3,
                         title: '提示'
                     }, (index) => {
@@ -226,6 +242,7 @@
                         })
                     });
                 }
+
 
             })
         </script>

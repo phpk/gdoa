@@ -1,6 +1,9 @@
 ## 重要更新
 
-- 2022/04/22 **新增白板管理（集成Excalidraw，可增删改查）**
+- 2022/04/22 *新增白板管理（集成Excalidraw，可增删改查）*
+![baiban.png](https://godocms.com/static/jpg/baiban.png)
+- 2022/04/24 *新增实用功能：文档管理可增体打包下载word或pdf*
+![wendang.png](https://godocms.com/static/jpg/wendang.png)
 
 ## 关于godocms
 
@@ -80,7 +83,7 @@ godocms是刚东科技开发的一套开源办公套件，遵从Apache License 2
 ![54.jpg](https://godocms.com/static/jpg/54.jpg)
 ![55.jpg](https://godocms.com/static/jpg/55.jpg)
 ![56.jpg](https://godocms.com/static/jpg/56.jpg)
-![baiban.png](https://godocms.com/static/jpg/baiban.png)
+
 
 ## 功能介绍
 

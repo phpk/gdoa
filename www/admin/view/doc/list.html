@@ -209,7 +209,7 @@
 				window.listmd = function(obj) {
 					parent.layui.admin.addTab('godocmsdocslist_' + obj.data.id+112,
 					obj.data.title + '-文档列表',
-					'/admin/view/doc/listmd.html?did=' + obj.data.id)
+					'/admin/view/doc/listmd.html?did=' + obj.data.id + '&file=' + obj.data.key)
 					/*
 					layer.open({
 						type: 2,

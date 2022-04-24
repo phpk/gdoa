@@ -297,4 +297,43 @@ module.exports = class extends Base {
         if (!rt) return this.fail('上传格式错误')
         return this.success(rt)
     }
+    async downAction() {
+        let did = this.get('did');
+        let docData = await this.model('doc').where({ id: did }).find();
+        let cateList = await this.model('doc_cate').where({ did: did }).field('id,title,type,pid,name,content,order_num').order('order_num desc').select();
+        
+        const numberToString = (number) => {
+            //if (number.match(/\D/) || number.length >= 14) return;
+            let zhArray = ['零', '一', '二', '三', '四', '五', '六', '七', '八', '九', '十']; // 数字对应中文
+            let baseArray = ['', '十', '百', '千', '万', '十', '百', '千', '亿', '十', '百', '千', '万']; //进位填充字符，第一位是 个位，可省略
+            let string = String(number).split('').reverse().map((item, index) => { // 把数字切割成数组并倒序排列，然后进行遍历转成中文
+                // 如果当前位为0，直接输出数字， 否则输出 数字 + 进位填充字符
+                item = Number(item) == 0 ? zhArray[Number(item)] : zhArray[Number(item)] + baseArray[index];
+                return item;
+            }).reverse().join(''); // 倒叙回来数组，拼接成字符串
+            string = string.replace(/^一十/, '十');  // 如果以 一十 开头，可省略一
+            string = string.replace(/零+/, '零');  // 如果有多位相邻的零，只写一个即可
+            return string;
+        } 
+        let data = '# <center>'+ docData.title + '</center> \n\n\n', i = 0;
+
+        cateList.forEach(d => {
+            if (d.type == 0) {
+                i++;
+                data += '# 第' + numberToString(i * 1) + '章 ' + d.title + '  \n\n';
+                
+                let j = 0;
+                cateList.forEach(dd => { 
+                    if (d.id == dd.pid) {
+                        j++;
+                        dd.content = dd.content.replaceAll("](img/", "](/docs/" + docData.key + "/img/");
+                        data += '## 第' + numberToString(j * 1) + '节 ' + dd.title + '  \n\n\n' + dd.content;
+                        //data += dd.content;
+                    }
+                })
+            }
+        });
+        return this.success({ data, title : docData.title });
+
+    }
 }
