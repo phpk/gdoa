@@ -197,7 +197,7 @@ svg在线编辑器，基于svgedit。支持增/删/改/查，支持导入/导出
 
 ## 开发环境
 
-> nodejs v16.13  mysql 5.7  redis5.03
+> nodejs v16.13  mysql 5.7  redis5.03(可不装) mongodb(可不装)
 
 项目解压到server根目录
 
