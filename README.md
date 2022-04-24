@@ -1,9 +1,11 @@
 ## 重要更新
 
+- 2022/04/24 *新增实用功能：文档管理可整体打包下载word或pdf*
+![wendang.png](https://godocms.com/static/jpg/wendang.png)
+
 - 2022/04/22 *新增白板管理（集成Excalidraw，可增删改查）*
 ![baiban.png](https://godocms.com/static/jpg/baiban.png)
-- 2022/04/24 *新增实用功能：文档管理可增体打包下载word或pdf*
-![wendang.png](https://godocms.com/static/jpg/wendang.png)
+
 
 ## 关于godocms
 
