@@ -1,6 +1,6 @@
 ## 重要更新
 
-**新增白板管理（集成Excalidraw，可增删改查）**
+- 2022/04/22 **新增白板管理（集成Excalidraw，可增删改查）**
 
 ## 关于godocms
 
@@ -80,7 +80,7 @@ godocms是刚东科技开发的一套开源办公套件，遵从Apache License 2
 ![54.jpg](https://godocms.com/static/jpg/54.jpg)
 ![55.jpg](https://godocms.com/static/jpg/55.jpg)
 ![56.jpg](https://godocms.com/static/jpg/56.jpg)
-
+![baiban.png](https://godocms.com/static/jpg/baiban.png)
 
 ## 功能介绍
 
@@ -267,6 +267,7 @@ pm2 start pm2.json
 - [https://gitee.com/karson/tinytools](https://gitee.com/karson/tinytools)
 - [https://github.com/ecomfe/fonteditor](https://github.com/ecomfe/fonteditor)
 - [https://github.com/tldraw/tldraw](https://github.com/tldraw/tldraw)
+- [https://github.com/excalidraw/excalidraw](https://github.com/excalidraw/excalidraw)
 - [https://github.com/likaia/js-screen-shot/](https://github.com/likaia/js-screen-shot/)
 
 #### 如对您有帮助，请高抬贵手Star！
