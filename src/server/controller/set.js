@@ -43,14 +43,6 @@ module.exports = class extends Base {
         if (think.isEmpty(data))
             return this.fail('数据不存在')
         await this.model('set').where({ id }).delete()
-        if (data.form_id) {
-            await this.model('form')
-                .where({
-                    id: data.form_id,
-                    link_id: data.id
-                })
-                .delete()
-        }
         return this.success()
     }
     /**
