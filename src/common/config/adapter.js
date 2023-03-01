@@ -2,15 +2,15 @@ const fileCache = require('think-cache-file');
 //const nunjucks = require('think-view-nunjucks');
 const fileSession = require('think-session-file');
 const mysql = require('think-model-mysql');
-const mongo = require('think-mongo');
+//const mongo = require('think-mongo');
 const { Console, File, DateFile } = require('think-logger3');
 const path = require('path');
 const isDev = think.env === 'development';
 const redisSession = require('think-session-redis');
 const redisCache = require('think-cache-redis');
 //const sqlite = require('think-model-sqlite');
-const socketio = require('think-websocket-socket.io');
-const socketRedis = require('socket.io-redis');
+//const socketio = require('think-websocket-socket.io');
+//const socketRedis = require('socket.io-redis');
 const conf = require('./config.js');
 /**
  * cache adapter config
@@ -58,20 +58,20 @@ exports.model = {
     dateStrings: conf.mysql.dateStrings
   },
   //mongod --dbpath 
-  mongo: {
-    handle: mongo,
-    host: conf.mongo.host,
-    port: conf.mongo.port,
-    user: conf.mongo.user,
-    password: conf.mongo.password,
-    database: conf.mongo.database, // 数据库名称
-    useCollectionPlural: false,
-    options: {
-      // 身份验证相关
-      // replicaSet: 'mgset-3074013',
-      // authSource: 'admin'
-    }
-  }
+  // mongo: {
+  //   handle: mongo,
+  //   host: conf.mongo.host,
+  //   port: conf.mongo.port,
+  //   user: conf.mongo.user,
+  //   password: conf.mongo.password,
+  //   database: conf.mongo.database, // 数据库名称
+  //   useCollectionPlural: false,
+  //   options: {
+  //     // 身份验证相关
+  //     // replicaSet: 'mgset-3074013',
+  //     // authSource: 'admin'
+  //   }
+  //}
   // sqlite: {
   //   handle: sqlite, // Adapter handle
   //   path: path.join(think.ROOT_PATH, 'data/db/sqlite'), // sqlite 保存的目录
@@ -138,7 +138,7 @@ exports.logger = {
     filename: path.join(think.ROOT_PATH, 'logs/app.log')
   }
 };
-
+/*
 exports.websocket = {
   type: 'socketio',
   common: {
@@ -159,4 +159,4 @@ exports.websocket = {
       addUser: '/server/chat/addUser', //websocket addUser action when event is addUser
     }]
   }
-}
+}*/

@@ -48,13 +48,13 @@ module.exports = {
         db: 1
     },
 
-    mongo: {
-        host: '127.0.0.1',
-        port: 27017,
-        user: 'root',
-        password: 'root',
-        database: 'gdcms',
-    },
+    // mongo: {
+    //     host: '127.0.0.1',
+    //     port: 27017,
+    //     user: 'root',
+    //     password: 'root',
+    //     database: 'gdcms',
+    // },
     errnoField: 'code', // errno field
     errmsgField: 'message', // errmsg field
     defaultErrno: 201, // default errno

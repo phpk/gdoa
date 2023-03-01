@@ -7,5 +7,6 @@ source/
 app/
 www/web/
 www/docs/
+www/upload/
 todo.md
 .github/
