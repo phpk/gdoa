@@ -172,22 +172,22 @@ layui.define(['layer', 'winui', 'laytpl', 'winuiInit', 'desklogin', 'desklock'],
                 , refresh: true    //显示刷新按钮
             });
         },
-        toolshttpApi: () => {
-            winui.window.open({
-                id: 'godocmstoolshttpApi',
-                type: 2,
-                title: '接口工具',
-                shade: 0,
-                moveOut: true,
-                area: ['750px', '520px'],
-                anim: 1,
-                content: '/admin/tools/http/index.html',
-                offset: 'auto'  //居中
-                , min: true  //显示最小化按钮
-                , max: true  //显示最大化按钮
-                , refresh: true    //显示刷新按钮
-            });
-        },
+        // toolshttpApi: () => {
+        //     winui.window.open({
+        //         id: 'godocmstoolshttpApi',
+        //         type: 2,
+        //         title: '接口工具',
+        //         shade: 0,
+        //         moveOut: true,
+        //         area: ['750px', '520px'],
+        //         anim: 1,
+        //         content: '/admin/tools/http/index.html',
+        //         offset: 'auto'  //居中
+        //         , min: true  //显示最小化按钮
+        //         , max: true  //显示最大化按钮
+        //         , refresh: true    //显示刷新按钮
+        //     });
+        // },
         toolsgifcap: () => {
             winui.window.open({
                 id: 'godocmstoolsgifcap',
@@ -253,12 +253,12 @@ layui.define(['layer', 'winui', 'laytpl', 'winuiInit', 'desklogin', 'desklock'],
             startcss: 'winui-tile-normal',
             clickActioin: toolsAction.toolsClock
         },
-        {
-            tips: '接口工具',
-            icon: 'fa-code',
-            startcss: 'winui-tile-normal',
-            clickActioin: toolsAction.toolshttpApi
-        },
+        // {
+        //     tips: '接口工具',
+        //     icon: 'fa-code',
+        //     startcss: 'winui-tile-normal',
+        //     clickActioin: toolsAction.toolshttpApi
+        // },
         {
             tips: '办公白板',
             icon: 'fa-file-archive-o',

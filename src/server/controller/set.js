@@ -4,28 +4,40 @@ const Base = require('./base.js');
  * @apiDefine set 系统配置
  */
 module.exports = class extends Base {
-   
+
     async addAction() {
         let post = this.post();
         if (await this.hasData('set', { key: post.key }))
             return this.fail('系统中存在相同的配置标志');
         //console.log(post)
+        post.admin_id = this.adminId;
         let id = await this.model('set').add(post);
         return this.success(id);
 
     }
     async editBeforeAction() {
         let id = this.get('id');
-        let data = await this.model('set').where({ id }).find()
+        let data = await this.model('set').where({ id }).find();
+
         if (think.isEmpty(data)) return this.fail('数据为空')
         return this.success(data);
     }
+    async setKey(key, val) {
+        let str = val.replace(new RegExp('\r?\n', 'g'), "");
+        //console.log(str)
+        let obj = eval("(" + str + ")");
+        //console.log(obj)
+        //console.log(JSON.parse(str))
+        await this.cache('set:' + key, obj, {
+            timeout: 24 * 3600 * 1000 * 3650 //十年不过期
+        });
+    }
     async editAction() {
         let post = this.post();
-        if (post.key) return this.fail('key不允许编辑');
-        let has = await this.model('set').where({ id: post.id }).find();
-        if (think.isEmpty(has)) return this.fail('编辑的数据不存在');
         let rt = await this.model('set').update(post);
+        if (post.val != '') {
+            await this.setKey(post.key, post.val);
+        }
         return this.success(rt)
     }
     async listAction() {
@@ -43,6 +55,7 @@ module.exports = class extends Base {
         if (think.isEmpty(data))
             return this.fail('数据不存在')
         await this.model('set').where({ id }).delete()
+        await this.cache('set:' + data.key, null);
         return this.success()
     }
     /**
@@ -60,9 +73,11 @@ module.exports = class extends Base {
     async enableAction() {
         let post = this.post(),
             id = post.id;
-
-        if (!await this.hasData('set', { id }))
+        console.log(post)
+        let has = await this.model('set').where({ id }).find();
+        if (think.isEmpty(has))
             return this.fail("数据不存在");
+        //console.log(post)
 
         let rt = await this.model('set')
             .where({ id })
@@ -70,6 +85,11 @@ module.exports = class extends Base {
                 enable: post.status
             })
         await this.adminOpLog('设置配置可用');
+        if (post.status > 0) {
+            await this.cache('set:' + has.key, null);
+        } else {
+            await this.setKey(has.key, has.val);
+        }
         return this.success(rt)
     }
 };

@@ -58,7 +58,7 @@ layui.define(['layer', 'table'], function (exports) {
         // 渲染表格
         init: function (param, data) {
             var mData = [];
-            ///console.log(data)
+            //console.log(data)
             var doneCallback = param.done;
             var tNodes = data;
             for (var i = 0; i < tNodes.length; i++) {
@@ -78,7 +78,7 @@ layui.define(['layer', 'table'], function (exports) {
                     tt.pid = tt[param.treePidName];
                 }
             }
-
+            //console.log(tNodes)
             var sort = function (s_pid, data) {
                 for (var i = 0; i < data.length; i++) {
                     if (data[i].pid == s_pid) {
@@ -92,7 +92,7 @@ layui.define(['layer', 'table'], function (exports) {
                 }
             };
             sort(param.treeSpid, tNodes);
-
+            //console.log(tNodes)
             param.prevUrl = param.url;
             param.url = undefined;
             param.data = mData;
@@ -100,6 +100,7 @@ layui.define(['layer', 'table'], function (exports) {
                 count: param.data.length,
                 limit: param.data.length
             };
+            //console.log(param)
             param.cols[0][param.treeColIndex].templet = function (d) {
                 var mId = d.id;
                 var mPid = d.pid;

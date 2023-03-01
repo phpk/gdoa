@@ -149,6 +149,7 @@
                     //return;
 					_post(layui, 'menu/editData', update, res => {
 						//console.log(res)
+                        setRoute(res.routeData)
 						layer.msg('更新成功', {
 								icon: 1,
 								time: 1000
@@ -168,6 +169,7 @@
                     };
                     _post(layui, 'menu/ifshow', postData, res => {
                         //console.log(res)
+                        setRoute(res.routeData)
                     }, err => {
                         $(data.elem).prop('checked', false);
                         form.render('checkbox');
@@ -226,6 +228,7 @@
                         _post(layui, 'menu/del', {
                             id: obj.data.id
                         }, res => {
+                            setRoute(res.routeData)
                             layer.msg('删除成功', {
                                 icon: 1,
                                 time: 1000

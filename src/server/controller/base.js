@@ -25,9 +25,9 @@ module.exports = class extends think.Controller {
     if (this.ctx.module) {
       url = this.ctx.module + '/' + url;
     }
-    if (this.ctx.pluginName) {
-      url = this.ctx.pluginName + '/' + url;
-    }
+    // if (this.ctx.pluginName) {
+    //   url = this.ctx.pluginName + '/' + url;
+    // }
     //console.log(url)
     let perms = await this.cache('perms_' + this.adminId);
     if (!perms.includes(url)) {
@@ -168,7 +168,7 @@ module.exports = class extends think.Controller {
         addtime: this.now(),
         type : 'admin_op'
       };
-      await this.mg('adminlog').add(saveData);
+      await this.model('adminlog').add(saveData);
     } catch (error) {
       console.log(error)
     }
@@ -182,7 +182,7 @@ module.exports = class extends think.Controller {
     try {
       let url = this.ctx.path,
         ip = this.ctx.ip;
-      let has = await this.mg('adminlog').where({
+      let has = await this.model('adminlog').where({
         admin_id: this.adminId,
         type : 'admin_view'
       }).order("addtime desc").find();
@@ -198,14 +198,14 @@ module.exports = class extends think.Controller {
       };
       //如果之前没有访问
       if (think.isEmpty(has)) {
-        await this.mg('adminlog').add(saveData);
+        await this.model('adminlog').add(saveData);
       } else {
         //过滤掉刷新
         if (has.url != url || has.log != msg) {
           //先添加新访问的页面
-          await this.mg('adminlog').add(saveData);
+          await this.model('adminlog').add(saveData);
           //更新离开时间
-          await this.mg('adminlog')
+          await this.model('adminlog')
             .where({ id: has.id })
             .update({
               leavetime: this.now()

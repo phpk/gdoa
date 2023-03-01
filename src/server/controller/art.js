@@ -25,5 +25,5 @@ module.exports = class extends Base {
 	*/
 	async artcateAction(){
 		let data
-			}
+	}
 };

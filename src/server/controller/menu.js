@@ -116,9 +116,9 @@ module.exports = class extends Base {
             return this.fail("编辑的菜单不存在");
         
         let rt = await this.model('menu').where({ id }).update(post)
-        await this.model('menu').cacheData(this.adminId);
+        let routeData = await this.model('menu').cacheData(this.adminId);
         await this.adminOpLog('编辑菜单');
-        return this.success(rt)
+        return this.success({rt, routeData})
     }
     async editDataAction() {
         let {id, field, value} = this.post();
@@ -130,7 +130,8 @@ module.exports = class extends Base {
         let up = {};
         up[field] = value;
         await this.model('menu').where({ id }).update(up);
-        return this.success()
+        let routeData = await this.model('menu').cacheData(this.adminId);
+        return this.success({routeData})
     }
     /**
      *
@@ -154,9 +155,9 @@ module.exports = class extends Base {
     async addAction() {
         let post = this.post();
         let rt = await this.model('menu').add(post);
-        await this.model('menu').cacheData(this.adminId);
+        let routeData = await this.model('menu').cacheData(this.adminId);
         await this.adminOpLog('添加菜单');
-        return this.success(rt)
+        return this.success({rt, routeData})
     }
     /**
      *
@@ -182,7 +183,8 @@ module.exports = class extends Base {
                 ifshow: post.ifshow
             })
         await this.adminOpLog('设置菜单显示');
-        return this.success(rt)
+        let routeData = await this.model('menu').cacheData(this.adminId);
+        return this.success({rt, routeData})
 
     }
     /**
@@ -209,7 +211,8 @@ module.exports = class extends Base {
         
         let rt = await this.model('menu').where({ id }).delete();
         await this.adminOpLog('删除菜单');
-        return this.success(rt);
+        let routeData = await this.model('menu').cacheData(this.adminId);
+        return this.success({rt, routeData})
     }
     /**
      *

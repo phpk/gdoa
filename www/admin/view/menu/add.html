@@ -142,6 +142,7 @@ layui.use(['form','jquery','iconSelectedPlus', 'dropdown'],function(){
         //console.log(post)
         _post(layui, 'menu/add', post, res => {
             //console.log(res)
+            setRoute(res.routeData)
             parent.layui.treetable.reload("#power-table");
             parent.layer.close(parent.layer.getFrameIndex(window.name));//关闭当前页
             

@@ -23,11 +23,6 @@
 			<button class="pear-btn pear-btn-warming pear-btn-sm" lay-event="set">
 				<i class="layui-icon layui-icon-util"></i>设置</button>
 		</script>
-		<script type="text/html" id="op-bar">
-			<button class="pear-btn pear-btn-warming pear-btn-sm" lay-event="form">
-				<i class="layui-icon layui-icon-slider"></i>
-			</button>
-		</script>
 		<script type="text/html" id="set-enable">
 			<input type="checkbox" name="status" value="{{d.id}}" lay-skin="switch" lay-text="启用|禁用" lay-filter="set-enable" {{ d.enable== 1 ? 'checked' : '' }} />
 		</script>
@@ -64,11 +59,6 @@
 					}, {
 						title: '状态',
 						toolbar: '#set-enable',
-						align: 'center'
-					}, 
-					{
-						title: '设计',
-						toolbar: '#op-bar',
 						align: 'center'
 					},
 					{
@@ -114,9 +104,7 @@
 						window.setRemove(obj);
 					} else if (obj.event === 'edit') {
 						window.setEdit(obj);
-					} else if(obj.event === 'form') {
-						window.addForm(obj);
-					}
+					} 
 					 else if(obj.event === 'set') {
 						window.setForm(obj);
 					}
@@ -159,10 +147,6 @@
 					});
 				}
 				window.setForm = function(obj) {
-					if(!obj.data.form_path) {
-						return layer.msg('请先设计表单')
-						return false;
-					}
 					layer.open({
 						type: 2,
 						title: '修改配置-' + obj.data.name,
@@ -172,7 +156,7 @@
                         ],
                         anim: 1,
                         maxmin: true,
-						content : obj.data.form_path + '?conftype='+obj.data.key
+						content : MODULE_PATH + 'set.html?id=' + obj.data.id
 					});
 				}
 				window.setRemove = function(obj){
@@ -203,19 +187,7 @@
 				window.refresh = function(param) {
 					table.reload('set-table');
 				}
-				window.addForm = function(obj) {
-					layer.open({
-						type: 2,
-						title: '设计配置-' + obj.data.name,
-						offset: 'rt',
-                        area: [
-                            '90%', '100%'
-                        ],
-                        anim: 1,
-                        maxmin: true,
-						content: '../form/add.html?form_id=' + obj.data.form_id + '&link_id=' + obj.data.id + '&link_name=set&link_field=id&form_path=set/config/'+obj.data.key+'&formName='+obj.data.name + '&formId=' + obj.data.key+'&get_url=set/setBefore&post_url=set/setConf&params_get=conftype|' + obj.data.key+'&params_post=conftype|' + obj.data.key
-					});
-				}
+				
 			})
 		</script>
 	</body>

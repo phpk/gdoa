@@ -15,7 +15,7 @@ module.exports = class extends think.Model {
             .getField('rules');
         let rulesId = rulesIds.join(',')
         let data = [];
-        if (rulesId.indexOf('-1') > -1) {
+        if (rulesId == -1) {
             data = await this.model('menu')
                 .order('order_num asc')
                 .select();
@@ -75,7 +75,7 @@ module.exports = class extends think.Model {
     async cacheData(adminId) {
         //设置路由缓存
         let routeData = await this.list(adminId);
-        console.log(routeData)
+        //console.log(routeData)
         await think.cache('perms_' + adminId, routeData.perms);
         //设置菜单缓存
         await think.cache('menus_' + adminId, routeData.menus);

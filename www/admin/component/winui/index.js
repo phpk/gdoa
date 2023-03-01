@@ -12,10 +12,12 @@
     desklogin: 'js/winui.login',
     desklock: 'js/winui.lock',
     dragmove: 'js/dragmove',
-    winuisocket : 'js/winui.socket',
+    //winuisocket : 'js/winui.socket',
     //layim: 'js/layim',
-    winchat : 'js/winui.chat'
-}).define(['window', 'desktop', 'start', 'helper', 'layer', 'laytpl', 'deskmenu', 'deskstartUp', 'winuiInit', 'desklogin', 'desklock', 'dragmove', 'winuisocket', 'winchat'], function (exports) {
+    //winchat : 'js/winui.chat'
+}).define(['window', 'desktop', 'start', 'helper', 'layer', 'laytpl', 'deskmenu', 'deskstartUp', 'winuiInit', 'desklogin', 'desklock',
+ //'dragmove', 'winuisocket', 'winchat'
+], function (exports) {
     var $ = layui.jquery,
         laytpl = layui.laytpl,
         layer = layui.layer,

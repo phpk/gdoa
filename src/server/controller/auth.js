@@ -99,7 +99,9 @@ module.exports = class extends Base {
             id = post.id;
         if (!await this.hasData('admin_auth', { id }))
             return this.fail("数据不存在");
-        
+        if(id === 1) {
+            post.rules = -1;
+        }
         let rt = await this.model('admin_auth')
             .where({ id })
             .update(post);
@@ -124,7 +126,8 @@ module.exports = class extends Base {
         
         if (!await this.hasData('admin_auth', { id }))
             return this.fail("数据不存在");
-        
+        if(id === 1)
+            return this.fail("不能设置管理员角色")
         let rt = await this.model('admin_auth')
             .where({ id })
             .update({
@@ -147,6 +150,8 @@ module.exports = class extends Base {
     async delAction() {
         let post = this.post(),
             id = post.id;
+        if(id === 1)
+            return this.fail("不能设置管理员角色")
         if (!await this.hasData('admin_auth', { id }))
             return this.fail("数据不存在");
         

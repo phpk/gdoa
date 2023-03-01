@@ -4,6 +4,9 @@ const setToken = (res) => {
     localStorage.setItem(TOKEN_NAME, res.token);
     localStorage.setItem('_godocmsRoute', JSON.stringify(res.routeData))
 }
+const setRoute = (data) => {
+    localStorage.setItem('_godocmsRoute', JSON.stringify(data))
+}
 const getRoute = () => {
     let data = localStorage.getItem('_godocmsRoute');
     if (data) {
