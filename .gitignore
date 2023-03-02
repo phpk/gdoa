@@ -3,6 +3,7 @@ runtime/
 logs/
 .history/
 .vscode/
+.git/
 source/
 app/
 www/web/
