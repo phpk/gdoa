@@ -1,7 +1,8 @@
-layui.define(['layer', 'winui','winuiInit'], function (exports) {
+layui.define(['layer', 'winui','winuiInit', 'deskreg'], function (exports) {
     let layer = layui.layer,
         $ = layui.$,
         winuiInit = layui.winuiInit,
+        deskreg = layui.deskreg,
         loginKey = '_godocmsLoginKey';
     
     let showBox = () => {
@@ -28,6 +29,7 @@ layui.define(['layer', 'winui','winuiInit'], function (exports) {
                     $('.lock-body').css('background-image', 'url(' + bgimg + ')');
                     //window.localStorage.setItem("lockscreen", true);
                     //setData(true, 'lockLoginScreen');
+                    /*
                     var index = winui.sysTime('#date_time', '<p id="time">!HH:!mm</p><p id="date">!M月!d日,星期!w</p>');
                     var showUnlockDiv = function () {
                         winui.stopSysTime(index);
@@ -72,6 +74,7 @@ layui.define(['layer', 'winui','winuiInit'], function (exports) {
                     }
                     $(document).on('mouseup', docMouseup);
                     $(document).on('keydown', docKeydown);
+                    */
                     let changeImg = () => {
                         $('#codeImage').attr('src', '/server/login/captcha?t=' + Math.random());
                     };
@@ -79,13 +82,13 @@ layui.define(['layer', 'winui','winuiInit'], function (exports) {
                     $('#codeImage').click(() => {
                         changeImg();
                     });
-                    let cacheData = winui.getData(loginKey);
-                    if (cacheData && cacheData.username) {
-                        $('#username').val(cacheData.username);
-                        if (cacheData.password) {
-                            $('#password').val(cacheData.password);
-                        }
-                    }
+                    // let cacheData = winui.getData(loginKey);
+                    // if (cacheData && cacheData.username) {
+                    //     $('#username').val(cacheData.username);
+                    //     if (cacheData.password) {
+                    //         $('#password').val(cacheData.password);
+                    //     }
+                    // }
                     let setDown = (e) => {
                         if (e.keyCode == 13) {
                             $("#unlock").trigger("click");
@@ -94,6 +97,12 @@ layui.define(['layer', 'winui','winuiInit'], function (exports) {
                     }
                     $('#password').on('keydown', setDown);
                     $('#captcha').on('keydown', setDown);
+
+                    $('#regarea').click( e => {
+                        layer.closeAll();
+                        winui.loginNum = 0;
+                        deskreg.showBox();
+                    })
                     //解锁点击
                     //form.on('submit(unlock)', function (data) {
                     $('#unlock').click( e => {

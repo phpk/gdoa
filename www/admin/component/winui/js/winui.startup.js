@@ -3,10 +3,8 @@ layui.define(['layer', 'winui', 'desklogin'], function (exports) {
         $ = layui.$,
         desklogin = layui.desklogin,
         powerOnBox = $(".powerOnBox");
-    let showBox = () => {
-        //powerOnBox.css('display','flex');
-        $('#powerOnBtn').on("click", _ => {
-            let au = document.createElement("audio");
+    let _show = () => {
+        let au = document.createElement("audio");
             au.preload = "auto";
             //au.autoplay = "autoplay";
             au.src = './component/winui/audio/startup.mp3';
@@ -18,7 +16,19 @@ layui.define(['layer', 'winui', 'desklogin'], function (exports) {
                 winui.loginNum = 0;
                 desklogin.showBox();
             }, 2000);
-        })
+    }
+    let showBox = () => {
+        //powerOnBox.css('display','flex');
+        // $('#powerOnBtn').on("click", _show)
+        // setTimeout(() => {
+        //     $("#powerOnBtn").trigger("click");
+        // }, 1000);
+        setTimeout(() => {
+            powerOnBox.remove();
+            layer.closeAll();
+            winui.loginNum = 0;
+            desklogin.showBox();
+        }, 500);
     }
     let init = () => {
         return new Promise((resolve) => {

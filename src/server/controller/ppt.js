@@ -7,7 +7,7 @@ module.exports = class extends Base {
 
     async listAction() {
         let { page, limit, param } = this.get();
-        let wsql = {};
+        let wsql = {user_id: this.adminId};
         if (param) wsql = this.parseSearch(param, wsql);
         let list = await this.model('ppt').where(wsql).order('id desc').page(page, limit).select();
         let count = await this.model('ppt').where(wsql).count();

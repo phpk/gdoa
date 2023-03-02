@@ -8,6 +8,7 @@ module.exports = class extends Base {
     async listAction() {
         let { viewtype, start_time, end_time } = this.get();
         let wsql = {
+            user_id: this.adminId,
             start: ['>', start_time/1000],
             end: ['<', end_time/1000]
         };

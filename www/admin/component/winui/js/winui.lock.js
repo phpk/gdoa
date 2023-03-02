@@ -17,7 +17,7 @@ layui.define(['layer', 'winui','form'], function (exports) {
             return;
         }
         $.get(winui.path + 'html/system/lockscreen.html', {}, function (content) {
-            let bgimg = winui.settings.lockBgSrc || '/admin/component/winui/images/bg/img5.webp';
+            let bgimg = winui.settings.lockBgSrc || '/admin/component/winui/images/bg/img3.webp';
             layer.open({
                 id: 'winui-lockscreen',
                 type: 1,

@@ -102,7 +102,7 @@ module.exports = class extends think.Controller {
             url: this.ctx.path,
             method: this.ctx.method,
             addtime: this.now(),
-            type : 'admin_login'
+            type: 'admin_login'
         };
         //await this.mg('adminlog').add(logData);
         await this.model('adminlog').add(logData);
@@ -139,6 +139,86 @@ module.exports = class extends think.Controller {
         //验证成功清空
         await this.session('verifyCaptcha', null);
         return true;
+    }
+    /**
+     * @api {post} login/do  用户登录
+     * @apiGroup login
+     *
+     * @apiParam {string} username 用户 必填
+     * @apiParam {string} password 密码 必填
+     * @apiParam {string} captcha 验证码 必填
+     *
+     * @apiSuccess {number}  code   结果码
+     * @apiSuccess {string} data   数据
+     * @apiSuccess {string} message  提示
+     *
+     * @apiSuccessExample Success-Response:
+     * {
+     * "code": 0,
+     * "message": "ok",
+     * "data":token
+     * }
+     */
+    async regAction() {
+        let post = this.post();
+        if (!await this.chkCapcha(post.captcha)) {
+            return this.fail('验证码错误')
+        }
+        //杜绝用户反复查表
+        let loginNum = await this.session('regNum');
+        loginNum = loginNum ? loginNum : 0;
+        if (loginNum > 10) {
+            return this.fail('注册错误次数太多，大侠请留步，请一小时后再试!');
+        }
+        let utype = post.utype;
+        if (utype < 2 || utype > 3) {
+            await this.session('regNum', loginNum + 1);
+            return this.fail('请选择正确的角色');
+        }
+        let admin = await this.model('admin').where({
+            username: post.username
+        }).find();
+        if (!think.isEmpty(admin)) {
+            await this.session('regNum', loginNum + 1);
+            return this.fail('用户已存在');
+        }
+
+        let salt = this.service('login').randomString()
+        let password = this.service('login').createPassword(post.password, salt);
+        //console.log(pwd)
+        let save = {
+            username: post.username,
+            password,
+            salt,
+            status : 0,
+            login_num: 1,
+            add_time: this.now(),
+            login_time: this.now()
+        }
+        let admin_id = await this.model('admin').add(save);
+        let addRules = {
+            admin_id,
+            auth_id: utype,
+            type: utype
+        };
+        await this.model('admin_map').add(addRules)
+      
+        //添加登录日志
+        delete post.password;
+        let logData = {
+            admin_id: admin_id,
+            log: post.username + '用户注册',
+            data: JSON.stringify(post),
+            ip: this.ctx.ip,
+            agent: this.ctx.userAgent,
+            url: this.ctx.path,
+            method: this.ctx.method,
+            addtime: this.now(),
+            type: 'admin_reg'
+        };
+        //await this.mg('adminlog').add(logData);
+        await this.model('adminlog').add(logData);
+        return this.success({ admin_id });
     }
 
 };

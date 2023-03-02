@@ -10,12 +10,14 @@
     deskstartUp: 'js/winui.startup',
     winuiInit: 'js/winui.init',
     desklogin: 'js/winui.login',
+    deskreg: 'js/winui.reg',
     desklock: 'js/winui.lock',
     dragmove: 'js/dragmove',
     //winuisocket : 'js/winui.socket',
     //layim: 'js/layim',
     //winchat : 'js/winui.chat'
-}).define(['window', 'desktop', 'start', 'helper', 'layer', 'laytpl', 'deskmenu', 'deskstartUp', 'winuiInit', 'desklogin', 'desklock',
+}).define(['window', 'desktop', 'start', 'helper', 'layer', 'laytpl', 
+'deskmenu', 'deskstartUp', 'winuiInit', 'desklogin','deskreg', 'desklock',
  //'dragmove', 'winuisocket', 'winchat'
 ], function (exports) {
     var $ = layui.jquery,

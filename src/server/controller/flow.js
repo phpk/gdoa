@@ -15,7 +15,7 @@ module.exports = class extends Base {
 
     async listAction() {
         let { page, limit, param } = this.get();
-        let wsql = {};
+        let wsql = {user_id: this.adminId};
         if (param) wsql = this.parseSearch(param, wsql);
         let list = await this.model('flow').where(wsql).page(page, limit).order('id desc').select();
         list.forEach(d => {

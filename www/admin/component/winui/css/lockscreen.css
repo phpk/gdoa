@@ -40,10 +40,11 @@
 }
 
     #login_div > img {
-        width: 150px;
-        height: 150px;
+        width: 120px;
+        height: 120px;
         box-shadow: 0 0 4px 4px #fff;
         background-color: rgba(255, 255, 255, 0.4);
+        margin-bottom: 50px;
     }
 
 #user_name {
@@ -75,6 +76,21 @@
     display: inline-block;
     width : 185px;
 }
+.winui-from input.rd {
+    display: inline-block;
+    width: 30px;
+    height: 32px;
+}
+.winui-from span {
+    display: inline-block;
+    width: 80px;
+    float: left;
+    text-indent: 8px;
+    text-align: left;
+    color: #fff;
+    line-height: 32px;
+    height: 32px;
+}
 .codeImage {
     width: 100px;
 	height: 38px;
@@ -101,8 +117,8 @@
         -webkit-box-sizing: border-box;
         box-sizing: border-box;
     }
-
-    .winui-from-group button {
+    
+    .winui-from-group button.loginbtn {
         height: 36px;
         width: 36px;
         background: rgba(255, 255, 255, 0.40);
