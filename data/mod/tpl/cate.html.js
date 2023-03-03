@@ -28,12 +28,12 @@ module.exports = `<!DOCTYPE html>
 		<script src="../../component/layui/layui.js"></script>
 		<script src="../../component/ui/ui.js"></script>
 		<script>
-			layui.use(['table', 'form', 'jquery','common'], function() {
+			layui.use(['table', 'form', 'jquery','common', 'treetable'], function() {
 				let table = layui.table;
 				let form = layui.form;
 				let $ = layui.jquery;
 				let common = layui.common;
-
+				let treetable = layui.treetable;
 				let MODULE_PATH = "./";
 
 				let cols = [
@@ -131,7 +131,7 @@ module.exports = `<!DOCTYPE html>
 						area: ['80%', '100%'],
 						anim: 1,
 						maxmin: true,
-						content: MODULE_PATH + 'edit.html'
+						content: MODULE_PATH + 'cate-edit.html'
 					});
 				}
 
@@ -144,13 +144,13 @@ module.exports = `<!DOCTYPE html>
 						area: ['80%', '100%'],
 						anim: 1,
 						maxmin: true,
-						content: MODULE_PATH + 'edit.html?id=' + obj.data.id
+						content: MODULE_PATH + 'cate-edit.html?id=' + obj.data.id
 					});
 				}
 				window.remove = function(obj){
 		            layer.confirm('确定要删除', {icon: 3, title:'提示'}, function(index){
 		                layer.close(index);
-		                _post(layui, '{{tags}}/del',{id : obj.data.id}, res => {
+		                _post(layui, '{{tags}}/delcate',{id : obj.data.id}, res => {
 							layer.msg('删除成功',{icon:1,time:1000},() => {
 								obj.del();
 							});

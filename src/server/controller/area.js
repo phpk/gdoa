@@ -6,10 +6,13 @@ const Base = require('./base.js');
 module.exports = class extends Base {
 
     async listAction() {
-        let list = await this.model('area').order('order_num asc').select();
-        //let count = await this.model('area').where({pid : 0}).count()
-        await this.adminViewLog('地区管理列表');
-        return this.success(list)
+        let pid = this.get('pid')
+        let data = await this.model('area').where({pid}).order('order_num asc').select();
+        //如果数据量过大 直接设置有下游
+        data.forEach(async (el) => {
+            el.haveChild = true;
+        });
+        return this.success({data})
     }
 
     async addAction() {

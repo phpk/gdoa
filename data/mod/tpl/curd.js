@@ -70,7 +70,46 @@ ctpl.editBeforeCate = `
         return this.success({data,cate});
     }
 `;
-
+ctpl.cate = `
+    async cateListAction() {
+        let { page, limit } = this.get();
+        let list = await this.model('{{cate}}').page(page, limit).select();
+        let count = await this.model('{{cate}}').count();
+        return this.success({ list, count })
+    }
+    async cateAddBeforeAction() {
+        let cate = await this.model('mod').getTree('{{cate}}');
+        return this.success({cate});
+    }
+    async cateAddAction() {
+        let post = this.post();
+        let id = await this.model('{{cate}}').add(post);
+        return this.success(id);
+    }
+    async cateEditBeforeAction() {
+        let id = this.get('id');
+        let data = await this.model('{{cate}}').where({ id }).find()
+        let cate = await this.model('mod').getTree('{{cate}}');
+        return this.success({data,cate});
+    }
+    async cateEditAction() {
+        let post = this.post();
+        let has = await this.model('{{cate}}').where({ id: post.id }).find();
+        if (think.isEmpty(has)) return this.fail('编辑的数据不存在');
+        let rt = await this.model('{{cate}}').update(post);
+        return this.success(rt)
+    }
+    async cateDeleteAction() {
+        let id = this.post('id');
+        if (!await this.hasData('{{cate}}', { id }))
+            return this.fail('数据不存在')
+        let hasSun = await this.model('{{cate}}').where({pid : id}).find();
+        if(!think.isEmpty)
+            return this.fail('该分类下存在子分类')
+        await this.model('{{cate}}').where({ id }).delete()
+        return this.success()
+    }
+`;
 ltpl.start = `module.exports = class extends think.Logic {`;
 ltpl.list = `
     listAction() {
@@ -99,7 +138,7 @@ ltpl.add = `
     }
 `;
 ltpl.addBefore = `
-    addAction() {
+    addBeforeAction() {
         this.allowMethods = 'get';
         this.rules = {}
     }
@@ -156,8 +195,10 @@ let htmlTpl = {};
 htmlTpl.list = require('./list.html.js');
 htmlTpl.edit = require('./edit.html.js');
 //带分类的模版
-htmlTpl.listCate = require('./list-cate.html.js');;
+htmlTpl.listCate = require('./list-cate.html.js');
 htmlTpl.editCate = require('./edit-cate.html.js');
+htmlTpl.cate = require('./cate.html.js')
+htmlTpl.cateEdit = require('./cate-edit.html.js')
 module.exports = {
     ctpl,
     ltpl,

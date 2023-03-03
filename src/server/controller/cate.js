@@ -16,7 +16,7 @@ module.exports = class extends Base {
      * @apiSuccess (200) {type} name description
      *
      */
-    async listAction() {
+    async cateListAction() {
         let { page, limit } = this.get();
 
         let list = await this.model('set_cate').page(page, limit).select();
@@ -36,20 +36,20 @@ module.exports = class extends Base {
      * @apiSuccess (200) {type} name description
      *
      */
-    async addAction() {
+    async cateAddAction() {
         let post = this.post();
         if (await this.hasData('set_cate', { key: post.key }))
             return this.fail('系统中存在相同的键值')
         let id = await this.model('set_cate').add(post);
         return this.success(id);
     }
-    async eidtBeforeAction() {
+    async cateEidtBeforeAction() {
         let id = this.get('id');
         let data = await this.model('set_cate').where({ id }).find()
         if (think.isEmpty(data)) return this.fail('数据为空')
         return this.success(data);
     }
-    async eidtAction() {
+    async cateEidtAction() {
         let post = this.post();
         if (post.key) return this.fail('key不允许编辑');
         let has = await this.model('set_cate').where({ id: post.id }).find();
@@ -57,12 +57,11 @@ module.exports = class extends Base {
         let rt = await this.model('set_cate').update(post);
         return this.success(rt)
     }
-    async deleteAction() {
+    async cateDeleteAction() {
         let id = this.post('id');
         if (!await this.hasData('set_cate', { id }))
             return this.fail('数据不存在')
         await this.model('set_cate').where({ id }).delete()
-
         return this.success()
     }
 }

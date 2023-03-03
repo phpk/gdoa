@@ -41,9 +41,18 @@ module.exports = class extends Base {
     * @apiSuccess {string} message  提示
      */
     async oplistAction() {
-        let list = await this.model('menu').order("order_num asc").select()
+        let pid = this.get('pid')
+        let data = await this.model('menu').where({pid}).order("order_num asc").select()
+        data.forEach(async (el) => {
+            let has = await this.model('menu').where({pid : el.id}).count()
+            if(has > 0) {
+                el.haveChild = true;
+            }else{
+                el.haveChild = false;
+            }
+        });
         await this.adminViewLog('菜单列表');
-        return this.success(list)
+        return this.success({data})
     }
 
     /**
