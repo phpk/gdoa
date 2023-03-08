@@ -130,6 +130,7 @@ module.exports = class extends Base {
             })
         })
         await this.model('menu').addMany(adds);
+		await this.model('menu').cacheData(this.adminId);
 
     }
     /**
@@ -170,6 +171,7 @@ module.exports = class extends Base {
         if (think.isEmpty(has)) return this.fail('编辑的数据不存在');
         await this.model('mod').update(post);
         this.service('mod').createModNone(post);
+		await this.model('menu').cacheData(this.adminId);
         return this.success()
     }
     /**
@@ -198,6 +200,7 @@ module.exports = class extends Base {
             await this.model('menu').where({ pid: topRuleId }).delete();
             await this.model('menu').where({ id: topRuleId }).delete();
         }
+		await this.model('menu').cacheData(this.adminId);
         return this.success()
     }
     async paramsAction() {
