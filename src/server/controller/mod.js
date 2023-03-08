@@ -114,9 +114,9 @@ module.exports = class extends Base {
             names = ['添加', '编辑', '删除', '编辑前'],
             tpls = ['edit','edit','',''];
         if (data.type == 1) {
-            arr = arr.concat(['addBefore', 'cate', 'cateAdd', 'cateEdit','cateAddBefore', 'cateEditBefore', 'cateDel']);
-            names = names.concat(['添加前', '分类', '分类添加', '分类编辑','分类添加前','分类编辑前', '分类删除']);
-            tpls = tpls.concat(['', 'cate', 'cateEdit', 'cateEdit', '', '', '']);
+            arr = arr.concat(['addBefore', 'cateList', 'cateAdd', 'cateEdit','cateEnable','cateAddBefore', 'cateEditBefore', 'cateDel']);
+            names = names.concat(['添加前', '分类列表', '分类添加', '分类编辑','分类可用','分类添加前','分类编辑前', '分类删除']);
+            tpls = tpls.concat(['', 'cate', 'cateEdit', 'cateEdit', '','', '', '']);
         }
         arr.forEach((k, i) => {
             adds.push({

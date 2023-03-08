@@ -74,9 +74,6 @@ module.exports = class extends think.Service {
      * @returns 
      */
     getControllerTpl(data) {
-        let prefix = think.config('mysql.prefix');
-        let mainTable = data.tables_main.replace(prefix, '');
-        let moreTable = data.type < 2 ? data.tables_more.replace(prefix, '') : '';
         let controllerTpl = ``;
         if(data.params) {
             controllerTpl += this.getParseData(data);
@@ -85,22 +82,22 @@ module.exports = class extends think.Service {
         controllerTpl += tplFile.ctpl.list;
         controllerTpl += tplFile.ctpl.add;
         if(data.type == 1) {
-            controllerTpl += tplFile.ctpl.addBefore.replace(/{{cate}}/g, moreTable);
+            controllerTpl += tplFile.ctpl.addBefore.replace(/{{cate}}/g, data.tables_more);
         }
         controllerTpl += tplFile.ctpl.edit;
         if(data.type == 1) {
-            controllerTpl += tplFile.ctpl.editBeforeCate.replace(/{{cate}}/g, moreTable);;
+            controllerTpl += tplFile.ctpl.editBeforeCate.replace(/{{cate}}/g, data.tables_more);;
         }else{
             controllerTpl += tplFile.ctpl.editBefore
         }
         controllerTpl += tplFile.ctpl.del;
         if(data.type == 1) {
-            controllerTpl += tplFile.ctpl.cate.replace(/{{cate}}/g, moreTable);
+            controllerTpl += tplFile.ctpl.cate.replace(/{{cate}}/g, data.tables_more);
         }
 
         controllerTpl += tplFile.endTpl;
         
-        controllerTpl = this.replaceTpl(controllerTpl, data.name, mainTable);
+        controllerTpl = this.replaceTpl(controllerTpl, data.name, data.tables_main);
 
         return controllerTpl;
     }

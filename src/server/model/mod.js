@@ -1,4 +1,5 @@
 const prefix = think.config('mysql.prefix');
+const dbName = think.config('mysql.database');
 module.exports = class extends think.Model {
     /**
      * 前台渲染递归 表结构必须有id pid title
@@ -44,6 +45,11 @@ module.exports = class extends think.Model {
             }
         ];
     }
+    /**
+     * 判断表是否存在
+     * @param {*} table 
+     * @returns 
+     */
     async hasTable(table) {
         
         if (table.indexOf(prefix) === -1) {
@@ -55,12 +61,16 @@ module.exports = class extends think.Model {
         }
         return false;
     }
+    /**
+     * 获取所有表
+     * @returns []
+     */
     async tableList() {
-        let list = await this.query("SELECT TABLE_NAME,TABLE_COMMENT FROM information_schema.TABLES WHERE `TABLE_SCHEMA` = '" + think.config('mysql.database') + "'");
+        let list = await this.query("SELECT TABLE_NAME,TABLE_COMMENT FROM information_schema.TABLES WHERE `TABLE_SCHEMA` = '" + dbName + "'");
         let rt = {}, res = [];
         list.forEach(d => {
             //let name = d.TABLE_NAME.replace(new RegExp(prefix, 'g'), '');
-            let name = d.TABLE_NAME;
+            let name = d.TABLE_NAME.replace(prefix, '');
             if (!rt[name]) {
                 rt[name] = d.TABLE_COMMENT;
             }
@@ -69,6 +79,47 @@ module.exports = class extends think.Model {
             res.push({ name: rt[p], id : p })
         }
         return res;
+    }
+    /**
+     * 获取表结构
+     * @returns []
+     */
+    async allList() {
+        let list = await this.sql("SELECT t.TABLE_NAME,t.TABLE_COMMENT,c.COLUMN_NAME,c.COLUMN_TYPE,c.COLUMN_COMMENT,c.EXTRA,c.IS_NULLABLE,c.COLUMN_KEY,c.COLUMN_DEFAULT,c.ORDINAL_POSITION FROM information_schema.TABLES t,INFORMATION_SCHEMA.Columns c WHERE c.TABLE_NAME=t.TABLE_NAME AND t.`TABLE_SCHEMA`='" + dbName + "'");
+        let tabs = {};
+        list.forEach(el => {
+            let tabname = el.TABLE_NAME.replace(prefix, '');
+            if (!tabs[tabname]) tabs[tabname] = {};
+            tabs[tabname].tabname = tabname;
+            tabs[tabname].tabcomment = el.TABLE_COMMENT;
+            if (!tabs[tabname].fields) tabs[tabname].fields = {};
+            tabs[tabname].fields[el.COLUMN_NAME] = {
+                name: el.COLUMN_NAME,
+                comment: el.COLUMN_COMMENT,
+                type: el.COLUMN_TYPE,
+                isnull: el.IS_NULLABLE,
+                key: el.COLUMN_KEY,
+                extra: el.EXTRA,
+                default: el.COLUMN_DEFAULT,
+                order: el.ORDINAL_POSITION
+            };
+        });
+        //索引
+        let indexData = await this.sql("SELECT * FROM information_schema.statistics WHERE table_schema = '" + dbName + "'");
+        indexData.forEach(el => {
+            let tabname = el.TABLE_NAME.replace(prefix, '');
+            if (tabs[tabname]) {
+                if (!tabs[tabname].indexs)
+                    tabs[tabname].indexs = {};
+                if (!tabs[tabname].indexs[el.INDEX_NAME])
+                    tabs[tabname].indexs[el.INDEX_NAME] = {
+                        type: el.INDEX_TYPE,
+                        fields : []
+                    };
+                tabs[tabname].indexs[el.INDEX_NAME].fields.push(el.COLUMN_NAME)
+            }
+        })
+        return tabs;
     }
 
 };

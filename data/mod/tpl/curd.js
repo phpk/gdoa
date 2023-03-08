@@ -70,35 +70,70 @@ ctpl.editBeforeCate = `
         return this.success({data,cate});
     }
 `;
+//7个方法
 ctpl.cate = `
     async cateListAction() {
-        let { page, limit } = this.get();
-        let list = await this.model('{{cate}}').page(page, limit).select();
-        let count = await this.model('{{cate}}').count();
-        return this.success({ list, count })
+        let pid = this.get('pid')
+        let data = await this.model('{{cate}}').where({pid}).order('id desc').select();
+        
+        data.forEach(async (el) => {
+            el.haveChild = true;
+            //如果数据量过大 直接设置有下游 不大参考如下
+            // let has = await this.model('{{cate}}').where({pid : el.id}).count()
+            // if(has > 0) {
+            //     el.haveChild = true;
+            // }else{
+            //     el.haveChild = false;
+            // }
+        });
+        return this.success({data})
     }
-    async cateAddBeforeAction() {
-        let cate = await this.model('mod').getTree('{{cate}}');
-        return this.success({cate});
-    }
+
     async cateAddAction() {
         let post = this.post();
         let id = await this.model('{{cate}}').add(post);
         return this.success(id);
     }
-    async cateEditBeforeAction() {
-        let id = this.get('id');
-        let data = await this.model('{{cate}}').where({ id }).find()
-        let cate = await this.model('mod').getTree('{{cate}}');
-        return this.success({data,cate});
+    async cateAddBeforeAction() {
+        let areaTree = await this.model('mod').getTree('{{cate}}');
+        return this.success(areaTree);
+    }
+    async cateEnableAction() {
+        let post = this.post(),
+            id = post.id;
+
+        if (!await this.hasData('{{cate}}', { id }))
+            return this.fail("数据不存在");
+
+        let rt = await this.model('{{cate}}')
+            .where({ id })
+            .update({
+                status: post.status
+            })
+        await this.adminOpLog('设置地区可用');
+        return this.success(rt)
     }
     async cateEditAction() {
         let post = this.post();
         let has = await this.model('{{cate}}').where({ id: post.id }).find();
         if (think.isEmpty(has)) return this.fail('编辑的数据不存在');
-        let rt = await this.model('{{cate}}').update(post);
-        return this.success(rt)
+        await this.model('{{cate}}').where({id : post.id}).update(post);
+        return this.success()
     }
+
+    async cateEditBeforeAction() {
+        let id = this.get('id');
+        let data = await this.model('{{cate}}').where({ id }).find()
+        if (think.isEmpty(data)) return this.fail('数据为空')
+        data.list = await this.model('mod').getTree('{{cate}}');
+        if (data.pid > 0) {
+            data.cname = await this.model('{{cate}}').where({id : data.pid}).getField('name', true)
+        } else {
+            data.cname = '顶层地区'
+        }
+        return this.success(data);
+    }
+
     async cateDeleteAction() {
         let id = this.post('id');
         if (!await this.hasData('{{cate}}', { id }))
@@ -109,6 +144,7 @@ ctpl.cate = `
         await this.model('{{cate}}').where({ id }).delete()
         return this.success()
     }
+   
 `;
 ltpl.start = `module.exports = class extends think.Logic {`;
 ltpl.list = `
