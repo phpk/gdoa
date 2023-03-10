@@ -143,7 +143,7 @@ layui.use(['form','jquery','iconSelectedPlus', 'dropdown'],function(){
         _post(layui, 'menu/add', post, res => {
             //console.log(res)
             setRoute(res.routeData)
-            parent.window.reload();
+            parent.location.reload();
             parent.layer.close(parent.layer.getFrameIndex(window.name));//关闭当前页
             
         })

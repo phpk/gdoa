@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>项目分类管理</title>
+		<title>仓库管理</title>
 		<link rel="stylesheet" href="../../component/ui/css/ui.css" />
 	</head>
 	<body class="pear-container">
@@ -17,11 +17,11 @@
 							</div>
 						</div>
 						<div class="layui-form-item layui-inline">
-							<button class="pear-btn pear-btn-md pear-btn-primary" lay-submit lay-filter="user-query">
+							<button class="pear-btn pear-btn-md pear-btn-primary" lay-submit lay-filter="stock_storehouse-query">
 								<i class="layui-icon layui-icon-search"></i>
 								查询
 							</button>
-							<button type="reset" class="pear-btn pear-btn-md" lay-filter="user-reset" lay-submit>
+							<button type="reset" class="pear-btn pear-btn-md" lay-filter="stock_storehouse-reset" lay-submit>
 								<i class="layui-icon layui-icon-refresh"></i>
 								重置
 							</button>
@@ -32,22 +32,22 @@
 		</div>
 		<div class="layui-card">
 			<div class="layui-card-body">
-				<table id="procat-table" lay-filter="procat-table"></table>
+				<table id="stock_storehouse-table" lay-filter="stock_storehouse-table"></table>
 			</div>
 		</div>
 
-		<script type="text/html" id="procat-toolbar">
+		<script type="text/html" id="stock_storehouse-toolbar">
 			<button class="layui-btn layui-btn-primary layui-border-red layui-btn-sm" lay-event="add">
 		        <i class="layui-icon layui-icon-add-1"></i>
 		        新增
 		    </button>
 		</script>
 
-		<script type="text/html" id="procat-bar">
+		<script type="text/html" id="stock_storehouse-bar">
 			<button class="pear-btn pear-btn-primary pear-btn-sm" lay-event="edit"><i class="layui-icon layui-icon-edit"></i></button>
 		    <button class="pear-btn pear-btn-danger pear-btn-sm" lay-event="remove"><i class="layui-icon layui-icon-delete"></i></button>
 		</script>
-		<script type="text/html" id="procat-time">
+		<script type="text/html" id="stock_storehouse-time">
 			{{layui.util.toDateString(d.add_time*1000, 'yyyy-MM-dd HH:mm:ss')}}
 		</script>
 		<script src="../../config/config.js"></script>
@@ -75,13 +75,19 @@
 							align: 'center'
 						},
 						{
-							title: '类型',
-							field: 'cname',
+							title: '地址',
+							field: 'address',
+							align: 'center'
+						},
+						{
+							title: '添加时间',
+							field: 'add_time',
 							align: 'center',
+							//templet: '#stock_storehouse-time'
 						},
 						{
 							title: '操作',
-							toolbar: '#procat-bar',
+							toolbar: '#stock_storehouse-bar',
 							align: 'center',
 							width: 130
 						}
@@ -89,8 +95,8 @@
 				]
 
 				table.render({
-					elem: '#procat-table',
-					url: apiUrl + 'procat/list',
+					elem: '#stock_storehouse-table',
+					url: apiUrl + 'stock_storehouse/list',
 					headers : getHeader(),
 					parseData: function(res) {
 						//console.log(res)
@@ -105,7 +111,7 @@
 					cols: cols,
 					skin: 'line',
 
-					toolbar: '#procat-toolbar',
+					toolbar: '#stock_storehouse-toolbar',
 					defaultToolbar: [{
 						title: '刷新',
 						layEvent: 'refresh',
@@ -113,7 +119,7 @@
 					}, 'filter', 'print', 'exports']
 				});
 
-				table.on('tool(procat-table)', function(obj) {
+				table.on('tool(stock_storehouse-table)', function(obj) {
 					if (obj.event === 'remove') {
 						window.remove(obj);
 					} else if (obj.event === 'edit') {
@@ -121,7 +127,7 @@
 					}
 				});
 
-				table.on('toolbar(procat-table)', function(obj) {
+				table.on('toolbar(stock_storehouse-table)', function(obj) {
 					if (obj.event === 'add') {
 						window.add();
 					} else if (obj.event === 'refresh') {
@@ -130,8 +136,8 @@
 				});
 				// 监听搜索操作
 
-				form.on('submit(user-query)', function(data) {
-					table.reload('procat-table', {
+				form.on('submit(stock_storehouse-query)', function(data) {
+					table.reload('stock_storehouse-table', {
 						where: {
 							param : $('form').serialize()
 						},
@@ -141,8 +147,8 @@
 					})
 					return false;
 				});
-				form.on('submit(user-reset)', function(data){
-					table.reload('procat-table', {
+				form.on('submit(stock_storehouse-reset)', function(data){
+					table.reload('stock_storehouse-table', {
 						where: {
 							param : ''
 						},
@@ -181,7 +187,7 @@
 				window.remove = function(obj){
 		            layer.confirm('确定要删除', {icon: 3, title:'提示'}, function(index){
 		                layer.close(index);
-		                _post(layui, 'procat/del',{id : obj.data.id}, res => {
+		                _post(layui, 'stock_storehouse/del',{id : obj.data.id}, res => {
 							layer.msg('删除成功',{icon:1,time:1000},() => {
 								obj.del();
 							});
@@ -193,7 +199,7 @@
 
 
 				window.refresh = function(param) {
-					table.reload('procat-table');
+					table.reload('stock_storehouse-table');
 				}
 			})
 		</script>

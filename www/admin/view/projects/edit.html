@@ -26,6 +26,13 @@
 			    </div>
 			</div>
 			<div class="layui-form-item">
+			    <label class="layui-form-label">项目分类</label>
+			    <div class="layui-input-block">
+			        <select name="type" lay-search id="key-area">
+			        </select>
+			    </div>
+			</div>
+			<div class="layui-form-item">
 			  <div class="layui-inline">
 			    <label class="layui-form-label">日期范围</label>
 			    <div class="layui-inline" id="test-range">
@@ -96,14 +103,26 @@
                 }
             }
         })
+		const renderSelect = (rs) => {
+			rs.forEach(el => {
+				$("#key-area").append(new Option(el.name, el.id));
+			})
+			form.render("select");
+		}
         if(req.id) {
             //渲染
             _get(layui, 'projects/editBefore?id=' + req.id, res => {
-				res.start_time = layui.util.toDateString(res.start_time*1000, 'yyyy-MM-dd');
-				res.end_time = layui.util.toDateString(res.end_time*1000, 'yyyy-MM-dd')
-                form.val('editform', res)
+				renderSelect(res.cates)
+				res.data.start_time = layui.util.toDateString(res.data.start_time*1000, 'yyyy-MM-dd');
+				res.data.end_time = layui.util.toDateString(res.data.end_time*1000, 'yyyy-MM-dd')
+                form.val('editform', res.data)
             });
-        }
+        }else{
+			_get(layui, 'projects/addBefore', res => {
+				//console.log(res)
+			    renderSelect(res)
+			});
+		}
 
         //监听提交
         form.on('submit(projects-save)', function (data) {

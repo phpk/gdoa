@@ -30,8 +30,8 @@ module.exports = class extends Base {
         //     d.typeName = types[d.type];
         // })
         let count = await this.model('mod').count();
-
-        return this.success({ list, count })
+		let routeData = await this.model('menu').cacheData(this.adminId);
+        return this.success({ list, count,routeData })
     }
     
     /**
@@ -110,13 +110,13 @@ module.exports = class extends Base {
             adds = [],
             name = data.name,
             key = data.key,
-            arr = ['add', 'edit', 'del', 'editBefore'],
-            names = ['添加', '编辑', '删除', '编辑前'],
-            tpls = ['edit','edit','',''];
+            arr = ['add', 'edit', 'del', 'editBefore','addBefore'],
+            names = ['添加', '编辑', '删除', '编辑前','添加前'],
+            tpls = ['edit','edit','','',''];
         if (data.type == 1) {
-            arr = arr.concat(['addBefore', 'cateList', 'cateAdd', 'cateEdit','cateEnable','cateAddBefore', 'cateEditBefore', 'cateDel']);
-            names = names.concat(['添加前', '分类列表', '分类添加', '分类编辑','分类可用','分类添加前','分类编辑前', '分类删除']);
-            tpls = tpls.concat(['', 'cate', 'cateEdit', 'cateEdit', '','', '', '']);
+            arr = arr.concat(['cateList', 'cateAdd', 'cateEdit','cateEnable','cateAddBefore', 'cateEditBefore', 'cateDel']);
+            names = names.concat(['分类列表', '分类添加', '分类编辑','分类可用','分类添加前','分类编辑前', '分类删除']);
+            tpls = tpls.concat(['cate', 'cateEdit', 'cateEdit', '','', '', '']);
         }
         arr.forEach((k, i) => {
             adds.push({
@@ -130,8 +130,7 @@ module.exports = class extends Base {
             })
         })
         await this.model('menu').addMany(adds);
-		await this.model('menu').cacheData(this.adminId);
-
+		
     }
     /**
      * @api {get} mod/editBefore 模块编辑前

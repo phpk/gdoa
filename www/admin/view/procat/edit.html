@@ -16,14 +16,15 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">名称</label>
                 <div class="layui-input-block">
-                    <input type="text" name="title" lay-verify="required|len" autocomplete="off" min="3" placeholder="请输入名称" class="layui-input">
+                    <input type="text" name="name" lay-verify="required|len" autocomplete="off" min="1" placeholder="请输入名称" class="layui-input">
                 </div>
             </div>
-			<div class="layui-form-item layui-form-text">
-				<label class="layui-form-label">备注</label>
-				<div class="layui-input-block">
-				<textarea name="remark" placeholder="请输入内容" class="layui-textarea"></textarea>
-				</div>
+			<div class="layui-form-item">
+			    <label class="layui-form-label">类型</label>
+			    <div class="layui-input-block">
+			        <select name="sys_id" lay-search id="key-area">
+			        </select>
+			    </div>
 			</div>
 
             </div>
@@ -31,6 +32,7 @@
     </div>
     <div class="bottom">
         <div class="button-container">
+			<input  type="hidden" name="id"/>
             <button type="submit" class="pear-btn pear-btn-primary pear-btn-sm" lay-submit="" lay-filter="procat-save">
                 <i class="layui-icon layui-icon-ok"></i>
                 提交
@@ -55,12 +57,24 @@
                 }
             }
         })
+		const renderSelect = (rs) => {
+			for(let p in rs) {
+				$("#key-area").append(new Option(rs[p], p));
+			}
+			// res.tableList
+			form.render("select");
+		}
         if(req.id) {
             //渲染
             _get(layui, 'procat/editBefore?id=' + req.id, res => {
-                form.val('editform', res)
+				renderSelect(res.cates)
+                form.val('editform', res.data)
             });
-        }
+        }else{
+			_get(layui, 'procat/addBefore', rs => {
+				renderSelect(rs)
+			});
+		}
 
         //监听提交
         form.on('submit(procat-save)', function (data) {

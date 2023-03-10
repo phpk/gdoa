@@ -121,8 +121,9 @@ layui.use(['form','jquery','iconSelectedPlus', 'dropdown'],function(){
         _post(layui, 'menu/edit', post, res => {
             //console.log(res)
             setRoute(res.routeData)
-            //parent.layui.treetable.reload("#power-table");
-			parent.window.reload();
+			console.log(parent)
+            //parent.layui.insTb.reload("#power-table");
+			parent.location.reload();
             parent.layer.close(parent.layer.getFrameIndex(window.name));//关闭当前页
             
         })

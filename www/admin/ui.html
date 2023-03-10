@@ -136,16 +136,22 @@
 				//admin.message();
 				//let h = getHeader();
 				//console.log(h)
-				//$.ajax({
-				//	url : '/server/index',
-				//	headers : h,
-				//	success : (res) => {
-				//		console.log(res)
-				//	},
-				//	error : (err) => {
-				//		console.log(err)
-				//	}
-				//})
+				// _get(layui, 'index/isLogin', res => {
+				// 	console.log(res)
+				// })
+				$.ajax({
+					url : '/server/index/isLogin',
+					headers : getHeader(),
+					success : (res) => {
+						console.log(res)
+					},
+					error : (err) => {
+						console.log(err)
+						if(err.status === 402) {
+							location.href = "/admin/login.html";
+						}
+					}
+				})
 				// admin.message(function(id, title, context, form) {});
 			})
 		</script>		

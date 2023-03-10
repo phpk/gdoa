@@ -38,23 +38,30 @@
 
 		<script type="text/html" id="profile-toolbar">
 			<button class="layui-btn layui-btn-primary layui-border-red layui-btn-sm" lay-event="add">
-		        <i class="layui-icon layui-icon-add-1"></i>
-		        新增
-		    </button>
+				<i class="layui-icon layui-icon-add-1"></i>
+				新增
+			</button>
 		</script>
 
 		<script type="text/html" id="profile-bar">
-			<button class="pear-btn pear-btn-primary pear-btn-sm" lay-event="edit"><i class="layui-icon layui-icon-edit"></i></button>
-		    <button class="pear-btn pear-btn-danger pear-btn-sm" lay-event="remove"><i class="layui-icon layui-icon-delete"></i></button>
+			<button class="pear-btn pear-btn-success pear-btn-sm" lay-event="down"><i
+					class="layui-icon layui-icon-down"></i></button>
+			<button class="pear-btn pear-btn-primary pear-btn-sm" lay-event="edit"><i
+					class="layui-icon layui-icon-edit"></i></button>
+			<button class="pear-btn pear-btn-danger pear-btn-sm" lay-event="remove"><i
+					class="layui-icon layui-icon-delete"></i></button>
 		</script>
 		<script type="text/html" id="profile-time">
-			{{layui.util.toDateString(d.add_time*1000, 'yyyy-MM-dd HH:mm:ss')}}
+		{{layui.util.toDateString(d.add_time*1000, 'yyyy-MM-dd HH:mm:ss')}}
+		</script>
+		<script type="text/html" id="profile-img">
+			<img src="{{d.img}}" width="50" />
 		</script>
 		<script src="../../config/config.js"></script>
 		<script src="../../component/layui/layui.js"></script>
 		<script src="../../component/ui/ui.js"></script>
 		<script>
-			layui.use(['table', 'form', 'jquery','common'], function() {
+			layui.use(['table', 'form', 'jquery', 'common'], function() {
 				let table = layui.table;
 				let form = layui.form;
 				let $ = layui.jquery;
@@ -63,28 +70,48 @@
 				let MODULE_PATH = "./";
 
 				let cols = [
-					[
-						{
+					[{
 							title: 'ID',
 							field: 'id',
 							align: 'center'
 						},
 						{
 							title: '名称',
-							field: 'title',
+							field: 'name',
 							align: 'center'
+						},
+						{
+							title: '类别',
+							field: 'cname',
+							align: 'center'
+						},
+						{
+							title: '编号',
+							field: 'file_no',
+							align: 'center'
+						},
+						{
+							title: '应用场景',
+							field: 'desc',
+							align: 'center'
+						},
+						{
+							title: '缩略图',
+							field: 'desc',
+							align: 'center',
+							templet: '#profile-img'
 						},
 						{
 							title: '添加时间',
 							field: 'add_time',
 							align: 'center',
-							templet: '#profile-time'
+							//templet: '#profile-time'
 						},
 						{
 							title: '操作',
 							toolbar: '#profile-bar',
 							align: 'center',
-							width: 130
+							width: 160
 						}
 					]
 				]
@@ -92,7 +119,7 @@
 				table.render({
 					elem: '#profile-table',
 					url: apiUrl + 'profile/list',
-					headers : getHeader(),
+					headers: getHeader(),
 					parseData: function(res) {
 						//console.log(res)
 						return {
@@ -119,6 +146,8 @@
 						window.remove(obj);
 					} else if (obj.event === 'edit') {
 						window.edit(obj);
+					} else if (obj.event === 'down') {
+						window.down(obj);
 					}
 				});
 
@@ -134,22 +163,22 @@
 				form.on('submit(profile-query)', function(data) {
 					table.reload('profile-table', {
 						where: {
-							param : $('form').serialize()
+							param: $('form').serialize()
 						},
 						page: {
-					        curr: 1
-					    }
+							curr: 1
+						}
 					})
 					return false;
 				});
-				form.on('submit(profile-reset)', function(data){
+				form.on('submit(profile-reset)', function(data) {
 					table.reload('profile-table', {
 						where: {
-							param : ''
+							param: ''
 						},
 						page: {
-					        curr: 1
-					    }
+							curr: 1
+						}
 					});
 					return false;
 				})
@@ -179,18 +208,35 @@
 						content: MODULE_PATH + 'edit.html?id=' + obj.data.id
 					});
 				}
-				window.remove = function(obj){
-		            layer.confirm('确定要删除', {icon: 3, title:'提示'}, function(index){
-		                layer.close(index);
-		                _post(layui, 'profile/del',{id : obj.data.id}, res => {
-							layer.msg('删除成功',{icon:1,time:1000},() => {
+				window.down = function(obj) {
+					let a = document.createElement("a");
+					a.download = obj.data.path.split('/').at(-1);
+					//console.log(a)
+					a.href = obj.data.path;
+					$("body").append(a); // 修复firefox中无法触发click
+					a.click();
+					$(a).remove();
+				}
+				window.remove = function(obj) {
+					layer.confirm('确定要删除', {
+						icon: 3,
+						title: '提示'
+					}, function(index) {
+						layer.close(index);
+						_post(layui, 'profile/del', {
+							id: obj.data.id
+						}, res => {
+							layer.msg('删除成功', {
+								icon: 1,
+								time: 1000
+							}, () => {
 								obj.del();
 							});
 						}, err => {
 							//layer.msg('删除失败',{icon:2,time:1000});
 						})
-		            });
-		        }
+					});
+				}
 
 
 				window.refresh = function(param) {

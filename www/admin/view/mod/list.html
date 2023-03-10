@@ -76,6 +76,8 @@
 				    headers: getHeader(),
 					page: true,
                     parseData: function (res) {
+						setRoute(res.data.routeData);
+						//layui.menu.reload();
                         return {
                             "code": res.code, //解析接口状态
                             "msg": res.message, //解析提示文本

@@ -27,6 +27,7 @@
     "mysql-import": "^5.0.21",
     "mysql-ssh": "^1.0.6",
     "mysqldump": "^3.2.0",
+    "node-xlsx": "^0.21.0",
     "nodemailer": "^6.7.2",
     "pdf2json": "^2.0.0",
     "socket.io-redis": "^6.1.1",
