@@ -48,7 +48,7 @@
 			        </select>
 			    </div>
 			</div>
-			<div id="repair" style="display: none;">
+			<!--div id="repair" style="display: none;">
 				<div class="layui-form-item">
 				    <label class="layui-form-label">类型</label>
 				    <div class="layui-input-block">
@@ -152,7 +152,8 @@
 				    </div>
 				</div>
 				
-			</div>
+			</div-->
+			<div id="extarea"></div>
 			<div class="layui-form-item layui-form-text">
 				<label class="layui-form-label">备注</label>
 				<div class="layui-input-block">
@@ -168,7 +169,7 @@
 			<input type="hidden" name="id" />
 			<input type="hidden" name="goods_name" >
 			<input type="hidden" name="goods_id" >
-			<input type="hidden" name="unit_name" >
+			<!--input type="hidden" name="unit_name" -->
 			<input type="hidden" name="cate_id" >
             <button type="submit" class="pear-btn pear-btn-primary pear-btn-sm" lay-submit="" lay-filter="stock_in-save">
                 <i class="layui-icon layui-icon-ok"></i>
@@ -181,12 +182,13 @@
 <script src="../../component/layui/layui.js"></script>
 <script src="../../component/ui/ui.js"></script>
 <script>
-    layui.use(['form','layer','tree','laydate'], function () {
+    layui.use(['form','layer','tree','laydate', 'laytpl'], function () {
         let form = layui.form
             , layer = layui.layer
 			, $ = layui.$
             , req = _req()
 			, laydate = layui.laydate
+			, laytpl = layui.laytpl
 			, goods_id = req.goods_id
 			, goodsInfo;
         form.verify({
@@ -202,27 +204,27 @@
 		  ,value: new Date() 
 		  ,isInitValue: true //是否允许填充初始值，默认为 true
 		});
-		laydate.render({
-		  elem: '#oa_buy_time'
-		  ,value: new Date() 
-		  ,isInitValue: true //是否允许填充初始值，默认为 true
-		});
+		// laydate.render({
+		//   elem: '#oa_buy_time'
+		//   ,value: new Date() 
+		//   ,isInitValue: true //是否允许填充初始值，默认为 true
+		// });
 		const renderEl = (res) => {
-			$('#localarea').text(res.cate_name + ' > ' + res.goods_name + '('+res.unit_name+')')
+			$('#localarea').text(res.cate_name + ' > ' + res.goods_name)
 			form.val('editform', res)
 			res.storehouse.forEach(el => {
 				$("#area-area").append(new Option(el.name, el.id));
 			})
 			form.render("select");
-			if(res.cate_id === 4 || res.cate_id === 5) {
-				$('#repair').show();
-			}
-			else if(res.cate_id === 6) {
-				$('#left').show();
-			}
-			else if(res.cate_id === 7) {
-				$('#oa').show();
-			}
+			// if(res.cate_id === 4 || res.cate_id === 5) {
+			// 	$('#repair').show();
+			// }
+			// else if(res.cate_id === 6) {
+			// 	$('#left').show();
+			// }
+			// else if(res.cate_id === 7) {
+			// 	$('#oa').show();
+			// }
 		}
         if(req.id) {
             //渲染
@@ -233,9 +235,24 @@
             });
         }else{
 			_get(layui, 'stock_in/addBefore?goods_id=' + goods_id, res => {
-				//console.log(res)
+				console.log(res)
 				//goodsInfo = res;
 				renderEl(res)
+				$.get('../set/field.html', tpl => {
+					laytpl(tpl).render(res.ext, function(html){
+					  $('#extarea').html(html);
+					  form.render();
+					  res.ext.forEach(d => {
+						  if(d.ctype == 'timeinput') {
+							  laydate.render({
+							    elem: '#' + d.ckey
+							    ,value: new Date() 
+							    ,isInitValue: true //是否允许填充初始值，默认为 true
+							  });
+						  }
+					  })
+					});
+				})
 			});
 		}
 

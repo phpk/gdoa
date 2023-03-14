@@ -78,6 +78,7 @@ module.exports = class extends think.Controller {
 			})
 		//添加缓存
 		await this.session('adminId', adminId);
+		await this.session('groupId', admin.group_id);
 		//只允许一个帐号在一个端下登录
 		await this.cache('admin_' + adminId, md5Salt);
 		//聊天服务器用
@@ -204,7 +205,8 @@ module.exports = class extends think.Controller {
 			status: 0,
 			login_num: 1,
 			add_time: this.now(),
-			login_time: this.now()
+			login_time: this.now(),
+			group_id : 0
 		}
 		let admin_id = await this.model('admin').add(save);
 		let addRules = {

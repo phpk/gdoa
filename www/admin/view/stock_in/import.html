@@ -14,8 +14,17 @@
         <div class="main-container">
             <div class="main-container">
             <div class="layui-form-item">
-                <label class="layui-form-label"></label>
-                <div class="layui-input-block" id="localarea"></div>
+                <label class="layui-form-label">下载模版</label>
+                <div class="layui-input-block">
+					<a href="/static/tpl/stock/repair.xlsx" class="layui-btn layui-btn-primary layui-border-blue layui-btn-sm" 
+					target="_blank">维修板件</a>
+					<a href="/static/tpl/stock/repair2.xlsx" class="layui-btn layui-btn-primary layui-border-blue layui-btn-sm" 
+					target="_blank">维修元器件</a>
+					<a href="/static/tpl/stock/left.xlsx" class="layui-btn layui-btn-primary layui-border-blue layui-btn-sm"
+					 target="_blank">剩余物料</a>
+					<a href="/static/tpl/stock/oa.xlsx" class="layui-btn layui-btn-primary layui-border-blue layui-btn-sm"
+					 target="_blank">办公设备</a>
+				</div>
             </div>
 			<div class="layui-form-item">
 			    <label class="layui-form-label">说明</label>
@@ -23,30 +32,7 @@
 					物料名称和单位，如果系统没有将按分类自动创建。
 			    </div>
 			</div>
-			<!--div class="layui-form-item">
-			    <label class="layui-form-label">内部编码</label>
-			    <div class="layui-input-block">
-			        <input type="text" name="in_no" lay-verify="required|len" autocomplete="off" min="1" placeholder="请输入编码" class="layui-input">
-			    </div>
-			</div>
-			<div class="layui-form-item">
-			    <label class="layui-form-label">型号</label>
-			    <div class="layui-input-block">
-			        <input type="text" name="model" lay-verify="required|len" autocomplete="off" min="1" placeholder="请输入型号" class="layui-input">
-			    </div>
-			</div>
-			<div class="layui-form-item">
-			    <label class="layui-form-label">数量</label>
-			    <div class="layui-input-block">
-			        <input type="number" value="1" name="stock_num" id="num" lay-verify="required|len" autocomplete="off" min="1" placeholder="请输入数量" class="layui-input">
-			    </div>
-			</div>
-			<div class="layui-form-item">
-			    <label class="layui-form-label">入库时间</label>
-			    <div class="layui-input-block">
-			        <input type="text" name="in_time" id="in_time" lay-verify="required|len" autocomplete="off" min="1" placeholder="请输入入库时间" class="layui-input">
-			    </div>
-			</div-->
+			
 			<div class="layui-form-item">
 			    <label class="layui-form-label">xlsx文件</label>
 			    
@@ -78,11 +64,6 @@
     </div>
     <div class="bottom">
         <div class="button-container">
-			<input type="hidden" name="id" />
-			<input type="hidden" name="goods_name" >
-			<input type="hidden" name="goods_id" >
-			<input type="hidden" name="unit_name" >
-			<input type="hidden" name="cate_id" >
             <button type="submit" class="pear-btn pear-btn-primary pear-btn-sm" lay-submit="" lay-filter="stock_in-save">
                 <i class="layui-icon layui-icon-ok"></i>
                 导入
@@ -129,37 +110,13 @@
 		        
 		    }
 		});
-		laydate.render({
-		  elem: '#in_time'
-		  ,value: new Date() 
-		  ,isInitValue: true //是否允许填充初始值，默认为 true
-		});
-		laydate.render({
-		  elem: '#oa_buy_time'
-		  ,value: new Date() 
-		  ,isInitValue: true //是否允许填充初始值，默认为 true
-		});
-		const renderEl = (res) => {
-			$('#localarea').text(res.cate_name + ' > ' + res.goods_name + '('+res.unit_name+')')
-			form.val('editform', res)
-			res.storehouse.forEach(el => {
+		
+		
+       _get(layui, 'stock_in/importBefore', res => {
+			res.forEach(el => {
 				$("#area-area").append(new Option(el.name, el.id));
 			})
 			form.render("select");
-			// if(res.cate_id === 4 || res.cate_id === 5) {
-			// 	$('#repair').show();
-			// }
-			// else if(res.cate_id === 6) {
-			// 	$('#left').show();
-			// }
-			// else if(res.cate_id === 7) {
-			// 	$('#oa').show();
-			// }
-		}
-       _get(layui, 'stock_in/addBefore?goods_id=' + goods_id, res => {
-       	//console.log(res)
-       	//goodsInfo = res;
-       	renderEl(res)
        });
 
         //监听提交

@@ -1,0 +1,40 @@
+{{#  if(d.length > 0){ }}
+  {{#  layui.each(d, function(index, item){ }}
+  <div class="layui-form-item">
+      <label class="layui-form-label">{{ item.cname }}</label>
+      <div class="layui-input-block">
+		  {{#  if(item.ctype == 'input'){ }}
+          <input type="text" name="ext.{{ item.ckey }}" id="{{ item.ckey }}" value="{{ item.cdef }}" autocomplete="off" placeholder="请输入{{ item.cname }}" class="layui-input">
+		  {{#  } else if(item.ctype == 'radio'){  }} 
+		  		{{#  if(item.dict.length > 0){  }}
+		  				{{#  layui.each(item.dict, function(di, dd){ }}
+		  				<input type="radio" {{ di === 0 ? 'checked' : '' }} name="ext.{{ item.ckey }}" value="{{ dd.name }}" title="{{ dd.name }}">
+		  				{{#  }); }}
+		  		{{#  } }}
+		  {{#  } else if(item.ctype == 'checkbox'){  }} 
+				{{#  if(item.dict.length > 0){  }}
+						{{#  layui.each(item.dict, function(di, dd){ }}
+						<input type="checkbox" name="ext.{{ item.ckey }}" value="{{ dd.name }}" title="{{ dd.name }}">
+						{{#  }); }}
+				{{#  } }}
+		  {{#  } else if(item.ctype == 'select'){  }}
+						<select name="ext.{{ item.ckey }}">
+		  				{{#  if(item.dict.length > 0){  }}
+		  						{{#  layui.each(item.dict, function(di, dd){ }}
+		  						<option value="{{ dd.name }}">{{ dd.name }}</option>
+		  						{{#  }); }}
+		  				{{#  } }}
+						</select>
+		   {{#  } else if(item.ctype == 'textarea'){  }}
+			<textarea name="ext.{{ item.ckey }}" placeholder="请输入{{ item.cname }}" class="layui-textarea">{{ item.cdef }}</textarea>
+		   {{#  } else if(item.ctype == 'timeinput'){  }}
+		  <input type="text" name="ext.{{ item.ckey }}" id="{{ item.ckey }}" value="{{ item.cdef }}" autocomplete="off" placeholder="请输入{{ item.cname }}" class="layui-input">
+		  {{#  }  }}
+		  
+	  </div>
+  </div>
+  {{#  }); }}
+  
+{{#  } }} 
+
+  

@@ -1,7 +1,7 @@
 const Base = require('./base.js');
 /**
  * @class
- * @apiDefine profile 项目文件管理
+ * @apiDefine project_file 项目文件管理
  */
 module.exports = class extends Base {
 
@@ -12,10 +12,10 @@ module.exports = class extends Base {
 			param
 		} = this.get();
 		let wsql = {
-			'user_id': this.adminId
+			'a.group_id': this.groupId
 		};
 		if (param) wsql = this.parseSearch(param, wsql);
-		let list = await this.model('profile')
+		let list = await this.model('project_file')
 			.where(wsql)
 			.alias('a')
 			.join({
@@ -33,7 +33,14 @@ module.exports = class extends Base {
 		// 		id: el.type
 		// 	}).getField('name', true)
 		// })
-		let count = await this.model('profile').where(wsql).count();
+		let count = await this.model('project_file').where(wsql)
+			.alias('a')
+			.join({
+				table: 'project_type',
+				join: 'left', //join 方式，有 left, right, inner 3 种方式
+				as: 'c', // 表别名
+				on: ['type', 'id'] //ON 条件
+			}).count();
 		return this.success({
 			list,
 			count
@@ -48,23 +55,24 @@ module.exports = class extends Base {
 	async addAction() {
 		let post = this.post();
 		post.user_id = this.adminId;
-		let id = await this.model('profile').add(post);
+		post.group_id = this.groupId;
+		let id = await this.model('project_file').add(post);
 		return this.success(id);
 	}
 
 	async editAction() {
 		let post = this.post();
-		let has = await this.model('profile').where({
+		let has = await this.model('project_file').where({
 			id: post.id
 		}).find();
 		if (think.isEmpty(has)) return this.fail('编辑的数据不存在');
-		await this.model('profile').update(post);
+		await this.model('project_file').update(post);
 		return this.success()
 	}
 
 	async editBeforeAction() {
 		let id = this.get('id');
-		let data = await this.model('profile').where({
+		let data = await this.model('project_file').where({
 			id
 		}).find()
 		if (think.isEmpty(data)) return this.fail('数据为空')
@@ -79,11 +87,11 @@ module.exports = class extends Base {
 
 	async delAction() {
 		let id = this.post('id');
-		if (!await this.hasData('profile', {
+		if (!await this.hasData('project_file', {
 				id
 			}))
 			return this.fail('数据不存在')
-		await this.model('profile').where({
+		await this.model('project_file').where({
 			id
 		}).delete()
 		return this.success()

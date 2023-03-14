@@ -13,7 +13,7 @@
 						<div class="layui-form-item layui-inline">
 							<label class="layui-form-label">名称</label>
 							<div class="layui-input-inline">
-								<input type="text" name="<a.name>" placeholder="" class="layui-input">
+								<input type="text" name="name" placeholder="" class="layui-input">
 							</div>
 						</div>
 						<div class="layui-form-item layui-inline">
@@ -118,7 +118,7 @@
 					headers : getHeader(),
 					parseData: function(res) {
 						//console.log(res.data.cates.cate.child)
-						cats = res.data.cates.cate.child;
+						cats = res.data.cates;
 						return {
 							"code": res.code, //解析接口状态
 							"msg": res.message, //解析提示文本

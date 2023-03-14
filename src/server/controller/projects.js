@@ -11,7 +11,7 @@ module.exports = class extends Base {
 			limit,
 			param
 		} = this.get();
-		let wsql = {};
+		let wsql = {group_id : this.groupId};
 		if (param) wsql = this.parseSearch(param, wsql);
 		let list = await this.model('project').where(wsql).page(page, limit).order('project_id desc').select();
 		let count = await this.model('project').where(wsql).count();
@@ -31,6 +31,7 @@ module.exports = class extends Base {
 		post.user_id = this.adminId;
 		post.start_time = this.now(post.start_time);
 		post.end_time = this.now(post.end_time);
+		post.group_id = this.groupId;
 		let project_id = await this.model('project').add(post);
 		return this.success(project_id);
 	}

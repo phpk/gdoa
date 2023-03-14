@@ -1,7 +1,7 @@
 const stockBase = require('./stock_base.js');
 /**
  * @class
- * @apiDefine stock_goods 物料管理管理
+ * @apiDefine stock_goods 物料管理
  */
 module.exports = class extends stockBase {
 
@@ -11,34 +11,24 @@ module.exports = class extends stockBase {
 			limit,
 			param
 		} = this.get();
-		let wsql = {};
+		let wsql = {group_id : this.groupId};
 		if (param) wsql = this.parseSearch(param, wsql);
+		let cates = await this.getCate();
 		let list = await this.model('stock_goods')
 			.where(wsql)
-			.alias('a')
-			.join({
-				table: 'stock_dict',
-				join: 'left', //join 方式，有 left, right, inner 3 种方式
-				as: 'c', // 表别名
-				on: ['cate_id', 'id'] //ON 条件
-			})
-			.page(page, limit)
-			.field('a.*,c.name as cname')
 			.page(page, limit)
 			.order('id desc')
 			.select();
+		list.forEach(d => {
+			let cateData = cates.find(e => e.id == d.cate_id)
+			if(cateData) {
+				d.cname = cateData.name;
+			}
+		})
 		let count = await this.model('stock_goods')
 		.where(wsql)
-		.alias('a')
-		.join({
-			table: 'stock_dict',
-			join: 'left', //join 方式，有 left, right, inner 3 种方式
-			as: 'c', // 表别名
-			on: ['cate_id', 'id'] //ON 条件
-		})
-		.field('a.*,c.name as cname')
 		.count();
-		let cates = await this.getCate();
+		
 		return this.success({
 			list,
 			count,
@@ -52,6 +42,7 @@ module.exports = class extends stockBase {
 	async addAction() {
 		let post = this.post();
 		post.user_id = this.adminId;
+		post.group_id = this.groupId;
 		let id = await this.model('stock_goods').add(post);
 		return this.success(id);
 	}

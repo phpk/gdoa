@@ -44,7 +44,12 @@
 		</script>
 
 		<script type="text/html" id="stock_storehouse-bar">
-			<button class="pear-btn pear-btn-primary pear-btn-sm" lay-event="edit"><i class="layui-icon layui-icon-edit"></i></button>
+			<button class="pear-btn pear-btn-warming pear-btn-sm" lay-event="details">
+			    <i class="layui-icon layui-icon-transfer"></i>
+			</button>
+			<button class="pear-btn pear-btn-primary pear-btn-sm" lay-event="edit">
+				<i class="layui-icon layui-icon-edit"></i>
+			</button>
 		    <button class="pear-btn pear-btn-danger pear-btn-sm" lay-event="remove"><i class="layui-icon layui-icon-delete"></i></button>
 		</script>
 		<script type="text/html" id="stock_storehouse-time">
@@ -89,7 +94,7 @@
 							title: '操作',
 							toolbar: '#stock_storehouse-bar',
 							align: 'center',
-							width: 130
+							width: 180
 						}
 					]
 				]
@@ -124,6 +129,8 @@
 						window.remove(obj);
 					} else if (obj.event === 'edit') {
 						window.edit(obj);
+					} else if(obj.event === 'details') {
+						window.details(obj);
 					}
 				});
 
@@ -182,6 +189,18 @@
 						anim: 1,
 						maxmin: true,
 						content: MODULE_PATH + 'edit.html?id=' + obj.data.id
+					});
+				}
+				window.details = function(obj) {
+					layer.open({
+						type: 2,
+						title: '货架管理-' + obj.data.name,
+						shade: 0.1,
+						offset: 'rt',
+						area: ['80%', '100%'],
+						anim: 1,
+						maxmin: true,
+						content: '../stock_bar/list.html?area_id=' + obj.data.id
 					});
 				}
 				window.remove = function(obj){
