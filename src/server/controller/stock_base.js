@@ -86,16 +86,35 @@ module.exports = class extends Base {
 		return rt;
 	}
 	async upStorehouseCache() {
-		let group_id = this.groupId
+		let group_id = this.groupId;
 		let list = await this.model('stock_storehouse').where({
 			group_id
 		}).order("id asc").select()
-		list.forEach(async (d) => {
-			d.barList = await this.model('stock_bar').where({
-				groud_id,
-				area_id: d
-			}).select()
-		})
+		for(let i = 0; i < list.length; i++) {
+			list[i].title = list[i].name;
+			list[i].pid = 0;
+			list[i].child = await this.model('stock_bar').where({
+				//groud_id,
+				area_id: list[i].id
+			}).select();
+			list[i].child.forEach(e => {
+				e.topname = list[i].name;
+				e.title = e.name;
+				e.pid = list[i].id;
+			})
+		}
+		// list.forEach(async (d) => {
+		// 	d.title = d.name;
+		// 	d.pid = 0;
+		// 	d.child = await this.model('stock_bar').where({
+		// 		//groud_id,
+		// 		area_id: d.id
+		// 	}).select()
+		// 	d.child.forEach(e => {
+		// 		e.title = e.name;
+		// 		e.pid = d.id;
+		// 	})
+		// })
 		await this.cache(this.groupId + '_stock_area', list, {
 			timeout: TIMEOUT
 		});

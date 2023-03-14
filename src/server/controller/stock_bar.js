@@ -16,6 +16,8 @@ module.exports = class extends stockBase {
 
     async addAction() {
         let post = this.post();
+		post.group_id = this.groupId;
+		post.user_id = this.adminId;
         let id = await this.model('stock_bar').add(post);
 		await this.upStorehouseCache();
         return this.success(id);

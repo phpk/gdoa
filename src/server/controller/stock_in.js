@@ -2,6 +2,7 @@ const stockBase = require('./stock_base.js');
 const path = require('path');
 //const LuckyExcel = require('luckyexcel');
 const xlsx = require('node-xlsx').default;
+const stream = require('stream');
 /**
  * @class
  * @apiDefine stock_in 入库单管理
@@ -14,10 +15,12 @@ module.exports = class extends stockBase {
 			limit,
 			param
 		} = this.get();
-		let wsql = {group_id : this.groupId};
+		let wsql = {
+			group_id: this.groupId
+		};
 		if (param) wsql = this.parseSearch(param, wsql);
 		let cates = await this.getCate();
-		
+
 		let area = await this.getArea();
 		let list = await this.model('stock_in')
 			.where(wsql)
@@ -55,122 +58,98 @@ module.exports = class extends stockBase {
 		data.goods_name = data.name;
 		data.goods_id = id;
 		//delete data.id;
-		data.storehouse = await this.getArea()
+		data.area = await this.getArea()
 		return this.success(data);
 	}
-
-	async addAction() {
-		let post = this.post();
-		if (!post.stock_num || post.stock_num < 1) return this.fail('数量错误');
-		post.pan_num = post.stock_num;
-		let id = await this.model('stock_in').add(post);
-		await this.model('stock_goods').where({
-			id: post.goods_id
-		}).update({
-			stock_num: ['exp', 'stock_num+' + post.stock_num],
-			pan_num: ['exp', 'pan_num+' + post.stock_num]
-		});
-		//记录地区地址
-		
-		let {
-			rt,
-			tabName
-		} = this.parseIn(post.cate_id * 1, post, id);
-		await this.model(tabName).add(rt);
-
-		return this.success(id);
-	}
-	parseIn(cid, post, id = '') {
-		let rt = {},
-			tabName = '';
-		if (cid === 4 || cid === 5) {
-			rt = {
-				repair_cate: post.repair_cate,
-				repair_space: post.repair_space,
-				repair_no: post.repair_no
-			}
-			tabName = 'stock_repair'
-		} else if (cid === 6) {
-			rt = {
-				left_desc: post.left_desc,
-				left_factory: post.left_factory,
-				left_user: post.left_user,
-				left_price: post.left_price,
-				left_belong_pro: post.left_belong_pro,
-
-			}
-			tabName = 'stock_left'
-		} else if (cid === 7) {
-			rt = {
-				oa_no: post.oa_no,
-				oa_buy_time: post.oa_buy_time,
-				oa_buyer: post.oa_buyer,
-				oa_state_address: post.oa_state_address,
-				oa_user: post.oa_user,
-				oa_status: post.oa_status,
-				oa_factory: post.oa_factory,
-				oa_price: post.oa_price,
-
-			}
-			tabName = 'stock_oa'
-		}
-		if (id) rt.in_id = id;
-		return {
-			rt,
-			tabName
-		};
-	}
-	async editAction() {
-		let post = this.post();
-		let has = await this.model('stock_in').where({
-			id: post.id
-		}).find();
-		if (think.isEmpty(has)) return this.fail('编辑的数据不存在');
-		await this.model('stock_in').update(post);
-		let {
-			rt,
-			tabName
-		} = this.parseIn(has.cate_id, post);
-		await this.model(tabName).where({
-			in_id: has.id
-		}).update(rt);
-		return this.success()
-	}
-
 	async editBeforeAction() {
 		let id = this.get('id');
 		let data = await this.model('stock_in').where({
 			id
 		}).find()
 		if (think.isEmpty(data)) return this.fail('数据为空')
-		let {
-			//unit,
-			cate
-		} = await this.getCate();
+		let cates = await this.getCate(data.cate_id);
 		//console.log(unit)
 		//data.unit_name = unit.child.find(el => el.id == data.unit_id).name;
-		data.cate_name = cate.child.find(el => el.id == data.cate_id).name;
+		data.cate_name = cates.name;
+		data.in_time = think.datetime(new Date(data.in_time).getTime(), 'YYYY-MM-DD')
+		//data.ext = cates.ext;
 		//data.goods_name = data.name;
-		data.storehouse = await this.model('stock_storehouse').select()
-		let mdata;
-		if (data.cate_id === 4 || data.cate_id === 5) {
-			mdata = await this.model('stock_repair').where({
-				in_id: data.id
-			}).find()
-		} else if (data.cate_id === 6) {
-			mdata = await this.model('stock_left').where({
-				in_id: data.id
-			}).find()
-		} else if (data.cate_id === 7) {
-			mdata = await this.model('stock_oa').where({
-				in_id: data.id
-			}).find()
+		let dataArea = await this.getArea(data.area_id);
+		data.area_name = dataArea.name;
+		if(data.bar_id > 0)
+			data.bar_name = dataArea.child.find(d => data.bar_id == d.id).name;
+		if(data.ext) {
+			let extData = JSON.parse(data.ext);
+			for(let p in extData) {
+				data["ext." + p] = extData[p];
+			}
+			data.ext = cates.ext;
 		}
-		return this.success({
-			...data,
-			...mdata
-		});
+		return this.success(data);
 	}
+	async addAction() {
+		let post = this.post();
+		if (!post.stock_num || post.stock_num < 1) return this.fail('数量错误');
+		//post.pan_num = post.stock_num;
+		if (post.area_id < 1) return this.fail('请选择仓库');
+		let ext = {};
+		for (let p in post) {
+			//let val = post[p]
+			if (p.includes('ext.')) {
+				let n = p.replace('ext.', '');
+				ext[n] = post[p];
+			}
+		}
+		post.ext = JSON.stringify(ext);
+		post.group_id = this.groupId;
+		post.user_id = this.adminId;
+		let id = await this.model('stock_in').add(post);
+		await this.model('stock_goods').where({
+			id: post.goods_id
+		}).update({
+			stock_num: ['exp', 'stock_num+' + post.stock_num],
+			//pan_num: ['exp', 'pan_num+' + post.stock_num]
+		});
+		//记录地区地址货架数目
+		let numSql = {
+			group_id: this.groupId,
+			area_id: post.area_id,
+			bar_id: post.bar_id,
+			goods_id: post.goods_id
+		}
+		let hasNum = await this.model('stock_num')
+			.where(numSql).find()
+		if (think.isEmpty(hasNum)) {
+			numSql.stock_num = post.stock_num;
+			await this.model('stock_num').add(numSql)
+		}else{
+			let stock_num = post.stock_num*1 + hasNum.stock_num*1;
+			await this.model('stock_num').where({id : hasNum.id}).update({stock_num});
+		}
+		return this.success(id);
+	}
+	
+	async editAction() {
+		let post = this.post();
+		let has = await this.model('stock_in').where({
+			id: post.id
+		}).find();
+		if (think.isEmpty(has)) return this.fail('编辑的数据不存在');
+		if (post.area_id < 1) return this.fail('请选择仓库');
+		let ext = {};
+		for (let p in post) {
+			//let val = post[p]
+			if (p.includes('ext.')) {
+				let n = p.replace('ext.', '');
+				ext[n] = post[p];
+			}
+		}
+		post.ext = JSON.stringify(ext);
+		await this.model('stock_in').update(post);
+		return this.success()
+	}
+
+
 
 	async delAction() {
 		let id = this.post('id');
@@ -179,32 +158,41 @@ module.exports = class extends stockBase {
 		}).find()
 		if (think.isEmpty(data))
 			return this.fail('数据不存在')
-		if (data.stock_num > 0 || data.pan_num > 0)
-			return this.fail('库存数或盘点数大于0')
+		// if (data.stock_num > 0 || data.pan_num > 0)
+		// 	return this.fail('库存数或盘点数大于0')
 		//判断出库单
 		//判断盘点单
 		//判断申请单
 		await this.model('stock_in').where({
 			id
 		}).delete()
-		if (data.cate_id === 4 || data.cate_id === 5) {
-			await this.model('stock_repair').where({
-				in_id: data.id
-			}).delete()
-		} else if (data.cate_id === 6) {
-			await this.model('stock_left').where({
-				in_id: data.id
-			}).delete()
-		} else if (data.cate_id === 7) {
-			await this.model('stock_oa').where({
-				in_id: data.id
-			}).delete()
-		}
 		return this.success()
 	}
 	async importBeforeAction() {
-		let storehouse = await this.model('stock_storehouse').select()
-		return this.success(storehouse);
+		let area = await this.getArea()
+		let cates = await this.getCate()
+		return this.success({area, cates});
+	}
+	async downXlsxTplAction() {
+		let cid = this.get('cid');
+		const data = [
+		  [1, 2, 3],
+		  [true, false, null, 'sheetjs'],
+		  ['foo', 'bar', new Date('2014-02-19T14:30Z'), '0.3'],
+		  ['baz', null, 'qux'],
+		];
+		let buffer = xlsx.build([{name: 'mySheetName', data: data}]);
+		this.ctx.set({
+			'Content-Type' : 'application/octet-stream;charset=utf-8;',
+			"Content-Disposition" : `attachment;filename=${encodeURIComponent('结果呢')}.xlsx`
+		});
+		
+		// let readStream = new stream.PassThrough();
+		// readStream.end(buffer);
+		// readStream.pipe(this.ctx);
+		this.ctx.body = buffer;
+		return;
+		
 	}
 	async importAction() {
 		let data = this.post()
@@ -259,71 +247,71 @@ module.exports = class extends stockBase {
 		//console.log(hasGoods)
 		//console.log(hasUnits)
 		//return;
-		let noGoods = [], 
+		let noGoods = [],
 			noGoodsUnits = [],
-			noUnits = [], 
-			unitIds = [], 
+			noUnits = [],
+			unitIds = [],
 			unitNames = [],
 			newUnitId = [],
-			
+
 			goodsNew = [],
 			goodsIds = [],
 			goodsNames = [],
 			newGoodsIds = [];
-			
-		if(hasGoods.name.length > 0) {
-			goodsName.forEach((d,i) => {
-				if(!hasGoods.name.includes(d)){
+
+		if (hasGoods.name.length > 0) {
+			goodsName.forEach((d, i) => {
+				if (!hasGoods.name.includes(d)) {
 					noGoods.push(d)
 					noGoodsUnits.push(goodsUnits[i])
 				}
 			})
-		}else{
+		} else {
 			noGoods = goodsName
 			noGoodsUnits = goodsUnits
 		}
 		units.forEach(d => {
-			if(!hasUnits.name.includes(d)) {
+			if (!hasUnits.name.includes(d)) {
 				noUnits.push(d)
 			}
 		})
-		if(noUnits.length > 0) {
+		if (noUnits.length > 0) {
 			let addUnits = []
 			noUnits.forEach(d => {
 				let s = {
-					pid : 2,
-					name : d,
-					key : 'unit',
-					enable : 1,
-					desc : ''
+					pid: 2,
+					name: d,
+					key: 'unit',
+					enable: 1,
+					desc: ''
 				}
 				addUnits.push(s)
 			})
 			newUnitId = await this.model('stock_dict').addMany(addUnits)
-			
+
 		}
 		unitIds = hasUnits.id.concat(newUnitId)
 		unitNames = hasUnits.name.concat(noUnits)
-		
+
 		//console.log(unitIds)
 		//console.log(unitNames)
 		//console.log(saveData)
 		//console.log(noGoodsUnits)
-		if(noGoods.length > 0) {
+		if (noGoods.length > 0) {
 			noGoods.forEach((d, i) => {
 				let k = unitNames.indexOf(noGoodsUnits[i])
 				let s = {
-					name : d,
-					stock_num : 0,
-					pan_num : 0,
-					desc : '',
-					status : 0,
-					user_id : this.adminId,
-					cate_id : cid,
-					unit_id : unitIds[k] //先设置为0 最后update更新
+					name: d,
+					stock_num: 0,
+					pan_num: 0,
+					desc: '',
+					status: 0,
+					user_id: this.adminId,
+					cate_id: cid,
+					unit_id: unitIds[k] //先设置为0 最后update更新
 				}
 				goodsNew.push(s)
-				
+
 			})
 			newGoodsIds = await this.model('stock_goods').addMany(goodsNew)
 		}
@@ -341,7 +329,7 @@ module.exports = class extends stockBase {
 			d.pan_num = d.stock_num;
 			//console.log(d.in_time)
 			//console.log(this.now(d.in_time))
-			d.in_time = think.datetime(new Date(d.in_time).getTime() + 86400000,'YYYY-MM-DD')
+			d.in_time = think.datetime(new Date(d.in_time).getTime() + 86400000, 'YYYY-MM-DD')
 			let id = await this.model('stock_in').add(d);
 			await this.model('stock_goods').where({
 				id: d.goods_id
@@ -349,8 +337,9 @@ module.exports = class extends stockBase {
 				stock_num: ['exp', 'stock_num+' + d.stock_num],
 				pan_num: ['exp', 'pan_num+' + d.stock_num]
 			});
-			if(cid === 7) {
-				d.oa_buy_time = think.datetime(new Date(d.oa_buy_time).getTime() + 86400000,'YYYY-MM-DD')
+			if (cid === 7) {
+				d.oa_buy_time = think.datetime(new Date(d.oa_buy_time).getTime() + 86400000,
+					'YYYY-MM-DD')
 			}
 			let {
 				rt,

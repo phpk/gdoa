@@ -44,115 +44,17 @@
 			<div class="layui-form-item">
 			    <label class="layui-form-label">仓库地址</label>
 			    <div class="layui-input-block">
-			        <select name="area_id" lay-search id="area-area">
-			        </select>
+			        <!--select name="area_id" lay-search id="area-area">
+			        </select-->
+					<button class="layui-btn" id="chooseArea">
+					    <span id="areaText">选择仓库</span>
+					    <i class="layui-icon layui-icon-down layui-font-12"></i>
+					</button>
+					<span id="barText"></span>
+					
 			    </div>
 			</div>
-			<!--div id="repair" style="display: none;">
-				<div class="layui-form-item">
-				    <label class="layui-form-label">类型</label>
-				    <div class="layui-input-block">
-				        <input type="text" name="repair_cate" autocomplete="off" min="1" placeholder="请输入类型" class="layui-input">
-				    </div>
-				</div>
-				<div class="layui-form-item">
-				    <label class="layui-form-label">送修单号</label>
-				    <div class="layui-input-block">
-				        <input type="text" name="repair_space" autocomplete="off" min="1" placeholder="请输入送修单号" class="layui-input">
-				    </div>
-				</div>
-				<div class="layui-form-item">
-				    <label class="layui-form-label">送修单位</label>
-				    <div class="layui-input-block">
-				        <input type="text" name="repair_no" autocomplete="off" min="1" placeholder="请输入送修单位" class="layui-input">
-				    </div>
-				</div>
-				
-			</div>
-			<div id="left" style="display: none;">
-				<div class="layui-form-item">
-				    <label class="layui-form-label">详情</label>
-				    <div class="layui-input-block">
-				        <input type="text" name="left_desc" autocomplete="off" min="1" placeholder="请输入详情" class="layui-input">
-				    </div>
-				</div>
-				<div class="layui-form-item">
-				    <label class="layui-form-label">厂家</label>
-				    <div class="layui-input-block">
-				        <input type="text" name="left_factory" autocomplete="off" min="1" placeholder="请输入厂家" class="layui-input">
-				    </div>
-				</div>
-				<div class="layui-form-item">
-				    <label class="layui-form-label">入库经手人</label>
-				    <div class="layui-input-block">
-				        <input type="text" name="left_user" autocomplete="off" min="1" placeholder="请输入入库经手人" class="layui-input">
-				    </div>
-				</div>
-				<div class="layui-form-item">
-				    <label class="layui-form-label">单价</label>
-				    <div class="layui-input-block">
-				        <input type="number" name="left_price" autocomplete="off" min="1" placeholder="请输入单价" class="layui-input">
-				    </div>
-				</div>
-				<div class="layui-form-item">
-				    <label class="layui-form-label">隶属项目</label>
-				    <div class="layui-input-block">
-				        <input type="text" name="left_belong_pro" autocomplete="off" min="1" placeholder="请输入隶属项目" class="layui-input">
-				    </div>
-				</div>
-				
-			</div>
-			<div id="oa" style="display: none;">
-				<div class="layui-form-item">
-				    <label class="layui-form-label">系统编码</label>
-				    <div class="layui-input-block">
-				        <input type="text" name="oa_no" autocomplete="off" min="1" placeholder="请输入系统编码" class="layui-input">
-				    </div>
-				</div>
-				<div class="layui-form-item">
-				    <label class="layui-form-label">购买时间</label>
-				    <div class="layui-input-block">
-				        <input type="text" name="oa_buy_time"  id="oa_buy_time" autocomplete="off" min="1" placeholder="请输入购买时间" class="layui-input">
-				    </div>
-				</div>
-				<div class="layui-form-item">
-				    <label class="layui-form-label">采购人</label>
-				    <div class="layui-input-block">
-				        <input type="text" name="oa_buyer" autocomplete="off" min="1" placeholder="请输入采购人" class="layui-input">
-				    </div>
-				</div>
-				<div class="layui-form-item">
-				    <label class="layui-form-label">存放地址</label>
-				    <div class="layui-input-block">
-				        <input type="text" name="oa_state_address" autocomplete="off" min="1" placeholder="请输入存放地址" class="layui-input">
-				    </div>
-				</div>
-				<div class="layui-form-item">
-				    <label class="layui-form-label">使用人</label>
-				    <div class="layui-input-block">
-				        <input type="text" name="oa_user" autocomplete="off" min="1" placeholder="请输入使用人" class="layui-input">
-				    </div>
-				</div>
-				<div class="layui-form-item">
-				    <label class="layui-form-label">设备状态</label>
-				    <div class="layui-input-block">
-				        <input type="text" name="oa_status" autocomplete="off" min="1" placeholder="请输入设备状态" class="layui-input">
-				    </div>
-				</div>
-				<div class="layui-form-item">
-				    <label class="layui-form-label">厂家</label>
-				    <div class="layui-input-block">
-				        <input type="text" name="oa_factory" autocomplete="off" min="1" placeholder="请输入厂家" class="layui-input">
-				    </div>
-				</div>
-				<div class="layui-form-item">
-				    <label class="layui-form-label">单价</label>
-				    <div class="layui-input-block">
-				        <input type="text" name="oa_price" autocomplete="off" min="1" placeholder="请输入单价" class="layui-input">
-				    </div>
-				</div>
-				
-			</div-->
+		
 			<div id="extarea"></div>
 			<div class="layui-form-item layui-form-text">
 				<label class="layui-form-label">备注</label>
@@ -171,6 +73,8 @@
 			<input type="hidden" name="goods_id" >
 			<!--input type="hidden" name="unit_name" -->
 			<input type="hidden" name="cate_id" >
+			<input  type="hidden" name="area_id" id="area_id" value="0"/>
+			<input  type="hidden" name="bar_id" id="bar_id" value="0"/>
             <button type="submit" class="pear-btn pear-btn-primary pear-btn-sm" lay-submit="" lay-filter="stock_in-save">
                 <i class="layui-icon layui-icon-ok"></i>
                 提交
@@ -182,12 +86,13 @@
 <script src="../../component/layui/layui.js"></script>
 <script src="../../component/ui/ui.js"></script>
 <script>
-    layui.use(['form','layer','tree','laydate', 'laytpl'], function () {
+    layui.use(['form','layer','tree','laydate','dropdown', 'laytpl'], function () {
         let form = layui.form
             , layer = layui.layer
 			, $ = layui.$
             , req = _req()
 			, laydate = layui.laydate
+			, dropdown = layui.dropdown
 			, laytpl = layui.laytpl
 			, goods_id = req.goods_id
 			, goodsInfo;
@@ -229,15 +134,49 @@
         if(req.id) {
             //渲染
             _get(layui, 'stock_in/editBefore?id=' + req.id, res => {
-				renderEl(res)
-                form.val('editform', res)
-				$("#num").attr('readonly', true)
+				//renderEl(res)
+                //form.val('editform', res)
+				//$("#num").attr('readonly', true)
+				$('#localarea').text(res.cate_name + ' > ' + res.goods_name)
+				$('#areaText').text(res.area_name);
+				$('#barText').text(res.bar_name);
+				$.get('../set/field.html', tpl => {
+					laytpl(tpl).render(res.ext, function(html){
+					  $('#extarea').html(html);
+					  form.render();
+					  form.val('editform', res)
+					  $("#num").attr('readonly', true)
+					  res.ext.forEach(d => {
+						  if(d.ctype == 'timeinput') {
+							  laydate.render({
+							    elem: '#' + d.ckey
+							    ,value: new Date() 
+							    ,isInitValue: true //是否允许填充初始值，默认为 true
+							  });
+						  }
+					  })
+					});
+				})
             });
         }else{
 			_get(layui, 'stock_in/addBefore?goods_id=' + goods_id, res => {
-				console.log(res)
+				//console.log(res)
 				//goodsInfo = res;
-				renderEl(res)
+				//renderEl(res)
+				$('#localarea').text(res.cate_name + ' > ' + res.goods_name)
+				dropdown.render({
+				    elem: '#chooseArea',
+				    data: res.area,
+				    trigger: 'hover',
+				    click: (d, el) => {
+				        //console.log(d)
+				        $('#areaText').text(d.topname);
+						$('#barText').text(d.title);
+				        $('#area_id').val(d.pid);
+						$('#bar_id').val(d.id);
+				    }
+				})
+				form.val('editform', res)
 				$.get('../set/field.html', tpl => {
 					laytpl(tpl).render(res.ext, function(html){
 					  $('#extarea').html(html);
