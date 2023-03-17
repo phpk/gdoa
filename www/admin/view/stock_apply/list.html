@@ -11,10 +11,22 @@
 				<form class="layui-form" action="">
 					<div class="layui-form-item">
 						<div class="layui-form-item layui-inline">
-							<label class="layui-form-label">名称</label>
-							<div class="layui-input-inline">
-								<input type="text" name="name" placeholder="" class="layui-input">
-							</div>
+							<input type="number" name="id" placeholder="申请id" class="layui-input">
+						</div>
+						<div class="layui-form-item layui-inline">
+							<input type="text" name="username" placeholder="申请人" class="layui-input">
+						</div>
+						<div class="layui-input-inline" style="width: 100px;">
+							<select name="status">
+								<option value="">选择状态</option>
+								<option value="1">待审核</option>
+								<option value="2">使用中</option>
+								<option value="3">已归还</option>
+								<option value="5">部分归还</option>
+							</select>
+						</div>
+						<div class="layui-form-item layui-inline">
+							<input type="text" name="goods_name" placeholder="商品名称" class="layui-input">
 						</div>
 						<div class="layui-form-item layui-inline">
 							<button class="pear-btn pear-btn-md pear-btn-primary" lay-submit lay-filter="stock_apply-query">
@@ -44,11 +56,21 @@
 		</script>
 
 		<script type="text/html" id="stock_apply-bar">
-			<button class="pear-btn pear-btn-primary pear-btn-sm" lay-event="edit"><i class="layui-icon layui-icon-edit"></i></button>
+			{{# if(d.status == 1){ }}
+			<button class="pear-btn pear-btn-primary pear-btn-sm" lay-event="edit"><i class="layui-icon layui-icon-auz"></i></button>
 		    <button class="pear-btn pear-btn-danger pear-btn-sm" lay-event="remove"><i class="layui-icon layui-icon-delete"></i></button>
+			{{# } }}
 		</script>
-		<script type="text/html" id="stock_apply-time">
-			{{layui.util.toDateString(d.add_time*1000, 'yyyy-MM-dd HH:mm:ss')}}
+		<script type="text/html" id="stock_apply-status">
+			{{# if(d.status == 1){ }}
+				<button class="pear-btn pear-btn-primary pear-btn-sm">待审核</button>
+			{{# }else if(d.status == 2) { }}
+				<button class="pear-btn pear-btn-danger pear-btn-sm">使用中</button>
+			{{# }else if(d.status == 3) { }}
+				<button class="pear-btn pear-btn-success pear-btn-sm">已归还</button>
+			{{# }else if(d.status == 5) { }}
+				<button class="pear-btn pear-btn-sm">部分归还</button>
+			{{# } }}
 		</script>
 		<script src="../../config/config.js"></script>
 		<script src="../../component/layui/layui.js"></script>
@@ -70,12 +92,33 @@
 							align: 'center'
 						},
 						{
-							title: '名称',
-							field: 'name',
+							title: '申请人',
+							field: 'username',
 							align: 'center'
 						},
 						{
-							title: '添加时间',
+							title: '商品名称',
+							field: 'goods_name',
+							align: 'center'
+						},
+						{
+							title: '型号',
+							field: 'model',
+							align: 'center'
+						},
+						{
+							title: '数量',
+							field: 'num',
+							align: 'center'
+						},
+						{
+							title: '状态',
+							field: 'status',
+							align: 'center',
+							templet: '#stock_apply-status'
+						},
+						{
+							title: '申请时间',
 							field: 'add_time',
 							align: 'center',
 							//templet: '#stock_apply-time'
@@ -84,7 +127,8 @@
 							title: '操作',
 							toolbar: '#stock_apply-bar',
 							align: 'center',
-							width: 130
+							width: 130,
+							fixed : 'right'
 						}
 					]
 				]
@@ -163,20 +207,20 @@
 						area: ['80%', '100%'],
 						anim: 1,
 						maxmin: true,
-						content: MODULE_PATH + 'edit.html'
+						content: MODULE_PATH + 'check.html'
 					});
 				}
 
 				window.edit = function(obj) {
-					layer.open({
-						type: 2,
-						title: '修改',
-						shade: 0.1,
-						offset: 'rt',
-						area: ['80%', '100%'],
-						anim: 1,
-						maxmin: true,
-						content: MODULE_PATH + 'edit.html?id=' + obj.data.id
+					layer.confirm('审核通过后库存将减少', {icon: 3, title:'提示'}, function(index){
+					    layer.close(index);
+					    _post(layui, 'stock_apply/edit',{id : obj.data.id}, res => {
+							layer.msg('审核成功',{icon:1,time:1000},() => {
+								table.reload('stock_apply-table')
+							});
+						}, err => {
+							//layer.msg('删除失败',{icon:2,time:1000});
+						})
 					});
 				}
 				window.remove = function(obj){

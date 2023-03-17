@@ -55,7 +55,8 @@ exports.model = {
     port: conf.mysql.port,
     user: conf.mysql.user,
     password: conf.mysql.password,
-    dateStrings: conf.mysql.dateStrings
+    dateStrings: conf.mysql.dateStrings,
+	reuseDB: true
   },
   //mongod --dbpath 
   // mongo: {

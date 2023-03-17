@@ -29,7 +29,7 @@
 						<div class="layui-form-item">
 							<label class="layui-form-label">说明</label>
 							<div class="layui-input-block">
-								物料名称和单位，如果系统没有将按分类自动创建。
+								物料名称如果系统没有将按分类自动创建。如使用了字典数据请确保字典数据存在。
 							</div>
 						</div>
 
@@ -82,12 +82,13 @@
 		<script src="../../component/layui/layui.js"></script>
 		<script src="../../component/ui/ui.js"></script>
 		<script>
-			layui.use(['form', 'layer', 'tree', 'laydate', 'upload', 'dropdown'], function() {
+			layui.use(['form', 'layer', 'tree', 'laydate', 'upload', 'dropdown','FileSaver'], function() {
 				let form = layui.form,
 					layer = layui.layer,
 					$ = layui.$,
 					req = _req(),
 					dropdown = layui.dropdown,
+					//FileSaver = layui.FileSaver,
 					upload = layui.upload,
 					laydate = layui.laydate,
 					goods_id = req.goods_id;
@@ -121,34 +122,27 @@
 
 					}
 				});
-				const downloadFile = (fileStream, name, extension, type = "") => {
-					const blob = new Blob([fileStream] type);
-					const fileName = `${name}.${extension}`;
-					if ("download" in document.createElement("a")) {
-						const elink = document.createElement("a");
-						elink.download = fileName;
-						elink.style.display = "none";
-						elink.href = `./` + URL.createObjectURL(blob);
-						document.body.appendChild(elink);
-						elink.click();
-						URL.revokeObjectURL(elink.href);
-						document.body.removeChild(elink);
-					} else {
-						navigator.msSaveBlob(blob, fileName);
-					}
-				};
-
+				
 				_get(layui, 'stock_in/importBefore', res => {
 					res.cates.forEach(el => {
-						let tpl = `<span src="${el.id}" 
-				class="layui-btn cate_tpl layui-btn-primary layui-border-blue layui-btn-sm">${el.name}</span>`;
-						$("#cate_tpl").append(tpl);
-						$("#cate_tpl").click(e => {
-							//console.log()
-							let cid = $(e.target).attr('src') * 1;
-							if (cid)
-								_get(layui, 'stock_in/downXlsxTpl?cid=' + cid)
-						})
+						let tpl = `<span src="${el.id}" class="layui-btn cate_tpl layui-btn-primary layui-border-blue layui-btn-sm">${el.name}</span>`;
+						$("#cate_tpl").append(tpl);	
+					})
+
+					$("#cate_tpl").click(e => {
+						//console.log()
+						let cid = $(e.target).attr('src') * 1;
+						if (cid)
+							_get(layui, 'stock_in/downXlsxTpl?cid=' + cid, d => {
+								//console.log(d)
+								let link = document.createElement('a');
+								link.style.display = 'none';
+								link.href = d.url;
+								link.setAttribute('download',d.filename);
+								document.body.appendChild(link);
+								link.click();
+								document.body.removeChild(link);
+							})
 					})
 					// form.render("select");
 					dropdown.render({

@@ -13,11 +13,38 @@
 						<div class="layui-form-item layui-inline">
 							<label class="layui-form-label">名称</label>
 							<div class="layui-input-inline">
-								<input type="text" name="name" placeholder="" class="layui-input">
+								<input type="text" name="<goods_name>" placeholder="" class="layui-input">
 							</div>
 						</div>
 						<div class="layui-form-item layui-inline">
-							<button class="pear-btn pear-btn-md pear-btn-primary" lay-submit lay-filter="stock_out-query">
+							<label class="layui-form-label">物料分类</label>
+							<div class="layui-input-block">
+								<select name="cate_id" lay-search id="cate-area">
+									<option value="">选择分类</option>
+								</select>
+							</div>
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<div class="layui-form-item layui-inline">
+							<label class="layui-form-label">仓库</label>
+							<div class="layui-input-block">
+								<select name="area_id" lay-search id="area-area" lay-filter="area_select">
+									<option value="">选择仓库</option>
+								</select>
+							</div>
+						</div>
+						<div class="layui-form-item layui-inline">
+							<label class="layui-form-label">货架</label>
+							<div class="layui-input-block">
+								<select name="bar_id" lay-search id="bar-area">
+									<option value="">选择货架</option>
+								</select>
+							</div>
+						</div>
+						<div class="layui-form-item layui-inline">
+							<button class="pear-btn pear-btn-md pear-btn-primary" lay-submit
+								lay-filter="stock_out-query">
 								<i class="layui-icon layui-icon-search"></i>
 								查询
 							</button>
@@ -25,6 +52,7 @@
 								<i class="layui-icon layui-icon-refresh"></i>
 								重置
 							</button>
+		
 						</div>
 					</div>
 				</form>
@@ -37,15 +65,15 @@
 		</div>
 
 		<script type="text/html" id="stock_out-toolbar">
-			<button class="layui-btn layui-btn-primary layui-border-red layui-btn-sm" lay-event="add">
+			<!-- <button class="layui-btn layui-btn-primary layui-border-red layui-btn-sm" lay-event="add">
 		        <i class="layui-icon layui-icon-add-1"></i>
 		        新增
-		    </button>
+		    </button> -->
 		</script>
 
 		<script type="text/html" id="stock_out-bar">
 			<button class="pear-btn pear-btn-primary pear-btn-sm" lay-event="edit"><i class="layui-icon layui-icon-edit"></i></button>
-		    <button class="pear-btn pear-btn-danger pear-btn-sm" lay-event="remove"><i class="layui-icon layui-icon-delete"></i></button>
+		    <!--button class="pear-btn pear-btn-danger pear-btn-sm" lay-event="remove"><i class="layui-icon layui-icon-delete"></i></button-->
 		</script>
 		<script type="text/html" id="stock_out-time">
 			{{layui.util.toDateString(d.add_time*1000, 'yyyy-MM-dd HH:mm:ss')}}
@@ -59,33 +87,74 @@
 				let form = layui.form;
 				let $ = layui.jquery;
 				let common = layui.common;
-
+				
 				let MODULE_PATH = "./";
-
+				let cats = [],
+					area = [];
 				let cols = [
 					[
 						{
 							title: 'ID',
 							field: 'id',
-							align: 'center'
+							align: 'center',
+							minWidth : '60',
 						},
 						{
-							title: '名称',
-							field: 'name',
-							align: 'center'
+							title: '商品名称',
+							field: 'goods_name',
+							align: 'center',
+							minWidth : '100',
+						},
+						
+						{
+							title: '数量',
+							field: 'num',
+							align: 'center',
+							minWidth : '60',
+						},
+						{
+							title: '型号',
+							field: 'model',
+							align: 'center',
+							minWidth : '80',
+						},
+						{
+							title: '类型',
+							field: 'typename',
+							align: 'center',
+							minWidth : '80',
+						},
+						{
+							title: '分类',
+							field: 'cname',
+							align: 'center',
+							minWidth : '100',
+						},
+						{
+							title: '仓库',
+							field: 'addrname',
+							align: 'center',
+							minWidth : '100'
+						},
+						{
+							title: '货架',
+							field: 'barname',
+							align: 'center',
+							minWidth : '100'
 						},
 						{
 							title: '添加时间',
 							field: 'add_time',
 							align: 'center',
+							minWidth : '100'
 							//templet: '#stock_out-time'
 						},
-						{
-							title: '操作',
-							toolbar: '#stock_out-bar',
-							align: 'center',
-							width: 130
-						}
+						// {
+						// 	title: '操作',
+						// 	toolbar: '#stock_out-bar',
+						// 	align: 'center',
+						// 	width: 120
+						// }
 					]
 				]
 
@@ -95,6 +164,8 @@
 					headers : getHeader(),
 					parseData: function(res) {
 						//console.log(res)
+						cats = res.data.cates;
+						area = res.data.area;
 						return {
 							"code": res.code, //解析接口状态
 							"msg": res.message, //解析提示文本
@@ -113,7 +184,15 @@
 						icon: 'layui-icon-refresh',
 					}, 'filter', 'print', 'exports']
 				});
-
+				setTimeout(() => {
+					cats.forEach(el => {
+						$("#cate-area").append(new Option(el.name, el.id));
+					})
+					area.forEach(el => {
+						$("#area-area").append(new Option(el.name, el.id));
+					})
+					form.render("select");
+				}, 1000)
 				table.on('tool(stock_out-table)', function(obj) {
 					if (obj.event === 'remove') {
 						window.remove(obj);

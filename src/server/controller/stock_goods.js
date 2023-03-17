@@ -11,7 +11,9 @@ module.exports = class extends stockBase {
 			limit,
 			param
 		} = this.get();
-		let wsql = {group_id : this.groupId};
+		let wsql = {
+			group_id: this.groupId
+		};
 		if (param) wsql = this.parseSearch(param, wsql);
 		let cates = await this.getCate();
 		let list = await this.model('stock_goods')
@@ -21,14 +23,14 @@ module.exports = class extends stockBase {
 			.select();
 		list.forEach(d => {
 			let cateData = cates.find(e => e.id == d.cate_id)
-			if(cateData) {
+			if (cateData) {
 				d.cname = cateData.name;
 			}
 		})
 		let count = await this.model('stock_goods')
-		.where(wsql)
-		.count();
-		
+			.where(wsql)
+			.count();
+
 		return this.success({
 			list,
 			count,
@@ -43,16 +45,30 @@ module.exports = class extends stockBase {
 		let post = this.post();
 		post.user_id = this.adminId;
 		post.group_id = this.groupId;
+		let has = await this.model('stock_goods')
+			.where({
+				name: post.name,
+				group_id: this.groupId
+			}).find();
+		if (!think.isEmpty(has)) return this.fail('存在相同名称的商品')
 		let id = await this.model('stock_goods').add(post);
 		return this.success(id);
 	}
-	
+
 	async editAction() {
 		let post = this.post();
 		let has = await this.model('stock_goods').where({
 			id: post.id
 		}).find();
 		if (think.isEmpty(has)) return this.fail('编辑的数据不存在');
+		if(has.name != post.name) {
+			let hasName = await this.model('stock_goods')
+				.where({
+					name: post.name,
+					group_id: this.groupId
+				}).find();
+			if (!think.isEmpty(hasName)) return this.fail('存在相同名称的商品')
+		}
 		await this.model('stock_goods').update(post);
 		return this.success()
 	}
@@ -64,7 +80,10 @@ module.exports = class extends stockBase {
 		}).find()
 		if (think.isEmpty(data)) return this.fail('数据为空')
 		let cates = await this.getCate()
-		return this.success({data, cates});
+		return this.success({
+			data,
+			cates
+		});
 	}
 
 	async delAction() {

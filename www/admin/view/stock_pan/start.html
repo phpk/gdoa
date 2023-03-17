@@ -17,19 +17,19 @@
 						<button type="submit" class="layui-btn layui-btn-primary layui-border-blue" lay-submit=""
 							lay-filter="stock_pan-save">
 							<i class="layui-icon layui-icon-ok"></i>
-							确认完结
+							确认发起
 						</button>
 					</div>
-					<div class="layui-input-inline" style="width: 100%;">
+					<div class="layui-input-inline" style="width: 340px;">
 						<i class="layui-icon layui-icon-about"></i>
-						说明：确保每个商品都要盘点。可多选后点击<b>批量设置</b>来设盘点数，盘点后可在状态中选择<b>异常</b>查询，状态全部为<b>已盘点</b>后方可<b>确认完结</b>
+						说明：选中商品后点击<b>批量添加</b> ，再点击<b>确认发起</b>
 					</div>
 				</div>
 
 			</form>
 		</blockquote>
 		<div class="layui-row layui-col-space10">
-			<div class="layui-col-md12">
+			<div class="layui-col-md6">
 				<div class="layui-card">
 
 					<div class="layui-card-body">
@@ -54,14 +54,6 @@
 									</select>
 								</div>
 								<div class="layui-col-xs6 layui-col-sm6 layui-col-md4">
-									<select name="status">
-										<option value="">选择状态</option>
-										<option value="1">盘点中</option>
-										<option value="2">已盘点</option>
-										<option value="99">异常</option>
-									</select>
-								</div>
-								<div class="layui-col-xs6 layui-col-sm6 layui-col-md4">
 									<button class="pear-btn pear-btn-md pear-btn-primary" lay-submit
 										lay-filter="stock_in-query">
 										<i class="layui-icon layui-icon-search"></i>
@@ -73,17 +65,25 @@
 										重置
 									</button>
 								</div>
-								
+								<div class="layui-col-xs6 layui-col-sm6 layui-col-md4">
+									<button type="button" class="layui-btn layui-btn-primary layui-border-blue layui-btn-sm"
+										id="addAllBtn">
+										<i class="layui-icon layui-icon-bluetooth"></i>
+										批量添加
+									</button>
+								</div>
 							</div>
 						</form>
-						<div class="layui-row">
-							<button type="button" class="layui-btn layui-btn-primary layui-border-blue layui-btn-sm"
-								id="addAllBtn">
-								<i class="layui-icon layui-icon-bluetooth"></i>
-								批量设置
-							</button>
-						</div>
 						<table id="pan-type-table" lay-filter="pan-type-table"></table>
+					</div>
+				</div>
+			</div>
+			<div class="layui-col-md6">
+				<div class="layui-card">
+					<div class="layui-card-body">
+						<img src="/admin/component/ui/images/empty.svg" class="empty"
+							style="margin-top: 50px;margin-left: 220px;margin-bottom: 80px;" width="184" height="152">
+						<table id="pan-data-table" lay-filter="pan-data-table"></table>
 					</div>
 				</div>
 			</div>
@@ -97,14 +97,10 @@
 		<input type="checkbox" name="siam_one" title="" lay-skin="primary" data-id="{{ d.id }}"
 			{{#  if (d.enable === 1){ }}disabled="disabled" {{#  } }}>
 	</script>
-	<script type="text/html" id="stock_pan-status">
-	{{# if(d.status == 1){ }}
-		<button class="pear-btn pear-btn-primary pear-btn-sm">盘点中</button>
-	{{# }else if(d.status == 2) { }}
-		<button class="pear-btn pear-btn-danger pear-btn-sm">已盘点</button>
-	{{# }else if(d.status == 3) { }}
-		<button class="pear-btn pear-btn-success pear-btn-sm">已完结</button>
-	{{# } }}
+	<script type="text/html" id="stock_pan-bar">
+		<button class="pear-btn pear-btn-danger pear-btn-sm" lay-event="remove">
+			<i class="layui-icon layui-icon-delete"></i>
+		</button>
 	</script>
 	<script src="../../config/config.js"></script>
 	<script src="../../component/layui/layui.js"></script>
@@ -117,7 +113,32 @@
 				MODULE_PATH = "./",
 				req = _req(),
 				listTable;
-			
+			const data_key = '__stock_pan_data';
+			const getPanData = () => {
+				let rt = localStorage.getItem(data_key);
+				return rt ? JSON.parse(rt) : [];
+			}
+			const setPanData = (data) => {
+				let rt = getPanData();
+				let ids = rt.map(d => {
+					return d.id;
+				})
+				data.forEach(d => {
+					if (!ids.includes(d.id)) {
+						rt.unshift(d)
+					}
+				})
+				return localStorage.setItem(data_key, JSON.stringify(rt))
+			}
+			const savePanData = (data) => {
+				return localStorage.setItem(data_key, JSON.stringify(data))
+			}
+			const delPanData = () => {
+				return localStorage.removeItem(data_key)
+			}
+			//let typeCode;
+			//let objname;
+
 			let cols = [
 				[{
 						templet: "#checkbd",
@@ -127,7 +148,7 @@
 					},
 					{
 						title: 'ID',
-						field: 'in_id',
+						field: 'id',
 						align: 'center',
 						minWidth: '50',
 					},
@@ -138,21 +159,7 @@
 						minWidth: '100',
 					},
 					{
-						title: '盘点数量',
-						field: 'pan_num',
-						align: 'center',
-						minWidth: '120',
-						edit : true
-					},
-					{
-						title: '状态',
-						field: 'status',
-						align: 'center',
-						minWidth : '100',
-						templet: '#stock_pan-status'
-					},
-					{
-						title: '库存数量',
+						title: '数量',
 						field: 'stock_num',
 						align: 'center',
 						minWidth: '80',
@@ -190,17 +197,73 @@
 				]
 			];
 
-			
+			let dataCols = [
+				[{
+						title: 'ID',
+						field: 'id',
+						align: 'center',
+						minWidth: '60',
+					},
+					{
+						title: '物料名称',
+						field: 'goods_name',
+						align: 'center',
+						minWidth: '100',
+					},
+					{
+						title: '数量',
+						field: 'stock_num',
+						align: 'center',
+						minWidth: '80'
+					},
+					{
+						title: '编码',
+						field: 'in_no',
+						align: 'center',
+						minWidth: '80',
+					},
+					{
+						title: '型号',
+						field: 'model',
+						align: 'center',
+						minWidth: '80',
+					},
+					{
+						title: '分类',
+						field: 'cname',
+						align: 'center',
+						minWidth: '100',
+					}, ,
+					{
+						title: '操作',
+						toolbar: '#stock_pan-bar',
+						align: 'center',
+						width: 100,
+						fixed: 'right'
+					}
+				]
+			];
 			let cats = [],
 				area = [];
 			let fromTable = table.render({
 				elem: '#pan-type-table',
-				url: apiUrl + 'stock_pan/list?pan_no=' + req.pan_no,
+				url: apiUrl + 'stock_transfer/listTrans',
 				headers: getHeader(),
 				parseData: function(res) {
 					//console.log(res)
 					cats = res.data.cates;
 					area = res.data.area;
+					let hasData = getPanData()
+					if (hasData && hasData.length > 0) {
+						let ids = hasData.map(d => {
+							return d.id;
+						})
+						res.data.list.forEach(d => {
+							if (ids.includes(d.id)) {
+								d.enable = 1;
+							}
+						})
+					}
 					return {
 						"code": res.code, //解析接口状态
 						"msg": res.message, //解析提示文本
@@ -259,6 +322,31 @@
 				});
 				form.render();
 			});
+			window.renderData = function() {
+				//typeCode = pid;
+				$(".empty").hide();
+
+				listTable = table.render({
+					elem: '#pan-data-table',
+					data: getPanData(),
+					limit: 100,
+					limits: [100, 200, 300, 400, 500],
+					page: true,
+					height: 'full-148',
+					cols: dataCols,
+					skin: 'line',
+					toolbar: false
+				});
+			}
+			table.on('tool(pan-data-table)', function(obj) {
+				if (obj.event === 'remove') {
+					window.remove(obj);
+				}
+			});
+			//保证主表渲染完成
+			setTimeout(() => {
+				window.renderData()
+			}, 500)
 			window.getChecked = () => {
 				let ids = [];
 				$.each($("input[name=siam_one]:checked"), function(i, value) {
@@ -266,24 +354,6 @@
 				});
 				return ids;
 			}
-			table.on('edit(pan-type-table)', function(obj){
-			  let old = $(this).prev().text();
-			   if(obj.value > obj.data.stock_num || obj.value < 0 || isNaN(obj.value)) {
-				   obj.update({trans_num : old});
-				   fromTable.reload()
-				   layer.msg('盘点数不能大于库存数或小于0');
-				   return false;
-			   }
-			   let postData = {
-				   id : obj.data.id,
-				   pan_num : obj.value
-			   }
-			   _post(layui, 'stock_pan/editPanNum', postData, res => {
-				   //layer.msg('')
-				   fromTable.reload()
-			   })
-			});
-			
 			$('#addAllBtn').click(e => {
 				let ids = getChecked()
 				//console.log(ids)
@@ -291,59 +361,55 @@
 					layer.msg('请选择物料')
 					return false;
 				}
-				layer.prompt({
-					formType: 2,
-					value: '',
-					title: '盘点-输入盘点数',
-					area: ['150px', '22px'] //自定义文本域宽高
-				}, function(value, index, elem) {
-				
-					if (value < 0 || isNaN(value)) {
-						layer.msg('请输入正确的盘点数');
-						return false;
-					}
-					//console.log(postData)
-					let postData = {
-						id : ids.join(','),
-						pan_num : value
-					}
-					_post(layui, 'stock_pan/editPanNum', postData, res => {
-						fromTable.reload()
-						layer.close(index);
-				
-					})
-				
-				});
+				//console.log(ids)
+				let list = table.getData('pan-type-table');
+				//console.log(list)
+				let saveData = list.filter(d => {
+					return ids.includes(d.id)
+				})
+				//console.log(saveData)
+				setPanData(saveData);
+				fromTable.reload();
+				window.renderData();
 			})
-			
+			window.remove = function(obj) {
+				//console.log(obj)
+				let data = getPanData(),
+					save = [],
+					id = obj.data.id;
+				//console.log(id)
+				data.forEach(d => {
+					if (d.id !== id) {
+						save.push(d)
+					}
+				})
+				//console.log(save)
+				savePanData(save)
+				fromTable.reload();
+				obj.del()
+				//window.renderData();
+
+			}
 
 			form.on('submit(stock_pan-save)', function(data) {
 				data = data.field;
 
-				let cklist = table.getData('pan-type-table');
-				//console.log(cklist)
+				let cklist = getPanData();
+				//console.log(data)
 				//console.log(table.getData('pan-data-table'))
 				if (cklist.length < 1) {
 					layer.msg('请选择物料')
 					return false
 				}
-				let has = cklist.find(d => {
-					return d.status != 2
-				})
-				//console.log(has)
-				//return false;
-				if(has) {
-					layer.msg('有未完成盘点的数据')
-					return false
-				}
+				let ids = cklist.map(d => {return d.id})
 				let postData = {
-					remark: data.remark,
-					pan_no : req.pan_no
+					id : ids.join(','),
+					remark: data.remark
 				}
 				//console.log(postData)
-				_post(layui, 'stock_pan/edit', postData, res => {
+				_post(layui, 'stock_pan/add', postData, res => {
 					//console.log(res)
-					//delPanData();
+					delPanData();
 					parent.layui.table.reload("stock_pan-table");
 					parent.layer.close(parent.layer.getFrameIndex(window.name)); //关闭当前页
 

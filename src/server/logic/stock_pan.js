@@ -31,8 +31,7 @@ module.exports = class extends think.Logic {
     editAction() {
         this.allowMethods = 'post';
         this.rules = {
-            id: {
-                int: { min: 1 },
+            pan_no: {
                 required: true
             }
         }
@@ -41,8 +40,7 @@ module.exports = class extends think.Logic {
     editBeforeAction() {
         this.allowMethods = 'get';
         this.rules = {
-            id: {
-                int: { min: 1 },
+            pan_no: {
                 required: true
             }
         }
