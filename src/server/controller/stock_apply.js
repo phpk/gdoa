@@ -76,6 +76,15 @@ module.exports = class extends Base {
 		if (think.isEmpty(username)) {
 			return this.fail('用户不存在')
 		}
+		let hasApply = await this.model('stock_apply')
+			.where({
+				user_id : post.user_id,
+				in_id : data.id,
+				status : 1
+			}).find()
+		if(!think.isEmpty(hasApply)) {
+			return this.fail('你已申请过该商品了')
+		}
 		let saveData = {
 			user_id: post.user_id,
 			in_id: data.id,
