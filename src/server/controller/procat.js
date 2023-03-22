@@ -1,13 +1,11 @@
-const Base = require('./base.js');
+const ProjectBase = require('./project_base.js');
+
 /**
  * @class
  * @apiDefine project_type 项目分类管理
  */
-const cates = {
-	1 : '项目分类',
-	2 : '文件分类'
-}
-module.exports = class extends Base {
+
+module.exports = class extends ProjectBase {
 
     async listAction() {
         let { page, limit, param } = this.get();
@@ -15,18 +13,19 @@ module.exports = class extends Base {
         if (param) wsql = this.parseSearch(param, wsql);
         let list = await this.model('project_type').where(wsql).page(page, limit).order('id desc').select();
 		list.forEach(el => {
-			el.cname = cates[el.sys_id]
+			el.cname = this.catesData[el.sys_id]
 		})
         let count = await this.model('project_type').where(wsql).count();
-        return this.success({ list, count })
+        return this.success({ list, count, catesData : this.catesData })
     }
 	async addBeforeAction() {
-	    return this.success(cates);
+	    return this.success(this.catesData);
 	}
     async addAction() {
         let post = this.post();
 		post.group_id = this.groupId;
         let id = await this.model('project_type').add(post);
+        await this.upCache()
         return this.success(id);
     }
 
@@ -35,6 +34,7 @@ module.exports = class extends Base {
         let has = await this.model('project_type').where({ id: post.id }).find();
         if (think.isEmpty(has)) return this.fail('编辑的数据不存在');
         await this.model('project_type').update(post);
+        await this.upCache()
         return this.success()
     }
 
@@ -42,7 +42,7 @@ module.exports = class extends Base {
         let id = this.get('id');
         let data = await this.model('project_type').where({ id }).find()
         if (think.isEmpty(data)) return this.fail('数据为空')
-        return this.success({data,cates});
+        return this.success({data, catesData : this.catesData});
     }
 
     async delAction() {
@@ -50,6 +50,8 @@ module.exports = class extends Base {
         if (!await this.hasData('project_type', { id }))
             return this.fail('数据不存在')
         await this.model('project_type').where({ id }).delete()
+        await this.upCache()
         return this.success()
     }
+    
 }

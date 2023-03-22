@@ -44,11 +44,22 @@
 		</script>
 
 		<script type="text/html" id="stock_back-bar">
-			<button class="pear-btn pear-btn-primary pear-btn-sm" lay-event="edit"><i class="layui-icon layui-icon-edit"></i></button>
-		    <button class="pear-btn pear-btn-danger pear-btn-sm" lay-event="remove"><i class="layui-icon layui-icon-delete"></i></button>
+			{{# if(d.status == 1){ }}
+			<button class="pear-btn pear-btn-primary pear-btn-sm" lay-event="edit">
+				<i class="layui-icon layui-icon-auz"></i>
+			</button>
+		    
+			<button class="pear-btn pear-btn-danger pear-btn-sm" lay-event="remove">
+				<i class="layui-icon layui-icon-delete"></i>
+			</button>
+			{{# } }}
 		</script>
-		<script type="text/html" id="stock_back-time">
-			{{layui.util.toDateString(d.add_time*1000, 'yyyy-MM-dd HH:mm:ss')}}
+		<script type="text/html" id="stock_back-status">
+			{{# if(d.status == 1){ }}
+				<button class="pear-btn pear-btn-primary pear-btn-sm">待审核</button>
+			{{# }else if(d.status == 2) { }}
+				<button class="pear-btn pear-btn-danger pear-btn-sm">已归还</button>
+			{{# } }}
 		</script>
 		<script src="../../config/config.js"></script>
 		<script src="../../component/layui/layui.js"></script>
@@ -70,12 +81,23 @@
 							align: 'center'
 						},
 						{
-							title: '名称',
-							field: 'name',
+							title: '申请id',
+							field: 'apply_id',
 							align: 'center'
 						},
 						{
-							title: '添加时间',
+							title: '状态',
+							field: 'status',
+							align: 'center',
+							templet: '#stock_back-status'
+						},
+						{
+							title: '数量',
+							field: 'num',
+							align: 'center'
+						},
+						{
+							title: '归还时间',
 							field: 'add_time',
 							align: 'center',
 							//templet: '#stock_back-time'
@@ -168,15 +190,15 @@
 				}
 
 				window.edit = function(obj) {
-					layer.open({
-						type: 2,
-						title: '修改',
-						shade: 0.1,
-						offset: 'rt',
-						area: ['80%', '100%'],
-						anim: 1,
-						maxmin: true,
-						content: MODULE_PATH + 'edit.html?id=' + obj.data.id
+					layer.confirm('审核通过后库存将增加', {icon: 3, title:'提示'}, function(index){
+					    layer.close(index);
+					    _post(layui, 'stock_back/edit',{id : obj.data.id}, res => {
+							layer.msg('审核成功',{icon:1,time:1000},() => {
+								table.reload('stock_back-table')
+							});
+						}, err => {
+							//layer.msg('删除失败',{icon:2,time:1000});
+						})
 					});
 				}
 				window.remove = function(obj){

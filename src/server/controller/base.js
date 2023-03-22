@@ -6,7 +6,7 @@ module.exports = class extends think.Controller {
   constructor(ctx) {
     super(ctx);
     this.adminId = 0;
-	this.groupId = 0;
+	  this.groupId = 0;
   }
   async __before() {
     //token校验

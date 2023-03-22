@@ -11,9 +11,13 @@
 				<form class="layui-form" action="">
 					<div class="layui-form-item">
 						<div class="layui-form-item layui-inline">
-							<label class="layui-form-label">名称</label>
 							<div class="layui-input-inline">
-								<input type="text" name="name" placeholder="" class="layui-input">
+								<input type="text" name="name" placeholder="名称" class="layui-input">
+							</div>
+							<div class="layui-input-inline">
+								<select name="sys_id" lay-search id="cate-area">
+									<option value="">选择分类</option>
+								</select>
 							</div>
 						</div>
 						<div class="layui-form-item layui-inline">
@@ -87,13 +91,14 @@
 						}
 					]
 				]
-
+				let catesData;
 				table.render({
 					elem: '#procat-table',
 					url: apiUrl + 'procat/list',
 					headers : getHeader(),
 					parseData: function(res) {
 						//console.log(res)
+						catesData = res.data.catesData;
 						return {
 							"code": res.code, //解析接口状态
 							"msg": res.message, //解析提示文本
@@ -112,7 +117,13 @@
 						icon: 'layui-icon-refresh',
 					}, 'filter', 'print', 'exports']
 				});
-
+				setTimeout(() => {
+					for(let p in catesData) {
+						$("#cate-area").append(new Option(catesData[p], p));
+					}
+					
+					form.render("select");
+				}, 1000)
 				table.on('tool(procat-table)', function(obj) {
 					if (obj.event === 'remove') {
 						window.remove(obj);

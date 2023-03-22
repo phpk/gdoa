@@ -11,7 +11,7 @@ module.exports = class extends Base {
 ctpl.list = `
     async listAction() {
         let { page, limit, param } = this.get();
-        let wsql = {};
+        let wsql = {group_id : this.groupId};
         if (param) wsql = this.parseSearch(param, wsql);
         let list = await this.model('{{tags}}').where(wsql).page(page, limit).order('id desc').select();
         let count = await this.model('{{tags}}').where(wsql).count();
@@ -21,6 +21,8 @@ ctpl.list = `
 ctpl.add = `
     async addAction() {
         let post = this.post();
+        post.group_id = this.groupId;
+        post.user_id = this.adminId;
         let id = await this.model('{{tags}}').add(post);
         return this.success(id);
     }

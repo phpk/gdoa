@@ -3,11 +3,12 @@ module.exports = class extends think.Controller {
         let has = await this.model('ding_dept').where({ is_user: 0 }).find()
         if (think.isEmpty(has)) {
             console.log('is over');
-            return;
+            return 0;
         }
         let dept_id = has.dept_id
         let res = await this.getUsers(dept_id, has.cursor);
         let saveData = [];
+        let group_id = await this.session('groupId');
         res.list.forEach(el => {
             let adata = {
                 unionid : el.unionid,
@@ -21,7 +22,8 @@ module.exports = class extends think.Controller {
                 work_place : el.work_place ? el.work_place : '',
                 email : el.email ? el.email : '',
                 dept_id_list : el.dept_id_list ? el.dept_id_list.join(',') : '',
-                hired_date : el.hired_date ? think.datetime(el.hired_date) : ''
+                hired_date : el.hired_date ? think.datetime(el.hired_date) : '',
+                group_id
             }
             saveData.push(adata)
             
@@ -39,6 +41,7 @@ module.exports = class extends think.Controller {
                 cursor : res.cursor
             })
         }
+        return 1;
         
     }
     async getUsers(dept_id = 1, cursor = "0") {

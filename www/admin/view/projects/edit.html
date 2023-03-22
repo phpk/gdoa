@@ -113,8 +113,8 @@
             //渲染
             _get(layui, 'projects/editBefore?id=' + req.id, res => {
 				renderSelect(res.cates)
-				res.data.start_time = layui.util.toDateString(res.data.start_time*1000, 'yyyy-MM-dd');
-				res.data.end_time = layui.util.toDateString(res.data.end_time*1000, 'yyyy-MM-dd')
+				res.data.start_time = layui.util.toDateString(res.data.start_time, 'yyyy-MM-dd');
+				res.data.end_time = layui.util.toDateString(res.data.end_time, 'yyyy-MM-dd')
                 form.val('editform', res.data)
             });
         }else{

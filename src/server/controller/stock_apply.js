@@ -94,7 +94,8 @@ module.exports = class extends Base {
 			status: 1,
 			remark: post.desc,
 			goods_name: data.goods_name,
-			model: data.model
+			model: data.model,
+			group_id : this.groupId
 		}
 		await this.model('stock_apply').add(saveData);
 		await await this.model('stock_in').where({
@@ -148,7 +149,7 @@ module.exports = class extends Base {
 			type: 1,
 			transfer_id: 0,
 			cate_id: inData.cate_id,
-			area_id: inData.from_area_id,
+			area_id: inData.area_id,
 			bar_id: inData.bar_id,
 			remark : has.remark
 		}

@@ -22,6 +22,7 @@
 								<option value="1">待审核</option>
 								<option value="2">使用中</option>
 								<option value="3">已归还</option>
+								<option value="4">归还审核</option>
 								<option value="5">部分归还</option>
 							</select>
 						</div>
@@ -68,6 +69,8 @@
 				<button class="pear-btn pear-btn-danger pear-btn-sm">使用中</button>
 			{{# }else if(d.status == 3) { }}
 				<button class="pear-btn pear-btn-success pear-btn-sm">已归还</button>
+			{{# }else if(d.status == 4) { }}
+				<button class="pear-btn pear-btn-success pear-btn-sm">归还审核</button>
 			{{# }else if(d.status == 5) { }}
 				<button class="pear-btn pear-btn-sm">部分归还</button>
 			{{# } }}
@@ -109,6 +112,11 @@
 						{
 							title: '数量',
 							field: 'num',
+							align: 'center'
+						},
+						{
+							title: '归还数',
+							field: 'back_num',
 							align: 'center'
 						},
 						{

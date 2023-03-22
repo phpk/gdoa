@@ -1,9 +1,10 @@
-const Base = require('./base.js');
+const ProjectBase = require('./project_base.js');
+
 /**
  * @class
  * @apiDefine project_file 项目文件管理
  */
-module.exports = class extends Base {
+module.exports = class extends ProjectBase {
 
 	async listAction() {
 		let {
@@ -12,44 +13,28 @@ module.exports = class extends Base {
 			param
 		} = this.get();
 		let wsql = {
-			'a.group_id': this.groupId
+			'group_id': this.groupId
 		};
 		if (param) wsql = this.parseSearch(param, wsql);
 		let list = await this.model('project_file')
 			.where(wsql)
-			.alias('a')
-			.join({
-				table: 'project_type',
-				join: 'left', //join 方式，有 left, right, inner 3 种方式
-				as: 'c', // 表别名
-				on: ['type', 'id'] //ON 条件
-			})
 			.page(page, limit)
-			.field('a.*,c.name as cname')
 			.order('id desc')
 			.select();
-		// list.forEach(async (el) => {
-		// 	el.cname = await this.model('project_type').where({
-		// 		id: el.type
-		// 	}).getField('name', true)
-		// })
-		let count = await this.model('project_file').where(wsql)
-			.alias('a')
-			.join({
-				table: 'project_type',
-				join: 'left', //join 方式，有 left, right, inner 3 种方式
-				as: 'c', // 表别名
-				on: ['type', 'id'] //ON 条件
-			}).count();
+		let cates = await this.getCate(2)
+		//console.log(cates)
+		list.forEach(d => {
+			d.cname = this.getName(cates, d.type)
+		})
+		//console.log(list)
+		let count = await this.model('project_file').where(wsql).count();
 		return this.success({
 			list,
 			count
 		})
 	}
 	async addBeforeAction() {
-		let cates = await this.model('project_type').where({
-			sys_id: 2
-		}).select()
+		let cates = await this.getCate(2)
 		return this.success(cates);
 	}
 	async addAction() {
@@ -76,9 +61,7 @@ module.exports = class extends Base {
 			id
 		}).find()
 		if (think.isEmpty(data)) return this.fail('数据为空')
-		let cates = await this.model('project_type').where({
-			sys_id: 2
-		}).select()
+		let cates = await this.getCate(2)
 		return this.success({
 			data,
 			cates

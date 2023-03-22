@@ -25,6 +25,7 @@ specifiers:
   nyc: ^7.0.0
   pdf2json: ^2.0.0
   socket.io-redis: ^6.1.1
+  ssestream: ^1.1.0
   svg-captcha: ^1.4.0
   tesseract.js-node: ^0.1.0
   textract: ^2.5.0
@@ -62,6 +63,7 @@ dependencies:
   nodemailer: 6.9.1
   pdf2json: 2.0.1
   socket.io-redis: 6.1.1
+  ssestream: 1.1.0
   svg-captcha: 1.4.0
   tesseract.js-node: 0.1.0
   textract: 2.5.0
@@ -6526,6 +6528,10 @@ packages:
   /sqlstring/2.3.3:
     resolution: {integrity: sha512-qC9iz2FlN7DQl3+wjwn3802RTyjCx7sDvfQEXchwa6CWOx07/WVfh91gBmQ9fahw8snwGEWU3xGzOt4tFyHLxg==}
     engines: {node: '>= 0.6'}
+    dev: false
+
+  /ssestream/1.1.0:
+    resolution: {integrity: sha512-UOS3JTuGqGEOH89mfHFwVOJNH2+JX9ebIWuw6WBQXpkVOxbdoY3RMliSHzshL4XVYJJrcul5NkuvDFCzgYu1Lw==}
     dev: false
 
   /ssf/0.11.2:

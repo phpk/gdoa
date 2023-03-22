@@ -27,7 +27,7 @@ module.exports = class extends stockBase {
 			d.cname = cates.find(e => e.id == d.cate_id).name;
 			let areaData = area.find(e => e.id == d.area_id);
 			d.addrname = areaData ? areaData.name : '';
-			let barData = areaData.child.find(e => e.id == d.bar_id)
+			let barData = areaData ? areaData.child.find(e => e.id == d.bar_id) : []
 			d.barname = barData ? barData.name : '';
 			d.typename = typeArr[d.type]
 		})

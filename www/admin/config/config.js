@@ -97,6 +97,7 @@ const _get = (layui, url, suc, err) => {
     layui.$.ajax({
         type: "get",
         url: `${apiUrl}${url}`,
+        //timeout: 10*60*1000,//10分钟等待
         headers: getHeader(),
         success: (res) => {
             //console.log(res)

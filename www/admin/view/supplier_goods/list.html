@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>采购列表管理</title>
+		<title>供应商商品管理</title>
 		<link rel="stylesheet" href="../../component/ui/css/ui.css" />
 	</head>
 	<body class="pear-container">
@@ -11,17 +11,23 @@
 				<form class="layui-form" action="">
 					<div class="layui-form-item">
 						<div class="layui-form-item layui-inline">
-							<label class="layui-form-label">名称</label>
+							<label class="layui-form-label">商品名称</label>
 							<div class="layui-input-inline">
-								<input type="text" name="title" placeholder="" class="layui-input">
+								<input type="text" name="name" placeholder="" class="layui-input">
 							</div>
 						</div>
 						<div class="layui-form-item layui-inline">
-							<button class="pear-btn pear-btn-md pear-btn-primary" lay-submit lay-filter="user-query">
+							<label class="layui-form-label">供应商名称</label>
+							<div class="layui-input-inline">
+								<input type="text" name="supplier_name" placeholder="" class="layui-input">
+							</div>
+						</div>
+						<div class="layui-form-item layui-inline">
+							<button class="pear-btn pear-btn-md pear-btn-primary" lay-submit lay-filter="supplier_goods-query">
 								<i class="layui-icon layui-icon-search"></i>
 								查询
 							</button>
-							<button type="reset" class="pear-btn pear-btn-md" lay-filter="user-reset" lay-submit>
+							<button type="reset" class="pear-btn pear-btn-md" lay-filter="supplier_goods-reset" lay-submit>
 								<i class="layui-icon layui-icon-refresh"></i>
 								重置
 							</button>
@@ -32,32 +38,23 @@
 		</div>
 		<div class="layui-card">
 			<div class="layui-card-body">
-				<table id="purchase-table" lay-filter="purchase-table"></table>
+				<table id="supplier_goods-table" lay-filter="supplier_goods-table"></table>
 			</div>
 		</div>
 
-		<script type="text/html" id="purchase-toolbar">
+		<script type="text/html" id="supplier_goods-toolbar">
 			<button class="layui-btn layui-btn-primary layui-border-red layui-btn-sm" lay-event="add">
 		        <i class="layui-icon layui-icon-add-1"></i>
 		        新增
 		    </button>
 		</script>
 
-		<script type="text/html" id="purchase-bar">
-			<button class="pear-btn pear-btn-warming pear-btn-sm" lay-event="detail">
-				<i class="layui-icon layui-icon-transfer"></i>
-			</button>
+		<script type="text/html" id="supplier_goods-bar">
 			<button class="pear-btn pear-btn-primary pear-btn-sm" lay-event="edit"><i class="layui-icon layui-icon-edit"></i></button>
 		    <button class="pear-btn pear-btn-danger pear-btn-sm" lay-event="remove"><i class="layui-icon layui-icon-delete"></i></button>
 		</script>
-		<script type="text/html" id="purchase-time">
-			{{layui.util.toDateString(d.add_time, 'yyyy-MM-dd HH:mm:ss')}}
-		</script>
-		<script type="text/html" id="start-time">
-			{{layui.util.toDateString(d.start_time, 'yyyy-MM-dd')}}
-		</script>
-		<script type="text/html" id="end-time">
-			{{layui.util.toDateString(d.end_time, 'yyyy-MM-dd')}}
+		<script type="text/html" id="supplier_goods-time">
+			{{layui.util.toDateString(d.add_time*1000, 'yyyy-MM-dd HH:mm:ss')}}
 		</script>
 		<script src="../../config/config.js"></script>
 		<script src="../../component/layui/layui.js"></script>
@@ -76,65 +73,46 @@
 						{
 							title: 'ID',
 							field: 'id',
-							align: 'center',
-							minWidth : 60
+							align: 'center'
 						},
 						{
 							title: '名称',
 							field: 'name',
-							align: 'center',
-							minWidth : 100
+							align: 'center'
 						},
 						{
-							title: '编号',
-							field: 'purchase_no',
-							align: 'center',
-							minWidth : 100
+							title: '价格',
+							field: 'price',
+							align: 'center'
 						},
 						{
-							title: '分类',
-							field: 'cname',
-							align: 'center',
-							minWidth : 100
+							title: '型号',
+							field: 'model',
+							align: 'center'
 						},
 						{
-							title: '负责人',
-							field: 'leader_name',
-							align: 'center',
-							minWidth : 100
-						},
-						{
-							title: '开始时间',
-							field: 'start_time',
-							align: 'center',
-							templet: '#start-time'
-						},
-						{
-							title: '结束时间',
-							field: 'end_time',
-							align: 'center',
-							templet: '#end-time'
+							title: '供应商',
+							field: 'supplier_name',
+							align: 'center'
 						},
 						{
 							title: '添加时间',
 							field: 'add_time',
 							align: 'center',
-							minWidth : 100,
-							templet: '#purchase-time'
+							//templet: '#supplier_goods-time'
 						},
 						{
 							title: '操作',
-							toolbar: '#purchase-bar',
+							toolbar: '#supplier_goods-bar',
 							align: 'center',
-							fixed : 'right',
-							width: 160
+							width: 130
 						}
 					]
 				]
 
 				table.render({
-					elem: '#purchase-table',
-					url: apiUrl + 'purchase/list',
+					elem: '#supplier_goods-table',
+					url: apiUrl + 'supplier_goods/list',
 					headers : getHeader(),
 					parseData: function(res) {
 						//console.log(res)
@@ -149,7 +127,7 @@
 					cols: cols,
 					skin: 'line',
 
-					toolbar: '#purchase-toolbar',
+					toolbar: '#supplier_goods-toolbar',
 					defaultToolbar: [{
 						title: '刷新',
 						layEvent: 'refresh',
@@ -157,17 +135,15 @@
 					}, 'filter', 'print', 'exports']
 				});
 
-				table.on('tool(purchase-table)', function(obj) {
+				table.on('tool(supplier_goods-table)', function(obj) {
 					if (obj.event === 'remove') {
 						window.remove(obj);
 					} else if (obj.event === 'edit') {
 						window.edit(obj);
-					} else if (obj.event === 'detail') {
-						window.detail(obj);
 					}
 				});
 
-				table.on('toolbar(purchase-table)', function(obj) {
+				table.on('toolbar(supplier_goods-table)', function(obj) {
 					if (obj.event === 'add') {
 						window.add();
 					} else if (obj.event === 'refresh') {
@@ -176,8 +152,8 @@
 				});
 				// 监听搜索操作
 
-				form.on('submit(purchase-query)', function(data) {
-					table.reload('purchase-table', {
+				form.on('submit(supplier_goods-query)', function(data) {
+					table.reload('supplier_goods-table', {
 						where: {
 							param : $('form').serialize()
 						},
@@ -187,8 +163,8 @@
 					})
 					return false;
 				});
-				form.on('submit(purchase-reset)', function(data){
-					table.reload('purchase-table', {
+				form.on('submit(supplier_goods-reset)', function(data){
+					table.reload('supplier_goods-table', {
 						where: {
 							param : ''
 						},
@@ -211,18 +187,7 @@
 						content: MODULE_PATH + 'edit.html'
 					});
 				}
-				window.detail = function(obj) {
-					layer.open({
-						type: 2,
-						title: '修改详情' + obj.data.name,
-						shade: 0.1,
-						offset: 'rt',
-						area: ['96%', '100%'],
-						anim: 1,
-						maxmin: true,
-						content: MODULE_PATH + 'detail.html?id=' + obj.data.id
-					});
-				}
+
 				window.edit = function(obj) {
 					layer.open({
 						type: 2,
@@ -238,7 +203,7 @@
 				window.remove = function(obj){
 		            layer.confirm('确定要删除', {icon: 3, title:'提示'}, function(index){
 		                layer.close(index);
-		                _post(layui, 'purchase/del',{id : obj.data.id}, res => {
+		                _post(layui, 'supplier_goods/del',{id : obj.data.id}, res => {
 							layer.msg('删除成功',{icon:1,time:1000},() => {
 								obj.del();
 							});
@@ -250,7 +215,7 @@
 
 
 				window.refresh = function(param) {
-					table.reload('purchase-table');
+					table.reload('supplier_goods-table');
 				}
 			})
 		</script>

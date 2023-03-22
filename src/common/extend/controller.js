@@ -58,29 +58,10 @@ async function err(name, msg) {
 //     return think.mongo(tabname, 'mongo');
 // }
 
-async function dingToken() {
-    //await this.cache('ding_token', null)
-    let token = await this.cache('ding_token');
-    if(think.isEmpty(token)) {
-        let conf = await this.cache('set:ding');
-        let accountUrl = 'https://oapi.dingtalk.com/gettoken?appkey=' + conf.appKey + '&appsecret=' + conf.appSecret;
-        //console.log(accountUrl)
-        let res = await this.fetch(accountUrl);
-        let accToken = await res.json(); 
-        if(accToken && accToken.access_token) {
-            await this.cache('ding_token', accToken.access_token,{
-                timeout: 3600 * 1000
-            });
-            token = accToken.access_token;
-        }
 
-    }
-    return token;
-}
 
 module.exports = {
     now,
-    dingToken,
     parseSearch,
     err
 }
