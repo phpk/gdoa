@@ -50,7 +50,7 @@ module.exports = class extends Base {
         post.group_id = this.groupId;
         post.user_id = this.adminId;
         //post.formdesign = JSON.parse(post.formdesign)
-        console.log(post)
+        //console.log(post)
         let id = await this.model('form').add(post);
         return this.success(id);
     }

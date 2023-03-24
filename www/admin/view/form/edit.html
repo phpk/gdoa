@@ -17,7 +17,7 @@
 
 <body>
     <div class="layui-fluid">
-        <form class="layui-form layui-card" lay-filter="editform">
+        <form class="layui-form layui-card" lay-filter="editform" id="editform">
             <input type="text" name="e2ent_id" value="{$data.id}" hidden="">
             <!--div class="layui-card-header">表单设计</div-->
             <div class="layui-card-body">
@@ -193,14 +193,14 @@
                                     <div class="layui-form-item">
                                         <label class="layui-form-label">表单名称</label>
                                         <div class="layui-input-inline">
-                                            <input type="text" id="form_name" name="form_name" class="layui-input" value=""
+                                            <input type="text" id="form_names" name="form_names" class="layui-input" value=""
                                                 placeholder="请输入表单名称">
                                         </div>
                                     </div>
                                     <div class="layui-form-item">
                                         <label class="layui-form-label">表单ID</label>
                                         <div class="layui-input-inline">
-                                            <input type="text" id="form_id" name="form_id" class="layui-input" value=""
+                                            <input type="text" id="form_ids" name="form_ids" class="layui-input" value=""
                                                 placeholder="请输入表单ID">
                                         </div>
                                     </div>
@@ -226,13 +226,14 @@
                     </div>
                 </div>
             </div>
-
-            <div class="layui-footer layui-form-footer">
-                <input type="hidden" name="id" >
-                <button class="layui-btn layui-btn-primary" type="button" sa-event="closeDialog">取消</button>
-                <button class="layui-btn" lay-filter="submitIframe" type="button" lay-submit>提交</button>
-            </div>
+            <input type="hidden" name="id" >
         </form>
+            <div class="layui-footer layui-form-footer">
+                
+                <!--button class="layui-btn layui-btn-primary" type="button" sa-event="closeDialog">取消</button-->
+                <button class="layui-btn" id="submitBtn" type="button" lay-submit>提交</button>
+            </div>
+        
     </div>
 
     <div class="layui-htmlview" style="display: none;">
@@ -251,6 +252,7 @@
     <link href="/admin/component/formdesign/css/font-awesome.css?v=v1.1.20" rel="stylesheet" type="text/css" />
     <script src="/admin/component/formdesign/Sortable/Sortable.js?v=v1.1.20"></script>
     <script>
+        //window.open = null;
         layui.config({
             version: true,
             base: '/admin/component/formdesign/module/'
@@ -266,20 +268,25 @@
             let element = layui.element;
             let req = _req();
 
-            
+            let insForm;
             if(req.id) {
                 _get(layui, 'form/editBefore?id=' + req.id, res => {
                     console.log(res)
-                    formDesign.render({
+                    //let fromdata = JSON.parse(res.formdesign)
+                    let fromdata = res.formdesign
+                    insForm = formDesign.render({
                         elem: '#formBuilder',
                         eval: '#formdesign',
-                        data : res.formdesign,
-                        count : res.formdesign.length
+                        data : fromdata,
+                        count : fromdata.length
                     });
-                    form.val('editform', res)
+                    $('#form_names').val(res.form_name)
+                    $('#form_ids').val(res.form_id)
+                    //form.val('editform', res)
+
                 })
             }else{
-                formDesign.render({
+                insForm = formDesign.render({
                     elem: '#formBuilder', 
                     eval: '#formdesign'
                 });
@@ -290,30 +297,41 @@
                 $('#set_field').removeClass('layui-this')
                 $('#set_val').addClass('layui-this')
             }
-            form.on('submit(submitIframe)', function (data) {
-                console.log(data)
-                data = data.field;
-                //console.log(data)
-                if(!data.form_name) {
+            //form.on('submit(submitIframe)', function (data) {
+            $("#submitBtn").click(() =>{
+                //console.log($("#editform").serializeArray())
+                //return;
+                let form_name = $('#form_names').val()
+                let form_id = $('#form_ids').val()
+                if(!form_name) {
                     layer.msg('请填写表单名', {icon : 2, time : 1000})
                     setShow()
-                    $('#form_name').focus()
+                    $('#form_names').focus()
                     return false;
                 }
-                if(!data.form_id) {
+                if(!form_id) {
                     layer.msg('请填写表单id', {icon : 2, time : 1000})
                     setShow()
-                    $('#form_id').focus()
+                    $('#form_ids').focus()
                     return false;
+                }
+                let postData = {
+                    formdesign : JSON.stringify(insForm.config.data),
+                    form_name : form_name,
+                    form_id : form_id,
                 }
                 let postUrl = 'form/add';;
                 if(req.id) {
                     postUrl = 'form/edit';
+                    postData.id = req.id;
                 }
-                _post(layui, postUrl, data, res => {
+                console.log(postData)
+                //return;
+                _post(layui, postUrl, postData, res => {
                     parent.layui.table.reload("form-table");
 				    parent.layer.close(parent.layer.getFrameIndex(window.name));
                 })
+                return false;
             })
             //console.log('success');
 
