@@ -89,6 +89,9 @@ module.exports = class extends ProjectBase {
         return this.success(id);
     }
     async writeSupplier(post, id) {
+        if(think.isEmpty(post.supplier_name)){
+            return this.fail('厂家名不能为空')
+        }
         let hasSupplier = await this.model('supplier').where({
             name : post.supplier_name,
             group_id : this.groupId
