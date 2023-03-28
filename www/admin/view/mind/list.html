@@ -3,7 +3,8 @@
 	<head>
 		<meta charset="utf-8">
 		<title>思维导图管理</title>
-		<link rel="stylesheet" href="../../component/ui/css/ui.css" />
+		<link rel="stylesheet" href="/static/layui/css/layui.css" />
+<link rel="stylesheet" href="/static/ui/css/ui.css" />
 	</head>
 	<body class="pear-container">
 		<div class="layui-card">
@@ -54,8 +55,8 @@
 			{{layui.util.toDateString(d.up_time*1000, 'yyyy-MM-dd HH:mm:ss')}}
 		</script>
 		<script src="../../config/config.js"></script>
-		<script src="../../component/layui/layui.js"></script>
-		<script src="../../component/ui/ui.js"></script>
+		<script src="/static/layui/layui.js"></script>
+		<script src="/static/ui/ui.js"></script>
 		<script>
 			layui.use(['table', 'form', 'jquery','common'], function() {
 				let table = layui.table;

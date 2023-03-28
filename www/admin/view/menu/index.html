@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <title>菜单管理</title>
-    <link rel="stylesheet" href="../../component/ui/css/ui.css" />
+    <link rel="stylesheet" href="/static/layui/css/layui.css" />
+<link rel="stylesheet" href="/static/ui/css/ui.css" />
 </head>
 
 <body class="pear-container">
@@ -13,6 +14,10 @@
         <button class="layui-btn layui-btn-sm layui-btn-danger" id="add_menu">
             <i class="layui-icon layui-icon-add-1"></i>
             新增
+        </button>
+        <button class="layui-btn layui-btn-sm layui-btn-success" id="add_many">
+            <i class="layui-icon layui-icon-add-1"></i>
+            批量新增
         </button>
         <button id="btnExpandAll" class="layui-btn layui-btn-sm layui-btn-normal">
             <i class="layui-icon">&#xe668;</i>展开全部
@@ -53,8 +58,8 @@
             <i class="layui-icon {{d.icon}}"></i>
         </script>
     <script src="../../config/config.js"></script>
-    <script src="../../component/layui/layui.js"></script>
-    <script src="../../component/ui/ui.js"></script>
+    <script src="/static/layui/layui.js"></script>
+    <script src="/static/ui/ui.js"></script>
     <script>
         layui.use([
             'table', 'form', 'jquery', 'treeTable'
@@ -155,6 +160,20 @@
                     content: MODULE_PATH + 'add.html'
                 });
             });
+            $('#add_many').click(function () {
+                layer.open({
+                    type: 2,
+                    title: '批量新增',
+                    shade: 0.1,
+                    offset: 'rt',
+                    area: [
+                        '80%', '100%'
+                    ],
+                    anim: 1,
+                    maxmin: true,
+                    content: MODULE_PATH + 'add-many.html'
+                });
+            });
             treeTable.on('edit(power-table)', function (obj) {
                 //console.log(obj)
             	
@@ -245,57 +264,7 @@
                     })
                 });
             }
-            /*
-            window.render = function () {
-                treetable.render({
-                    treeColIndex: 1,
-                    treeSpid: 0,
-                    treeIdName: 'id',
-                    treePidName: 'pid',
-                    skin: 'line',
-                    treeDefaultClose: true,
-                    toolbar: '#power-toolbar',
-                    elem: '#power-table',
-                    url: 'menu/oplist',
-                    page: false,
-                    cols: [
-                        [
-                            {
-                                field: 'id',
-                                title: 'ID'
-                            }, {
-                                field: 'title',
-                                minWidth: 200,
-                                title: '权限名称'
-                            }, {
-                                field: 'order_num',
-                                edit: 'text',
-                                title: '排序'
-                            }, {
-                                field: 'icon',
-                                title: '图标',
-                                templet: '#icon'
-                            }, {
-                                field: 'type',
-                                title: '权限类型',
-                                templet: '#power-type'
-                            }, {
-                                field: 'ifshow',
-                                title: '是否显示',
-                                templet: '#power-enable'
-                            }, {
-                                title: '操作',
-                                templet: '#power-bar',
-                                width: 150,
-                                align: 'center'
-                            }
-                        ]
-                    ]
-                });
-            }
 
-            render();
-*/
 
         })
     </script>

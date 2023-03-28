@@ -11,6 +11,7 @@ const redisCache = require('think-cache-redis');
 //const sqlite = require('think-model-sqlite');
 //const socketio = require('think-websocket-socket.io');
 //const socketRedis = require('socket.io-redis');
+const nunjucks = require('think-view-nunjucks');
 const conf = require('./config.js');
 /**
  * cache adapter config
@@ -161,3 +162,20 @@ exports.websocket = {
     }]
   }
 }*/
+
+// 视图的 adapter 名称为 view
+exports.view = {
+  type: 'nunjucks', // 这里指定默认的模板引擎是 nunjucks
+  common: {
+    viewPath: path.join(think.ROOT_PATH, 'view'), //模板文件的根目录
+    sep: '_', //Controller 与 Action 之间的连接符
+    extname: '.html' //模板文件扩展名
+  },
+  nunjucks: {
+    handle: nunjucks,
+    beforeRender: () => {}, // 模板渲染预处理
+    options: { // 模板引擎额外的配置参数
+
+    }
+  }
+}

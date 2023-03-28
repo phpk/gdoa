@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>编辑菜单</title>
-    <link rel="stylesheet" href="../../component/ui/css/ui.css" />
+    <link rel="stylesheet" href="/static/layui/css/layui.css" />
+<link rel="stylesheet" href="/static/ui/css/ui.css" />
 </head>
 <body>
 <form class="layui-form" action="" lay-filter="editform">
@@ -62,6 +63,20 @@
                     </div>
                 </div>
                 <div class="layui-form-item">
+                    <label class="layui-form-label">系统菜单</label>
+                    <div class="layui-input-block">
+                        <input type="radio" name="is_sys" value="0" title="是">
+                        <input type="radio" name="is_sys" checked value="1" title="不是">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">公共模块</label>
+                    <div class="layui-input-block">
+                        <input type="radio" name="is_common" value="1" title="是">
+                        <input type="radio" name="is_common" checked value="0" title="不是">
+                    </div>
+                </div>
+                <div class="layui-form-item">
 			       <label class="layui-form-label">菜单排序</label>
 			       <div class="layui-input-inline">
 			           <input type="text" name="order_num" lay-verify="required|number" autocomplete="off" class="layui-input">
@@ -82,8 +97,8 @@
     </div>
 </form>
 <script src="../../config/config.js"></script>
-<script src="../../component/layui/layui.js"></script>
-<script src="../../component/ui/ui.js"></script>
+<script src="/static/layui/layui.js"></script>
+<script src="/static/ui/ui.js"></script>
 <script>
 layui.use(['form','jquery','iconSelectedPlus', 'dropdown'],function(){
     let form = layui.form,

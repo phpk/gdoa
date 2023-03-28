@@ -4,17 +4,18 @@
 <head>
     <meta charset="utf-8">
     <title>表单引擎数据管理</title>
-    <link rel="stylesheet" href="../../component/ui/css/ui.css" />
+    <link rel="stylesheet" href="/static/layui/css/layui.css" />
+<link rel="stylesheet" href="/static/ui/css/ui.css" />
 </head>
 
 <body class="pear-container">
-    <div class="layui-card">
+    <div class="layui-card" id="search-btn">
         <div class="layui-card-body">
             <form class="layui-form" action="">
                 <div class="layui-form-item">
                     <div class="layui-form-item layui-inline" id="search-area">
                     </div>
-                    <div class="layui-form-item layui-inline" id="search-btn">
+                    <div class="layui-form-item layui-inline">
                         <button class="pear-btn pear-btn-md pear-btn-primary" lay-submit lay-filter="form-query">
                             <i class="layui-icon layui-icon-search"></i>
                             查询
@@ -53,8 +54,8 @@
 			{{layui.util.toDateString(d.add_time*1000, 'yyyy-MM-dd HH:mm:ss')}}
 		</script>
     <script src="../../config/config.js"></script>
-    <script src="../../component/layui/layui.js"></script>
-    <script src="../../component/ui/ui.js"></script>
+    <script src="/static/layui/layui.js"></script>
+    <script src="/static/ui/ui.js"></script>
     <script>
         layui.use(['table', 'form', 'jquery', 'common'], function () {
             let table = layui.table;

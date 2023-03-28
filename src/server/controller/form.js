@@ -123,7 +123,7 @@ module.exports = class extends Base {
 
     async delDataAction() {
         let id = this.post('id');
-        if (!await this.hasData('form', { id }))
+        if (!await this.hasData('form_data', { id }))
             return this.fail('数据不存在')
         await this.model('form_data').where({ id }).delete()
         return this.success()

@@ -168,6 +168,32 @@ module.exports = class extends Base {
         await this.adminOpLog('添加菜单');
         return this.success({rt, routeData})
     }
+    async addManyAction() {
+        let post = this.post();
+        //console.log(post)
+        let manytype = post.manytype.split(',')
+        //console.log(manytype)
+        let save = []
+        let titles = {
+            Add : '添加',
+            Edit : '编辑',
+            List : '列表',
+            Del : '删除',
+            AddBefore : '添加前',
+            EditBefore : '编辑前'
+
+        }
+        manytype.forEach(d => {
+            let s = {...post}
+            s.route = s.route + d
+            s.title = s.title + titles[d]
+            save.push(s)
+        })
+        let rt = await this.model('menu').addMany(save);
+        let routeData = await this.model('menu').cacheData(this.adminId);
+        return this.success({rt, routeData})
+
+    }
     /**
      *
      * @api {post} menu/ifshow 菜单是否显示

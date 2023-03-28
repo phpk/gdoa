@@ -3,7 +3,8 @@
 	<head>
 		<meta charset="utf-8">
 		<title>审批流管理管理</title>
-		<link rel="stylesheet" href="../../component/ui/css/ui.css" />
+		<link rel="stylesheet" href="/static/layui/css/layui.css" />
+<link rel="stylesheet" href="/static/ui/css/ui.css" />
 	</head>
 	<body class="pear-container">
 		<div class="layui-card">
@@ -42,17 +43,29 @@
 		        新增
 		    </button>
 		</script>
-
 		<script type="text/html" id="approve-bar">
-			<button class="pear-btn pear-btn-primary pear-btn-sm" lay-event="edit"><i class="layui-icon layui-icon-edit"></i></button>
-		    <button class="pear-btn pear-btn-danger pear-btn-sm" lay-event="remove"><i class="layui-icon layui-icon-delete"></i></button>
+			<button class="pear-btn pear-btn-primary pear-btn-sm" lay-event="status">
+				<i class="layui-icon layui-icon-search"></i>状态
+			</button>
+		    <button class="pear-btn pear-btn-danger pear-btn-sm" lay-event="user">
+				<i class="layui-icon layui-icon-user"></i>用户
+			</button>
+			<button class="pear-btn pear-btn-sm" lay-event="msg">
+				<i class="layui-icon layui-icon-refresh"></i>日志
+			</button>
+			<button class="pear-btn pear-btn-primary pear-btn-sm" lay-event="edit">
+				<i class="layui-icon layui-icon-edit"></i>编辑
+			</button>
+		    <button class="pear-btn pear-btn-danger pear-btn-sm" lay-event="remove">
+				<i class="layui-icon layui-icon-delete"></i>删除
+			</button>
 		</script>
 		<script type="text/html" id="approve-time">
 			{{layui.util.toDateString(d.add_time*1000, 'yyyy-MM-dd HH:mm:ss')}}
 		</script>
 		<script src="../../config/config.js"></script>
-		<script src="../../component/layui/layui.js"></script>
-		<script src="../../component/ui/ui.js"></script>
+		<script src="/static/layui/layui.js"></script>
+		<script src="/static/ui/ui.js"></script>
 		<script>
 			layui.use(['table', 'form', 'jquery','common'], function() {
 				let table = layui.table;
@@ -67,24 +80,33 @@
 						{
 							title: 'ID',
 							field: 'id',
-							align: 'center'
+							align: 'center',
+							width:60
 						},
 						{
 							title: '名称',
 							field: 'name',
-							align: 'center'
+							align: 'center',
+							width:120
+						},
+						{
+							title: '类型',
+							field: 'cname',
+							align: 'center',
+							width:80
 						},
 						{
 							title: '添加时间',
 							field: 'add_time',
 							align: 'center',
-							//templet: '#approve-time'
+							width:120
 						},
+						
 						{
 							title: '操作',
 							toolbar: '#approve-bar',
 							align: 'center',
-							width: 130
+							width: 350
 						}
 					]
 				]
@@ -117,11 +139,25 @@
 				table.on('tool(approve-table)', function(obj) {
 					if (obj.event === 'remove') {
 						window.remove(obj);
-					} else if (obj.event === 'edit') {
-						window.edit(obj);
+					} else {
+						let titleObj = {
+							edit : '编辑内容',
+							status : '编辑状态',
+							user : '编辑用户',
+							msg : '查看日志'
+						}
+						layer.open({
+							type: 2,
+							title: titleObj[obj.event],
+							shade: 0.1,
+							offset: 'rt',
+							area: ['90%', '100%'],
+							anim: 1,
+							maxmin: true,
+							content: MODULE_PATH + obj.event + '.html?aid=' + obj.data.id
+						});
 					}
 				});
-
 				table.on('toolbar(approve-table)', function(obj) {
 					if (obj.event === 'add') {
 						window.add();
@@ -167,18 +203,7 @@
 					});
 				}
 
-				window.edit = function(obj) {
-					layer.open({
-						type: 2,
-						title: '修改',
-						shade: 0.1,
-						offset: 'rt',
-						area: ['80%', '100%'],
-						anim: 1,
-						maxmin: true,
-						content: MODULE_PATH + 'edit.html?id=' + obj.data.id
-					});
-				}
+				
 				window.remove = function(obj){
 		            layer.confirm('确定要删除', {icon: 3, title:'提示'}, function(index){
 		                layer.close(index);

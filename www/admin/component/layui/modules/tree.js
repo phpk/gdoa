@@ -1,8 +1,5 @@
 /**
- 
- @Name：tree 树组件
- @License：MIT
-
+ * tree 树组件
  */
 
 layui.define('form', function(exports){
@@ -101,7 +98,7 @@ layui.define('form', function(exports){
     var that = this;
     
     layui.each(options, function(key, item){
-      if(layui._typeof(item) === 'array') delete that.config[key];
+      if(layui.type(item) === 'array') delete that.config[key];
     });
     
     that.config = $.extend(true, {}, that.config, options);
@@ -763,7 +760,7 @@ layui.define('form', function(exports){
       
       //若返回数字
       if(typeof checkedId === 'number'){
-        if(thisId == checkedId){
+        if(thisId.toString() == checkedId.toString()){
           if(!input[0].checked){
             reInput.click();
           };
@@ -773,8 +770,45 @@ layui.define('form', function(exports){
       //若返回数组
       else if(typeof checkedId === 'object'){
         layui.each(checkedId, function(index, value){
-          if(value == thisId && !input[0].checked){
+          if(value.toString() == thisId.toString() && !input[0].checked){
             reInput.click();
+            return true;
+          }
+        });
+      };
+    });
+  };
+
+  Class.prototype.setDataChecked = function(checkedId){
+    var that = this
+    ,options = that.config;
+
+    //初始选中
+    that.elem.find('.'+ELEM_SET).each(function(i, item){
+      var thisId = $(this).data('id')
+      ,input = $(item).children('.'+ELEM_ENTRY).find('input[same="layuiTreeCheck"]')
+      ,reInput = input.next();
+      //console.log(reInput)
+      //若返回数字
+      if(typeof checkedId === 'number'){
+        if(thisId.toString() == checkedId.toString()){
+          if(!input[0].checked){
+            //reInput.click();
+            //console.log(input[0])
+            input[0].checked = true;
+          };
+          return false;
+        };
+      } 
+      //若返回数组
+      else if(typeof checkedId === 'object'){
+        layui.each(checkedId, function(index, value){
+          if(value.toString() == thisId.toString() && !input[0].checked){
+            //reInput.click();
+            //console.log(input[0])
+            input[0].checked = true;
+            //console.log(input[0])
+            //$(input[0]).attr('checked', true)
             return true;
           }
         });
@@ -804,6 +838,10 @@ layui.define('form', function(exports){
   tree.setChecked = function(id, checkedId){
     var that = thisModule.that[id];
     return that.setChecked(checkedId);
+  };
+  tree.setDataChecked = function(id, checkedId){
+    var that = thisModule.that[id];
+    return that.setDataChecked(checkedId);
   };
     
   //核心入口
