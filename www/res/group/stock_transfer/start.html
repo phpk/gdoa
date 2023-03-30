@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>发起调拨单</title>
+		<link rel="stylesheet" href="/static/layui/css/layui.css" />
+<link rel="stylesheet" href="/static/ui/css/ui.css" />
+	</head>
+	<body class="pear-container">
+		<div class="layui-row layui-col-space10">
+			
+			<div class="layui-col-md12">
+				<div class="layui-card">
+					<div class="layui-card-body">
+						<form class="layui-form" action="">
+							<div class="layui-form-item">
+								<label class="layui-form-label">运单号</label>
+								<div class="layui-input-inline">
+									<input type="text" name="way_no" lay-verify="required"  placeholder="" class="layui-input">
+								</div>
+								<label class="layui-form-label">备注</label>
+								<div class="layui-input-inline">
+									<input type="text" name="from_remark" placeholder="" class="layui-input">
+								</div>
+								<label class="layui-form-label">调拨至</label>
+								<div class="layui-input-inline">
+									<select name="to_area_id" lay-verify="required" id="to-area" lay-filter="area_select_to">
+										<option value="">选择仓库</option>
+									</select>
+								</div>
+								<button class="pear-btn pear-btn-md pear-btn-primary" lay-submit
+									lay-filter="dict-type-query">
+									<i class="layui-icon layui-icon-release"></i>
+									确认发起
+								</button>
+							</div>
+						</form>
+						<div class="layui-form-item">
+							<i class="layui-icon layui-icon-about"></i>
+							说明：先设置商品<b>调拨数</b>，也可以批量<b>设置调拨数</b>，再点击<b>操作按钮</b> ，最后点击<b>确认发起</b>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<div class="layui-col-md6">
+				<div class="layui-card">
+					
+					<div class="layui-card-body">
+						<form class="layui-form" action="">
+							<div class="layui-row layui-col-space10">
+									<div class="layui-col-xs6 layui-col-sm6 layui-col-md4">
+									<input type="text" name="<goods_name>" placeholder="商品名称" class="layui-input">
+									</div>
+									<div class="layui-col-xs6 layui-col-sm6 layui-col-md4">
+									<select name="cate_id" lay-search id="cate-area">
+										<option value="">选择分类</option>
+									</select>
+									</div>
+									<div class="layui-col-xs6 layui-col-sm6 layui-col-md4">
+									<select name="area_id" lay-search id="area-area" lay-filter="area_select">
+										<option value="">选择仓库</option>
+									</select>
+									</div>
+									<div class="layui-col-xs6 layui-col-sm6 layui-col-md4">
+									<select name="bar_id" lay-search id="bar-area">
+										<option value="">选择货架</option>
+									</select>
+									</div>
+									<div class="layui-col-xs6 layui-col-sm6 layui-col-md4">
+									<button class="pear-btn pear-btn-md pear-btn-primary" lay-submit
+										lay-filter="stock_in-query">
+										<i class="layui-icon layui-icon-search"></i>
+										查询
+									</button>
+									<button type="reset" class="pear-btn pear-btn-md" lay-filter="stock_in-reset" lay-submit>
+										<i class="layui-icon layui-icon-refresh"></i>
+										重置
+									</button>
+									</div>
+									<div class="layui-col-xs6 layui-col-sm6 layui-col-md4">
+									<button type="button" class="layui-btn layui-btn-primary layui-border-blue layui-btn-sm" id="setnumBtn">
+										<i class="layui-icon layui-icon-bluetooth"></i>
+										设置调拨数
+									</button>
+								  </div>
+								
+							</div>
+						</form>
+						<table id="dict-type-table" lay-filter="dict-type-table"></table>
+					</div>
+				</div>
+			</div>
+			<div class="layui-col-md6">
+				<div class="layui-card">
+					<div class="layui-card-body">
+						<img src="/static/images/empty.svg" class="empty"
+							style="margin-top: 50px;margin-left: 220px;margin-bottom: 80px;" width="184" height="152">
+						<table id="dict-data-table" lay-filter="dict-data-table"></table>
+					</div>
+				</div>
+			</div>
+			
+		</div>
+
+	</body>
+
+	<script type="text/html" id="dict-type-enable">
+		<input type="checkbox" value="{{d.id}}" lay-skin="switch" lay-text="<|>" lay-filter="dict-type-enable"
+			{{d.enable== '1' ? 'checked' : '' }}>
+	</script>
+
+
+	<script type="text/html" id="checkbd">
+	    <input type="checkbox" name="siam_one" title="" lay-skin="primary" data-id = "{{ d.id }}" {{#  if (d.enable === 1){ }}disabled="disabled"{{#  } }}>  
+	</script>
+	<script src="../config.js"></script>
+	<script src="/static/layui/layui.js"></script>
+		<script src="/static/ui/ui.js"></script>
+	<script>
+		layui.use(['table', 'form', 'jquery'], function() {
+			let table = layui.table,
+			form = layui.form,
+			$ = layui.jquery,
+			MODULE_PATH = "./",
+			req = _req(),
+			listTable;
+
+			//let typeCode;
+			//let objname;
+			let confAreaId = 0;
+
+			let cols = [
+				[
+					{
+					    templet: "#checkbd",
+					    title: "<input type='checkbox' name='siam_all' title='' lay-skin='primary' lay-filter='siam_all'> ",
+					    width: 60,
+						fixed : 'left'
+					},
+					{
+						title: 'ID',
+						field: 'id',
+						align: 'center',
+						minWidth : '50',
+					},
+					{
+						title: '物料名称',
+						field: 'goods_name',
+						align: 'center',
+						minWidth : '100',
+					},
+					{
+						title: '调拨数',
+						field: 'trans_num',
+						align: 'center',
+						minWidth : '80',
+						edit: true,
+					},
+					{
+						title: '数量',
+						field: 'stock_num',
+						align: 'center',
+						minWidth : '80',
+					},
+					{
+						title: '编码',
+						field: 'in_no',
+						align: 'center',
+						minWidth : '80',
+					},
+					{
+						title: '型号',
+						field: 'model',
+						align: 'center',
+						minWidth : '80',
+					},
+					{
+						title: '分类',
+						field: 'cname',
+						align: 'center',
+						minWidth : '100',
+					},
+					{
+						title: '仓库',
+						field: 'addrname',
+						align: 'center',
+						minWidth : '120',
+					},
+					{
+						title: '货架',
+						field: 'barname',
+						align: 'center',
+						minWidth : '120',
+					},
+					{
+						title: '操作',
+						field: 'enable',
+						align: 'center',
+						templet: '#dict-type-enable',
+						minWidth : '80',
+						fixed : 'right'
+					}
+				]
+			];
+
+			let dataCols = [
+				[	
+					{
+						title: 'ID',
+						field: 'in_id',
+						align: 'center',
+						minWidth : '60',
+					},
+					{
+						title: '物料名称',
+						field: 'goods_name',
+						align: 'center',
+						minWidth : '100',
+					},
+					{
+						title: '调拨数',
+						field: 'trans_num',
+						align: 'center',
+						minWidth : '80'
+					},
+					{
+						title: '编码',
+						field: 'in_no',
+						align: 'center',
+						minWidth : '80',
+					},
+					{
+						title: '型号',
+						field: 'model',
+						align: 'center',
+						minWidth : '80',
+					},
+					{
+						title: '分类',
+						field: 'cname',
+						align: 'center',
+						minWidth : '100',
+					},
+				]
+			];
+			let cats = [],
+				area = [];
+			let fromTable = table.render({
+				elem: '#dict-type-table',
+				url: apiUrl + 'stock_transfer/listTrans',
+				headers: getHeader(),
+				parseData: function(res) {
+					//console.log(res)
+					cats = res.data.cates;
+					area = res.data.area;
+					return {
+						"code": res.code, //解析接口状态
+						"msg": res.message, //解析提示文本
+						"count": res.data.count, //解析数据长度
+						"data": res.data.list //解析数据列表
+					};
+				},
+				
+				page: true,
+				cols: cols,
+				skin: 'line',
+				height: 'full-148',
+				toolbar: false,
+				done : () => {
+					let cateHtml = `<option value="">选择分类</option>`,
+						areaHtml = `<option value="">选择仓库</option>`;
+					cats.forEach(d => {
+						cateHtml += `<option value='${d.id}'>${d.name}</option>`
+					})
+					area.forEach(el => {
+						areaHtml += `<option value='${el.id}'>${el.name}</option>`
+					})
+					$("#cate-area").html(cateHtml)
+					$("#area-area").html(areaHtml)
+					form.render("select");
+				}
+			});
+			form.on('select(area_select)', function(data) {
+				let area_id = data.value*1; //获取下拉值
+				//console.log(area_id); //获取下拉列表ID的值
+				if(area_id < 1) {
+					$("#bar-area").html('<option value="">选择货架</option>')
+					form.render("select");
+					return;
+				}
+				let areaData = area.find(d => d.id == area_id)
+				if(areaData) {
+					let barHtml = `<option value="">选择货架</option>`;
+					areaData.child.forEach(d => {
+						barHtml += `<option value='${d.id}'>${d.name}</option>`
+					})
+					$("#bar-area").html(barHtml)
+					form.render("select");
+				}
+				
+			
+			});
+			// 实现全选功能
+			form.on("checkbox(siam_all)", function () {
+			    var status = $(this).prop("checked");
+			    $.each($("input[name=siam_one]"), function (i, value) {
+					if($(this).attr('disabled') !== 'disabled') {
+						$(this).prop("checked", status);
+					}
+			        
+			    });
+			    form.render();
+			});
+			window.renderData = function() {
+				//typeCode = pid;
+				$(".empty").hide();
+
+				listTable = table.render({
+					elem: '#dict-data-table',
+					url: apiUrl + 'stock_transfer/listTmpTrans',
+					headers: getHeader(),
+					parseData: function(res) {
+						//console.log(res)confAreaId
+						if(res.data.list.length > 0) {
+							confAreaId = res.data.list[0].area_id;
+						}
+						return {
+							"code": res.code, //解析接口状态
+							"msg": res.message, //解析提示文本
+							"count": res.data.count, //解析数据长度
+							"data": res.data.list //解析数据列表
+						};
+					},
+					limit : 100,
+					limits : [100, 200, 300, 400, 500],
+					page: true,
+					height: 'full-148',
+					cols: dataCols,
+					skin: 'line',
+					toolbar: false,
+					done : () => {
+						let areaHtml = `<option value="">选择仓库</option>`;
+						area.forEach(el => {
+							//此处支持同仓库调拨 用于货架调整
+							//if(el.id != confAreaId) {
+								areaHtml += `<option value='${el.id}'>${el.name}</option>`
+							//}
+						})
+						$("#to-area").html(areaHtml)
+						form.render("select");
+					}
+				});
+			}
+			//保证主表渲染完成
+			setTimeout(() => {
+				window.renderData()
+			},500)
+			window.getChecked = () => {
+				let ids = [];
+				$.each($("input[name=siam_one]:checked"), function (i, value) {
+				   ids[i] = $(this).attr("data-id");  // 如果需要获取其他的值 需要在模板中把值放到属性中 然后这里就可以拿到了
+				});
+				return ids;
+			}
+			$('#setnumBtn').click(e=> {
+				layer.prompt({
+				  formType: 2,
+				  value: '1',
+				  title: '批量设置调拨数',
+				  area: ['120px', '20px'] //自定义文本域宽高
+				}, function(value, index, elem){
+				  //alert(value); //得到value
+				  //console.log(value)
+				  let ids = getChecked()
+				  //console.log(ids)
+				  if(ids.length < 1){
+					  layer.msg('请选择物料')
+					  return false;
+				  }
+				  if(value < 1 || isNaN(value)) {
+				  		layer.msg('请输入正确的调拨数');
+				  		return false;
+				  }
+				  let postData = {
+				  		ids : ids.join(','),
+				  		trans_num : value
+				  }
+				  //console.log(postData)
+				  _post(layui, 'stock_transfer/editTransNum', postData, res => {
+				  		//layer.msg('')
+						fromTable.reload()
+				  })
+				  layer.close(index);
+				});
+			})
+			table.on('edit(dict-type-table)', function(obj){ 
+			  let old = $(this).prev().text();
+			   if(obj.value > obj.data.stock_num || obj.value < 1 || isNaN(obj.value)) {
+				   obj.update({trans_num : old});
+				   fromTable.reload()
+				   layer.msg('调拨数不能大于库存数或等于0');
+				   return false;
+			   }
+			   let postData = {
+				   id : obj.data.id,
+				   trans_num : obj.value
+			   }
+			   _post(layui, 'stock_transfer/editTransNum', postData, res => {
+				   //layer.msg('')
+			   })
+			});
+
+			table.on('toolbar(dict-type-table)', function(obj) {
+				if (obj.event === 'add') {
+					window.addType();
+				} else if (obj.event === 'refresh') {
+					window.refreshType();
+				} else if (obj.event === 'batchRemove') {
+					layer.msg("批量删除")
+				}
+			});
+
+			form.on('submit(dict-type-query)', function(data) {
+				data = data.field;
+				if(!confAreaId) {
+					layer.msg('请选择物料')
+					return false
+				}
+				data.from_area_id = confAreaId;
+				
+				let cklist = table.getData('dict-data-table');
+				//console.log(data)
+				//console.log(table.getData('dict-data-table'))
+				if(cklist.length < 1) {
+					layer.msg('请选择物料')
+					return false
+				}
+				_post(layui, 'stock_transfer/add', data, res => {
+					//console.log(res)
+					parent.layui.table.reload("stock_transfer-table");
+					parent.layer.close(parent.layer.getFrameIndex(window.name));//关闭当前页
+				
+				}, err => {
+					console.log(JSON.stringify(err))
+					return false
+				})
+				return false;
+			});
+
+			form.on('switch(dict-type-enable)', function(obj) {
+				
+				let update = {
+					id: obj.value,
+				}
+				//return;
+				_post(layui, 'stock_transfer/addTmpTrans', update, res => {
+					//console.log(res)
+					// layer.msg('更新成功', {
+					// 	icon: 1,
+					// 	time: 1000
+					// });
+					//obj.del();
+					window.renderData()
+					fromTable.reload()
+				}, err => {
+					console.log(err)
+					$(obj.elem).prop('checked', false);
+					form.render('checkbox');
+
+				})
+			});
+			
+			// 监听搜索操作
+			
+			form.on('submit(stock_in-query)', function(data) {
+				table.reload('dict-type-table', {
+					where: {
+						param: $('form').serialize()
+					},
+					page: {
+						curr: 1
+					}
+				})
+				return false;
+			});
+			form.on('submit(stock_in-reset)', function(data) {
+				table.reload('dict-type-table', {
+					where: {
+						param: ''
+					},
+					page: {
+						curr: 1
+					}
+				});
+				return false;
+			})
+			
+			
+		})
+	</script>
+</html>

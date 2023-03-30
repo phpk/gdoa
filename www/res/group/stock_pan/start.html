@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>发起盘点单</title>
+		<link rel="stylesheet" href="/static/layui/css/layui.css" />
+<link rel="stylesheet" href="/static/ui/css/ui.css" />
+	</head>
+	<body class="pear-container">
+		<blockquote class="layui-elem-quote" style="padding:0">
+			<form class="layui-form" action="" lay-filter="editform">
+
+				<div class="layui-form-item">
+					<div class="layui-input-inline" style="margin-left:30px;width:300px">
+						<input type="text" name="remark" class="layui-input" autocomplete="off" placeholder="请输入备注">
+					</div>
+					<div class="layui-input-inline">
+						<button type="submit" class="layui-btn layui-btn-primary layui-border-blue" lay-submit=""
+							lay-filter="stock_pan-save">
+							<i class="layui-icon layui-icon-ok"></i>
+							确认发起
+						</button>
+					</div>
+					<div class="layui-input-inline" style="width: 340px;">
+						<i class="layui-icon layui-icon-about"></i>
+						说明：选中商品后点击<b>批量添加</b> ，再点击<b>确认发起</b>
+					</div>
+				</div>
+
+			</form>
+		</blockquote>
+		<div class="layui-row layui-col-space10">
+			<div class="layui-col-md6">
+				<div class="layui-card">
+
+					<div class="layui-card-body">
+						<form class="layui-form" action="">
+							<div class="layui-row layui-col-space10">
+								<div class="layui-col-xs6 layui-col-sm6 layui-col-md4">
+									<input type="text" name="<goods_name>" placeholder="商品名称" class="layui-input">
+								</div>
+								<div class="layui-col-xs6 layui-col-sm6 layui-col-md4">
+									<select name="cate_id" lay-search id="cate-area">
+										<option value="">选择分类</option>
+									</select>
+								</div>
+								<div class="layui-col-xs6 layui-col-sm6 layui-col-md4">
+									<select name="area_id" lay-search id="area-area" lay-filter="area_select">
+										<option value="">选择仓库</option>
+									</select>
+								</div>
+								<div class="layui-col-xs6 layui-col-sm6 layui-col-md4">
+									<select name="bar_id" lay-search id="bar-area">
+										<option value="">选择货架</option>
+									</select>
+								</div>
+								<div class="layui-col-xs6 layui-col-sm6 layui-col-md4">
+									<button class="pear-btn pear-btn-md pear-btn-primary" lay-submit
+										lay-filter="stock_in-query">
+										<i class="layui-icon layui-icon-search"></i>
+										查询
+									</button>
+									<button type="reset" class="pear-btn pear-btn-md" lay-filter="stock_in-reset"
+										lay-submit>
+										<i class="layui-icon layui-icon-refresh"></i>
+										重置
+									</button>
+								</div>
+								<div class="layui-col-xs6 layui-col-sm6 layui-col-md4">
+									<button type="button" class="layui-btn layui-btn-primary layui-border-blue layui-btn-sm"
+										id="addAllBtn">
+										<i class="layui-icon layui-icon-bluetooth"></i>
+										批量添加
+									</button>
+								</div>
+							</div>
+						</form>
+						<table id="pan-type-table" lay-filter="pan-type-table"></table>
+					</div>
+				</div>
+			</div>
+			<div class="layui-col-md6">
+				<div class="layui-card">
+					<div class="layui-card-body">
+						<img src="/static/images/empty.svg" class="empty"
+							style="margin-top: 50px;margin-left: 220px;margin-bottom: 80px;" width="184" height="152">
+						<table id="pan-data-table" lay-filter="pan-data-table"></table>
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+	</body>
+
+
+	<script type="text/html" id="checkbd">
+		<input type="checkbox" name="siam_one" title="" lay-skin="primary" data-id="{{ d.id }}"
+			{{#  if (d.enable === 1){ }}disabled="disabled" {{#  } }}>
+	</script>
+	<script type="text/html" id="stock_pan-bar">
+		<button class="pear-btn pear-btn-danger pear-btn-sm" lay-event="remove">
+			<i class="layui-icon layui-icon-delete"></i>
+		</button>
+	</script>
+	<script src="../config.js"></script>
+	<script src="/static/layui/layui.js"></script>
+		<script src="/static/ui/ui.js"></script>
+	<script>
+		layui.use(['table', 'form', 'jquery'], function() {
+			let table = layui.table,
+				form = layui.form,
+				$ = layui.jquery,
+				MODULE_PATH = "./",
+				req = _req(),
+				listTable;
+			const data_key = '__stock_pan_data';
+			const getPanData = () => {
+				let rt = localStorage.getItem(data_key);
+				return rt ? JSON.parse(rt) : [];
+			}
+			const setPanData = (data) => {
+				let rt = getPanData();
+				let ids = rt.map(d => {
+					return d.id;
+				})
+				data.forEach(d => {
+					if (!ids.includes(d.id)) {
+						rt.unshift(d)
+					}
+				})
+				return localStorage.setItem(data_key, JSON.stringify(rt))
+			}
+			const savePanData = (data) => {
+				return localStorage.setItem(data_key, JSON.stringify(data))
+			}
+			const delPanData = () => {
+				return localStorage.removeItem(data_key)
+			}
+			//let typeCode;
+			//let objname;
+
+			let cols = [
+				[{
+						templet: "#checkbd",
+						title: "<input type='checkbox' name='siam_all' title='' lay-skin='primary' lay-filter='siam_all'> ",
+						width: 60,
+						fixed: 'left'
+					},
+					{
+						title: 'ID',
+						field: 'id',
+						align: 'center',
+						minWidth: '50',
+					},
+					{
+						title: '物料名称',
+						field: 'goods_name',
+						align: 'center',
+						minWidth: '100',
+					},
+					{
+						title: '数量',
+						field: 'stock_num',
+						align: 'center',
+						minWidth: '80',
+					},
+					{
+						title: '编码',
+						field: 'in_no',
+						align: 'center',
+						minWidth: '80',
+					},
+					{
+						title: '型号',
+						field: 'model',
+						align: 'center',
+						minWidth: '80',
+					},
+					{
+						title: '分类',
+						field: 'cname',
+						align: 'center',
+						minWidth: '100',
+					},
+					{
+						title: '仓库',
+						field: 'addrname',
+						align: 'center',
+						minWidth: '120',
+					},
+					{
+						title: '货架',
+						field: 'barname',
+						align: 'center',
+						minWidth: '120',
+					}
+				]
+			];
+
+			let dataCols = [
+				[{
+						title: 'ID',
+						field: 'id',
+						align: 'center',
+						minWidth: '60',
+					},
+					{
+						title: '物料名称',
+						field: 'goods_name',
+						align: 'center',
+						minWidth: '100',
+					},
+					{
+						title: '数量',
+						field: 'stock_num',
+						align: 'center',
+						minWidth: '80'
+					},
+					{
+						title: '编码',
+						field: 'in_no',
+						align: 'center',
+						minWidth: '80',
+					},
+					{
+						title: '型号',
+						field: 'model',
+						align: 'center',
+						minWidth: '80',
+					},
+					{
+						title: '分类',
+						field: 'cname',
+						align: 'center',
+						minWidth: '100',
+					}, ,
+					{
+						title: '操作',
+						toolbar: '#stock_pan-bar',
+						align: 'center',
+						width: 100,
+						fixed: 'right'
+					}
+				]
+			];
+			let cats = [],
+				area = [];
+			let fromTable = table.render({
+				elem: '#pan-type-table',
+				url: apiUrl + 'stock_transfer/listTrans',
+				headers: getHeader(),
+				parseData: function(res) {
+					//console.log(res)
+					cats = res.data.cates;
+					area = res.data.area;
+					let hasData = getPanData()
+					if (hasData && hasData.length > 0) {
+						let ids = hasData.map(d => {
+							return d.id;
+						})
+						res.data.list.forEach(d => {
+							if (ids.includes(d.id)) {
+								d.enable = 1;
+							}
+						})
+					}
+					return {
+						"code": res.code, //解析接口状态
+						"msg": res.message, //解析提示文本
+						"count": res.data.count, //解析数据长度
+						"data": res.data.list //解析数据列表
+					};
+				},
+
+				page: true,
+				cols: cols,
+				skin: 'line',
+				height: 'full-148',
+				toolbar: false
+			});
+			setTimeout(() => {
+				let cateHtml = `<option value="">选择分类</option>`,
+					areaHtml = `<option value="">选择仓库</option>`;
+				cats.forEach(d => {
+					cateHtml += `<option value='${d.id}'>${d.name}</option>`
+				})
+				area.forEach(el => {
+					areaHtml += `<option value='${el.id}'>${el.name}</option>`
+				})
+				$("#cate-area").html(cateHtml)
+				$("#area-area").html(areaHtml)
+				form.render("select");
+			}, 1000)
+			form.on('select(area_select)', function(data) {
+				let area_id = data.value * 1; //获取下拉值
+				//console.log(area_id); //获取下拉列表ID的值
+				if (area_id < 1) {
+					$("#bar-area").html('<option value="">选择货架</option>')
+					form.render("select");
+					return;
+				}
+				let areaData = area.find(d => d.id == area_id)
+				if (areaData) {
+					let barHtml = `<option value="">选择货架</option>`;
+					areaData.child.forEach(d => {
+						barHtml += `<option value='${d.id}'>${d.name}</option>`
+					})
+					$("#bar-area").html(barHtml)
+					form.render("select");
+				}
+
+
+			});
+			// 实现全选功能
+			form.on("checkbox(siam_all)", function() {
+				var status = $(this).prop("checked");
+				$.each($("input[name=siam_one]"), function(i, value) {
+					if ($(this).attr('disabled') !== 'disabled') {
+						$(this).prop("checked", status);
+					}
+
+				});
+				form.render();
+			});
+			window.renderData = function() {
+				//typeCode = pid;
+				$(".empty").hide();
+
+				listTable = table.render({
+					elem: '#pan-data-table',
+					data: getPanData(),
+					limit: 100,
+					limits: [100, 200, 300, 400, 500],
+					page: true,
+					height: 'full-148',
+					cols: dataCols,
+					skin: 'line',
+					toolbar: false
+				});
+			}
+			table.on('tool(pan-data-table)', function(obj) {
+				if (obj.event === 'remove') {
+					window.remove(obj);
+				}
+			});
+			//保证主表渲染完成
+			setTimeout(() => {
+				window.renderData()
+			}, 500)
+			window.getChecked = () => {
+				let ids = [];
+				$.each($("input[name=siam_one]:checked"), function(i, value) {
+					ids[i] = $(this).attr("data-id") * 1; // 如果需要获取其他的值 需要在模板中把值放到属性中 然后这里就可以拿到了
+				});
+				return ids;
+			}
+			$('#addAllBtn').click(e => {
+				let ids = getChecked()
+				//console.log(ids)
+				if (ids.length < 1) {
+					layer.msg('请选择物料')
+					return false;
+				}
+				//console.log(ids)
+				let list = table.getData('pan-type-table');
+				//console.log(list)
+				let saveData = list.filter(d => {
+					return ids.includes(d.id)
+				})
+				//console.log(saveData)
+				setPanData(saveData);
+				fromTable.reload();
+				window.renderData();
+			})
+			window.remove = function(obj) {
+				//console.log(obj)
+				let data = getPanData(),
+					save = [],
+					id = obj.data.id;
+				//console.log(id)
+				data.forEach(d => {
+					if (d.id !== id) {
+						save.push(d)
+					}
+				})
+				//console.log(save)
+				savePanData(save)
+				fromTable.reload();
+				obj.del()
+				//window.renderData();
+
+			}
+
+			form.on('submit(stock_pan-save)', function(data) {
+				data = data.field;
+
+				let cklist = getPanData();
+				//console.log(data)
+				//console.log(table.getData('pan-data-table'))
+				if (cklist.length < 1) {
+					layer.msg('请选择物料')
+					return false
+				}
+				let ids = cklist.map(d => {return d.id})
+				let postData = {
+					id : ids.join(','),
+					remark: data.remark
+				}
+				//console.log(postData)
+				_post(layui, 'stock_pan/add', postData, res => {
+					//console.log(res)
+					delPanData();
+					parent.layui.table.reload("stock_pan-table");
+					parent.layer.close(parent.layer.getFrameIndex(window.name)); //关闭当前页
+
+				}, err => {
+					console.log(JSON.stringify(err))
+					return false
+				})
+				return false;
+			});
+
+
+
+			// 监听搜索操作
+
+			form.on('submit(stock_in-query)', function(data) {
+				table.reload('pan-type-table', {
+					where: {
+						param: $('form').serialize()
+					},
+					page: {
+						curr: 1
+					}
+				})
+				return false;
+			});
+			form.on('submit(stock_in-reset)', function(data) {
+				table.reload('pan-type-table', {
+					where: {
+						param: ''
+					},
+					page: {
+						curr: 1
+					}
+				});
+				return false;
+			})
+
+
+		})
+	</script>
+</html>

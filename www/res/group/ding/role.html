@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>角色管理</title>
+    <link rel="stylesheet" href="/static/layui/css/layui.css" />
+    <link rel="stylesheet" href="/static/ui/css/ui.css" />
+</head>
+
+<body class="pear-container">
+
+    <div class="layui-card">
+        <div class="layui-card-body">
+            <script type="text/html" id="area-bar">
+                    <button class="pear-btn pear-btn-primary pear-btn-sm" lay-event="getuser"><i class="layui-icon layui-icon-refresh"></i></button>
+                </script>
+            <table id="area-table" lay-filter="area-table"></table>
+        </div>
+    </div>
+
+
+
+    <script src="../config.js"></script>
+    <script src="/static/layui/layui.js"></script>
+    <script src="/static/ui/ui.js"></script>
+    <script>
+        layui.use(['table', 'form', 'jquery', 'common', 'treeTable'], function () {
+            let table = layui.table;
+            let form = layui.form;
+            let $ = layui.jquery;
+            let common = layui.common;
+            let treeTable = layui.treeTable;
+
+            let MODULE_PATH = "./";
+            const cols = [
+                {
+                    field: 'role_id',
+                    title: 'ID'
+                }, {
+                    field: 'name',
+                    minWidth: 200,
+                    title: '名称'
+                }, 
+                // {
+                //     title: '操作',
+                //     templet: '#area-bar',
+                //     width: 150,
+                //     align: 'center'
+                // }
+            ]
+            _get(layui, 'ding/listRole', res => {
+                console.log(res)
+                treeTable.render({
+                    elem: '#area-table',
+                    toolbar: '#area-toolbar',
+                    tree: {
+                        iconIndex: 1,  // 折叠图标显示在第几列
+                        idName: 'role_id',  // 自定义id字段的名称
+                        pidName: 'pid',  // 自定义标识是否还有子节点的字段名称
+                        haveChildName: 'haveChild',  // 自定义标识是否还有子节点的字段名称
+                        isPidData: true  // 是否是pid形式数据
+                    },
+                    data : res,
+                    cols : cols
+                })
+            })
+            
+
+            //render();
+            table.on('tool(area-table)', function (obj) {
+            })
+
+            table.on('toolbar(area-table)', function (obj) {
+                if (obj.event === 'refresh') {
+                    window.refresh();
+                }
+            });
+
+
+
+
+            window.refresh = function (param) {
+                table.reload('area-table');
+            }
+        })
+    </script>
+</body>
+
+</html>

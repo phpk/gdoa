@@ -36,6 +36,7 @@ layui.define(['message', 'table', 'jquery', 'element', 'yaml', 'form', 'tab', 'm
 			}
 
 			this.render = function(initConfig) {
+				//console.log(initConfig)
 				if (initConfig !== undefined) {
 					applyConfig(initConfig);
 				} else {

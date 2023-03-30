@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>部门管理</title>
+    <link rel="stylesheet" href="/static/layui/css/layui.css" />
+    <link rel="stylesheet" href="/static/ui/css/ui.css" />
+</head>
+
+<body class="pear-container">
+    
+    <div class="layui-card">
+        <div class="layui-card-body">
+            <div class="layui-btn-group">
+                <button class="layui-btn layui-btn-primary layui-border-orange layui-btn-sm" id="synchrodept">
+                    <i class="layui-icon layui-icon-refresh"></i>
+                    同步部门
+                </button>
+                <button class="layui-btn layui-btn-primary layui-border-orange layui-btn-sm" id="synchrouser">
+                    <i class="layui-icon layui-icon-refresh"></i>
+                    同步用户
+                </button>
+                <button class="layui-btn layui-btn-primary layui-border-orange layui-btn-sm" id="synchrorole">
+                    <i class="layui-icon layui-icon-refresh"></i>
+                    同步角色
+                </button>
+            </div>
+            <script type="text/html" id="area-bar">
+                {{# if(d.is_sun == 0){ }}
+				<button class="pear-btn pear-btn-primary pear-btn-sm">待同步</button>
+                {{# }else { }}
+                    <button class="pear-btn pear-btn-danger pear-btn-sm">已同步</button>
+                {{# } }}
+            </script>
+            <script type="text/html" id="user-bar">
+                {{# if(d.is_user == 0){ }}
+				<button class="pear-btn pear-btn-primary pear-btn-sm">待同步</button>
+                {{# }else { }}
+                    <button class="pear-btn pear-btn-danger pear-btn-sm">已同步</button>
+                {{# } }}
+            </script>
+            <table id="area-table" lay-filter="area-table"></table>
+        </div>
+    </div>
+
+   
+
+    <script src="../config.js"></script>
+    <script src="/static/layui/layui.js"></script>
+    <script src="/static/ui/ui.js"></script>
+    <script>
+        layui.use(['table', 'form', 'jquery', 'common', 'treeTable'], function () {
+            let table = layui.table;
+            let form = layui.form;
+            let $ = layui.jquery;
+            let common = layui.common;
+            let treeTable = layui.treeTable;
+
+            let MODULE_PATH = "./";
+            //console.log(layui.sse)
+            const cols = [
+                {
+                    field: 'dept_id',
+                    title: 'ID'
+                }, {
+                    field: 'name',
+                    minWidth: 200,
+                    title: '名称'
+                }, {
+                    title: '用户同步',
+                    templet: '#user-bar',
+                    width: 150,
+                    align: 'center'
+                }, {
+                    title: '部门同步',
+                    templet: '#area-bar',
+                    width: 150,
+                    align: 'center'
+                }
+            ];
+            _get(layui, 'ding/listDept', res => {
+                //console.log(res)
+                treeTable.render({
+                    elem: '#area-table',
+                    toolbar: '#area-toolbar',
+                    tree: {
+                        iconIndex: 1,  // 折叠图标显示在第几列
+                        idName: 'dept_id',  // 自定义id字段的名称
+                        pidName: 'parent_id',  // 自定义标识是否还有子节点的字段名称
+                        haveChildName: 'haveChild',  // 自定义标识是否还有子节点的字段名称
+                        isPidData: true  // 是否是pid形式数据
+                    },
+                    data : res,
+                    cols : cols
+                })
+            })
+            
+
+            //render();
+            table.on('tool(area-table)', function (obj) {
+
+            })
+
+            $('#synchrodept').click(() => {
+                window.synchro('dept');
+            })
+            $('#synchrouser').click(() => {
+                window.synchro('user');
+            })
+            $('#synchrorole').click(() => {
+                window.synchro('role');
+            })
+            window.synchro = function (type) {
+                let index = layer.load(1);
+
+                _get(layui, 'ding/synchro?type=' + type, res => {
+                    layer.close(index);
+                    table.reload('area-table');
+                    layer.msg('同步成功')
+                }, err => {
+                    layer.close(index);
+                })
+            }
+
+
+            window.refresh = function (param) {
+                table.reload('area-table');
+            }
+        })
+    </script>
+</body>
+
+</html>

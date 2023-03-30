@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>添加审批流管理</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="/static/layui/css/layui.css" />
+<link rel="stylesheet" href="/static/ui/css/ui.css" />
+</head>
+
+<body>
+    <form class="layui-form" action="" lay-filter="editform">
+        <div class="mainBox">
+            <div class="main-container">
+                <div class="main-container">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">名称</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="name" lay-verify="required|len" autocomplete="off" min="1"
+                                placeholder="请输入名称" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item" id="type_area">
+                        <label class="layui-form-label">选择类型</label>
+                        <div class="layui-input-block">
+                            <select name="type" id="approve_type" lay-filter="approve-select">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item" id="form_area">
+                        <label class="layui-form-label">选择表单</label>
+                        <div class="layui-input-block">
+                            <select name="ref_id" id="form_id">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item layui-form-text">
+                        <label class="layui-form-label">备注</label>
+                        <div class="layui-input-block">
+                            <textarea name="remark" placeholder="请输入内容" class="layui-textarea"></textarea>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="bottom">
+            <div class="button-container">
+                <input type="hidden" name="id" />
+                <button type="submit" class="pear-btn pear-btn-primary pear-btn-sm" lay-submit=""
+                    lay-filter="approve-save">
+                    <i class="layui-icon layui-icon-ok"></i>
+                    提交
+                </button>
+            </div>
+        </div>
+    </form>
+    <script src="../config.js"></script>
+    <script src="/static/layui/layui.js"></script>
+    <script src="/static/ui/ui.js"></script>
+    <script>
+        layui.use(['form', 'layer', 'tree'], function () {
+            let form = layui.form
+                , layer = layui.layer
+                , $ = layui.$
+                , req = _req();
+            form.verify({
+                len: (val, item) => {
+                    let min = item.getAttribute("min")
+                    if (val.length < min) {
+                        return '长度不能小于' + min;
+                    }
+                }
+            })
+            if (req.aid) {
+                //渲染
+                _get(layui, 'approve/editBefore?id=' + req.aid, res => {
+                    res.id = req.aid;
+                    form.val('editform', res)
+                    $('#form_area').hide()
+                    $('#type_area').hide()
+                });
+            } else {
+                _get(layui, 'approve/addBefore', res => {
+                    console.log(res)
+                    res.dataType.forEach(el => {
+                        $("#approve_type").append(new Option(el.name, el.id));
+                    })
+                    res.formData.forEach(el => {
+                        $("#form_id").append(new Option(el.form_name, el.id));
+                    })
+                    form.render("select");
+                });
+            }
+            form.on('select(approve-select)', function(data) {
+                
+                if(data.value*1 < 2) {
+                    //console.log(data)
+                    $('#form_area').show()
+                }else{
+                    $('#form_area').hide()
+                }
+            })
+            //监听提交
+            form.on('submit(approve-save)', function (data) {
+                data = data.field;
+                let postUrl;
+                if (req.aid) {
+                    postUrl = 'approve/edit';
+                } else {
+                    postUrl = 'approve/add';
+                }
+                _post(layui, postUrl, data, res => {
+                    //console.log(res)
+                    parent.layui.table.reload("approve-table");
+                    parent.layer.close(parent.layer.getFrameIndex(window.name));//关闭当前页
+
+                })
+
+                return false;
+            });
+
+        });
+    </script>
+
+</body>
+
+</html>

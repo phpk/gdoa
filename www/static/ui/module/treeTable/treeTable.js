@@ -715,6 +715,7 @@ layui.define(['layer', 'laytpl', 'form'], function (exports) {
         }
         // 请求数据
         options.reqData(d, function (res) {
+            //console.log(res)
             if (options.tree.isPidData) {
                 res = treeTb.pidToChildren(res, options.tree.idName, options.tree.pidName, options.tree.childName);
             }

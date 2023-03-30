@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>接收调拨单</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="/static/layui/css/layui.css" />
+<link rel="stylesheet" href="/static/ui/css/ui.css" />
+</head>
+<body>
+<form class="layui-form" action="" lay-filter="editform">
+    <div class="mainBox">
+        <div class="main-container">
+            <div class="main-container">
+				
+				<div class="layui-card">
+					<div class="layui-card-body">
+						<div class="layui-form-item">
+							<label class="layui-form-label">接收备注</label>
+							<div class="layui-input-inline" style="width: 120px;">
+								<input type="text" name="to_remark" placeholder="请输入备注" class="layui-input">
+							</div>
+							<label class="layui-form-label">选择货架</label>
+							<div class="layui-input-inline" style="width: 120px;">
+								<select name="to_bar_id" lay-search id="to-bar">
+									<option value="0">选择货架</option>
+								</select>
+							</div>
+							
+						</div>
+					</div>
+				</div>
+				
+				<div class="layui-card">
+					<div class="layui-card-body">
+						<table id="stock_transfer-table" lay-filter="stock_transfer-table"></table>
+					</div>
+				</div>
+				
+            </div>
+        </div>
+    </div>
+    <div class="bottom">
+        <div class="button-container">
+			<input type="hidden" name="id" />
+            <button type="submit" class="pear-btn pear-btn-primary pear-btn-sm" lay-submit="" lay-filter="stock_transfer-save">
+                <i class="layui-icon layui-icon-ok"></i>
+                确认接收
+            </button>
+        </div>
+    </div>
+</form>
+<script type="text/html" id="stock_transfer-status">
+		{{# if(d.status == 1){ }}
+			<button class="pear-btn pear-btn-primary pear-btn-sm">待审核</button>
+			{{# }else if(d.status == 2) { }}
+				<button class="pear-btn pear-btn-danger pear-btn-sm">待接收</button>
+				{{# }else if(d.status == 3) { }}
+					<button class="pear-btn pear-btn-success pear-btn-sm">已完结</button>
+					{{# } }}
+		</script>
+<script src="../config.js"></script>
+<script src="/static/layui/layui.js"></script>
+<script src="/static/ui/ui.js"></script>
+<script>
+    layui.use(['form','layer','tree','table', 'form', 'jquery', 'common'], function () {
+		let table = layui.table;
+		let $ = layui.jquery;
+		let common = layui.common;
+        let form = layui.form
+            , layer = layui.layer
+            , req = _req(),
+			area;
+        let cols = [
+        	[{
+        			title: 'ID',
+        			field: 'id',
+        			align: 'center',
+					minWidth : '60',
+        		},
+        		{
+        			title: '商品名称',
+        			field: 'goods_name',
+        			align: 'center',
+					minWidth : '120',
+        		},
+        
+        		{
+        			title: '数量',
+        			field: 'trans_num',
+        			align: 'center',
+					minWidth : '80',
+        		},
+				{
+					title: '型号',
+					field: 'model',
+					align: 'center',
+					minWidth : '80',
+				},
+				{
+					title: '货运号',
+					field: 'way_no',
+					align: 'center'
+				},
+        		{
+        			title: '分类',
+        			field: 'cname',
+        			align: 'center',
+					minWidth : '100',
+        		},
+        		{
+        			title: '状态',
+        			field: 'status',
+        			align: 'center',
+					minWidth : '100',
+        			templet: '#stock_transfer-status'
+        		},
+        		{
+        			title: '发起库',
+        			field: 'from_areaname',
+        			align: 'center',
+					minWidth : '100',
+        		},
+        		{
+        			title: '接收库',
+        			field: 'to_areaname',
+        			align: 'center',
+					minWidth : '100',
+        		},
+        
+        		{
+        			title: '添加时间',
+        			field: 'add_time',
+        			align: 'center',
+					minWidth : '100',
+        			//templet: '#stock_transfer-time'
+        		},
+        
+        		
+        		{
+        			title: '调拨单号',
+        			field: 'trans_no',
+        			align: 'center',
+        			minWidth: 150,
+        			fixed: 'right'
+        		},
+        	]
+        ]
+		table.render({
+			elem: '#stock_transfer-table',
+			url: apiUrl + 'stock_transfer/list?trans_no=' + req.trans_no,
+			headers: getHeader(),
+			parseData: function(res) {
+				area = res.data.area
+				return {
+					"code": res.code, //解析接口状态
+					"msg": res.message, //解析提示文本
+					"count": res.data.count, //解析数据长度
+					"data": res.data.list //解析数据列表
+				};
+			},
+			page: true,
+			cols: cols,
+			skin: 'line',
+		
+			toolbar: false
+		});
+		setTimeout(() => {
+			let areaHtml = `<option value="0">选择货架</option>`;
+			let areaData = area.find(d => d.id == req.to_area_id)
+			areaData.child.forEach(el => {
+				areaHtml += `<option value='${el.id}'>${el.name}</option>`
+			})
+			$("#to-bar").html(areaHtml)
+			form.render("select");
+		}, 1000)
+        //监听提交
+        form.on('submit(stock_transfer-save)', function (data) {
+			data = data.field;
+			data.trans_no = req.trans_no;
+            let postUrl = 'stock_transfer/inTrans';
+			_post(layui, postUrl, data, res => {
+				//console.log(res)
+				parent.layui.table.reload("stock_transfer-table");
+				parent.layer.close(parent.layer.getFrameIndex(window.name));//关闭当前页
+
+			})
+
+            return false;
+        });
+
+    });
+</script>
+
+</body>
+</html>

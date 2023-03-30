@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>编辑项目分类</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="/static/layui/css/layui.css" />
+<link rel="stylesheet" href="/static/ui/css/ui.css" />
+</head>
+<body>
+<form class="layui-form" action="" lay-filter="editform">
+    <div class="mainBox">
+        <div class="main-container">
+            <div class="main-container">
+            <div class="layui-form-item">
+                <label class="layui-form-label">分类名称</label>
+                <div class="layui-input-block">
+                    <input type="text" name="cname" lay-verify="required|len" autocomplete="off" min="1" placeholder="请输入名称" class="layui-input">
+                </div>
+            </div>
+			<div class="layui-form-item">
+			    <label class="layui-form-label">分类值</label>
+			    <div class="layui-input-block">
+			        <input type="text" name="ckey" lay-verify="required|len" autocomplete="off" min="1" placeholder="请输入名称" class="layui-input">
+			    </div>
+			</div>
+			<div class="layui-form-item">
+			    <label class="layui-form-label">类别</label>
+			    <div class="layui-input-block">
+			        <select name="ctype">
+						<option value="input">输入框</option>
+						<option value="radio">单选</option>
+						<option value="checkbox">多选</option>
+						<option value="select">下拉</option>
+						<option value="textarea">文本</option>
+						<option value="timeinput">时间输入框</option>
+			        </select>
+			    </div>
+			</div>
+			<div class="layui-form-item">
+			    <label class="layui-form-label">默认值</label>
+			    <div class="layui-input-block">
+			        <input type="text" name="cdef" autocomplete="off" min="3" placeholder="请输入默认值" class="layui-input">
+			    </div>
+			</div>
+			<div class="layui-form-item">
+			    <label class="layui-form-label">排序</label>
+			    <div class="layui-input-block">
+			        <input type="number" name="corder" autocomplete="off" min="3" placeholder="请输入默认值" class="layui-input">
+			    </div>
+			</div>
+			<div class="layui-form-item">
+			    <label class="layui-form-label">关联字典</label>
+			    <div class="layui-input-block">
+			        <select name="cdict" lay-search id="key-area">
+						<option value="">选择字典</option>
+			        </select>
+					<div class="layui-form-mid layui-word-aux">类型为多选/单选/下拉时请选择字典</div>
+			    </div>
+			</div>
+			
+			
+			<div class="layui-form-item layui-form-text">
+				<label class="layui-form-label">说明</label>
+				<div class="layui-input-block">
+				<textarea name="cdesc" placeholder="请输入说明" class="layui-textarea"></textarea>
+				</div>
+			</div>
+
+            </div>
+        </div>
+    </div>
+    <div class="bottom">
+        <div class="button-container">
+			<input  type="hidden" name="id"/>
+            <button type="submit" class="pear-btn pear-btn-primary pear-btn-sm" lay-submit="" lay-filter="profile-save">
+                <i class="layui-icon layui-icon-ok"></i>
+                提交
+            </button>
+        </div>
+    </div>
+</form>
+<script src="../config.js"></script>
+<script src="/static/layui/layui.js"></script>
+<script src="/static/ui/ui.js"></script>
+<script>
+    layui.use(['form','layer','tree','upload'], function () {
+        let form = layui.form
+            , layer = layui.layer
+			, $ = layui.$
+			, upload = layui.upload
+            , req = _req();
+        form.verify({
+            len : (val, item) => {
+                let min = item.getAttribute("min")
+                if(val.length < min) {
+                    return '长度不能小于' + min;
+                }
+            }
+        })
+		
+		const renderSelect = (rs) => {
+			// for(let p in rs) {
+			// 	$("#key-area").append(new Option(rs[p], p));
+			// }
+			rs.forEach(el => {
+				$("#key-area").append(new Option(el.name, el.id));
+			})
+			// res.tableList
+			form.render("select");
+		}
+        //渲染
+        _get(layui, 'stock_cate/editBefore?id=' + req.id, res => {
+        	renderSelect(res.dict)
+        	if(req.key) {
+        		let data = res.ext.find(d => d.ckey == req.key)
+				data.id = req.id;
+				form.val('editform', data)
+        	}else{
+				form.val('editform', {id : req.id})
+			}
+            
+        });
+
+        //监听提交
+        form.on('submit(profile-save)', function (data) {
+			data = data.field;
+            let postUrl= 'stock_cate/edit';
+			let isMore = ['select','checkbox', 'radio']
+			if(isMore.includes(data.ctype)) {
+				if(!data.cdict) {
+					layer.msg('请选择字典');
+					return false;
+				}
+			}else{
+				data.cdict = '';
+			}
+			
+			_post(layui, postUrl, data, res => {
+				//console.log(res)
+				parent.layui.table.reload("dict-data-table");
+				parent.layer.close(parent.layer.getFrameIndex(window.name));//关闭当前页
+
+			})
+
+            return false;
+        });
+
+    });
+</script>
+
+</body>
+</html>

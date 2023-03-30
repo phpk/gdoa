@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>添加入库单</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="/static/layui/css/layui.css" />
+<link rel="stylesheet" href="/static/ui/css/ui.css" />
+</head>
+<body>
+<form class="layui-form" action="" lay-filter="editform">
+    <div class="mainBox">
+        <div class="main-container">
+            <div class="main-container">
+            <div class="layui-form-item">
+                <label class="layui-form-label"></label>
+                <div class="layui-input-block" id="localarea"></div>
+            </div>
+			<div class="layui-form-item">
+			    <label class="layui-form-label">内部编码</label>
+			    <div class="layui-input-block">
+			        <input type="text" name="in_no" lay-verify="required|len" autocomplete="off" min="1" placeholder="请输入编码" class="layui-input">
+			    </div>
+			</div>
+			<div class="layui-form-item">
+			    <label class="layui-form-label">型号</label>
+			    <div class="layui-input-block">
+			        <input type="text" name="model" lay-verify="required|len" autocomplete="off" min="1" placeholder="请输入型号" class="layui-input">
+			    </div>
+			</div>
+			<div class="layui-form-item">
+			    <label class="layui-form-label">数量</label>
+			    <div class="layui-input-block">
+			        <input type="number" value="1" name="stock_num" id="num" lay-verify="required|len" autocomplete="off" min="1" placeholder="请输入数量" class="layui-input">
+			    </div>
+			</div>
+			<div class="layui-form-item">
+			    <label class="layui-form-label">入库时间</label>
+			    <div class="layui-input-block">
+			        <input type="text" name="in_time" id="in_time" lay-verify="required|len" autocomplete="off" min="1" placeholder="请输入入库时间" class="layui-input">
+			    </div>
+			</div>
+			<div class="layui-form-item">
+			    <label class="layui-form-label">仓库地址</label>
+			    <div class="layui-input-block">
+			        <!--select name="area_id" lay-search id="area-area">
+			        </select-->
+					<button class="layui-btn" id="chooseArea">
+					    <span id="areaText">选择仓库</span>
+					    <i class="layui-icon layui-icon-down layui-font-12"></i>
+					</button>
+					<span id="barText"></span>
+					
+			    </div>
+			</div>
+		
+			<div id="extarea"></div>
+			<div class="layui-form-item layui-form-text">
+				<label class="layui-form-label">备注</label>
+				<div class="layui-input-block">
+				<textarea name="remark" placeholder="请输入备注" class="layui-textarea"></textarea>
+				</div>
+			</div>
+
+            </div>
+        </div>
+    </div>
+    <div class="bottom">
+        <div class="button-container">
+			<input type="hidden" name="id" />
+			<input type="hidden" name="goods_name" >
+			<input type="hidden" name="goods_id" >
+			<!--input type="hidden" name="unit_name" -->
+			<input type="hidden" name="cate_id" >
+			<input  type="hidden" name="area_id" id="area_id" value="0"/>
+			<input  type="hidden" name="bar_id" id="bar_id" value="0"/>
+            <button type="submit" class="pear-btn pear-btn-primary pear-btn-sm" lay-submit="" lay-filter="stock_in-save">
+                <i class="layui-icon layui-icon-ok"></i>
+                提交
+            </button>
+        </div>
+    </div>
+</form>
+<script src="../config.js"></script>
+<script src="/static/layui/layui.js"></script>
+<script src="/static/ui/ui.js"></script>
+<script>
+    layui.use(['form','layer','tree','laydate','dropdown', 'laytpl'], function () {
+        let form = layui.form
+            , layer = layui.layer
+			, $ = layui.$
+            , req = _req()
+			, laydate = layui.laydate
+			, dropdown = layui.dropdown
+			, laytpl = layui.laytpl
+			, goods_id = req.goods_id
+			, goodsInfo;
+        form.verify({
+            len : (val, item) => {
+                let min = item.getAttribute("min")
+                if(val.length < min) {
+                    return '长度不能小于' + min;
+                }
+            }
+        })
+		laydate.render({
+		  elem: '#in_time'
+		  ,value: new Date() 
+		  ,isInitValue: true //是否允许填充初始值，默认为 true
+		});
+		// laydate.render({
+		//   elem: '#oa_buy_time'
+		//   ,value: new Date() 
+		//   ,isInitValue: true //是否允许填充初始值，默认为 true
+		// });
+		const renderEl = (res) => {
+			$('#localarea').text(res.cate_name + ' > ' + res.goods_name)
+			form.val('editform', res)
+			res.storehouse.forEach(el => {
+				$("#area-area").append(new Option(el.name, el.id));
+			})
+			form.render("select");
+			// if(res.cate_id === 4 || res.cate_id === 5) {
+			// 	$('#repair').show();
+			// }
+			// else if(res.cate_id === 6) {
+			// 	$('#left').show();
+			// }
+			// else if(res.cate_id === 7) {
+			// 	$('#oa').show();
+			// }
+		}
+        if(req.id) {
+            //渲染
+            _get(layui, 'stock_in/editBefore?id=' + req.id, res => {
+				//renderEl(res)
+                //form.val('editform', res)
+				//$("#num").attr('readonly', true)
+				$('#localarea').text(res.cate_name + ' > ' + res.goods_name)
+				$('#areaText').text(res.area_name);
+				$('#barText').text(res.bar_name);
+				$.get('../set/field.html', tpl => {
+					laytpl(tpl).render(res.ext, function(html){
+					  $('#extarea').html(html);
+					  form.render();
+					  form.val('editform', res)
+					  $("#num").attr('readonly', true)
+					  res.ext.forEach(d => {
+						  if(d.ctype == 'timeinput') {
+							  laydate.render({
+							    elem: '#' + d.ckey
+							    ,value: new Date() 
+							    ,isInitValue: true //是否允许填充初始值，默认为 true
+							  });
+						  }
+					  })
+					});
+				})
+            });
+        }else{
+			_get(layui, 'stock_in/addBefore?goods_id=' + goods_id, res => {
+				//console.log(res)
+				//goodsInfo = res;
+				//renderEl(res)
+				$('#localarea').text(res.cate_name + ' > ' + res.goods_name)
+				dropdown.render({
+				    elem: '#chooseArea',
+				    data: res.area,
+				    trigger: 'hover',
+				    click: (d, el) => {
+				        //console.log(d)
+				        $('#areaText').text(d.topname);
+						$('#barText').text(d.title);
+				        $('#area_id').val(d.pid);
+						$('#bar_id').val(d.id);
+				    }
+				})
+				form.val('editform', res)
+				$.get('../set/field.html', tpl => {
+					laytpl(tpl).render(res.ext, function(html){
+					  $('#extarea').html(html);
+					  form.render();
+					  res.ext.forEach(d => {
+						  if(d.ctype == 'timeinput') {
+							  laydate.render({
+							    elem: '#' + d.ckey
+							    ,value: new Date() 
+							    ,isInitValue: true //是否允许填充初始值，默认为 true
+							  });
+						  }
+					  })
+					});
+				})
+			});
+		}
+
+        //监听提交
+        form.on('submit(stock_in-save)', function (data) {
+			data = data.field;
+            let postUrl;
+            if(req.id) {
+                postUrl = 'stock_in/edit';
+            }else{
+                postUrl = 'stock_in/add';
+            }
+			_post(layui, postUrl, data, res => {
+				//console.log(res)
+				parent.layui.table.reload("stock_in-table");
+				parent.layer.close(parent.layer.getFrameIndex(window.name));//关闭当前页
+
+			})
+
+            return false;
+        });
+
+    });
+</script>
+
+</body>
+</html>

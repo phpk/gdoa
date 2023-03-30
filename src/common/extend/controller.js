@@ -1,3 +1,4 @@
+const svgCaptcha = require("svg-captcha");
 /**
  * 获取当前时间撮
  */
@@ -57,11 +58,34 @@ async function err(name, msg) {
 // function mg(tabname) {
 //     return think.mongo(tabname, 'mongo');
 // }
-
+async function getCaptcha () {
+    let option = {
+        mathMin: 1,
+        mathMax: 30,
+        mathOperator: "+",
+        noise: 1, // 干扰线条的数量
+        color: true, // 验证码的字符是否有颜色，默认没有，如果设定了背景，则默认有
+        background: '#eeeeee' // 验证码图片背景颜色
+    };
+    const captcha = svgCaptcha.createMathExpr(option);
+    await this.session('verifyCaptcha', captcha.text.toLowerCase());
+    return captcha.data;
+}
+async function chkCapcha(code) {
+    let verify = await this.session('verifyCaptcha');
+    if (verify != code.toLowerCase()) {
+        return false;
+    }
+    //验证成功清空
+    await this.session('verifyCaptcha', null);
+    return true;
+}
 
 
 module.exports = {
     now,
     parseSearch,
-    err
+    err,
+    getCaptcha,
+    chkCapcha
 }

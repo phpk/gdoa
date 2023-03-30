@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>物料管理管理</title>
+		<link rel="stylesheet" href="/static/layui/css/layui.css" />
+<link rel="stylesheet" href="/static/ui/css/ui.css" />
+	</head>
+	<body class="pear-container">
+		<div class="layui-card">
+			<div class="layui-card-body">
+				<form class="layui-form" action="">
+					<div class="layui-form-item">
+						<div class="layui-form-item layui-inline">
+							<label class="layui-form-label">名称</label>
+							<div class="layui-input-inline">
+								<input type="text" name="<a.name>" placeholder="" class="layui-input">
+							</div>
+						</div>
+						<div class="layui-form-item layui-inline">
+						    <label class="layui-form-label">物料分类</label>
+						    <div class="layui-input-block">
+						        <select name="cate_id" lay-search id="cate-area">
+									<option value="">选择分类</option>
+						        </select>
+						    </div>
+						</div>
+						<div class="layui-form-item layui-inline">
+							<button class="pear-btn pear-btn-md pear-btn-primary" lay-submit lay-filter="stock_goods-query">
+								<i class="layui-icon layui-icon-search"></i>
+								查询
+							</button>
+							<button type="reset" class="pear-btn pear-btn-md" lay-filter="stock_goods-reset" lay-submit>
+								<i class="layui-icon layui-icon-refresh"></i>
+								重置
+							</button>
+							<span class="pear-btn pear-btn-md pear-btn-primary" id="addBtn">
+							    <i class="layui-icon layui-icon-add-1"></i>
+							    物料
+							</span>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+		<div class="layui-card">
+			<div class="layui-card-body">
+				<table id="stock_goods-table" lay-filter="stock_goods-table"></table>
+			</div>
+		</div>
+
+		<script type="text/html" id="stock_goods-toolbar">
+			<button class="layui-btn layui-btn-primary layui-border-red layui-btn-sm" lay-event="add">
+		        <i class="layui-icon layui-icon-upload"></i>
+		        导入入库单
+		    </button>
+		</script>
+
+		<script type="text/html" id="stock_goods-bar">
+			<button class="pear-btn pear-btn-danger pear-btn-sm" lay-event="addData"><i class="layui-icon layui-icon-add-circle"></i></button>
+		    <!--button class="pear-btn pear-btn-normal pear-btn-sm" lay-event="importData"><i class="layui-icon layui-icon-upload"></i></button-->
+			<button class="pear-btn pear-btn-primary pear-btn-sm" lay-event="edit"><i class="layui-icon layui-icon-edit"></i></button>
+		</script>
+		<script type="text/html" id="stock_goods-time">
+			{{layui.util.toDateString(d.add_time*1000, 'yyyy-MM-dd HH:mm:ss')}}
+		</script>
+		<script src="../config.js"></script>
+		<script src="/static/layui/layui.js"></script>
+		<script src="/static/ui/ui.js"></script>
+		<script>
+			layui.use(['table', 'form', 'jquery','common'], function() {
+				let table = layui.table;
+				let form = layui.form;
+				let $ = layui.jquery;
+				let common = layui.common;
+
+				let MODULE_PATH = "./";
+
+				let cols = [
+					[
+						{
+							title: 'ID',
+							field: 'id',
+							align: 'center'
+						},
+						{
+							title: '物料名称',
+							field: 'name',
+							align: 'center'
+						},
+						// {
+						// 	title: '物料型号',
+						// 	field: 'model',
+						// 	align: 'center'
+						// },
+						{
+							title: '物料分类',
+							field: 'cname',
+							align: 'center'
+						},
+						{
+							title: '添加时间',
+							field: 'add_time',
+							align: 'center'
+						},
+						{
+							title: '操作',
+							toolbar: '#stock_goods-bar',
+							align: 'center',
+							width: 160
+						}
+					]
+				]
+				let cats = [];
+				table.render({
+					elem: '#stock_goods-table',
+					url: apiUrl + 'stock_goods/list',
+					headers : getHeader(),
+					parseData: function(res) {
+						//console.log(res)
+						cats = res.data.cates;
+						return {
+							"code": res.code, //解析接口状态
+							"msg": res.message, //解析提示文本
+							"count": res.data.count, //解析数据长度
+							"data": res.data.list //解析数据列表
+						};
+					},
+					page: true,
+					cols: cols,
+					skin: 'line',
+
+					toolbar: '#stock_goods-toolbar',
+					defaultToolbar: [{
+						title: '刷新',
+						layEvent: 'refresh',
+						icon: 'layui-icon-refresh',
+					}, 'filter', 'print', 'exports']
+				});
+				setTimeout(() => {
+					cats.forEach(el => {
+						$("#cate-area").append(new Option(el.name, el.id));
+					})
+					form.render("select");
+				},1000)
+
+				table.on('tool(stock_goods-table)', function(obj) {
+					if (obj.event === 'addData') {
+						window.addData(obj);
+					} else if (obj.event === 'importData') {
+						window.importData(obj);
+					} else if (obj.event === 'edit') {
+						window.edit(obj);
+					}
+				});
+
+				table.on('toolbar(stock_goods-table)', function(obj) {
+					if (obj.event === 'add') {
+						window.importData();
+					} else if (obj.event === 'refresh') {
+						window.refresh();
+					}
+				});
+				// 监听搜索操作
+
+				form.on('submit(stock_goods-query)', function(data) {
+					table.reload('stock_goods-table', {
+						where: {
+							param : $('form').serialize()
+						},
+						page: {
+					        curr: 1
+					    }
+					})
+					return false;
+				});
+				form.on('submit(stock_goods-reset)', function(data){
+					table.reload('stock_goods-table', {
+						where: {
+							param : ''
+						},
+						page: {
+					        curr: 1
+					    }
+					});
+					return false;
+				})
+				window.addData = function(obj) {
+					layer.open({
+						type: 2,
+						title: '新增' + obj.data.name,
+						shade: 0.1,
+						offset: 'rt',
+						area: ['95%', '100%'],
+						anim: 1,
+						maxmin: true,
+						content: './edit.html?goods_id=' + obj.data.id
+					});
+				}
+				window.add = function() {
+					// layer.open({
+					// 	type: 2,
+					// 	title: '新增',
+					// 	shade: 0.1,
+					// 	offset: 'rt',
+					// 	area: ['80%', '100%'],
+					// 	anim: 1,
+					// 	maxmin: true,
+					// 	content: '../stock_goods/edit.html'
+					// });
+				}
+				$('#addBtn').click( e => {
+					layer.open({
+						type: 2,
+						title: '新增物料',
+						shade: 0.1,
+						offset: 'rt',
+						area: ['80%', '100%'],
+						anim: 1,
+						maxmin: true,
+						content: '../stock_goods/edit.html'
+					});
+				})
+				window.importData = function(obj) {
+					layer.open({
+						type: 2,
+						title: '导入',
+						shade: 0.1,
+						offset: 'rt',
+						area: ['95%', '100%'],
+						anim: 1,
+						maxmin: true,
+						content: './import.html'
+					});
+				}
+				window.edit = function(obj) {
+					layer.open({
+						type: 2,
+						title: '修改' + obj.data.name,
+						shade: 0.1,
+						offset: 'rt',
+						area: ['80%', '100%'],
+						anim: 1,
+						maxmin: true,
+						content: '../stock_goods/edit.html?id=' + obj.data.id
+					});
+				}
+				window.remove = function(obj){
+		            layer.confirm('确定要删除', {icon: 3, title:'提示'}, function(index){
+		                layer.close(index);
+		                _post(layui, 'stock_goods/del',{id : obj.data.id}, res => {
+							layer.msg('删除成功',{icon:1,time:1000},() => {
+								obj.del();
+							});
+						}, err => {
+							//layer.msg('删除失败',{icon:2,time:1000});
+						})
+		            });
+		        }
+
+
+				window.refresh = function(param) {
+					table.reload('stock_goods-table');
+				}
+			})
+		</script>
+	</body>
+</html>

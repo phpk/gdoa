@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>库存申请单管理</title>
+		<link rel="stylesheet" href="/static/layui/css/layui.css" />
+<link rel="stylesheet" href="/static/ui/css/ui.css" />
+	</head>
+	<body class="pear-container">
+		<div class="layui-card">
+			<div class="layui-card-body">
+				<form class="layui-form" action="">
+					<div class="layui-form-item">
+						<div class="layui-form-item layui-inline">
+							<input type="number" name="id" placeholder="申请id" class="layui-input">
+						</div>
+						<div class="layui-form-item layui-inline">
+							<input type="text" name="username" placeholder="申请人" class="layui-input">
+						</div>
+						<div class="layui-input-inline" style="width: 100px;">
+							<select name="status">
+								<option value="">选择状态</option>
+								<option value="1">待审核</option>
+								<option value="2">使用中</option>
+								<option value="3">已归还</option>
+								<option value="4">归还审核</option>
+								<option value="5">部分归还</option>
+							</select>
+						</div>
+						<div class="layui-form-item layui-inline">
+							<input type="text" name="goods_name" placeholder="商品名称" class="layui-input">
+						</div>
+						<div class="layui-form-item layui-inline">
+							<button class="pear-btn pear-btn-md pear-btn-primary" lay-submit lay-filter="stock_apply-query">
+								<i class="layui-icon layui-icon-search"></i>
+								查询
+							</button>
+							<button type="reset" class="pear-btn pear-btn-md" lay-filter="stock_apply-reset" lay-submit>
+								<i class="layui-icon layui-icon-refresh"></i>
+								重置
+							</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+		<div class="layui-card">
+			<div class="layui-card-body">
+				<table id="stock_apply-table" lay-filter="stock_apply-table"></table>
+			</div>
+		</div>
+
+		<script type="text/html" id="stock_apply-toolbar">
+			<button class="layui-btn layui-btn-primary layui-border-red layui-btn-sm" lay-event="add">
+		        <i class="layui-icon layui-icon-add-1"></i>
+		        新增
+		    </button>
+		</script>
+
+		<script type="text/html" id="stock_apply-bar">
+			{{# if(d.status == 1){ }}
+			<button class="pear-btn pear-btn-primary pear-btn-sm" lay-event="edit"><i class="layui-icon layui-icon-auz"></i></button>
+		    <button class="pear-btn pear-btn-danger pear-btn-sm" lay-event="remove"><i class="layui-icon layui-icon-delete"></i></button>
+			{{# } }}
+		</script>
+		<script type="text/html" id="stock_apply-status">
+			{{# if(d.status == 1){ }}
+				<button class="pear-btn pear-btn-primary pear-btn-sm">待审核</button>
+			{{# }else if(d.status == 2) { }}
+				<button class="pear-btn pear-btn-danger pear-btn-sm">使用中</button>
+			{{# }else if(d.status == 3) { }}
+				<button class="pear-btn pear-btn-success pear-btn-sm">已归还</button>
+			{{# }else if(d.status == 4) { }}
+				<button class="pear-btn pear-btn-success pear-btn-sm">归还审核</button>
+			{{# }else if(d.status == 5) { }}
+				<button class="pear-btn pear-btn-sm">部分归还</button>
+			{{# } }}
+		</script>
+		<script src="../config.js"></script>
+		<script src="/static/layui/layui.js"></script>
+		<script src="/static/ui/ui.js"></script>
+		<script>
+			layui.use(['table', 'form', 'jquery','common'], function() {
+				let table = layui.table;
+				let form = layui.form;
+				let $ = layui.jquery;
+				let common = layui.common;
+
+				let MODULE_PATH = "./";
+
+				let cols = [
+					[
+						{
+							title: 'ID',
+							field: 'id',
+							align: 'center'
+						},
+						{
+							title: '申请人',
+							field: 'username',
+							align: 'center'
+						},
+						{
+							title: '商品名称',
+							field: 'goods_name',
+							align: 'center'
+						},
+						{
+							title: '型号',
+							field: 'model',
+							align: 'center'
+						},
+						{
+							title: '数量',
+							field: 'num',
+							align: 'center'
+						},
+						{
+							title: '归还数',
+							field: 'back_num',
+							align: 'center'
+						},
+						{
+							title: '状态',
+							field: 'status',
+							align: 'center',
+							templet: '#stock_apply-status'
+						},
+						{
+							title: '申请时间',
+							field: 'add_time',
+							align: 'center',
+							//templet: '#stock_apply-time'
+						},
+						{
+							title: '操作',
+							toolbar: '#stock_apply-bar',
+							align: 'center',
+							width: 130,
+							fixed : 'right'
+						}
+					]
+				]
+
+				table.render({
+					elem: '#stock_apply-table',
+					url: apiUrl + 'stock_apply/list',
+					headers : getHeader(),
+					parseData: function(res) {
+						//console.log(res)
+						return {
+							"code": res.code, //解析接口状态
+							"msg": res.message, //解析提示文本
+							"count": res.data.count, //解析数据长度
+							"data": res.data.list //解析数据列表
+						};
+					},
+					page: true,
+					cols: cols,
+					skin: 'line',
+
+					toolbar: '#stock_apply-toolbar',
+					defaultToolbar: [{
+						title: '刷新',
+						layEvent: 'refresh',
+						icon: 'layui-icon-refresh',
+					}, 'filter', 'print', 'exports']
+				});
+
+				table.on('tool(stock_apply-table)', function(obj) {
+					if (obj.event === 'remove') {
+						window.remove(obj);
+					} else if (obj.event === 'edit') {
+						window.edit(obj);
+					}
+				});
+
+				table.on('toolbar(stock_apply-table)', function(obj) {
+					if (obj.event === 'add') {
+						window.add();
+					} else if (obj.event === 'refresh') {
+						window.refresh();
+					}
+				});
+				// 监听搜索操作
+
+				form.on('submit(stock_apply-query)', function(data) {
+					table.reload('stock_apply-table', {
+						where: {
+							param : $('form').serialize()
+						},
+						page: {
+					        curr: 1
+					    }
+					})
+					return false;
+				});
+				form.on('submit(stock_apply-reset)', function(data){
+					table.reload('stock_apply-table', {
+						where: {
+							param : ''
+						},
+						page: {
+					        curr: 1
+					    }
+					});
+					return false;
+				})
+
+				window.add = function() {
+					layer.open({
+						type: 2,
+						title: '新增',
+						shade: 0.1,
+						offset: 'rt',
+						area: ['80%', '100%'],
+						anim: 1,
+						maxmin: true,
+						content: MODULE_PATH + 'check.html'
+					});
+				}
+
+				window.edit = function(obj) {
+					layer.confirm('审核通过后库存将减少', {icon: 3, title:'提示'}, function(index){
+					    layer.close(index);
+					    _post(layui, 'stock_apply/edit',{id : obj.data.id}, res => {
+							layer.msg('审核成功',{icon:1,time:1000},() => {
+								table.reload('stock_apply-table')
+							});
+						}, err => {
+							//layer.msg('删除失败',{icon:2,time:1000});
+						})
+					});
+				}
+				window.remove = function(obj){
+		            layer.confirm('确定要删除', {icon: 3, title:'提示'}, function(index){
+		                layer.close(index);
+		                _post(layui, 'stock_apply/del',{id : obj.data.id}, res => {
+							layer.msg('删除成功',{icon:1,time:1000},() => {
+								obj.del();
+							});
+						}, err => {
+							//layer.msg('删除失败',{icon:2,time:1000});
+						})
+		            });
+		        }
+
+
+				window.refresh = function(param) {
+					table.reload('stock_apply-table');
+				}
+			})
+		</script>
+	</body>
+</html>

@@ -239,11 +239,11 @@ layui.define(['table', 'jquery', 'element'], function (exports) {
 		if (option.parseData != false) {
 			option.parseData(option.data);
 		}
-		let route = getRoute();
-		if (!route) {
-			location.href = '/admin/login.html';
-		}
-		option.data = route.menus;
+		// let route = getRoute();
+		// if (!route) {
+		// 	location.href = '/admin/login.html';
+		// }
+		// option.data = route.menus;
 		//console.log(route)
 		if (option.data.length > 0) {
 			if (option.control != false) {

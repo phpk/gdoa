@@ -6,6 +6,7 @@
 	* [表设计](sql.md)
 	* [参考文档](seedoc.md)
 	* [代码规范](codesee.md)
+	* [test](test.md)
 * 前台接口
 	* [用户登录](login.md)
 	* [后台菜单](menu.md)

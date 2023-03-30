@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>发起盘点单</title>
+		<link rel="stylesheet" href="/static/layui/css/layui.css" />
+<link rel="stylesheet" href="/static/ui/css/ui.css" />
+	</head>
+	<body class="pear-container">
+		<blockquote class="layui-elem-quote" style="padding:0">
+			<form class="layui-form" action="" lay-filter="editform">
+
+				<div class="layui-form-item">
+					<div class="layui-input-inline" style="margin-left:30px;width:300px">
+						<input type="text" name="remark" class="layui-input" autocomplete="off" placeholder="请输入备注">
+					</div>
+					<div class="layui-input-inline">
+						<button type="submit" class="layui-btn layui-btn-primary layui-border-blue" lay-submit=""
+							lay-filter="stock_pan-save">
+							<i class="layui-icon layui-icon-ok"></i>
+							确认完结
+						</button>
+					</div>
+					<div class="layui-input-inline" style="width: 100%;">
+						<i class="layui-icon layui-icon-about"></i>
+						说明：确保每个商品都要盘点。可多选后点击<b>批量设置</b>来设盘点数，盘点后可在状态中选择<b>异常</b>查询，状态全部为<b>已盘点</b>后方可<b>确认完结</b>
+					</div>
+				</div>
+
+			</form>
+		</blockquote>
+		<div class="layui-row layui-col-space10">
+			<div class="layui-col-md12">
+				<div class="layui-card">
+
+					<div class="layui-card-body">
+						<form class="layui-form" action="">
+							<div class="layui-row layui-col-space10">
+								<div class="layui-col-xs6 layui-col-sm6 layui-col-md4">
+									<input type="text" name="<goods_name>" placeholder="商品名称" class="layui-input">
+								</div>
+								<div class="layui-col-xs6 layui-col-sm6 layui-col-md4">
+									<select name="cate_id" lay-search id="cate-area">
+										<option value="">选择分类</option>
+									</select>
+								</div>
+								<div class="layui-col-xs6 layui-col-sm6 layui-col-md4">
+									<select name="area_id" lay-search id="area-area" lay-filter="area_select">
+										<option value="">选择仓库</option>
+									</select>
+								</div>
+								<div class="layui-col-xs6 layui-col-sm6 layui-col-md4">
+									<select name="bar_id" lay-search id="bar-area">
+										<option value="">选择货架</option>
+									</select>
+								</div>
+								<div class="layui-col-xs6 layui-col-sm6 layui-col-md4">
+									<select name="status">
+										<option value="">选择状态</option>
+										<option value="1">盘点中</option>
+										<option value="2">已盘点</option>
+										<option value="99">异常</option>
+									</select>
+								</div>
+								<div class="layui-col-xs6 layui-col-sm6 layui-col-md4">
+									<button class="pear-btn pear-btn-md pear-btn-primary" lay-submit
+										lay-filter="stock_in-query">
+										<i class="layui-icon layui-icon-search"></i>
+										查询
+									</button>
+									<button type="reset" class="pear-btn pear-btn-md" lay-filter="stock_in-reset"
+										lay-submit>
+										<i class="layui-icon layui-icon-refresh"></i>
+										重置
+									</button>
+								</div>
+								
+							</div>
+						</form>
+						<div class="layui-row">
+							<button type="button" class="layui-btn layui-btn-primary layui-border-blue layui-btn-sm"
+								id="addAllBtn">
+								<i class="layui-icon layui-icon-bluetooth"></i>
+								批量设置
+							</button>
+						</div>
+						<table id="pan-type-table" lay-filter="pan-type-table"></table>
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+	</body>
+
+
+	<script type="text/html" id="checkbd">
+		<input type="checkbox" name="siam_one" title="" lay-skin="primary" data-id="{{ d.id }}"
+			{{#  if (d.enable === 1){ }}disabled="disabled" {{#  } }}>
+	</script>
+	<script type="text/html" id="stock_pan-status">
+	{{# if(d.status == 1){ }}
+		<button class="pear-btn pear-btn-primary pear-btn-sm">盘点中</button>
+	{{# }else if(d.status == 2) { }}
+		<button class="pear-btn pear-btn-danger pear-btn-sm">已盘点</button>
+	{{# }else if(d.status == 3) { }}
+		<button class="pear-btn pear-btn-success pear-btn-sm">已完结</button>
+	{{# } }}
+	</script>
+	<script src="../config.js"></script>
+	<script src="/static/layui/layui.js"></script>
+		<script src="/static/ui/ui.js"></script>
+	<script>
+		layui.use(['table', 'form', 'jquery'], function() {
+			let table = layui.table,
+				form = layui.form,
+				$ = layui.jquery,
+				MODULE_PATH = "./",
+				req = _req(),
+				listTable;
+			
+			let cols = [
+				[{
+						templet: "#checkbd",
+						title: "<input type='checkbox' name='siam_all' title='' lay-skin='primary' lay-filter='siam_all'> ",
+						width: 60,
+						fixed: 'left'
+					},
+					{
+						title: 'ID',
+						field: 'in_id',
+						align: 'center',
+						minWidth: '50',
+					},
+					{
+						title: '物料名称',
+						field: 'goods_name',
+						align: 'center',
+						minWidth: '100',
+					},
+					{
+						title: '盘点数量',
+						field: 'pan_num',
+						align: 'center',
+						minWidth: '120',
+						edit : true
+					},
+					{
+						title: '状态',
+						field: 'status',
+						align: 'center',
+						minWidth : '100',
+						templet: '#stock_pan-status'
+					},
+					{
+						title: '库存数量',
+						field: 'stock_num',
+						align: 'center',
+						minWidth: '80',
+					},
+					{
+						title: '编码',
+						field: 'in_no',
+						align: 'center',
+						minWidth: '80',
+					},
+					{
+						title: '型号',
+						field: 'model',
+						align: 'center',
+						minWidth: '80',
+					},
+					{
+						title: '分类',
+						field: 'cname',
+						align: 'center',
+						minWidth: '100',
+					},
+					{
+						title: '仓库',
+						field: 'addrname',
+						align: 'center',
+						minWidth: '120',
+					},
+					{
+						title: '货架',
+						field: 'barname',
+						align: 'center',
+						minWidth: '120',
+					}
+				]
+			];
+
+			
+			let cats = [],
+				area = [];
+			let fromTable = table.render({
+				elem: '#pan-type-table',
+				url: apiUrl + 'stock_pan/list?pan_no=' + req.pan_no,
+				headers: getHeader(),
+				parseData: function(res) {
+					//console.log(res)
+					cats = res.data.cates;
+					area = res.data.area;
+					return {
+						"code": res.code, //解析接口状态
+						"msg": res.message, //解析提示文本
+						"count": res.data.count, //解析数据长度
+						"data": res.data.list //解析数据列表
+					};
+				},
+
+				page: true,
+				cols: cols,
+				skin: 'line',
+				height: 'full-148',
+				toolbar: false
+			});
+			setTimeout(() => {
+				let cateHtml = `<option value="">选择分类</option>`,
+					areaHtml = `<option value="">选择仓库</option>`;
+				cats.forEach(d => {
+					cateHtml += `<option value='${d.id}'>${d.name}</option>`
+				})
+				area.forEach(el => {
+					areaHtml += `<option value='${el.id}'>${el.name}</option>`
+				})
+				$("#cate-area").html(cateHtml)
+				$("#area-area").html(areaHtml)
+				form.render("select");
+			}, 1000)
+			form.on('select(area_select)', function(data) {
+				let area_id = data.value * 1; //获取下拉值
+				//console.log(area_id); //获取下拉列表ID的值
+				if (area_id < 1) {
+					$("#bar-area").html('<option value="">选择货架</option>')
+					form.render("select");
+					return;
+				}
+				let areaData = area.find(d => d.id == area_id)
+				if (areaData) {
+					let barHtml = `<option value="">选择货架</option>`;
+					areaData.child.forEach(d => {
+						barHtml += `<option value='${d.id}'>${d.name}</option>`
+					})
+					$("#bar-area").html(barHtml)
+					form.render("select");
+				}
+
+
+			});
+			// 实现全选功能
+			form.on("checkbox(siam_all)", function() {
+				var status = $(this).prop("checked");
+				$.each($("input[name=siam_one]"), function(i, value) {
+					if ($(this).attr('disabled') !== 'disabled') {
+						$(this).prop("checked", status);
+					}
+
+				});
+				form.render();
+			});
+			window.getChecked = () => {
+				let ids = [];
+				$.each($("input[name=siam_one]:checked"), function(i, value) {
+					ids[i] = $(this).attr("data-id") * 1; // 如果需要获取其他的值 需要在模板中把值放到属性中 然后这里就可以拿到了
+				});
+				return ids;
+			}
+			table.on('edit(pan-type-table)', function(obj){
+			  let old = $(this).prev().text();
+			   if(obj.value > obj.data.stock_num || obj.value < 0 || isNaN(obj.value)) {
+				   obj.update({trans_num : old});
+				   fromTable.reload()
+				   layer.msg('盘点数不能大于库存数或小于0');
+				   return false;
+			   }
+			   let postData = {
+				   id : obj.data.id,
+				   pan_num : obj.value
+			   }
+			   _post(layui, 'stock_pan/editPanNum', postData, res => {
+				   //layer.msg('')
+				   fromTable.reload()
+			   })
+			});
+			
+			$('#addAllBtn').click(e => {
+				let ids = getChecked()
+				//console.log(ids)
+				if (ids.length < 1) {
+					layer.msg('请选择物料')
+					return false;
+				}
+				layer.prompt({
+					formType: 2,
+					value: '',
+					title: '盘点-输入盘点数',
+					area: ['150px', '22px'] //自定义文本域宽高
+				}, function(value, index, elem) {
+				
+					if (value < 0 || isNaN(value)) {
+						layer.msg('请输入正确的盘点数');
+						return false;
+					}
+					//console.log(postData)
+					let postData = {
+						id : ids.join(','),
+						pan_num : value
+					}
+					_post(layui, 'stock_pan/editPanNum', postData, res => {
+						fromTable.reload()
+						layer.close(index);
+				
+					})
+				
+				});
+			})
+			
+
+			form.on('submit(stock_pan-save)', function(data) {
+				data = data.field;
+
+				let cklist = table.getData('pan-type-table');
+				//console.log(cklist)
+				//console.log(table.getData('pan-data-table'))
+				if (cklist.length < 1) {
+					layer.msg('请选择物料')
+					return false
+				}
+				let has = cklist.find(d => {
+					return d.status != 2
+				})
+				//console.log(has)
+				//return false;
+				if(has) {
+					layer.msg('有未完成盘点的数据')
+					return false
+				}
+				let postData = {
+					remark: data.remark,
+					pan_no : req.pan_no
+				}
+				//console.log(postData)
+				_post(layui, 'stock_pan/edit', postData, res => {
+					//console.log(res)
+					//delPanData();
+					parent.layui.table.reload("stock_pan-table");
+					parent.layer.close(parent.layer.getFrameIndex(window.name)); //关闭当前页
+
+				}, err => {
+					console.log(JSON.stringify(err))
+					return false
+				})
+				return false;
+			});
+
+
+
+			// 监听搜索操作
+
+			form.on('submit(stock_in-query)', function(data) {
+				table.reload('pan-type-table', {
+					where: {
+						param: $('form').serialize()
+					},
+					page: {
+						curr: 1
+					}
+				})
+				return false;
+			});
+			form.on('submit(stock_in-reset)', function(data) {
+				table.reload('pan-type-table', {
+					where: {
+						param: ''
+					},
+					page: {
+						curr: 1
+					}
+				});
+				return false;
+			})
+
+
+		})
+	</script>
+</html>

@@ -1,0 +1,445 @@
+﻿/**
+// +----------------------------------------------------------------------
+// | layui表单设计器 [基于Sortable开发]
+// +----------------------------------------------------------------------
+// | Copyright (c) 2020-2030 http://www.swiftadmin.net
+// +----------------------------------------------------------------------
+// | git://github.com/meystack/layui-form-design.git 616550110
+// +----------------------------------------------------------------------
+// | Author: meystack <coolsec@foxmail.com> Apache 2.0 License Code
+// +----------------------------------------------------------------------
+ */
+::-webkit-scrollbar {
+    width: 5px;
+    color: #000;
+}
+
+input:disabled {
+    color: -internal-light-dark(rgb(84, 84, 84), rgb(170, 170, 170));
+    cursor: default;
+}
+
+.layui-input:hover,.layui-textarea:hover {
+    border-color: #009688;
+    border-radius: 0px 3px 3px 0px;
+}
+.layui-relation-delete {
+    top: 5px;
+    cursor: pointer;
+    position: relative;
+    right: 3px;
+}
+
+.layui-icon-close {
+    line-height: 13px;
+    border-radius: 50%;
+    font-size: 10px;
+}
+
+.layui-icon-close:hover {
+    /* border-radius: 2px;
+    background-color: #FF5722;
+    color: #fff; */
+}
+
+.layui-form-mid {
+    padding: 6px 0px !important;
+    display: inline-block;
+    float: none;
+    position: relative;
+    top: 3px;
+    color: #999;
+}
+
+.layui-input-upload {
+	width: 50%;
+    display: inline-block;
+    margin-right: 10px;
+}
+
+#relationModel .layui-input-inline {
+    width: 139px;
+}
+
+@media screen and (max-width: 450px) {
+
+    table .layui-input-inline {
+        margin-left: 0px!important;
+    }
+    .layui-input-block {
+        overflow-x: auto;
+    }
+}
+
+.layui-badge {
+    cursor: pointer;
+}
+
+.component .head  {
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.component-group ol {
+    display: inline-block;
+    background: #fff;
+    color: #000;
+    min-width: 70px;
+    width: 32%;
+    height: 70px;
+    line-height: 1;
+    text-align: center;
+    transition: all .2s ease;
+    cursor: pointer;
+}
+
+.component-group ol:hover {
+    background: #009688;
+    border-radius: 5px;
+    color: #fff;
+    border-color: #fff;
+}
+
+
+.component-group ol .icon {
+    padding: 10px 5px 12px;
+    display: inline-block;
+}
+
+.component-group ol .icon i {
+    font-size: 18px;
+}
+
+.layui-icon-switch {
+    border: 1px solid #666;
+    border-radius: 20px;
+    display: inline-block;
+    width: 20px;
+    height: 10px;
+    position: relative;
+}
+
+.layui-icon-switch k {
+    position: absolute;
+    left: 4px;
+    top: 2px;
+    width: 6px;
+    height: 6px;
+    border-radius: 20px;
+    background-color: #666;
+    -webkit-transition: .1s linear;
+    transition: .1s linear;
+}
+
+.component {
+    margin-bottom: 15px;
+}
+
+.component-group ol:hover .layui-icon-switch {
+    color: #fff;
+    border-color: #fff;
+}
+
+.component-group ol:hover k {
+    background-color: #fff;
+}
+
+.component-group ol .name {
+    font-size: 12px;
+}
+
+.layui-col-md2,.layui-col-md8 {
+    border-right: 1px solid #f6f6ff;
+}
+
+.fr {
+    float: right;
+}
+
+.layui-col-md8 {
+    padding-top: 0;
+}
+
+.layui-col-md8 #formBuilder {
+    height: 800px;
+    overflow: auto;
+    padding-top: 10px;
+}
+
+.layui-col-md8 #formBuilder div.layui-form-item  {
+    border: 1px dashed #d1d1d1;
+    margin-bottom: 5px;
+    border-radius: 3px;
+    cursor: pointer;
+    position: relative;
+    padding: 10px;
+}
+
+.layui-col-md8 #formBuilder .children div.layui-form-item {
+    width: 98%;
+    padding: 0;
+    padding-top: 3px;
+    padding-right: 6px;
+    margin-top: 5px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.layui-col-md8 #formBuilder div.layui-form-item:hover,.layui-col-md8 #formBuilder div.layui-form-item.active {
+    border: 1px solid #009688;
+    background-color: #e9f4fd !important;
+}
+
+.layui-col-md8 #formBuilder .layui-form-item .layui-input:hover, 
+.layui-col-md8 #formBuilder .layui-select:hover, 
+.layui-col-md8 #formBuilder .layui-form-select:hover, 
+.layui-col-md8 #formBuilder .layui-textarea:hover, 
+.layui-col-md8 #formBuilder .layui-form-checked i:hover, 
+.layui-col-md8 #formBuilder .layui-input:hover {
+    border-color: #d1d1d1!important;
+}
+
+.layui-col-md8 #formBuilder div.sortableghost {
+    border: 1px dashed #d1d1d1;
+}
+
+.layui-col-md8 #formBuilder ol.sortableghost {
+    border: 1px dashed #d1d1d1;
+    text-indent: 3px;
+    box-sizing: border-box;
+    content: '';
+    overflow : hidden;
+    padding : 0;
+}
+
+.layui-col-md8 #formBuilder .sortablechosen {
+    border: 1px solid #009688;
+    background-color: #e9f4fd !important;
+}
+
+.layui-col-md8 #formBuilder ol.sortable-chosen {
+    border: 1px solid #d1d1d1;
+    background-color: #e9f4fd !important;
+}
+
+.layui-col-md8 #formBuilder ol.sortable-chosen div {
+    display: inline-block;
+}
+
+.layui-col-md8 #formBuilder .children {
+    min-height: 50px;
+    border: 1px dashed #ccc;
+    background: #f1f1f1;
+}
+
+.layui-form-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #fff;
+    box-shadow: 0 -1px 5px rgba(0,0,0,.15);
+    padding: 15px;
+    z-index: 9999;
+    margin-bottom: 0px;
+    margin-top: 10px;
+    text-align: center;
+}
+.layui-inlioc {
+	clear: both;
+}
+
+.layui-fluid {
+	padding-top: 20px;
+}
+
+#layui-form-attribute .layui-input-inline {
+    width: 169px;
+    margin-right: 0;
+}
+
+#layui-form-attribute .layui-form-label {
+    padding: 6px;
+    padding-right: 10px;
+    width: 60px!important;
+}
+
+.layui-minmax {
+    width: 76px;
+    display: inline-block;
+}
+
+.layui-input-inline em {
+    margin: 0px 5px;
+}
+
+.layui-component-tools {
+    position: absolute;
+    background: #009688;
+    right: 0;
+    bottom: 0;
+    padding: 1px 5px;
+    cursor: pointer;
+    z-index: 21;
+    color: #fff;
+    width: 32px;
+    height: 20px;
+    line-height: 20px;
+    text-align: center;
+    display: none;
+}
+.layui-input-none {
+    display: none;
+}
+
+.layui-col-md8 #formBuilder div.active .layui-component-tools {
+    display: block;
+}
+
+.sortableghost .layui-component-tools {
+    display: none;
+}
+.layui-component-tools i,.layui-component-move i {
+   font-size: 12px;
+}
+
+#layui-elem-field legend {
+    margin-left: 39%;
+    font-size: 14px;
+}
+
+#form-options input {
+    width: 90px;
+    display: inline-block;
+    margin: 0px 8px;
+}
+
+#form-options .layui-input-inline,#tab-options .layui-input-inline  {
+    width: auto;
+    margin-bottom: 10px;
+}
+
+#form-options .layui-icon,#tab-options .layui-icon {
+    cursor: pointer;
+}
+
+#form-options .layui-icon-subtraction,#tab-options .layui-icon-subtraction {
+    border: 1px solid red;
+    color: red;
+    border-radius: 3px;
+    font-size: 12px;
+}
+
+#tab-options input {
+    width: 139px;
+    display: inline-block;
+    margin: 0px 8px;
+}
+
+#form-options .layui-add-option,#tab-options .layui-add-tab {
+    position: relative;
+    left: 26px;
+}
+
+.layui-slider {
+	margin-top: 3px;
+}
+
+#Propertie .layui-slider {
+    margin-top: 13px;
+}
+
+#tpl_main,#tpl_right_main {
+    margin: 25% auto;
+    text-align: center;
+    font-size: 18px;
+    color: #c9e0f3;
+}
+
+#layui-form-template .item-list {
+    padding: 8px 0px;
+}
+
+.item-body {
+    border: 1px solid #f6f6f6;
+    padding: 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+.item-body:hover {
+    border: 1px solid #009688;
+}
+
+.item-body .item-img {
+    overflow: hidden;
+}
+
+.item-body .item-img img {
+    width: 100%;;
+}
+
+.item-body .item-desc {
+    margin-top: 10px;
+}
+
+.item-body .item-desc span.item-title{
+    font-size: 13px;
+    font-weight: 700;
+}
+.right-button {
+    float: right;
+    padding: 1px 3px;
+    border: none;
+    cursor: pointer;
+}
+
+.button--text {
+    color: #009688;
+    background: 0 0;
+    padding-left: 0;
+    padding-right: 0;
+    font-size: 10px;
+}
+
+.layui-htmlview {
+    position: relative;
+}
+
+.layui-htmlview textarea {
+    display: block;
+    width: 760px;
+    height: 566px;
+    border: 10px solid #F8F8F8;
+    border-top-width: 0;
+    padding: 10px;
+    line-height: 20px;
+    overflow: auto;
+    background-color: #3F3F3F;
+    color: #eee;
+    font-size: 12px;
+    font-family: Courier New;
+}
+
+.layui-htmlview .layui-htmlbtn{
+    position: absolute;
+    right: 20px;
+    bottom:20px;
+}
+
+#parse-table .layui-input {
+    height: 30px;
+    width: 139px;
+    font-size: 12px;
+    border: none;
+}
+
+#formBuilder div.lay-slider {
+    padding-top: 13px;
+}
+
+#formBuilder div.layui-slider-input {
+    margin-top: 13px;
+}

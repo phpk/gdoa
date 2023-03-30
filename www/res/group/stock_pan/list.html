@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>库存盘点单管理</title>
+		<link rel="stylesheet" href="/static/layui/css/layui.css" />
+<link rel="stylesheet" href="/static/ui/css/ui.css" />
+	</head>
+	<body class="pear-container">
+		<div class="layui-card">
+			<div class="layui-card-body">
+				<form class="layui-form" action="">
+					<div class="layui-form-item">
+						<div class="layui-input-inline" style="width: 100px;">
+							<input type="text" name="goods_name" placeholder="商品名称" class="layui-input">
+						</div>
+					
+						<div class="layui-input-inline" style="width: 120px;">
+							<input type="number" name="pan_no" placeholder="盘点单号" class="layui-input">
+						</div>
+					
+						<div class="layui-input-inline" style="width: 100px;">
+							<select name="status">
+								<option value="">选择状态</option>
+								<option value="1">盘点中</option>
+								<option value="2">已盘点</option>
+								<option value="3">已完结</option>
+							</select>
+						</div>
+					
+						<div class="layui-input-inline" style="width: 120px;">
+							<select name="cate_id" lay-search id="cate-area">
+								<option value="">选择分类</option>
+							</select>
+						</div>
+						<div class="layui-input-inline" style="width: 120px;">
+							<select name="area_id" lay-search id="area-area" lay-filter="area_select">
+								<option value="">选择仓库</option>
+							</select>
+						</div>
+						<div class="layui-input-inline" style="width: 100px;">
+							<select name="bar_id" lay-search id="bar-area">
+								<option value="">选择货架</option>
+							</select>
+						</div>
+						
+						<button class="pear-btn pear-btn-md pear-btn-primary" lay-submit
+							lay-filter="stock_pan-query">
+							<i class="layui-icon layui-icon-search"></i>
+							查询
+						</button>
+						<button type="reset" class="pear-btn pear-btn-md" lay-filter="stock_pan-reset"
+							lay-submit>
+							<i class="layui-icon layui-icon-refresh"></i>
+							重置
+						</button>
+					</div>
+				</form>
+			</div>
+		</div>
+		<div class="layui-card">
+			<div class="layui-card-body">
+				<table id="stock_pan-table" lay-filter="stock_pan-table"></table>
+			</div>
+		</div>
+
+		<script type="text/html" id="stock_pan-toolbar">
+			<button class="layui-btn layui-btn-primary layui-border-red layui-btn-sm" lay-event="start">
+				<i class="layui-icon layui-icon-export"></i>
+				发起盘点
+			</button>
+			<button class="layui-btn layui-btn-primary layui-border-green layui-btn-sm" lay-event="op">
+				<i class="layui-icon layui-icon-add-1"></i>
+				操作盘点
+			</button>
+		</script>
+
+		<script type="text/html" id="stock_pan-bar">
+			{{# if(d.status == 1){ }}
+			<button class="pear-btn pear-btn-danger pear-btn-sm" lay-event="remove">
+				<i class="layui-icon layui-icon-delete"></i>
+			</button>
+			{{# } }}
+		</script>
+		<script type="text/html" id="stock_pan-status">
+		{{# if(d.status == 1){ }}
+			<button class="pear-btn pear-btn-primary pear-btn-sm">盘点中</button>
+		{{# }else if(d.status == 2) { }}
+			<button class="pear-btn pear-btn-danger pear-btn-sm">已盘点</button>
+		{{# }else if(d.status == 3) { }}
+			<button class="pear-btn pear-btn-success pear-btn-sm">已完结</button>
+		{{# } }}
+		</script>
+		<script src="../config.js"></script>
+		<script src="/static/layui/layui.js"></script>
+		<script src="/static/ui/ui.js"></script>
+		<script>
+			layui.use(['table', 'form', 'jquery', 'common'], function() {
+				let table = layui.table;
+				let form = layui.form;
+				let $ = layui.jquery;
+				let common = layui.common;
+
+				let MODULE_PATH = "./";
+
+				let cols = [
+					[{
+							title: '盘点单号',
+							field: 'pan_no',
+							align: 'center',
+							minWidth : '150',
+							fixed : 'left'
+						},{
+							title: 'ID',
+							field: 'in_id',
+							align: 'center',
+							minWidth : '60',
+						},
+						{
+							title: '商品名称',
+							field: 'goods_name',
+							align: 'center',
+							minWidth : '120',
+						},
+
+						
+						{
+							title: '库存数量',
+							field: 'stock_num',
+							align: 'center',
+							minWidth : '80'
+						},
+						{
+							title: '盘点数量',
+							field: 'pan_num',
+							align: 'center',
+							minWidth : '80'
+						},
+						{
+							title: '型号',
+							field: 'model',
+							align: 'center',
+							minWidth : '80',
+						},
+						{
+							title: '分类',
+							field: 'cname',
+							align: 'center',
+							minWidth : '120',
+						},
+						{
+							title: '状态',
+							field: 'status',
+							align: 'center',
+							minWidth : '100',
+							templet: '#stock_pan-status'
+						},
+						{
+							title: '仓库',
+							field: 'addrname',
+							align: 'center',
+							minWidth : '100',
+						},
+						{
+							title: '货架',
+							field: 'barname',
+							align: 'center',
+							minWidth : '100',
+						},
+						{
+							title: '添加时间',
+							field: 'add_time',
+							align: 'center',
+							//templet: '#stock_pan-time'
+						},
+						{
+							title: '操作',
+							toolbar: '#stock_pan-bar',
+							align: 'center',
+							width: 130,
+							fixed : 'right'
+						}
+					]
+				]
+				let cats = [],
+					area = [];
+				table.render({
+					elem: '#stock_pan-table',
+					url: apiUrl + 'stock_pan/list',
+					headers: getHeader(),
+					parseData: function(res) {
+						//console.log(res)
+						cats = res.data.cates;
+						area = res.data.area;
+						return {
+							"code": res.code, //解析接口状态
+							"msg": res.message, //解析提示文本
+							"count": res.data.count, //解析数据长度
+							"data": res.data.list //解析数据列表
+						};
+					},
+					page: true,
+					cols: cols,
+					skin: 'line',
+
+					toolbar: '#stock_pan-toolbar',
+					defaultToolbar: [{
+						title: '刷新',
+						layEvent: 'refresh',
+						icon: 'layui-icon-refresh',
+					}, 'filter', 'print', 'exports']
+				});
+				setTimeout(() => {
+					cats.forEach(el => {
+						$("#cate-area").append(new Option(el.name, el.id));
+					})
+					area.forEach(el => {
+						$("#area-area").append(new Option(el.name, el.id));
+					})
+					form.render("select");
+				}, 1000)
+				form.on('select(area_select)', function(data) {
+					let area_id = data.value*1; //获取下拉值
+					//console.log(area_id); //获取下拉列表ID的值
+					if(area_id < 1) {
+						$("#bar-area").empty()
+						$("#bar-area").html('<option value="">选择货架</option>')
+						form.render("select");
+						return;
+					}
+					let areaData = area.find(d => d.id == area_id)
+					if(areaData) {
+						$("#bar-area").empty()
+						$("#bar-area").html('<option value="">选择货架</option>')
+						areaData.child.forEach(el => {
+							$("#bar-area").append(new Option(el.name, el.id));
+						})
+						form.render("select");
+					}
+				
+				});
+
+				table.on('tool(stock_pan-table)', function(obj) {
+					if (obj.event === 'remove') {
+						window.remove(obj);
+					} else if (obj.event === 'edit') {
+						window.edit(obj);
+					}
+				});
+
+				table.on('toolbar(stock_pan-table)', function(obj) {
+					if (obj.event === 'start') {
+						window.start();
+					} else if (obj.event === 'op') {
+						window.op();
+					} else if (obj.event === 'refresh') {
+						window.refresh();
+					}
+				});
+				// 监听搜索操作
+
+				form.on('submit(stock_pan-query)', function(data) {
+					table.reload('stock_pan-table', {
+						where: {
+							param: $('form').serialize()
+						},
+						page: {
+							curr: 1
+						}
+					})
+					return false;
+				});
+				form.on('submit(stock_pan-reset)', function(data) {
+					table.reload('stock_pan-table', {
+						where: {
+							param: ''
+						},
+						page: {
+							curr: 1
+						}
+					});
+					return false;
+				})
+
+				window.start = function() {
+					layer.open({
+						type: 2,
+						title: '新增',
+						shade: 0.1,
+						offset: 'rt',
+						area: ['96%', '100%'],
+						anim: 1,
+						maxmin: true,
+						content: MODULE_PATH + 'start.html'
+					});
+				}
+
+				window.op = function(obj) {
+					
+					layer.prompt({
+						formType: 2,
+						value: '',
+						title: '盘点-输入盘点单号',
+						area: ['150px', '22px'] //自定义文本域宽高
+					}, function(value, index, elem) {
+					
+						if (value < 1 || isNaN(value)) {
+							layer.msg('请输入正确的盘点单号');
+							return false;
+						}
+						//console.log(postData)
+						_get(layui, 'stock_pan/editBefore?pan_no=' + value, res => {
+							if (res.status > 2) {
+								layer.msg('盘点已完结')
+								return false;
+							}
+					
+							layer.close(index);
+							layer.open({
+								type: 2,
+								title: '操作盘点单',
+								shade: 0.1,
+								offset: 'rt',
+								area: ['80%', '100%'],
+								anim: 1,
+								maxmin: true,
+								content: MODULE_PATH + 'edit.html?pan_no=' + value
+							});
+					
+						})
+					
+					});
+				}
+				window.remove = function(obj) {
+					layer.confirm('确定要删除', {
+						icon: 3,
+						title: '提示'
+					}, function(index) {
+						layer.close(index);
+						_post(layui, 'stock_pan/del', {
+							id: obj.data.id
+						}, res => {
+							layer.msg('删除成功', {
+								icon: 1,
+								time: 1000
+							}, () => {
+								obj.del();
+							});
+						}, err => {
+							//layer.msg('删除失败',{icon:2,time:1000});
+						})
+					});
+				}
+
+
+				window.refresh = function(param) {
+					table.reload('stock_pan-table');
+				}
+			})
+		</script>
+	</body>
+</html>

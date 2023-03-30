@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>供应商商品库</title>
+		<link rel="stylesheet" href="/static/layui/css/layui.css" />
+<link rel="stylesheet" href="/static/ui/css/ui.css" />
+	</head>
+	<body class="pear-container">
+		<div class="layui-card">
+			<div class="layui-card-body">
+				<form class="layui-form" action="">
+					<div class="layui-form-item">
+						<div class="layui-form-item layui-inline">
+							<div class="layui-input-inline">
+								<input type="text" name="name" placeholder="商品名称" class="layui-input">
+							</div>
+                            <div class="layui-input-inline">
+								<input type="text" name="supplier_name" placeholder="供应商名称" class="layui-input">
+							</div>
+						</div>
+						<div class="layui-form-item layui-inline">
+							<button class="pear-btn pear-btn-md pear-btn-primary" lay-submit lay-filter="supplier_goods-query">
+								<i class="layui-icon layui-icon-search"></i>
+								查询
+							</button>
+							<button type="reset" class="pear-btn pear-btn-md" lay-filter="supplier_goods-reset" lay-submit>
+								<i class="layui-icon layui-icon-refresh"></i>
+								重置
+							</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+		<div class="layui-card">
+			<div class="layui-card-body">
+				<table id="supplier_goods-table" lay-filter="supplier_goods-table"></table>
+			</div>
+		</div>
+
+		
+		<script type="text/html" id="supplier_goods-bar">
+			<button class="pear-btn pear-btn-primary pear-btn-sm" lay-event="edit">
+                <i class="layui-icon layui-icon-engine"></i>
+            </button>
+		</script>
+		<script type="text/html" id="supplier_goods-time">
+			{{layui.util.toDateString(d.add_time*1000, 'yyyy-MM-dd HH:mm:ss')}}
+		</script>
+		<script src="../config.js"></script>
+		<script src="/static/layui/layui.js"></script>
+		<script src="/static/ui/ui.js"></script>
+		<script>
+			layui.use(['table', 'form', 'jquery','common'], function() {
+				let table = layui.table;
+				let form = layui.form;
+				let $ = layui.jquery;
+				let common = layui.common;
+                let req = _req();
+
+				let MODULE_PATH = "./";
+
+				let cols = [
+					[
+						{
+							title: 'ID',
+							field: 'id',
+							align: 'center'
+						},
+						{
+							title: '名称',
+							field: 'name',
+							align: 'center'
+						},
+						{
+							title: '价格',
+							field: 'price',
+							align: 'center'
+						},
+						{
+							title: '型号',
+							field: 'model',
+							align: 'center'
+						},
+						{
+							title: '供应商',
+							field: 'supplier_name',
+							align: 'center'
+						},
+						{
+							title: '操作',
+							toolbar: '#supplier_goods-bar',
+							align: 'center',
+							width: 130
+						}
+					]
+				]
+
+				table.render({
+					elem: '#supplier_goods-table',
+					url: apiUrl + 'supplier_goods/list',
+					headers : getHeader(),
+					parseData: function(res) {
+						//console.log(res)
+						return {
+							"code": res.code, //解析接口状态
+							"msg": res.message, //解析提示文本
+							"count": res.data.count, //解析数据长度
+							"data": res.data.list //解析数据列表
+						};
+					},
+					page: true,
+					cols: cols,
+					skin: 'line',
+
+					toolbar: '#supplier_goods-toolbar',
+					defaultToolbar: [{
+						title: '刷新',
+						layEvent: 'refresh',
+						icon: 'layui-icon-refresh',
+					}, 'filter', 'print', 'exports']
+				});
+
+				table.on('tool(supplier_goods-table)', function(obj) {
+					if (obj.event === 'remove') {
+						window.remove(obj);
+					} else if (obj.event === 'edit') {
+						window.edit(obj);
+					}
+				});
+
+				// 监听搜索操作
+
+				form.on('submit(supplier_goods-query)', function(data) {
+					table.reload('supplier_goods-table', {
+						where: {
+							param : $('form').serialize()
+						},
+						page: {
+					        curr: 1
+					    }
+					})
+					return false;
+				});
+				form.on('submit(supplier_goods-reset)', function(data){
+					table.reload('supplier_goods-table', {
+						where: {
+							param : ''
+						},
+						page: {
+					        curr: 1
+					    }
+					});
+					return false;
+				})
+
+				
+
+				window.edit = function(obj) {
+                    let postData = {
+                        pid : req.pid,
+                        pur_id : req.pur_id,
+                        goods_id : obj.data.id,
+                        //goods_name : obj.data.name
+                    }
+                    _post(layui, 'purchase/importGoods', postData, res => {
+                        //console.log(res)
+                        layer.msg('导入成功',{icon:1})
+                        parent.layui.table.reload("pur-data-table");
+
+                    })
+				}
+
+
+				window.refresh = function(param) {
+					table.reload('supplier_goods-table');
+				}
+			})
+		</script>
+	</body>
+</html>
