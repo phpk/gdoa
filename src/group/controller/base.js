@@ -11,6 +11,7 @@ module.exports = class extends think.Controller {
   }
   async __before() {
     this.groupId = await this.session('groupId');
+    this.userId = await this.session("userId");
     //适配管理端
     this.adminId = await this.session('adminId');
     if (this.adminId > 0) return true;
@@ -79,7 +80,7 @@ module.exports = class extends think.Controller {
    */
   async chkJwt(token) {
     let salt = await this.session('GroupSalt'),
-      userId = await this.session('userId');
+      userId = await this.userId;
     if (!salt || !userId) {
       return {
         code: 402,
@@ -98,7 +99,7 @@ module.exports = class extends think.Controller {
           message: '认证过期'
         };
       }
-      this.userId = userId;
+      this.userId = rt.userId;
 
       return {
         code: 0

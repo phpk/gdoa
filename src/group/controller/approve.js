@@ -9,9 +9,17 @@ module.exports = class extends Base {
     async listAction() {
         let { page, limit, param } = this.get();
         let wsql = this.turnSearch(param, {});
+        let formList = await this.model('form').where({group_id : this.groupId}).select();
         let list = await this.model('approve').where(wsql).page(page, limit).order('id desc').select();
         list.forEach(d => {
-            d.cname = dataType.find(e => e.id == d.type).name
+            let data = dataType.find(e => e.id == d.type);
+            d.cname = data ? data.name : ''
+            if(d.ref_id > 0) {
+                let formData = formList.find(f => f.id == d.ref_id)
+                d.fname = formData ? formData.form_name : '';
+            }else{
+                d.fname = d.cname
+            }
         })
         let count = await this.model('approve').where(wsql).count();
         return this.success({ list, count })
@@ -24,6 +32,7 @@ module.exports = class extends Base {
     }
     async addAction() {
         let post = this.post();
+        
         let type = post.type * 1;
         let ref_id = type < 2 ? post.ref_id * 1 : 0;
         let has = await this.model('approve')
@@ -43,8 +52,11 @@ module.exports = class extends Base {
         data.ref_id = ref_id;
         data.remark = post.remark;
         data.group_id = this.groupId;
-        data.user_id = this.adminId;
+        data.user_id = this.userId;
+        data.ding_notice = post.ding_notice;
+        delete data.id;
         let id = await this.model('approve').add(data);
+        await this.upApproveCache();
         return this.success(id);
     }
 
@@ -58,6 +70,7 @@ module.exports = class extends Base {
             remark: post.remark
         }
         await this.model('approve').update(upData);
+        await this.upApproveCache();
         return this.success()
     }
 
@@ -73,6 +86,7 @@ module.exports = class extends Base {
         if (!await this.hasData('approve', { id }))
             return this.fail('数据不存在')
         await this.model('approve').where({ id }).delete()
+        await this.upApproveCache();
         return this.success()
     }
     /**
@@ -83,27 +97,34 @@ module.exports = class extends Base {
         let wsql = { group_id: this.groupId, approve_id: aid };
         if (param) wsql = this.turnSearch(param, wsql);
         let list = await this.model('approve_status').where(wsql).page(page, limit).order('id desc').select();
-        list.forEach(d => {
-            //d.cname = dataType.find(e => e.id == d.type).name
-        })
+        
         let count = await this.model('approve_status').where(wsql).count();
         return this.success({ list, count })
+    }
+    async statusAddBeforeAction() {
+        let userList = await this.model('user').where({group_id : this.groupId}).select()
+        return this.success({userList})
     }
     /**
      * 添加状态
      */
     async statusAddAction() {
-        let post = this.post();
+        let post = this.getPost();
         let aid = post.aid * 1;
         if (!aid) {
             return this.fail('输入错误')
         }
-        post.user_id = this.adminId;
-        post.group_id = this.groupId;
+        //post.user_id = this.adminId;
+        //post.group_id = this.groupId;
+        if(!post.user_list) {
+            return this.fail('请选择用户')
+        }
+        let group_id = this.groupId;
+        let user_id = this.userId;
         post.approve_id = aid;
         let has = await this.model('approve_status')
             .where({
-                group_id: this.groupId,
+                group_id,
                 approve_id: aid
             })
             .order("val desc")
@@ -118,6 +139,19 @@ module.exports = class extends Base {
             post.to_val = has.to_val + 1;
         }
         let id = await this.model('approve_status').add(post);
+        let userList = post.user_list.split(",")
+        let userSave = []
+        userList.forEach(d => {
+            userSave.push({
+                group_id,
+                user_id,
+                op_id : d,
+                status_id : id,
+                approve_id : aid
+            })
+        })
+        await this.model('approve_auth').addMany(userSave)
+        await this.upStatusCache();
         return this.success(id);
     }
     /**
@@ -127,13 +161,42 @@ module.exports = class extends Base {
         let post = this.post();
         let has = await this.model('approve_status').where({ id: post.id }).find();
         if (think.isEmpty(has)) return this.fail('编辑的数据不存在');
+        if(!post.user_list) {
+            return this.fail('请选择用户')
+        }
         await this.model('approve_status').update(post);
+        let group_id = this.groupId;
+        let user_id = this.userId;
+        await this.model('approve_auth').where({
+            group_id,
+            status_id : has.id,
+            approve_id : has.approve_id
+        }).delete()
+        let userList = post.user_list.split(",")
+        let userSave = []
+        userList.forEach(d => {
+            userSave.push({
+                group_id,
+                user_id,
+                op_id : d,
+                status_id : has.id,
+                approve_id : has.approve_id
+            })
+        })
+        await this.model('approve_auth').addMany(userSave)
+        await this.upStatusCache();
         return this.success()
     }
     async statusEditBeforeAction() {
         let id = this.get('id')
         let has = await this.model('approve_status').where({ id }).find();
         if (think.isEmpty(has)) return this.fail('编辑的数据不存在');
+        has.userList = await this.model('user').where({group_id : this.groupId}).select()
+        // let list = await this.model('approve_auth')
+        // .where({group_id : this.groupId, approve_id : has.approve_id, status_id : has.id})
+        // .getField('op_id');
+        // has.user_list = list.join(',')
+
         return this.success(has)
     }
     /**
@@ -150,15 +213,65 @@ module.exports = class extends Base {
             })
             .find();
         if (!think.isEmpty(hasTo)) return this.fail('请从最后一个状态删除');
-        let hasUser = await this.model('approve_auth')
-            .where({
-                approve_id: has.approve_id,
-                status_id: id
-            })
-            .find()
-        if (!think.isEmpty(hasUser)) return this.fail('该状态下存在权限用户');
+        // let hasUser = await this.model('approve_auth')
+        //     .where({
+        //         approve_id: has.approve_id,
+        //         status_id: id
+        //     })
+        //     .find()
+        // if (!think.isEmpty(hasUser)) return this.fail('该状态下存在权限用户');
         await this.model('approve_status').where({ id }).delete()
+        await this.model('approve_auth').where({
+            status_id : has.id,
+            approve_id : has.approve_id
+        }).delete()
+        await this.upStatusCache();
         return this.success()
+    }
+    async contentAction() {
+        let { page, limit, param, aid, uid, tid } = this.get();
+        aid = aid ? aid*1 : 0;
+        uid = uid ? uid*1 : 0;
+        tid = tid ? tid*1 : 0;
+        let sql = {}
+        if(!think.isEmpty(aid)) {
+            sql.approve_id = aid;
+        }
+        if(!think.isEmpty(uid)) {
+            sql.user_id = uid;
+        }
+        if(!think.isEmpty(tid)) {
+            sql.op_id = tid;
+        }
+        let wsql = this.turnSearch(param, sql);
+        let list = await this.model('approve_list').where(wsql).page(page, limit).order('id desc').select();
+    
+        // list.forEach(d => {
+        //     d.statusName = statusData.find(e => e.approve_id == d.approve_id).name
+        // })
+        let count = await this.model('approve_list').where(wsql).count();
+        return this.success({ list, count })
+    }
+    async msgListAction() {
+        let { page, limit, param, aid, uid, tid } = this.get();
+        aid = aid ? aid*1 : 0;
+        uid = uid ? uid*1 : 0;
+        tid = tid ? tid*1 : 0;
+        let sql = {}
+        if(!think.isEmpty(aid)) {
+            sql.approve_id = aid;
+        }
+        if(!think.isEmpty(uid)) {
+            sql.user_id = uid;
+        }
+        if(!think.isEmpty(tid)) {
+            sql.to_user_id = tid;
+        }
+        let wsql = this.turnSearch(param, sql);
+        let list = await this.model('approve_msg').where(wsql).page(page, limit).order('id desc').select();
+    
+        let count = await this.model('approve_msg').where(wsql).count();
+        return this.success({ list, count })
     }
     /**
      * 用户管理
@@ -175,29 +288,20 @@ module.exports = class extends Base {
         let count = await this.model('approve_auth').where(wsql).count();
         return this.success({ list, count })
     }
-    /**
-     * 添加用户
-     */
-    async userAddAction() {
-
+    async upApproveCache() {
+        let list = await this.model('approve').where({group_id : this.groupId}).select()
+        list.forEach(d => {
+            d.info = dataType.find(e => e.id == d.type);
+        })
+        await this.cache(this.groupId + '_approve_data', list, {
+			timeout: 24 * 3600 * 1000 * 36500
+		});
     }
-    async userAddBeforeAction() {
-
-    }
-    /**
-     * 编辑用户
-     */
-    async userEditBeforeAction() {
-
-    }
-    async userEditAction() {
-
-    }
-    /**
-     * 删除用户
-     */
-    async userDelAction() {
-
+    async upStatusCache() {
+        let list = await this.model('approve_status').where({group_id : this.groupId}).select()
+        await this.cache(this.groupId + '_status_data', list, {
+			timeout: 24 * 3600 * 1000 * 36500
+		});
     }
     /**
      * 查看日志

@@ -35,9 +35,15 @@
                         </div>
                     </div>
                     <div class="layui-form-item">
+                        <label class="layui-form-label">操作用户</label>
+                        <div class="layui-input-block">
+                            <div id="user-area" class="xm-select-demo"></div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
                         <label class="layui-form-label">发我消息</label>
                         <div class="layui-input-inline" style="width:500px">
-                            <input type="text" name="my_msg" id="my_msg" autocomplete="off" min="1"
+                            <input type="text" name="my_msg" lay-verify="required" id="my_msg" autocomplete="off" min="1"
                                 placeholder="发我的消息，例如：您有新的消息需要审核了" class="layui-input">
                         </div>
                         <div class="layui-input-inline">
@@ -48,7 +54,7 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">通过消息</label>
                         <div class="layui-input-inline" style="width:500px">
-                            <input type="text" name="to_msg" id="to_msg" autocomplete="off" min="1"
+                            <input type="text" name="to_msg" id="to_msg" lay-verify="required" autocomplete="off" min="1"
                                 placeholder="通过的消息，例如：您的申请被{{username}}审核通过了" class="layui-input">
                         </div>
                         <div class="layui-input-inline">
@@ -59,13 +65,20 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">驳回消息</label>
                         <div class="layui-input-inline" style="width:500px">
-                            <input type="text" name="back_msg" 
+                            <input type="text" name="back_msg" lay-verify="required"
                             autocomplete="off" min="1" id="back_msg"
                                 placeholder="驳回的消息，例如：您的申请被{{username}}打回了" class="layui-input">  
                         </div>
                         <div class="layui-input-inline">
                            <i class="layui-icon layui-icon-fonts-clear" 
                             onclick="copy('您的申请被{{username}}打回了','back_msg')"></i>  
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">钉钉通知</label>
+                        <div class="layui-input-block">
+                            <input type="radio" name="ding_notice" value="0" title="不通知" checked>
+                            <input type="radio" name="ding_notice" value="1" title="通知">
                         </div>
                     </div>
                     <div class="layui-form-item layui-form-text">
@@ -92,6 +105,8 @@
     <script src="../config.js"></script>
     <script src="/static/layui/layui.js"></script>
     <script src="/static/ui/ui.js"></script>
+    <script src="/static/utils/xm-select.js"></script>
+    <script src="../utils/select.js"></script>
     <script>
         layui.use(['form', 'layer', 'tree'], function () {
             let form = layui.form
@@ -111,7 +126,12 @@
             if (req.id) {
                 //渲染
                 _get(layui, 'approve/statusEditBefore?id=' + req.id, res => {
+                    getElSelect(res.userList, res.user_list, 'user-area', 'checkbox', false, { name: 'user_list',layVerify: 'required', layVerType: 'tips' });
                     form.val('editform', res)
+                });
+            }else{
+                _get(layui, 'approve/statusAddBefore', res => {
+                    getElSelect(res.userList, '', 'user-area', 'checkbox', false, { name: 'user_list',layVerify: 'required', layVerType: 'tips' });
                 });
             }
             window.copy = function(msg, el) {

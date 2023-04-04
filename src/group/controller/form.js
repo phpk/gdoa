@@ -25,19 +25,25 @@ module.exports = class extends Base {
         return where;
     }
     async listDataAction() {
-        let { page, limit, param, fid } = this.get();
+        let { page, limit, param, fid, uid } = this.get();
         fid = fid*1;
+        uid = uid * 1;
         page = page*1 - 1
         page = page < 0 ? 0 : page;
         let wStr = `( group_id = ${this.groupId} ) AND ( fid = ${fid} )`;
+        if(!think.isEmpty(uid)) {
+            wStr += ` AND ( user_id = ${uid} )`;
+        }
         if (param) wStr = this.parseJsonSearch(param, wStr);
         let sql = `SELECT * FROM rt_form_data WHERE ${wStr} ORDER BY id desc LIMIT ${page},${limit}`
         let list = await this.model('form_data').query(sql);
+        let userList = await this.model('user').where({group_id : this.groupId}).select()
         list.forEach(d => {
             let val = JSON.parse(d.data)
             for(let p in val) {
                 d[p] = val[p]
             }
+            d.user_name = userList.find(u => u.id == d.user_id).name
         })
         let Csql = `SELECT count(*) as num  FROM rt_form_data WHERE ${wStr}`
         let countData = await this.model('form_data').query(Csql);
@@ -52,6 +58,8 @@ module.exports = class extends Base {
         //post.formdesign = JSON.parse(post.formdesign)
         //console.log(post)
         let id = await this.model('form').add(post);
+        await this.upFormCache();
+        //await 
         return this.success(id);
     }
 
@@ -60,6 +68,7 @@ module.exports = class extends Base {
         let has = await this.model('form').where({ id: post.id }).find();
         if (think.isEmpty(has)) return this.fail('编辑的数据不存在');
         await this.model('form').update(post);
+        await this.upFormCache();
         return this.success()
     }
 
@@ -76,9 +85,18 @@ module.exports = class extends Base {
         if (!await this.hasData('form', { id }))
             return this.fail('数据不存在')
         await this.model('form').where({ id }).delete()
+        await this.upFormCache();
         return this.success()
     }
-
+    async upFormCache() {
+        let list = await this.model('form').where({group_id : this.groupId}).select();
+        await this.cache(this.groupId + '_form_data', list, {
+			timeout: 24 * 3600 * 1000 * 36500
+		});
+        let userInfo = await this.model('user').where({id : this.userId}).find()
+        //设置路由缓存
+		await this.model('menu').cacheData(userInfo);
+    }
 
     async addDataAction() {
         let post = this.post();
@@ -88,6 +106,7 @@ module.exports = class extends Base {
         //console.log(post)
         //post.data = JSON.stringify(post);
         let id = await this.model('form_data').add(post);
+        await this.service('approve').tickApprove(this.groupId, this.userId, 1, post.fid, id, '');
         return this.success(id);
     }
 

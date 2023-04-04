@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>审批流管理管理</title>
+		<title>审批管理</title>
 		<link rel="stylesheet" href="/static/layui/css/layui.css" />
 <link rel="stylesheet" href="/static/ui/css/ui.css" />
 	</head>
@@ -44,20 +44,11 @@
 		    </button>
 		</script>
 		<script type="text/html" id="approve-bar">
-			<button class="pear-btn pear-btn-primary pear-btn-sm" lay-event="status">
-				<i class="layui-icon layui-icon-search"></i>状态
-			</button>
-		    <!-- <button class="pear-btn pear-btn-danger pear-btn-sm" lay-event="user">
-				<i class="layui-icon layui-icon-user"></i>用户
-			</button> -->
-			<button class="pear-btn pear-btn-sm" lay-event="msg">
-				<i class="layui-icon layui-icon-refresh"></i>日志
-			</button>
 			<button class="pear-btn pear-btn-primary pear-btn-sm" lay-event="edit">
-				<i class="layui-icon layui-icon-edit"></i>编辑
+				<i class="layui-icon layui-icon-edit"></i>通过
 			</button>
 		    <button class="pear-btn pear-btn-danger pear-btn-sm" lay-event="remove">
-				<i class="layui-icon layui-icon-delete"></i>删除
+				<i class="layui-icon layui-icon-delete"></i>打回
 			</button>
 		</script>
 		<script type="text/html" id="approve-time">
@@ -85,18 +76,24 @@
 						},
 						{
 							title: '名称',
-							field: 'name',
+							field: 'approve_name',
 							align: 'center'
 						},
 						{
-							title: '类型',
-							field: 'cname',
+							title: '状态',
+							field: 'status_name',
 							align: 'center',
-							width:80
+							width:150
 						},
 						{
-							title: '关联',
-							field: 'fname',
+							title: '申请人',
+							field: 'user_name',
+							align: 'center',
+							width:120
+						},
+                        {
+							title: '审核人',
+							field: 'op_name',
 							align: 'center',
 							width:120
 						},
@@ -111,7 +108,7 @@
 							title: '操作',
 							toolbar: '#approve-bar',
 							align: 'center',
-							width: 450,
+							width: 250,
 							fixed : 'right'
 						}
 					]
@@ -119,7 +116,7 @@
 
 				table.render({
 					elem: '#approve-table',
-					url: apiUrl + 'approve/list',
+					url: apiUrl + 'approve/content',
 					headers : getHeader(),
 					parseData: function(res) {
 						//console.log(res)

@@ -64,6 +64,7 @@
             let common = layui.common;
             let req = _req();
             let fid = req.id;
+            let uid = req.uid;
             let MODULE_PATH = "./";
             let outData = ['tab', 'grid', 'space', 'tips', 'button', 'note', 'subtraction']
             _get(layui, 'form/editBefore?id=' + fid, res => {
@@ -72,9 +73,25 @@
                     {
                         title: 'ID',
                         field: 'id',
+                        width:50,
                         align: 'center'
-                    }
+                    },
+                    // {
+                    //     title: '用户id',
+                    //     field: 'user_id',
+                    //     width:80,
+                    //     align: 'center'
+                    // },
+                    
                 ];
+                if(!uid) {
+                    cols.push({
+                        title: '用户名',
+                        field: 'user_name',
+                        width:120,
+                        align: 'center'
+                    });
+                }
                 let searchArr = []
                 res.formdesign.forEach(d => {
                     if (!outData.includes(d.tags) && d.table) {
@@ -95,6 +112,7 @@
                     title: '操作',
                     toolbar: '#form-bar',
                     align: 'center',
+                    fixed : 'right',
                     width: 120
                 })
                 console.log(searchArr)
@@ -112,7 +130,7 @@
                 //console.log(cols)
                 table.render({
                     elem: '#form-table',
-                    url: apiUrl + 'form/listData?fid=' + fid,
+                    url: apiUrl + 'form/listData?fid=' + fid + '&uid=' + uid,
                     headers: getHeader(),
                     parseData: function (rs) {
                         console.log(res)

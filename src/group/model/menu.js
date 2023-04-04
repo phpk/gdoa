@@ -13,7 +13,9 @@ module.exports = class extends think.Model {
         .where(sql)
         .order('order_num asc')
         .select();
+        
         //console.log('-----------')
+        data = await this.addFormData(data, user)
         
         //获取路由权限
         let perms = [];
@@ -70,46 +72,78 @@ module.exports = class extends think.Model {
     async getPerms(userId) {
         return think.cache('group_perms_' + userId);
     }
-    /**
-     * 前台渲染递归
-     * @param {array} tid 
-     * @returns 
-     
-    async tree() {
-        let data = await this.model('menu').select()
-        //根据 id取出某一个分类的子集
-        //console.log(tid)
-        const findById = (id) => {
-            let child = [];
-            data.forEach((value) => {
-                if (value.pid == id) {
-                    value.name = value.title;
-                    value.field = 'id';
-                    
-                    value.spread = false;
-
-                    child.push(value);
-                }
-            });
-            return child;
-        };
-        // 递归查询到数据并将数据存储到数组 
-        const deeploop = function (id) {
-            let dataArr = findById(id);
-            if (dataArr.length <= 0) {
-                return null;
-            } else {
-                dataArr.forEach((value) => {
-                    if (deeploop(value.id) != null) {
-                        value["child"] = deeploop(value.id);
-                        value["children"] = value['child'];
-                    }
-                });
+    async addFormData(data, user) {
+        let formDataList = await think.cache(user.group_id + '_form_data')
+        //console.log(formDataList)
+        if(!think.isEmpty(formDataList) && formDataList.length > 0) {
+            let workId = 100000;
+            let mgrwork = {
+                id : workId,
+                pid : 570,
+                title: "表单数据",
+                route: "oa",
+                href: "oa",
+                type: 0,
+                issys : 1,
+                order_num: 0,
+                icon: "layui-icon layui-icon-share",
+                lid: 1,
+                ifshow: 0,
+                desktop: 0,
             }
-            return dataArr;
-        };
-        return deeploop(0)
+            data.push(mgrwork);
+            formDataList.forEach(d => {
+                data.push({
+                    id : workId + d.id,
+                    pid : workId,
+                    title: d.form_name,
+                    route: "form/listData?fid=" + d.id,
+                    href: "form/view.html?id=" + d.id,
+                    type: 1,
+                    issys : 1,
+                    order_num: 0,
+                    icon: "layui-icon layui-icon-share",
+                    lid: 1,
+                    ifshow: 0,
+                    desktop: 0,
+                })
+            })
+
+            let myId = 200000;
+            let mywork = {
+                id : myId,
+                pid : 305,
+                title: "我的工作台",
+                route: "oa",
+                href: "oa",
+                type: 0,
+                issys : 1,
+                order_num: 0,
+                icon: "layui-icon layui-icon-share",
+                lid: 1,
+                ifshow: 0,
+                desktop: 0,
+            }
+            data.push(mywork);
+            formDataList.forEach(d => {
+                data.push({
+                    id : myId + d.id,
+                    pid : myId,
+                    title: d.form_name,
+                    route: "form/listData?fid=" + d.id,
+                    href: "form/view.html?id=" + d.id + '&uid=' + user.id,
+                    type: 1,
+                    issys : 1,
+                    order_num: 0,
+                    icon: "layui-icon layui-icon-share",
+                    lid: 1,
+                    ifshow: 0,
+                    desktop: 0,
+                })
+            })
+            //console.log(data)
+        }
+        return data;
     }
-    */
     
 }
