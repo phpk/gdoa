@@ -7,10 +7,7 @@ module.exports = class extends Base {
 
     async listAction() {
         let { page, limit, param } = this.get();
-        let wsql = {
-            group_id : this.groupId
-        };
-        if (param) wsql = this.turnSearch(param, wsql);
+        let wsql = this.turnSearch(param, {});
         let list = await this.model('supplier_goods').where(wsql).page(page, limit).order('id desc').select();
         let count = await this.model('supplier_goods').where(wsql).count();
         return this.success({ list, count })

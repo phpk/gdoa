@@ -35,7 +35,11 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">后台路径</label>
                         <div class="layui-input-block">
-                            <input type="text" name="server_path" lay-verify="required" value="server" autocomplete="off" placeholder="请输入后台路径" class="layui-input" readonly >
+                            <select name="server_path">
+                                <option value="admin">admin</option>
+                                <option value="group">group</option>
+                                <option value="member">member</option>
+                            </select>
                         </div>
                     </div>
                     <div class="layui-form-item">

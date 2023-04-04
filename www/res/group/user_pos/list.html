@@ -72,7 +72,7 @@
 						},
 						{
 							title: '岗位名称',
-							field: 'title',
+							field: 'name',
 							align: 'center'
 						},
 						{
@@ -86,7 +86,7 @@
 
 				table.render({
 					elem: '#position-table',
-					url: apiUrl + 'position/list',
+					url: apiUrl + 'user_pos/list',
 					headers : getHeader(),
 					parseData: function(res) {
 						//console.log(res)
@@ -177,7 +177,7 @@
 				window.remove = function(obj){
 		            layer.confirm('确定要删除', {icon: 3, title:'提示'}, function(index){
 		                layer.close(index);
-		                _post(layui, 'position/del',{id : obj.data.id}, res => {
+		                _post(layui, 'user_pos/del',{id : obj.data.id}, res => {
 							layer.msg('删除成功',{icon:1,time:1000},() => {
 								obj.del();
 							});

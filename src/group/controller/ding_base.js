@@ -1,6 +1,10 @@
 const Base = require('./base.js');
 const TIMEOUT = 24 * 3600 * 1000 * 36500 //100年不过期
 module.exports = class extends Base {
+    async __before() {
+        this.userId = await this.session('userId')
+        this.groupId = await this.session('groupId')
+    }
     async getConf() {
         return await this.cache(this.groupId + '_ding_setting');
     }
@@ -19,6 +23,7 @@ module.exports = class extends Base {
     }
     async getAccToken() {
         let conf = await this.getConf();
+        if(think.isEmpty(conf)) return false;
         let accountUrl = 'https://oapi.dingtalk.com/gettoken?appkey=' + conf.appKey + '&appsecret=' + conf.appSecret;
         //console.log(accountUrl)
         let res = await this.fetch(accountUrl);

@@ -17,16 +17,13 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">公司名称</label>
                 <div class="layui-input-block">
-                    <input type="text" name="title" lay-verify="required|len" autocomplete="off" min="2" placeholder="请输入公司名称" class="layui-input">
+                    <input type="text" name="name" lay-verify="required|len" autocomplete="off" min="2" placeholder="请输入公司名称" class="layui-input">
                 </div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">公司上级</label>
                 <div class="layui-input-block">
-                    <span class="layui-btn pear-btn-success pear-btn-md" id="chooseRule">
-                            <span id="ruleText">顶层公司</span>
-                            <i class="layui-icon layui-icon-down layui-font-12"></i>
-                    </span>
+                    <div id="company-area" class="xm-select-demo"></div>
                 </div>
             </div>
             <div class="layui-form-item">
@@ -36,9 +33,33 @@
                 </div>
             </div>
             <div class="layui-form-item">
+                <label class="layui-form-label">联系人</label>
+                <div class="layui-input-block">
+                    <input type="text" name="contact" autocomplete="off" placeholder="请输入公司联系人" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">电话</label>
+                <div class="layui-input-block">
+                    <input type="number" name="tel" autocomplete="off" placeholder="请输入公司电话" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">邮箱</label>
+                <div class="layui-input-block">
+                    <input type="text" name="email" autocomplete="off" placeholder="请输入公司邮箱" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">邮编</label>
+                <div class="layui-input-block">
+                    <input type="number" name="post_code" autocomplete="off" placeholder="请输入公司邮编" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
                 <label class="layui-form-label">公司地址</label>
                 <div class="layui-input-block">
-                    <input type="text" name="address" lay-verify="required" autocomplete="off" placeholder="请输入公司地址" class="layui-input">
+                    <input type="text" name="address" autocomplete="off" min="2" placeholder="请输入公司名称" class="layui-input">
                 </div>
             </div>
             <div class="layui-form-item">
@@ -71,6 +92,8 @@
 <script src="../config.js"></script>
 <script src="/static/layui/layui.js"></script>
 <script src="/static/ui/ui.js"></script>
+<script src="/static/utils/xm-select.js"></script>
+<script src="../utils/select.js"></script>
 <script>
     layui.use(['form','layer','dropdown','tree'], function () {
         let form = layui.form
@@ -87,23 +110,15 @@
                 }
             }
         })
+        let companyIns
         const renderSelect = (res) => {
             tree.render({
-			     elem: '#treearea'//绑定元素
-					,showCheckbox : true
-					,data: res.menus
-					,id: 'trees' //定义索引
-				});
-                dropdown.render({
-                        elem: '#chooseRule',
-                        data: res.list,
-                        trigger: 'hover',
-                        click: (d, el) => {
-                            $('#ruleText').text(d.title);
-                            $('#pid').val(d.id);
-                            return;
-                        }
-                })
+			    elem: '#treearea'//绑定元素
+				,showCheckbox : true
+				,data: res.menus
+				,id: 'trees' //定义索引
+			});
+            companyIns = getElSelect(res.list, res.pid, 'company-area', 'radio', true, {name : 'pid'});    
         }
         if(req.id) {
             //渲染
@@ -111,7 +126,8 @@
                 form.val('editform', res)
                 renderSelect(res)
                 if(res.rules.length > 0){
-                    tree.setChecked('trees', res.rules.split(','));
+                    tree.setDataChecked('trees', res.rules.split(','));
+                    form.render('checkbox')
                 }
                 $('#ruleText').text(res.topname);
             });
@@ -126,6 +142,7 @@
 			data = data.field;
             let arr = tree.getChecked('trees');
             data.rules = getTree(arr);
+            //data.pid = getSelectData(companyIns)
             let postUrl;
             if(req.id) {
                 postUrl = 'user_company/edit';
@@ -133,12 +150,13 @@
                     layer.msg('不能选择同一层');
                     return false;
                 }
+                data.id = req.id;
             }else{
                 postUrl = 'user_company/add';
             }
 			_post(layui, postUrl, data, res => {
 				//console.log(res)
-				parent.render();
+				parent.location.reload();
 				parent.layer.close(parent.layer.getFrameIndex(window.name));//关闭当前页
 
 			})

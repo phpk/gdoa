@@ -2,9 +2,13 @@ const Base = require('./base.js');
 const TIMEOUT = 24 * 3600 * 1000 * 36500 //100年不过期
 /**
  * @class
- * @apiDefine stock_goods 物料管理管理
+ * @apiDefine stock 仓库管理基类
  */
 module.exports = class extends Base {
+	async __before() {
+        this.userId = await this.session('userId')
+        this.groupId = await this.session('groupId')
+    }
 	async getDict(id = 0) {
 		let rt = await this.cache(this.groupId + '_stock_dict');
 		if (think.isEmpty(rt)) {

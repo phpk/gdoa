@@ -14,12 +14,13 @@ module.exports = class extends stockBase {
 		} = this.get();
 		let wsql = {};
 		if (trans_no) wsql.trans_no = trans_no;
-		if (param) wsql = this.turnSearch(param, wsql);
+		wsql = this.turnSearch(param, wsql);
 		let cates = await this.getCate()
 		let area = await this.getArea()
 		let list = await this.model('stock_transfer').where(wsql).page(page, limit).order('id desc').select();
 		list.forEach(d => {
-			d.cname = cates.find(e => e.id == d.cate_id).name;
+			let cateData = cates.find(e => e.id == d.cate_id)
+			d.cname = cateData? cateData.name : '';
 			let fromArea = area.find(e => e.id == d.from_area_id);
 			d.from_areaname = fromArea? fromArea.name : '';
 			let toArea = area.find(e => e.id == d.to_area_id)

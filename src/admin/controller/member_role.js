@@ -25,6 +25,8 @@ module.exports = class extends Base {
     async addAction() {
         let post = this.post();
         post.user_id = this.adminId;
+        let has = await this.model('group_role').where({isfree : 1}).find()
+        if(think.isEmpty(has)) return this.fail('系统已存在免费用户组')
         let id = await this.model('member_role').add(post);
         return this.success(id);
     }
@@ -33,6 +35,10 @@ module.exports = class extends Base {
         let post = this.post();
         let has = await this.model('member_role').where({ id: post.id }).find();
         if (think.isEmpty(has)) return this.fail('编辑的数据不存在');
+        if(post.isfree*1 != has.isfree && post.isfree*1 == 1) {
+            let hasFree = await this.model('group_role').where({isfree : 1}).find()
+            if(think.isEmpty(hasFree)) return this.fail('系统已存在免费用户组')
+        }
         await this.model('member_role').update(post);
         return this.success()
     }

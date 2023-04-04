@@ -7,29 +7,42 @@ module.exports = class extends think.Controller {
       this.redirect('group/login/index');
       return false;
     }
+    this.perms = await think.cache('group_perms_' + this.userId);
   }
   async indexAction() {
-    const menus = await think.cache('group_menus_' + this.userId);
-    this.assign('menus', JSON.stringify(menus))
+    this.assign('menus', JSON.stringify(this.perms.menus))
     return this.display();
 
 
   }
   async welcomeAction() {
-    const destops = await think.cache('group_desktops_' + this.userId);
-    this.assign('destops', destops)
+    this.assign('destops', this.perms.destops)
     return this.display();
   }
+  async areaAction() {
+    let pid = this.get('pid')*1 || 0,
+        id = this.get('id'),
+        wsql = {}
+    if(think.isEmpty(id)) {
+      wsql.pid = pid;
+    }else{
+      wsql.id = ["IN", id];
+    }
+    let data = await this.model('area').where(wsql).order('order_num asc').select();
+    data.forEach(d => {
+      d.value = d.id;
+      if(d.have_child > 0){
+        d.children = []
+      }
+    })
+    return this.success(data)
+}
   async loginOutAction() {
-    await this.session(null);
-    await this.cache('user_' + this.userId, null);
+    await this.cache('auth_' + this.userId, null);
     await this.cache('group_perms_' + this.userId, null);
-    await this.cache('group_menus_' + this.userId, null);
-    await this.cache('group_desktops_' + this.userId, null);
     await this.session('userId', null);
-    await this.session('GroupSalt', null);
-    await this.session('GroupStatusTime', null);
+    await this.session('groupId', null);
     return this.success()
-  }
+}
 
 };

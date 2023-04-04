@@ -12,8 +12,7 @@ module.exports = class extends ProjectBase {
 			limit,
 			param
 		} = this.get();
-		let wsql = {};
-		if (param) wsql = this.turnSearch(param, wsql);
+		let wsql = this.turnSearch(param, {});
 		let list = await this.model('project')
 			.where(wsql)
 			.page(page, limit)
@@ -35,12 +34,12 @@ module.exports = class extends ProjectBase {
 		return this.success(cates);
 	}
 	async addAction() {
-		let post = this.post();
-		post.user_id = this.adminId;
-		// post.start_time = this.now(post.start_time);
-		// post.end_time = this.now(post.end_time);
-		post.group_id = this.groupId;
+		let post = this.getPost();
+		if(!post.start_time || !post.end_time) {
+			return this.fail('请设置时间')
+		}
 		let project_id = await this.model('project').add(post);
+		await this.upCacheProject();
 		return this.success(project_id);
 	}
 
@@ -54,6 +53,7 @@ module.exports = class extends ProjectBase {
 		// post.start_time = this.now(post.start_time);
 		// post.end_time = this.now(post.end_time);
 		await this.model('project').where(condition).update(post);
+		await this.upCacheProject();
 		return this.success()
 	}
 
@@ -79,6 +79,7 @@ module.exports = class extends ProjectBase {
 		await this.model('project').where({
 			project_id: id
 		}).delete()
+		await this.upCacheProject();
 		return this.success()
 	}
 }

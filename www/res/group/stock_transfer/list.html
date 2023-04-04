@@ -82,18 +82,18 @@
 
 		<script type="text/html" id="stock_transfer-bar">
 		{{# if(d.status == 1){ }}
-			<button class="pear-btn pear-btn-danger pear-btn-sm" lay-event="remove">
+			<button class="layui-btn layui-btn-danger layui-btn-xs" lay-event="remove">
 				<i class="layui-icon layui-icon-delete"></i>
 			</button>
 			{{# } }}
 		</script>
 		<script type="text/html" id="stock_transfer-status">
 		{{# if(d.status == 1){ }}
-			<button class="pear-btn pear-btn-primary pear-btn-sm">待审核</button>
+			<button class="layui-btn layui-btn-primary layui-btn-xs">待审核</button>
 			{{# }else if(d.status == 2) { }}
-				<button class="pear-btn pear-btn-danger pear-btn-sm">待接收</button>
+				<button class="layui-btn layui-btn-danger layui-btn-xs">待接收</button>
 				{{# }else if(d.status == 3) { }}
-					<button class="pear-btn pear-btn-success pear-btn-sm">已完结</button>
+					<button class="layui-btn layui-btn-sm">已完结</button>
 					{{# } }}
 		</script>
 		<script src="../config.js"></script>

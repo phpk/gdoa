@@ -8,8 +8,7 @@ module.exports = class extends stockBase {
     async listAction() {
         let { page, limit, param, pid } = this.get();
 		if(!pid) pid = 0;
-        let wsql = {pid};
-        if (param) wsql = this.turnSearch(param, wsql);
+        let wsql = this.turnSearch(param, {pid});
         let list = await this.model('stock_dict').where(wsql).page(page, limit).order('id desc').select();
         let count = await this.model('stock_dict').where(wsql).count();
         return this.success({ list, count })

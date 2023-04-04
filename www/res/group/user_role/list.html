@@ -2,9 +2,9 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>部门管理</title>
+		<title>角色管理管理</title>
 		<link rel="stylesheet" href="/static/layui/css/layui.css" />
-<link rel="stylesheet" href="/static/ui/css/ui.css" />
+    	<link rel="stylesheet" href="/static/ui/css/ui.css" />
 	</head>
 	<body class="pear-container">
 		<div class="layui-card">
@@ -14,15 +14,15 @@
 						<div class="layui-form-item layui-inline">
 							<label class="layui-form-label">名称</label>
 							<div class="layui-input-inline">
-								<input type="text" name="title" placeholder="" class="layui-input">
+								<input type="text" name="name" placeholder="" class="layui-input">
 							</div>
 						</div>
 						<div class="layui-form-item layui-inline">
-							<button class="pear-btn pear-btn-md pear-btn-primary" lay-submit lay-filter="user-query">
+							<button class="pear-btn pear-btn-md pear-btn-primary" lay-submit lay-filter="user_role-query">
 								<i class="layui-icon layui-icon-search"></i>
 								查询
 							</button>
-							<button type="reset" class="pear-btn pear-btn-md" lay-filter="user-reset" lay-submit>
+							<button type="reset" class="pear-btn pear-btn-md" lay-filter="user_role-reset" lay-submit>
 								<i class="layui-icon layui-icon-refresh"></i>
 								重置
 							</button>
@@ -33,39 +33,40 @@
 		</div>
 		<div class="layui-card">
 			<div class="layui-card-body">
-				<table id="department-table" lay-filter="department-table"></table>
+				<div class="layui-btn-group">
+					<button class="layui-btn layui-btn-primary layui-border-red layui-btn-sm" id="add">
+						<i class="layui-icon layui-icon-add-1"></i>
+						新增
+					</button>
+				</div>
+				<table id="user_role-table" lay-filter="user_role-table"></table>
 			</div>
 		</div>
 
-		<script type="text/html" id="department-toolbar">
-			<button class="layui-btn layui-btn-primary layui-border-red layui-btn-sm" lay-event="add">
-		        <i class="layui-icon layui-icon-add-1"></i>
-		        新增
-		    </button>
-		</script>
+		
 
-		<script type="text/html" id="department-bar">
+		<script type="text/html" id="user_role-bar">
 			<button class="pear-btn pear-btn-primary pear-btn-sm" lay-event="edit"><i class="layui-icon layui-icon-edit"></i></button>
 		    <button class="pear-btn pear-btn-danger pear-btn-sm" lay-event="remove"><i class="layui-icon layui-icon-delete"></i></button>
 		</script>
-		<script type="text/html" id="department-time">
+		<script type="text/html" id="user_role-time">
 			{{layui.util.toDateString(d.add_time*1000, 'yyyy-MM-dd HH:mm:ss')}}
 		</script>
 		<script src="../config.js"></script>
 		<script src="/static/layui/layui.js"></script>
 		<script src="/static/ui/ui.js"></script>
 		<script>
-			layui.use(['table', 'form', 'jquery','common','treetable'], function() {
+			layui.use(['table', 'form', 'jquery','common', 'treeTable'], function() {
 				let table = layui.table;
 				let form = layui.form;
 				let $ = layui.jquery;
 				let common = layui.common;
-				let treetable = layui.treetable;
+				let treeTable = layui.treeTable;
 
 				let MODULE_PATH = "./";
 
 				let cols = [
-					[
+					
 						{
 							title: 'ID',
 							field: 'id',
@@ -73,45 +74,69 @@
 						},
 						{
 							title: '名称',
-							field: 'title',
+							field: 'name',
 							align: 'center'
 						},
 						{
 							title: '添加时间',
 							field: 'add_time',
 							align: 'center',
-							templet: '#department-time'
+							//templet: '#user_role-time'
 						},
 						{
 							title: '操作',
-							toolbar: '#department-bar',
+							toolbar: '#user_role-bar',
 							align: 'center',
 							width: 130
 						}
-					]
+					
 				]
-			    window.render = function () {
-					treetable.render({
-						elem: '#department-table',
-						url: 'department/list',
-						treeColIndex: 1,
-						treeSpid: 0,
-						treeIdName: 'id',
-						treePidName: 'pid',
-						skin: 'line',
-                        treeDefaultClose: true,
-						page: false,
-						cols: cols,
-						toolbar: '#department-toolbar',
-						defaultToolbar: [{
-							title: '刷新',
-							layEvent: 'refresh',
-							icon: 'layui-icon-refresh',
-						}, 'filter', 'print', 'exports']
+			    let insTb = treeTable.render({
+				elem: '#user_role-table',
+				toolbar: '#user_role-toolbar',
+				tree: {
+					iconIndex: 1,  // 折叠图标显示在第几列
+					idName: 'id',  // 自定义id字段的名称
+					pidName: 'pid',  // 自定义标识是否还有子节点的字段名称
+					haveChildName: 'have_child',  // 自定义标识是否还有子节点的字段名称
+					isPidData: true  // 是否是pid形式数据
+				},
+				cols : cols,
+				reqData: function (data, callback) {
+					let pid = data ? data.id : 0;
+					_get(layui, 'user_role/list?pid=' + pid, function (res) {
+						//console.log(res)
+						callback(res.list);  // 参数是数组类型
 					});
 				}
-				render();
-				table.on('tool(department-table)', function(obj) {
+			})
+			/*
+				table.render({
+					elem: '#user_role-table',
+					url: apiUrl + 'user_role/list',
+					headers : getHeader(),
+					parseData: function(res) {
+						//console.log(res)
+						return {
+							"code": res.code, //解析接口状态
+							"msg": res.message, //解析提示文本
+							"count": res.data.count, //解析数据长度
+							"data": res.data.list //解析数据列表
+						};
+					},
+					page: true,
+					cols: cols,
+					skin: 'line',
+
+					toolbar: '#user_role-toolbar',
+					defaultToolbar: [{
+						title: '刷新',
+						layEvent: 'refresh',
+						icon: 'layui-icon-refresh',
+					}, 'filter', 'print', 'exports']
+				});*/
+
+				treeTable.on('tool(user_role-table)', function(obj) {
 					if (obj.event === 'remove') {
 						window.remove(obj);
 					} else if (obj.event === 'edit') {
@@ -119,7 +144,7 @@
 					}
 				});
 
-				table.on('toolbar(department-table)', function(obj) {
+				treeTable.on('toolbar(user_role-table)', function(obj) {
 					if (obj.event === 'add') {
 						window.add();
 					} else if (obj.event === 'refresh') {
@@ -128,8 +153,8 @@
 				});
 				// 监听搜索操作
 
-				form.on('submit(department-query)', function(data) {
-					table.reload('department-table', {
+				form.on('submit(user_role-query)', function(data) {
+					treeTable.reload('user_role-table', {
 						where: {
 							param : $('form').serialize()
 						},
@@ -139,8 +164,8 @@
 					})
 					return false;
 				});
-				form.on('submit(department-reset)', function(data){
-					table.reload('department-table', {
+				form.on('submit(user_role-reset)', function(data){
+					treeTable.reload('user_role-table', {
 						where: {
 							param : ''
 						},
@@ -151,10 +176,10 @@
 					return false;
 				})
 
-				window.add = function() {
+				$("#add").click(function() {
 					layer.open({
 						type: 2,
-						title: '新增部门',
+						title: '新增',
 						shade: 0.1,
 						offset: 'rt',
 						area: ['80%', '100%'],
@@ -162,12 +187,12 @@
 						maxmin: true,
 						content: MODULE_PATH + 'edit.html'
 					});
-				}
+				})
 
 				window.edit = function(obj) {
 					layer.open({
 						type: 2,
-						title: '修改部门',
+						title: '修改',
 						shade: 0.1,
 						offset: 'rt',
 						area: ['80%', '100%'],
@@ -179,7 +204,7 @@
 				window.remove = function(obj){
 		            layer.confirm('确定要删除', {icon: 3, title:'提示'}, function(index){
 		                layer.close(index);
-		                _post(layui, 'department/del',{id : obj.data.id}, res => {
+		                _post(layui, 'user_role/del',{id : obj.data.id}, res => {
 							layer.msg('删除成功',{icon:1,time:1000},() => {
 								obj.del();
 							});
@@ -191,7 +216,7 @@
 
 
 				window.refresh = function(param) {
-					table.reload('department-table');
+					table.reload('user_role-table');
 				}
 			})
 		</script>

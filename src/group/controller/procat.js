@@ -9,8 +9,7 @@ module.exports = class extends ProjectBase {
 
     async listAction() {
         let { page, limit, param } = this.get();
-        let wsql = {group_id : this.groupId};
-        if (param) wsql = this.turnSearch(param, wsql);
+        let wsql = this.turnSearch(param, {});
         let list = await this.model('project_type').where(wsql).page(page, limit).order('id desc').select();
 		list.forEach(el => {
 			el.cname = this.catesData[el.sys_id]

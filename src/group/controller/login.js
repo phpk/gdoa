@@ -60,6 +60,16 @@ module.exports = class extends think.Controller {
 			await this.session('loginNum', loginNum + 1);
 			return this.fail('密码错误');
 		}
+		//查询用户租户
+		let groupData = await this.model('user_group')
+						.where({id : user.group_id})
+						.find()
+		if(think.isEmpty(groupData)){
+			return this.fail('租户不存在');
+		}
+		if(this.now() > this.now(groupData.end_time)) {
+			return this.fail('租户已过期');
+		}
 		//生成一个16位的随机数
 		let salt = this.service('login').randomString(),
 			md5Salt = think.md5(salt);
@@ -81,20 +91,21 @@ module.exports = class extends think.Controller {
 				salt,
 				login_num: user.login_num + 1
 			})
+		
+		
 		//添加缓存
 		await this.session('userId', userId);
 		await this.session('groupId', user.group_id);
-		//只允许一个帐号在一个端下登录
-		await this.cache('user_' + userId, md5Salt);
+		//设定权限缓存
+		await this.cache('auth_' + userId, JSON.parse(user.users));
 		//设置路由缓存
 		await this.model('menu').cacheData(user);
 		//console.log(routeData)
 		//jwt校验用
 		await this.session('GroupSalt', md5Salt);
-		//console.log(md5Salt)
-		//设定保活
-		await this.session('GroupStatusTime', this.now());
 
+		await this.session('loginNum', null);
+		
 		return this.success(token);
 	}
 	/**
@@ -158,9 +169,10 @@ module.exports = class extends think.Controller {
 		let salt = this.service('login').randomString()
 		let password = this.service('login').createPassword(post.password, salt);
 		//console.log(pwd)
+		let userAuth = think.config('userExt')
 		let save = {
 			username: post.username,
-			truename: post.name,
+			name: post.name,
 			password,
 			salt,
 			status: 0,
@@ -168,7 +180,8 @@ module.exports = class extends think.Controller {
 			isadmin: 1,
 			isleader: 1,
 			rules: freeGroup.rules,
-			users: -1,
+			rule_id : freeGroup.id,
+			users: JSON.stringify(userAuth),
 			group_id: 0
 		}
 		let userId = await this.model('user').add(save);
@@ -189,8 +202,6 @@ module.exports = class extends think.Controller {
 		let groupId = await this.model('user_group').add(addGroup)
 		//更新用户组
 		await this.model('user').update({id : userId, group_id : groupId})
-		
-
 
 		return this.success(userId);
 	}

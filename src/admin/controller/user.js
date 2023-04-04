@@ -7,7 +7,7 @@ module.exports = class extends Base {
 
     async listAction() {
         let { page, limit, param } = this.get();
-        let wsql = {group_id : this.groupId};
+        let wsql = {};
         if (param) wsql = this.parseSearch(param, wsql);
         let list = await this.model('user').where(wsql).page(page, limit).order('id desc').select();
         let count = await this.model('user').where(wsql).count();

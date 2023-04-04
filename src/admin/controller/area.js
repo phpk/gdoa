@@ -9,9 +9,9 @@ module.exports = class extends Base {
         let pid = this.get('pid')
         let data = await this.model('area').where({pid}).order('order_num asc').select();
         //如果数据量过大 直接设置有下游
-        data.forEach(async (el) => {
-            el.haveChild = true;
-        });
+        // data.forEach(async (el) => {
+        //     el.haveChild = true;
+        // });
         return this.success({data})
     }
 

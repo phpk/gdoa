@@ -16,6 +16,10 @@ module.exports = class extends Base {
         super(ctx);
         this.catesData = catesData;
     }
+    async __before() {
+        this.userId = await this.session('userId')
+        this.groupId = await this.session('groupId')
+    }
     async getCate(sid = 1) {
         let cates = await this.cache(this.groupId + '_projects_cate');
         if(think.isEmpty(cates)) {
@@ -44,5 +48,22 @@ module.exports = class extends Base {
 			timeout: TIMEOUT
 		});
 		return cates;
+    }
+    async getProjectData() {
+        let data = await this.cache(this.groupId + '_group_project');
+        if(think.isEmpty(data)) {
+            data = await this.upCacheProject();
+        }
+        return data;
+    }
+    async upCacheProject() {
+        let data = await this.model('project').where({group_id : this.groupId, status : ['<',2]}).select();
+        data.forEach(d => {
+            d.id = d.project_id;
+        })
+        await this.cache(this.groupId + '_group_project', data, {
+            timeout: TIMEOUT
+        });
+        return data;
     }
 }

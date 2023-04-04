@@ -12,11 +12,9 @@ module.exports = class extends stockBase {
 			param,
 			pan_no
 		} = this.get();
-		let wsql = {
-			group_id: this.groupId
-		};
+		let wsql = {};
 		if (pan_no) wsql.pan_no = pan_no;
-		if (param) wsql = this.turnSearch(param, wsql);
+		wsql = this.turnSearch(param, wsql);
 		if (wsql && wsql.status == 99) {
 			delete wsql.status;
 			wsql.pan_num = ['EXP', "!= stock_num"]
@@ -32,10 +30,11 @@ module.exports = class extends stockBase {
 		//let cateChild = cates.cate.child;
 		//console.log(area)
 		list.forEach(d => {
-			d.cname = cates.find(e => e.id == d.cate_id).name;
+			let cateData = cates.find(e => e.id == d.cate_id);
+			d.cname = cateData? cateData.name : ''; 
 			let areaData = area.find(e => e.id == d.area_id);
 			d.addrname = areaData ? areaData.name : '';
-			let barData = areaData.child.find(e => e.id == d.bar_id)
+			let barData = areaData? areaData.child.find(e => e.id == d.bar_id) : ''
 			d.barname = barData ? barData.name : '';
 			//d.trans_num = d.trans_num > 0 ? d.trans_num : d.stock_num;
 		})

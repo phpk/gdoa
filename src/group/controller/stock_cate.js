@@ -21,8 +21,7 @@ module.exports = class extends stockBase {
 			id
 		} = this.get();
 		if (!id) {
-			let wsql = {group_id : this.groupId};
-			if (param) wsql = this.turnSearch(param, wsql);
+			let wsql = this.turnSearch(param, {});
 			let list = await this.model('stock_cate').where(wsql).page(page, limit).order('id desc').select();
 			let count = await this.model('stock_cate').where(wsql).count();
 			return this.success({

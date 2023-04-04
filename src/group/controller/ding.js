@@ -41,8 +41,205 @@ module.exports = class extends dingBase {
         } else {
             return this.fail(errmsg)
         }
+    }
+    //同步钉钉数据到数据库
+    async dataechoAction() {
+        //let db = this.model('user');
+        //console.log(this.userId)
+        try {
+            let rules = await this.model('user').where({id : this.userId}).getField("rules", true)
+            //db.startTrans();
+            await this.dataRole(rules);
+            let deptData = await this.dataDept(rules);
+            await this.dataUser(rules, deptData);
+            //db.commit();
+            return this.success();
+        } catch (e) {
+            console.log(e)
+            //db.rollback();
+            return this.fail(e.message)
+        }
+    }
+    async dataRole(rules) {
+        let list = await this.model('ding_role')
+        .where({ group_id: this.groupId })
+        .order('role_id desc')
+        .select();
+        //console.log(list);
+        if(!think.isEmpty(list) && list.length > 0) {
+            let maxId = await this.model('user_role').max('id');
+            let group_id = this.groupId;
+            let user_id = this.userId;
+            let save = [];
+            //let rules = await this.model('user').where({id : this.userId}).getField("rules", true)
+            //console.log(rules)
+            let sids = []
 
-
+            let loopFunc = (pid, nid) => {
+                list.forEach(d => {
+                    if(d.pid === pid && !sids.includes(d.role_id)) {
+                        maxId++;
+                        sids.push(d.role_id)
+                        save.push({
+                            id : maxId,
+                            name : d.name,
+                            pid : nid,
+                            group_id,
+                            user_id,
+                            rules,
+                            old_id : d.role_id,
+                            have_child : 0
+                        })
+                    }
+                })
+                if(save.length < list.length) {
+                    let findPid, newPid;
+                    list.forEach(d => {
+                        if(!sids.includes(d.role_id)) {
+                            let top = save.find(s => s.old_id == d.pid)
+                            //console.log(top)
+                            if(top) {
+                                newPid = top.id;
+                                findPid = d.pid;
+                                save.forEach(n => {
+                                    if(n.id == top.id) {
+                                        n.have_child = 1;
+                                    }
+                                })
+                            }
+                        }
+                    })
+                    //console.log(findPid)
+                    if(!think.isEmpty(findPid) && !think.isEmpty(newPid)) {
+                        loopFunc(findPid,newPid)
+                    }
+                }
+            }
+            loopFunc(0, 0)
+            //console.log(save)
+            if(save.length > 0) {
+                await this.model('user_role').addMany(save, {ignore : true})
+            }
+        }
+    }
+    async dataDept(rules) {
+        let list = await this.model('ding_dept')
+        .where({ group_id: this.groupId })
+        .order('dept_id desc')
+        .select();
+        //console.log(list);
+        let save = [];
+        if(!think.isEmpty(list) && list.length > 0) {
+            let maxId = await this.model('user_dept').max('id');
+            let group_id = this.groupId;
+            let user_id = this.userId;
+            //console.log(rules)
+            let sids = []
+            let loopFunc = (pid, nid) => {
+                list.forEach(d => {
+                    if(d.parent_id === pid && !sids.includes(d.dept_id)) {
+                        maxId++;
+                        sids.push(d.dept_id)
+                        save.push({
+                            id : maxId,
+                            name : d.name,
+                            pid : nid,
+                            group_id,
+                            user_id,
+                            rules,
+                            old_id : d.dept_id,
+                            have_child : 0
+                        })
+                    }
+                })
+                if(save.length < list.length) {
+                    let findPid, newPid;
+                    list.forEach(d => {
+                        if(!sids.includes(d.dept_id)) {
+                            let top = save.find(s => s.old_id == d.parent_id)
+                            //console.log(top)
+                            if(top) {
+                                newPid = top.id;
+                                findPid = d.parent_id;
+                                save.forEach(n => {
+                                    if(n.id == top.id) {
+                                        n.have_child = 1;
+                                    }
+                                })
+                            }
+                        }
+                    })
+                    //console.log(findPid)
+                    if(!think.isEmpty(findPid) && !think.isEmpty(newPid)) {
+                        loopFunc(findPid,newPid)
+                    }
+                }
+            }
+            loopFunc(1, 0)
+            //console.log(save)
+            if(save.length > 0) {
+                await this.model('user_dept').addMany(save, {ignore : true})
+            }
+        }
+        return save;
+    }
+    async dataUser(rules, deptData) {
+        let list = await this.model('ding_user')
+        .where({ group_id: this.groupId })
+        .select();
+        if(think.isEmpty(list) || list.length < 1){
+            return false;
+        }
+        let salt = this.service('login').randomString()
+		let password = this.service('login').createPassword("123456", salt);
+        let save = []
+        let userAuth = think.config('userExt', undefined, 'group');
+        let group_id = this.groupId;
+        const getTime = (t) => {
+            if(t) {
+                return think.datetime(new Date(t).getTime(), 'YYYY-MM-DD')
+            }else{
+                return think.datetime(new Date().getTime(), 'YYYY-MM-DD')
+            }
+            
+        }
+        list.forEach(d => {
+            let s = {
+                username : d.unionid,
+                name : d.name,
+                password,
+                salt,
+                ding_user_id : d.user_id,
+                avatar : d.avatar,
+                remark : d.title,
+                email : d.email,
+                phone : d.mobile,
+                hired_date : getTime(d.hired_date),
+                job_number : d.job_number,
+                work_place : d.work_place,
+                telephone : d.telephone,
+                group_id,
+                rules,
+                users : userAuth
+            }
+            if(d.dept_id_list) {
+                let deptArr = d.dept_id_list.split(',')
+                let deptIds = []
+                deptArr.forEach(id => {
+                    deptData.forEach(ii => {
+                        if(id == ii.old_id) {
+                            deptIds.push(ii.id)
+                        }
+                    })
+                })
+                s.users.user_dept = deptIds.join(",")
+            }
+            s.users = JSON.stringify(s.users)
+            save.push(s)
+        })
+        if(save.length > 0) {
+            await this.model('user').addMany(save, {ignore : true})
+        }
     }
     async listDeptAction() {
         let list = await this.model('ding_dept')
@@ -95,7 +292,7 @@ module.exports = class extends dingBase {
                     msg: listsub.sub_msg
                 };
             }
-            await this.model('ding_dept').addMany(listsub, { replace: true });
+            await this.model('ding_dept').addMany(listsub, { ignore: true });
             return {
                 code: 1
             };
@@ -117,7 +314,7 @@ module.exports = class extends dingBase {
                 };
             }
             if (data.length > 0) {
-                await this.model('ding_dept').addMany(data, { replace: true });
+                await this.model('ding_dept').addMany(data, { ignore: true });
             }
 
             await this.model('ding_dept').where({ dept_id }).update({
@@ -164,7 +361,7 @@ module.exports = class extends dingBase {
             };
         }
         //console.log(listsub)
-        await this.model('ding_role').addMany(listsub, { replace: true });
+        await this.model('ding_role').addMany(listsub, { ignore: true });
         return {
             code: 0
         };
@@ -253,7 +450,7 @@ module.exports = class extends dingBase {
         });
         //console.log(saveData)
         //console.log(res.list)
-        await this.model('ding_user').addMany(saveData, { replace: true });
+        await this.model('ding_user').addMany(saveData, { ignore: true });
         if (!res.has_more) {
             await this.model('ding_dept').where({ dept_id }).update({
                 is_user: 1

@@ -11,8 +11,7 @@ module.exports = class extends stockBase {
 			limit,
 			param
 		} = this.get();
-		let wsql = {};
-		if (param) wsql = this.turnSearch(param, wsql);
+		let wsql = this.turnSearch(param, {});
 		let cates = await this.getCate()
 		let area = await this.getArea()
 		let list = await this.model('stock_out').where(wsql).page(page, limit).order('id desc').select();
@@ -24,7 +23,8 @@ module.exports = class extends stockBase {
 			9 : '损耗'
 		}
 		list.forEach(d => {
-			d.cname = cates.find(e => e.id == d.cate_id).name;
+			let cateData = cates.find(e => e.id == d.cate_id);
+			d.cname = cateData? cateData.name : '';
 			let areaData = area.find(e => e.id == d.area_id);
 			d.addrname = areaData ? areaData.name : '';
 			let barData = areaData ? areaData.child.find(e => e.id == d.bar_id) : []

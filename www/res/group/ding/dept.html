@@ -25,6 +25,10 @@
                     <i class="layui-icon layui-icon-refresh"></i>
                     同步角色
                 </button>
+                <button class="layui-btn layui-btn-primary layui-border-red layui-btn-sm" id="synchrodata">
+                    <i class="layui-icon layui-icon-refresh"></i>
+                    同步数据
+                </button>
             </div>
             <script type="text/html" id="area-bar">
                 {{# if(d.is_sun == 0){ }}
@@ -111,12 +115,23 @@
             $('#synchrorole').click(() => {
                 window.synchro('role');
             })
+            $("#synchrodata").click(() => {
+                //window.synchro('dataecho');
+                let index = layer.load(1);
+                _get(layui, 'ding/dataecho', res => {
+                    layer.close(index);
+                    location.reload();
+                    layer.msg('同步成功')
+                }, err => {
+                    layer.close(index);
+                })
+            })
             window.synchro = function (type) {
                 let index = layer.load(1);
 
                 _get(layui, 'ding/synchro?type=' + type, res => {
                     layer.close(index);
-                    table.reload('area-table');
+                    location.reload();
                     layer.msg('同步成功')
                 }, err => {
                     layer.close(index);

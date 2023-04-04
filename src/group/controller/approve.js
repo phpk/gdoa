@@ -8,8 +8,7 @@ const dataType = require('./approve_type.js')
 module.exports = class extends Base {
     async listAction() {
         let { page, limit, param } = this.get();
-        let wsql = {};
-        if (param) wsql = this.turnSearch(param, wsql);
+        let wsql = this.turnSearch(param, {});
         let list = await this.model('approve').where(wsql).page(page, limit).order('id desc').select();
         list.forEach(d => {
             d.cname = dataType.find(e => e.id == d.type).name

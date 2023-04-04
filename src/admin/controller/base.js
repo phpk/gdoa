@@ -6,7 +6,7 @@ module.exports = class extends think.Controller {
   constructor(ctx) {
     super(ctx);
     this.adminId = 0;
-	  this.groupId = 0;
+	  //this.groupId = 0;
   }
   async __before() {
     //token校验
@@ -124,7 +124,7 @@ module.exports = class extends think.Controller {
         };
       }
       this.adminId = adminId;
-	  this.groupId = await this.session('groupId');
+	  //this.groupId = await this.session('groupId');
       return {
         code: 0
       };

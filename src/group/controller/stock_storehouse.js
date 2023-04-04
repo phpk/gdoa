@@ -7,8 +7,7 @@ module.exports = class extends stockBase {
 
     async listAction() {
         let { page, limit, param } = this.get();
-        let wsql = {group_id : this.groupId};
-        if (param) wsql = this.turnSearch(param, wsql);
+        let wsql = this.turnSearch(param, {});
         let list = await this.model('stock_storehouse').where(wsql).page(page, limit).order('id desc').select();
         let count = await this.model('stock_storehouse').where(wsql).count();
         return this.success({ list, count })

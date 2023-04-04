@@ -64,17 +64,17 @@ module.exports = class extends think.Model {
         //设置路由缓存
         let routeData = await this.list(user);
         //console.log(routeData)
-        await think.cache('group_perms_' + user.id, routeData.perms);
-        //设置菜单缓存
-        await think.cache('group_menus_' + user.id, routeData.menus);
-        await think.cache('group_desktops_' + user.id, routeData.desktops);
+        await think.cache('group_perms_' + user.id, routeData);
         return routeData;
+    }
+    async getPerms(userId) {
+        return think.cache('group_perms_' + userId);
     }
     /**
      * 前台渲染递归
      * @param {array} tid 
      * @returns 
-     */
+     
     async tree() {
         let data = await this.model('menu').select()
         //根据 id取出某一个分类的子集
@@ -110,5 +110,6 @@ module.exports = class extends think.Model {
         };
         return deeploop(0)
     }
+    */
     
 }

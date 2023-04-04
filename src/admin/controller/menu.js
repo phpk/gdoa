@@ -175,12 +175,12 @@ module.exports = class extends Base {
         //console.log(manytype)
         let save = []
         let titles = {
-            Add : '添加',
-            Edit : '编辑',
-            List : '列表',
-            Del : '删除',
-            AddBefore : '添加前',
-            EditBefore : '编辑前'
+            add : '添加',
+            edit : '编辑',
+            list : '列表',
+            del : '删除',
+            addBefore : '添加前',
+            editBefore : '编辑前'
 
         }
         manytype.forEach(d => {

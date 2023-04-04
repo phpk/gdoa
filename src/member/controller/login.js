@@ -1,6 +1,6 @@
 const svgCaptcha = require("svg-captcha");
 const jwt = require('jsonwebtoken');
-//const ADMINDIR = 'server';
+//const memberDIR = 'server';
 /**
  * @class 
  * @apiDefine login 用户登录
@@ -36,21 +36,21 @@ module.exports = class extends think.Controller {
 		if (loginNum > 10) {
 			return this.fail('登录错误次数太多，大侠请留步，请一小时后再试!');
 		}
-		let admin = await this.model('admin').where({
+		let member = await this.model('member').where({
 			username: post.username
 		}).find();
-		let adminId = admin.admin_id;
-		if (think.isEmpty(admin)) {
+		let memberId = member.member_id;
+		if (think.isEmpty(member)) {
 			await this.session('loginNum', loginNum + 1);
 			return this.fail('用户不存在');
 		}
-		if (admin.status != 0) {
+		if (member.status != 0) {
 			await this.session('loginNum', loginNum + 1);
 			return this.fail('用户被禁用');
 		}
-		let pwd = this.service('login').createPassword(post.password, admin.salt);
+		let pwd = this.service('login').createPassword(post.password, member.salt);
 		//console.log(pwd)
-		if (pwd != admin.password) {
+		if (pwd != member.password) {
 			await this.session('loginNum', loginNum + 1);
 			return this.fail('密码错误');
 		}
@@ -58,7 +58,7 @@ module.exports = class extends think.Controller {
 		let salt = this.service('login').randomString(),
 			md5Salt = think.md5(salt);
 		let token = jwt.sign({
-			adminId: adminId
+			memberId: memberId
 		}, md5Salt, {
 			expiresIn: 60 * 60 * 12 //12小时过期
 			//expiresIn:-1//永不过期
@@ -66,47 +66,27 @@ module.exports = class extends think.Controller {
 
 		let password = this.service('login').createPassword(post.password, salt);
 		//更新用户密码和登录状态
-		await this.model('admin')
+		await this.model('member')
 			.where({
-				admin_id: adminId
+				member_id: memberId
 			})
 			.update({
 				password,
 				salt,
-				login_num: admin.login_num + 1,
+				login_num: member.login_num + 1,
 				login_time: this.now()
 			})
 		//添加缓存
-		await this.session('adminId', adminId);
-		await this.session('groupId', admin.group_id);
+		await this.session('memberId', memberId);
 		//只允许一个帐号在一个端下登录
-		await this.cache('admin_' + adminId, md5Salt);
-		//聊天服务器用
-		await this.cache('token_' + think.md5(token), adminId);
-		//console.log('token_' + think.md5(token))
+		await this.cache('member_' + memberId, md5Salt);
 		//设置路由缓存
-		let routeData = await this.model('menu').cacheData(adminId);
+		let routeData = await this.model('menu').cacheData(memberId);
 		//console.log(routeData)
 		//jwt校验用
 		await this.session('salt', md5Salt);
 		//console.log(md5Salt)
-		//设定保活
-		await this.session('statusTime', this.now());
-		//添加登录日志
-		delete post.password;
-		let logData = {
-			admin_id: adminId,
-			log: admin.username + '用户登录',
-			data: JSON.stringify(post),
-			ip: this.ctx.ip,
-			agent: this.ctx.userAgent,
-			url: this.ctx.path,
-			method: this.ctx.method,
-			addtime: this.now(),
-			type: 'admin_login'
-		};
-		//await this.mg('adminlog').add(logData);
-		await this.model('adminlog').add(logData);
+		
 		return this.success({
 			token,
 			routeData
@@ -121,14 +101,6 @@ module.exports = class extends think.Controller {
 	 */
 
 	async captchaAction() {
-		// let option = {
-		// 	size: 4, // 验证码长度
-		// 	ignoreChars: '0o1ilI', // 验证码字符中排除 0o1i
-		// 	noise: 1, // 干扰线条的数量
-		// 	color: true, // 验证码的字符是否有颜色，默认没有，如果设定了背景，则默认有
-		// 	background: '#eeeeee' // 验证码图片背景颜色
-		// };
-		// const captcha = svgCaptcha.create(option);
 		let option = {
 			mathMin : 1,
 			mathMax : 30,
@@ -172,7 +144,7 @@ module.exports = class extends think.Controller {
 	 * "data":token
 	 * }
 	 */
-	async regAction() {
+	async regDoAction() {
 		let post = this.post();
 		if (!await this.chkCapcha(post.captcha)) {
 			return this.fail('验证码错误')
@@ -183,25 +155,19 @@ module.exports = class extends think.Controller {
 		if (loginNum > 10) {
 			return this.fail('注册错误次数太多，大侠请留步，请一小时后再试!');
 		}
-		let utype = post.utype;
-		if (utype < 2 || utype > 3) {
-			await this.session('regNum', loginNum + 1);
-			return this.fail('请选择正确的角色');
-		}
-		let admin = await this.model('admin').where({
+		let member = await this.model('member').where({
 			username: post.username
 		}).find();
-		if (!think.isEmpty(admin)) {
+		if (!think.isEmpty(member)) {
 			await this.session('regNum', loginNum + 1);
 			return this.fail('用户已存在');
 		}
-		//查询是否是内部成员
-		let dingUser = await this.model('ding_user').where({
-			mobile: post.username
-		}).find();
-		if (think.isEmpty(admin)) {
+		let freeGroup = await this.model('member_role')
+			.where({ isfree: 1, status: 1 })
+			.find()
+		if (think.isEmpty(freeGroup)) {
 			await this.session('regNum', loginNum + 1);
-			return this.fail('请联系管理员添加您的钉钉用户');
+			return this.fail('免费申请已结束')
 		}
 
 		let salt = this.service('login').randomString()
@@ -217,31 +183,11 @@ module.exports = class extends think.Controller {
 			login_time: this.now(),
 			group_id : 0
 		}
-		let admin_id = await this.model('admin').add(save);
-		let addRules = {
-			admin_id,
-			auth_id: utype,
-			type: utype
-		};
-		await this.model('admin_map').add(addRules)
-
-		//添加登录日志
-		delete post.password;
-		let logData = {
-			admin_id: admin_id,
-			log: post.username + '用户注册',
-			data: JSON.stringify(post),
-			ip: this.ctx.ip,
-			agent: this.ctx.userAgent,
-			url: this.ctx.path,
-			method: this.ctx.method,
-			addtime: this.now(),
-			type: 'admin_reg'
-		};
-		//await this.mg('adminlog').add(logData);
-		await this.model('adminlog').add(logData);
+		let member_id = await this.model('member').add(save);
+	
+		
 		return this.success({
-			admin_id
+			member_id
 		});
 	}
 

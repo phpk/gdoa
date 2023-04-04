@@ -15,10 +15,7 @@ module.exports = class extends stockBase {
 			limit,
 			param
 		} = this.get();
-		let wsql = {
-			group_id: this.groupId
-		};
-		if (param) wsql = this.turnSearch(param, wsql);
+		let wsql = this.turnSearch(param, {});
 		let cates = await this.getCate();
 
 		let area = await this.getArea();
@@ -30,10 +27,11 @@ module.exports = class extends stockBase {
 		//let cateChild = cates.cate.child;
 		//console.log(area)
 		list.forEach(d => {
-			d.cname = cates.find(e => e.id == d.cate_id).name;
+			let cateData = cates.find(e => e.id == d.cate_id);
+			d.cname = cateData ? cateData.name : '';
 			let areaData = area.find(e => e.id == d.area_id);
 			d.addrname = areaData ? areaData.name : '';
-			let barData = areaData.child.find(e => e.id == d.bar_id)
+			let barData = areaData ? areaData.child.find(e => e.id == d.bar_id) : '';
 			d.barname = barData ? barData.name : '';
 			//d.trans_num = d.trans_num > 0 ? d.trans_num : d.stock_num;
 		})

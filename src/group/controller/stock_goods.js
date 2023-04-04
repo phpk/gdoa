@@ -11,10 +11,7 @@ module.exports = class extends stockBase {
 			limit,
 			param
 		} = this.get();
-		let wsql = {
-			group_id: this.groupId
-		};
-		if (param) wsql = this.turnSearch(param, wsql);
+		let wsql = this.turnSearch(param, {});
 		let cates = await this.getCate();
 		let list = await this.model('stock_goods')
 			.where(wsql)

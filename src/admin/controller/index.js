@@ -21,8 +21,11 @@ module.exports = class extends think.Controller {
     return this.display();
   }
   async loginOutAction() {
-    await this.session(null);
+    //await this.session(null);
     await this.cache('admin_' + this.adminId, null);
+    await this.cache('perms_' + this.adminId, null);
+    await this.cache('menus_' + this.adminId, null);
+    await this.cache('desktops_' + this.adminId, null);
     await this.session('adminId', null);
     await this.session('salt', null);
     await this.session('statusTime', null);

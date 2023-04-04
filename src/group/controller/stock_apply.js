@@ -11,8 +11,7 @@ module.exports = class extends Base {
 			limit,
 			param
 		} = this.get();
-		let wsql = {};
-		if (param) wsql = this.turnSearch(param, wsql);
+		let wsql = this.turnSearch(param, {});
 		let list = await this.model('stock_apply').where(wsql).page(page, limit).order('id desc').select();
 		let count = await this.model('stock_apply').where(wsql).count();
 		return this.success({
