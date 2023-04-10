@@ -60,10 +60,10 @@ module.exports = class extends stockBase {
 		if (think.isEmpty(has)) return this.fail('编辑的数据不存在');
 		//console.log(post)
 		let pext = {
-			cname : post.cname.trim(),
-			ckey : post.ckey.trim(),
+			cname : post.cname,
+			ckey : post.ckey,
 			ctype : post.ctype,
-			cdef : post.cdef.trim(),
+			cdef : post.cdef,
 			corder : post.corder*1,
 			cdict : post.cdict,
 			cdesc : post.cdesc

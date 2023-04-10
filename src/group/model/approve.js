@@ -1,4 +1,4 @@
-module.exports = class extends think.Service {
+module.exports = class extends think.Model {
     async getApproveData(groupId) {
         return await think.cache(groupId + '_approve_data');
     }
@@ -59,7 +59,8 @@ module.exports = class extends think.Service {
             approve_id: approveData.id,
             status_id: statusData.id,
             ref_id: refId,
-            data_id: dataId
+            data_id: dataId,
+            status : 0
         }).find()
         if (!think.isEmpty(has)) {
             return {
@@ -67,45 +68,7 @@ module.exports = class extends think.Service {
                 msg : '你已经提交过了'
             };
         }
-        /*
-        let userList = statusData.user_list.split(',')
-        let save = []
-        userList.forEach(op_id => {
-            save.push({
-                group_id: groupId,
-                user_id: userId,
-                op_id,
-                type: typeId,
-                val: statusData.val,
-                approve_id: approveData.id,
-                status_id: statusData.id,
-                ref_id: refId,
-                data_id: dataId,
-                status: 0,
-                remark,
-                table: approveData.table,
-                field: approveData.field,
-                approve_name: approveData.name,
-                status_name: statusData.name,
-                color: statusData.color
-            })
-        })
-        let listIds = await this.model('approve_list').addMany(save)
-        let msgSave = []
-        listIds.forEach((list_id, i) => {
-            msgSave.push({
-                to_user_id: userList[i],
-                msg: statusData.my_msg,
-                user_id: userId,
-                group_id: groupId,
-                type: typeId,
-                list_id,
-                ref_id: refId,
-                isread: 0
-            })
-        })
-        await this.model('approve_msg').addMany(msgSave)
-        */
+        
         await this.addApprove(hasData, approveData, statusData, remark);
         //1待审核 0 被打回
         //console.log(approveData)
@@ -145,7 +108,7 @@ module.exports = class extends think.Service {
         if (think.isEmpty(approveCacheData)) {
             return {
                 code: 1,
-                msg: 'approve cache error'
+                msg: 'approveCacheData cache error'
             }
         }
         //let approveData = approveCacheData.find(d => d.id == has.approve_id)
@@ -153,14 +116,14 @@ module.exports = class extends think.Service {
         if (think.isEmpty(approveData)) {
             return {
                 code: 1,
-                msg: 'approve cache error'
+                msg: 'approveData cache error'
             }
         }
         let statusCacheData = await this.getStatusData(has.group_id)
         if (think.isEmpty(statusCacheData)) {
             return {
                 code: 1,
-                msg: 'status cache error'
+                msg: 'statusCacheData cache error'
             }
         }
         let statusData;
@@ -173,7 +136,7 @@ module.exports = class extends think.Service {
         if (think.isEmpty(statusData)) {
             return {
                 code: 1,
-                msg: 'old status cache error'
+                msg: 'old statusData cache error'
             }
         }
         return { approveData, statusCacheData, statusData, code: 0 }
@@ -208,8 +171,14 @@ module.exports = class extends think.Service {
             }
         })
         //严格模式
-        if (oldStatusData.pass_type == 0 && hasPass === accessLen) {
-            pass = true;
+        if (oldStatusData.pass_type == 0) {
+            if(hasPass === accessLen) {
+                pass = true;
+            }
+            //如果通过票数和驳回票数相同
+            if(hasBack + hasPass === accessLen && hasBack === hasPass) {
+                pass = true;
+            }
         }
         //少数服从多数
         if (oldStatusData.pass_type == 2 && hasPass > hasBack && hasPass + hasBack == accessLen) {
@@ -223,8 +192,14 @@ module.exports = class extends think.Service {
             pass = false;
         }
         //严格模式
-        if (oldStatusData.back_type == 0 && hasBack === accessLen) {
-            back = true;
+        if (oldStatusData.back_type == 0) {
+            if(hasBack === accessLen) {
+                back = true;
+            }
+            //如果通过票数和驳回票数相同
+            if(hasBack + hasPass === accessLen && hasBack === hasPass) {
+                back = true;
+            }
         }
         //少数服从多数
         if (oldStatusData.back_type == 2 && hasPass < hasBack && hasPass + hasBack == accessLen) {
@@ -446,6 +421,7 @@ module.exports = class extends think.Service {
         let statusCacheData = approveAndStatus.statusCacheData;
         await this.model('approve_list').where({ id: has.id }).update({ status: 2, back_remark })
         let passNum = await this.getPassNum(has, oldStatusData);
+        //console.log(passNum)
         //执行回退
         if (passNum.back) {
             //一票否决情况下，该数据下的本状态都要被打回
@@ -465,8 +441,9 @@ module.exports = class extends think.Service {
                 status: oldStatusData.back_val
             })
             //添加新的审批流
-            let statusData = statusCacheData.find(d => d.approve_id == approveData.id && d.val === has.back_val)
+            let statusData = statusCacheData.find(d => d.approve_id == has.approve_id && d.val == oldStatusData.back_val)
             //上一步
+            //console.log(statusData)
             if (think.isEmpty(statusData)) {
                 return {
                     code: 2,

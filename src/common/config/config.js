@@ -31,14 +31,19 @@ module.exports = {
         type : 'file',
         maxAge: 12 * 3600 * 1000
     },
-    mysql: {
-        database: 'gdcms',
+    mysql: {   
         prefix: 'rt_',
         encoding: 'utf8',
         host: '127.0.0.1',
+        database: 'gdcms',
         port: '8889',
         user: 'root',
         password: 'root',
+        // database: 'gdoa',
+        // password: 'Hnaqw2021!@#Rt',
+        // port: '3306',
+        // user: 'root',
+
         dateStrings: true
     },
     redis: {

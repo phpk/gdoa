@@ -7,14 +7,14 @@ module.exports = class extends think.Controller {
     super(ctx);
     this.userId = 0;
     this.groupId = 0;
-    this.adminId = 0;
+    //this.adminId = 0;
   }
   async __before() {
     this.groupId = await this.session('groupId');
     this.userId = await this.session("userId");
     //适配管理端
-    this.adminId = await this.session('adminId');
-    if (this.adminId > 0) return true;
+    // this.adminId = await this.session('adminId');
+    // if (this.adminId > 0) return true;
     //token校验
     if (!await this.checkToken()) return false;
     //权限验证
@@ -53,8 +53,8 @@ module.exports = class extends think.Controller {
    */
   async checkToken() {
     let headers = this.ctx.headers;
-    //console.log(headers)
-    if (!headers.group_token || headers.group_token == 'undefined') {
+    //console.log(this.ctx)
+    if (!headers.grouptoken || headers.grouptoken == 'undefined') {
       this.status = 401;
       this.ctx.body = {
         code: 401,
@@ -63,7 +63,7 @@ module.exports = class extends think.Controller {
       return false;
     }
     //token验证
-    let jwtChk = await this.chkJwt(headers.group_token);
+    let jwtChk = await this.chkJwt(headers.grouptoken);
     if (jwtChk.code != 0) {
       this.status = jwtChk.code;
       this.ctx.body = jwtChk.message;
@@ -107,7 +107,7 @@ module.exports = class extends think.Controller {
     } catch (e) {
 
       return {
-        code: 404,
+        code: 409,
         message: e.message
       };
     }

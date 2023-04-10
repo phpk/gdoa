@@ -4,7 +4,7 @@ module.exports = class extends think.Controller {
   async __before() {
     this.adminId = await this.session('adminId');
     if (think.isEmpty(this.adminId)) {
-      this.redirect('login');
+      this.redirect('/admin/login');
       return false;
     }
   }

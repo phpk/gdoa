@@ -16,7 +16,7 @@ module.exports = class extends think.Model {
         
         //console.log('-----------')
         data = await this.addFormData(data, user)
-        
+        //console.log(JSON.stringify(data))
         //获取路由权限
         let perms = [];
         data.forEach(el => {
@@ -92,6 +92,7 @@ module.exports = class extends think.Model {
                 desktop: 0,
             }
             data.push(mgrwork);
+            
             formDataList.forEach(d => {
                 data.push({
                     id : workId + d.id,
@@ -125,6 +126,48 @@ module.exports = class extends think.Model {
                 desktop: 0,
             }
             data.push(mywork);
+            data.push({
+                id : 210001,
+                pid : myId,
+                title: '我的消息',
+                route: "approve/msgList?uid=" + user.id,
+                href: "approve/msg.html?uid=" + user.id,
+                type: 1,
+                issys : 1,
+                order_num: 0,
+                icon: "layui-icon layui-icon-share",
+                lid: 1,
+                ifshow: 0,
+                desktop: 0,
+            })
+            data.push({
+                id : 210002,
+                pid : myId,
+                title: '我的审核',
+                route: "approve/content?tid=" + user.id,
+                href: "approve/content.html?tid=" + user.id,
+                type: 1,
+                issys : 1,
+                order_num: 0,
+                icon: "layui-icon layui-icon-share",
+                lid: 1,
+                ifshow: 0,
+                desktop: 0,
+            })
+            data.push({
+                id : 210003,
+                pid : myId,
+                title: '我的申请',
+                route: "approve/content?uid=" + user.id,
+                href: "approve/content.html?uid=" + user.id,
+                type: 1,
+                issys : 1,
+                order_num: 0,
+                icon: "layui-icon layui-icon-share",
+                lid: 1,
+                ifshow: 0,
+                desktop: 0,
+            })
             formDataList.forEach(d => {
                 data.push({
                     id : myId + d.id,

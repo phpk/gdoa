@@ -39,6 +39,9 @@ module.exports = class extends ProjectBase {
         let post = this.post();
         let has = await this.model('purchase').where({ id: post.id }).find();
         if (think.isEmpty(has)) return this.fail('编辑的数据不存在');
+        if(has.status > 0) {
+            return this.fail('审核状态不可编辑')
+        }
         await this.model('purchase').update(post);
         return this.success()
     }
@@ -53,8 +56,13 @@ module.exports = class extends ProjectBase {
 
     async delAction() {
         let id = this.post('id');
-        if (!await this.hasData('purchase', { id }))
+        let statusCheck = await this.model('purchase').where({ id }).find()
+        if(think.isEmpty(statusCheck)) {
             return this.fail('数据不存在')
+        }
+        if(statusCheck.status > 0) {
+            return this.fail('审核状态不可编辑')
+        }
         await this.model('purchase').where({ id }).delete()
         return this.success()
     }
@@ -78,9 +86,13 @@ module.exports = class extends ProjectBase {
         return this.success({ list, count })
     }
     async addOneAction() {
-        let post = this.post();
-        post.group_id = this.groupId;
-        post.user_id = this.adminId;
+        let post = this.getPost();
+
+        let statusCheck = await this.model('purchase').where({ id: post.pur_id }).find()
+        if(think.isEmpty(statusCheck) || statusCheck.status > 0) {
+            return this.fail('审核状态不可编辑')
+        }
+
         post = this.parsePrice(post);
         let id = await this.model('purchase_list').add(post);
         if(post.write_supplier*1 > 0) {
@@ -152,6 +164,12 @@ module.exports = class extends ProjectBase {
         let post = this.post();
         let has = await this.model('purchase_list').where({ id: post.id }).find();
         if (think.isEmpty(has)) return this.fail('编辑的数据不存在');
+
+        let statusCheck = await this.model('purchase').where({ id: has.pur_id }).find()
+        if(think.isEmpty(statusCheck) || statusCheck.status > 0) {
+            return this.fail('审核状态不可编辑')
+        }
+
         post = this.parsePrice(post);
         await this.model('purchase_list').update(post);
         if(post.write_supplier*1 > 0) {
@@ -163,6 +181,12 @@ module.exports = class extends ProjectBase {
         let id = this.post('id')*1;
         let has = await this.model('purchase_list').where({ id }).find();
         if (think.isEmpty(has)) return this.fail('删除的数据不存在');
+
+        let statusCheck = await this.model('purchase').where({ id: has.pur_id }).find()
+        if(think.isEmpty(statusCheck) || statusCheck.status > 0) {
+            return this.fail('审核状态不可编辑')
+        }
+
         if(has.pid < 1) {
             let hasSun = await this.model('purchase_list').where({ pid: id }).find();
             //console.log(hasSun)
@@ -173,6 +197,11 @@ module.exports = class extends ProjectBase {
     }
     async importAction() {
         let {type, pur_id, pid} = this.get();
+        let statusCheck = await this.model('purchase').where({ id: pur_id }).find()
+        if(think.isEmpty(statusCheck) || statusCheck.status > 0) {
+            return this.fail('审核状态不可编辑')
+        }
+
         const file = this.file('file');
         let end = file.path.split(".").pop();
         if(end !== 'xlsx'){
@@ -232,6 +261,12 @@ module.exports = class extends ProjectBase {
     }
     async importGoodsAction() {
         const {pid, goods_id, pur_id} = this.post()
+
+        let statusCheck = await this.model('purchase').where({ id: pur_id }).find()
+        if(think.isEmpty(statusCheck) || statusCheck.status > 0) {
+            return this.fail('审核状态不可编辑')
+        }
+
         let has = await this.model('purchase_list').where({pid, goods_id, pur_id}).find()
         if(!think.isEmpty(has)) {
             return this.fail('该商品已导入')
@@ -260,6 +295,11 @@ module.exports = class extends ProjectBase {
     async editDataAction() {
         let {id, field, value} = this.post();
         let has = await this.model('purchase_list').where({id}).find()
+
+        let statusCheck = await this.model('purchase').where({ id: has.pur_id }).find()
+        if(think.isEmpty(statusCheck) || statusCheck.status > 0) {
+            return this.fail('审核状态不可编辑')
+        }
         if (think.isEmpty(has))
             return this.fail("编辑的数据不存在");
         if (field == 'num' && think.isNumber(value)) {
@@ -287,6 +327,10 @@ module.exports = class extends ProjectBase {
     }
     async countOneAction() {
         let pur_id = this.post('pur_id')*1
+        let statusCheck = await this.model('purchase').where({ id: pur_id }).find()
+        if(think.isEmpty(statusCheck) || statusCheck.status > 0) {
+            return this.fail('审核状态不可编辑')
+        }
         let list = await this.model('purchase_list').where({pur_id}).select()
         let top = []
         list.forEach(d => {
@@ -312,6 +356,10 @@ module.exports = class extends ProjectBase {
     }
     async delAllAction() {
         let {pur_id, ids} = this.post();
+        let statusCheck = await this.model('purchase').where({ id: pur_id }).find()
+        if(think.isEmpty(statusCheck) || statusCheck.status > 0) {
+            return this.fail('审核状态不可删除')
+        }
         let listIds = await this.model('purchase_list').where({
             pur_id, id : ["IN", ids]
         }).getField('id');
@@ -329,5 +377,30 @@ module.exports = class extends ProjectBase {
         }).delete()
         return this.success()
 
+    }
+    async tickApproveAction() {
+        let post = this.post();
+        //console.log(post)
+        let has = await this.model('purchase').where({ id: post.pur_id }).find();
+        if (think.isEmpty(has)) return this.fail('数据不存在');
+        if(has.status > 0) {
+            return this.fail('审核状态不可提交')
+        }
+        let db = this.model('approve');
+        await db.startTrans()
+        try {
+            let rt = await db.tickApprove(this.groupId, this.userId, 2, 0, has.id, '');
+            if(rt.code > 0) {
+                db.rollback()
+                return this.fail(rt.msg)
+            }else{
+                db.commit()
+                return this.success();
+            }
+
+        } catch (e) {
+            db.rollback()
+            return this.fail(e.message)
+        }
     }
 }

@@ -7,6 +7,7 @@
 		<link rel="stylesheet" href="/static/layui/css/layui.css" />
 		<link rel="stylesheet" href="/static/ui/css/ui.css" />
 		<link rel="stylesheet" href="/static/ui/admin/css/other/login.css" />
+		
 	</head>
     <!-- 代 码 结 构 -->
 	<body background="/static/ui/admin/images/background.svg" style="background-size: cover;">
@@ -19,7 +20,7 @@
 				</div>
 			</div>
 			<div class="layui-form-item">
-				<input placeholder="账 号" value="" name="username" lay-verify="required" hover class="layui-input"  />
+				<input placeholder="账号/姓名/手机号" value="" name="username" lay-verify="required" hover class="layui-input"  />
 			</div>
 			
 			<div class="layui-form-item">
@@ -49,8 +50,9 @@
 		<script src="/res/group/config.js"></script>
 		<script src="/static/layui/layui.js"></script>
 		<script src="/static/ui/ui.js"></script>
-		
+		<!--script src="https://g.alicdn.com/dingding/dingtalk-jsapi/3.0.12/dingtalk.open.js"></script-->
 		<script>
+			
 			layui.use(['form', 'button', 'popup'], function() {
 				let form = layui.form,
 					button = layui.button,
@@ -61,6 +63,7 @@
 						$('#codeImage').attr('src',apiUrl + 'login/captcha?t='+ Math.random());
 					}
 				changeImg();
+
 				$('#codeImage').click(() => {
 					changeImg();
 				});
@@ -113,6 +116,22 @@
 				
 					return false;
 				});
+				// dd.runtime.permission.requestAuthCode({
+				// 	corpId: "ding06e760a8197defbd35c2f4657eb6378f",
+				// 	onSuccess: function(result) {
+				// 		///console.log(result)
+				// 		//location.href = 'http://gdoa.roter.me/group/login/auth?code=' + result.code
+				// 		_get(layui, 'login/auth?code=' + result.code, res => {
+				// 			setToken(res);
+				// 			location.href = '/group';
+				// 		})
+					
+				// 	},
+				// 	onFail : function(err) {
+				// 		console.log(err)
+				// 	}
+				
+				// })
 			})
 		</script>
 	</body>

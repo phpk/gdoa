@@ -38,12 +38,25 @@ module.exports = class extends Base {
         let sql = `SELECT * FROM rt_form_data WHERE ${wStr} ORDER BY id desc LIMIT ${page},${limit}`
         let list = await this.model('form_data').query(sql);
         let userList = await this.model('user').where({group_id : this.groupId}).select()
+        let approveData = await this.service('approve').getApproveData(this.groupId)
+        let statusCacheData = await this.service('approve').getStatusData(this.groupId)
+        let hasApprove = approveData.find(a => a.type === 1 && a.ref_id === fid)
+        let statusData;
+        if(!think.isEmpty(hasApprove)) {
+            statusData = statusCacheData.filter(d => d.approve_id === hasApprove.id)
+        }
         list.forEach(d => {
             let val = JSON.parse(d.data)
             for(let p in val) {
                 d[p] = val[p]
             }
             d.user_name = userList.find(u => u.id == d.user_id).name
+            if(!think.isEmpty(statusData)) {
+                let statusVal = this.service('approve').getStatusValue(statusData, d.status)
+                d._status_name = statusVal.name;
+                d._status_color = statusVal.color;
+            }
+            
         })
         let Csql = `SELECT count(*) as num  FROM rt_form_data WHERE ${wStr}`
         let countData = await this.model('form_data').query(Csql);
@@ -101,13 +114,32 @@ module.exports = class extends Base {
     async addDataAction() {
         let post = this.post();
         post.group_id = this.groupId;
-        post.user_id = this.adminId;
+        post.user_id = this.userId;
         //post.formdesign = JSON.parse(post.formdesign)
         //console.log(post)
         //post.data = JSON.stringify(post);
-        let id = await this.model('form_data').add(post);
-        await this.service('approve').tickApprove(this.groupId, this.userId, 1, post.fid, id, '');
-        return this.success(id);
+        let db = this.model('form_data');
+        if(post.post_type*1 < 1) {
+            post.status = 0;
+            await this.model('form_data').add(post);
+            return this.success()
+        }
+        await db.startTrans()
+        try {
+            let id = await this.model('form_data').add(post);
+            let rt = await this.model('approve').tickApprove(this.groupId, this.userId, 1, post.fid, id, '');
+            if(rt.code > 0) {
+                db.rollback()
+                return this.fail(rt.msg)
+            }else{
+                db.commit()
+                return this.success(id);
+            }
+        } catch (e) {
+            db.rollback()
+            return this.fail(e.message)
+        }
+        
     }
 
     async editDataAction() {
@@ -115,8 +147,28 @@ module.exports = class extends Base {
         //console.log(post)
         let has = await this.model('form_data').where({ id: post.id }).find();
         if (think.isEmpty(has)) return this.fail('编辑的数据不存在');
-        await this.model('form_data').update(post);
-        return this.success()
+        if(has.status > 0) {
+            return this.fail('审核状态不可编辑')
+        }
+        let db = this.model('form_data');
+        await db.startTrans()
+        try {
+            post.status = 1;
+            await db.update(post);
+            let rt = await this.model('approve').tickApprove(this.groupId, this.userId, 1, has.fid, has.id, '');
+            if(rt.code > 0) {
+                db.rollback()
+                return this.fail(rt.msg)
+            }else{
+                db.commit()
+                return this.success();
+            }
+
+        } catch (e) {
+            db.rollback()
+            return this.fail(e.message)
+        }
+        
     }
     async addDataBeforeAction() {
         let id = this.get('fid');

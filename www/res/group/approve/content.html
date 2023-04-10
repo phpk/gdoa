@@ -37,22 +37,31 @@
 			</div>
 		</div>
 
-		<script type="text/html" id="approve-toolbar">
-			<button class="layui-btn layui-btn-primary layui-border-red layui-btn-sm" lay-event="add">
-		        <i class="layui-icon layui-icon-add-1"></i>
-		        新增
-		    </button>
-		</script>
+		
 		<script type="text/html" id="approve-bar">
-			<button class="pear-btn pear-btn-primary pear-btn-sm" lay-event="edit">
+            {{# if(d.status === 0){ }}
+			<button class="pear-btn pear-btn-primary pear-btn-sm" lay-event="pass">
 				<i class="layui-icon layui-icon-edit"></i>通过
 			</button>
-		    <button class="pear-btn pear-btn-danger pear-btn-sm" lay-event="remove">
-				<i class="layui-icon layui-icon-delete"></i>打回
+            {{# if(d.val > 2){ }}
+		    <button class="pear-btn pear-btn-danger pear-btn-sm" lay-event="backprev">
+				<i class="layui-icon layui-icon-delete"></i>打回上一步
 			</button>
+            {{# } }}
+            <button class="pear-btn pear-btn-success pear-btn-sm" lay-event="backopen">
+				<i class="layui-icon layui-icon-delete"></i>打回初始
+			</button>
+            {{# } }}
 		</script>
 		<script type="text/html" id="approve-time">
-			{{layui.util.toDateString(d.add_time*1000, 'yyyy-MM-dd HH:mm:ss')}}
+            {{# if(d.add_time != d.up_time){ }}
+			{{layui.util.toDateString(d.up_time, 'yyyy-MM-dd HH:mm:ss')}}
+            {{# } }}
+		</script>
+		<script type="text/html" id="approve-detail">
+            <button class="pear-btn pear-btn-success pear-btn-sm" lay-event="viewdetail">
+				<i class="layui-icon layui-icon-upload"></i>详情
+			</button>
 		</script>
 		<script src="../config.js"></script>
 		<script src="/static/layui/layui.js"></script>
@@ -63,10 +72,11 @@
 				let form = layui.form;
 				let $ = layui.jquery;
 				let common = layui.common;
+				let req = _req();
 
 				let MODULE_PATH = "./";
 
-				let cols = [
+				let cols = 
 					[
 						{
 							title: 'ID',
@@ -98,21 +108,35 @@
 							width:120
 						},
 						{
+							title: '详情',
+							field: 'infoDetail',
+							align: 'center',
+							templet : '#approve-detail',
+							width:120
+						},
+						{
 							title: '添加时间',
 							field: 'add_time',
 							align: 'center',
 							width:120
 						},
-						
 						{
-							title: '操作',
-							toolbar: '#approve-bar',
+							title: '审核时间',
+							field: 'up_time',
 							align: 'center',
-							width: 250,
-							fixed : 'right'
+                            templet : '#approve-time',
+							width:120
 						}
 					]
-				]
+				if(!req.uid) {
+					cols.push({
+						title: '操作',
+						toolbar: '#approve-bar',
+						align: 'center',
+						width: 350,
+						fixed : 'right'
+					})
+				}
 
 				table.render({
 					elem: '#approve-table',
@@ -128,10 +152,10 @@
 						};
 					},
 					page: true,
-					cols: cols,
+					cols: [cols],
 					skin: 'line',
 
-					toolbar: '#approve-toolbar',
+					//toolbar: '#approve-toolbar',
 					defaultToolbar: [{
 						title: '刷新',
 						layEvent: 'refresh',
@@ -140,27 +164,89 @@
 				});
 
 				table.on('tool(approve-table)', function(obj) {
-					if (obj.event === 'remove') {
-						window.remove(obj);
-					} else {
-						let titleObj = {
-							edit : '编辑内容',
-							status : '编辑状态',
-							user : '编辑用户',
-							msg : '查看日志'
-						}
-						layer.open({
-							type: 2,
-							title: titleObj[obj.event],
-							shade: 0.1,
-							offset: 'rt',
-							area: ['90%', '100%'],
-							anim: 1,
-							maxmin: true,
-							content: MODULE_PATH + obj.event + '.html?aid=' + obj.data.id
-						});
+					if (obj.event === 'pass') {
+						window.pass(obj);
+					} 
+                    else if(obj.event === 'backopen') {
+                        window.backopen(obj);
+                    }else if(obj.event === 'backprev') {
+                        window.backprev(obj);
+                    }
+					else if(obj.event === 'viewdetail') {
+						window.viewdetail(obj);
 					}
 				});
+				window.viewdetail = function(obj) {
+					layer.open({
+						type: 2,
+						title: "查看" + obj.data.approve_name,
+						shade: 0.1,
+						offset: 'rt',
+						area: ['90%', '100%'],
+						anim: 1,
+						maxmin: true,
+						content: '/res/group/' + obj.data.infoDetail + '.html?id=' + obj.data.data_id
+					});
+				}
+                window.pass = function(obj) {
+                    layer.prompt({
+						formType: 2,
+						value: '',
+						title: '通过审核-输入备注信息',
+						area: ['300px', '50px'] //自定义文本域宽高
+					}, function(value, index, elem) {
+                        console.log(value)
+                        if(!value || value == '') {
+                            layer.msg('请输入备注信息');
+                            return false;
+                        }
+                        let postData = {
+                            id : obj.data.id,
+                            remark : value
+                        }
+                        _post(layui, 'approve/passApprove', postData, res => {
+                            console.log(res)
+                            layer.close(index);
+                            table.reload('approve-table');
+                        })
+                    })
+                }
+                window.backprev = function(obj) {
+                    layer.prompt({
+						formType: 2,
+						value: '',
+						title: '打回上一步-输入备注信息',
+						area: ['300px', '50px'] //自定义文本域宽高
+					}, function(value, index, elem) {
+                        let postData = {
+                            id : obj.data.id,
+                            remark : value
+                        }
+                        _post(layui, 'approve/backPrevArrpove', postData, res => {
+                            console.log(res)
+                            layer.close(index);
+                            table.reload('approve-table');
+                        })
+                    })
+                }
+                window.backopen = function(obj) {
+                    layer.prompt({
+						formType: 2,
+						value: '',
+						title: '打回初始-输入备注信息',
+						area: ['300px', '50px'] //自定义文本域宽高
+					}, function(value, index, elem) {
+                        let postData = {
+                            id : obj.data.id,
+                            remark : value
+                        }
+                        _post(layui, 'approve/backOpenArrpove', postData, res => {
+                            console.log(res)
+                            layer.close(index);
+                            table.reload('approve-table');
+                        })
+                    })
+                }
 				table.on('toolbar(approve-table)', function(obj) {
 					if (obj.event === 'add') {
 						window.add();

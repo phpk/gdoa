@@ -75,6 +75,22 @@
                         </div>
                     </div>
                     <div class="layui-form-item">
+                        <label class="layui-form-label">通过规则</label>
+                        <div class="layui-input-block">
+                            <input type="radio" name="pass_type" value="0" title="严格模式" checked>
+                            <input type="radio" name="pass_type" value="1" title="一票通过">
+                            <input type="radio" name="pass_type" value="2" title="少数服从多数">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">打回规则</label>
+                        <div class="layui-input-block">
+                            <input type="radio" name="back_type" value="0" title="严格模式" checked>
+                            <input type="radio" name="back_type" value="1" title="一票否决">
+                            <input type="radio" name="back_type" value="2" title="少数服从多数">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
                         <label class="layui-form-label">钉钉通知</label>
                         <div class="layui-input-block">
                             <input type="radio" name="ding_notice" value="0" title="不通知" checked>

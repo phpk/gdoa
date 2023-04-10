@@ -2,6 +2,7 @@ const Base = require('./base.js');
 
 module.exports = class extends think.Controller {
   async __before() {
+    
     this.userId = await this.session('userId');
     if (think.isEmpty(this.userId)) {
       this.redirect('group/login/index');
@@ -9,6 +10,7 @@ module.exports = class extends think.Controller {
     }
     this.perms = await think.cache('group_perms_' + this.userId);
   }
+  
   async indexAction() {
     this.assign('menus', JSON.stringify(this.perms.menus))
     return this.display();

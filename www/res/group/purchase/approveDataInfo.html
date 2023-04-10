@@ -27,19 +27,9 @@
                                 <i class="layui-icon layui-icon-refresh"></i>
                                 重置
                             </button>
-                            <span class="pear-btn pear-btn-md pear-btn-danger" id="downone">
-                                <i class="layui-icon layui-icon-print"></i>
-                                模版
-                            </span>
-                            <span class="pear-btn pear-btn-md pear-btn-success" id="tick">
-                                <i class="layui-icon layui-icon-upload"></i>
-                                提交审核
-                            </span>
                         </div>
                         <div class="layui-form-item">
                             <span style="float:left">
-                                <i class="layui-icon layui-icon-about"></i>
-                                说明：请下载<b>模版</b>后编辑数据 ，再点击<b>导入</b>
                             </span>
                             <span style="float:right">
                                 <i class="layui-icon layui-icon-next" id="leftbtn"></i>
@@ -73,10 +63,6 @@
                                 <i class="layui-icon layui-icon-refresh"></i>
                                 重置
                             </button>
-                            <span class="pear-btn pear-btn-md pear-btn-danger" id="downtwo">
-                                <i class="layui-icon layui-icon-print"></i>
-                                模版
-                            </span>
                         </div>
                     </form>
                 </div>
@@ -95,70 +81,23 @@
 
 </body>
 <script type="text/html" id="pur-type-toolbar">
-		<button class="pear-btn pear-btn-primary pear-btn-md" lay-event="add">
-	        <i class="layui-icon layui-icon-add-1"></i>
-	        新增
-	    </button>
-        <button class="pear-btn pear-btn-danger pear-btn-md" lay-event="del">
-	        <i class="layui-icon layui-icon-delete"></i>
-            删除
-	    </button>
-	    <button class="pear-btn pear-btn-success pear-btn-md" id="importOne">
-	        <i class="layui-icon layui-icon-upload-drag"></i>
-	        导入xlsx
-	    </button>
-        <button class="pear-btn pear-btn-md" id="countOne">
-	        <i class="layui-icon layui-icon-engine"></i>
-	        统计
-	    </button>
+		
 	</script>
 
 <script type="text/html" id="pur-type-bar">
         <button class="pear-btn pear-btn-warming pear-btn-sm" lay-event="details">
 	        <i class="layui-icon layui-icon-transfer"></i>
 	    </button>
-		<button class="pear-btn pear-btn-primary pear-btn-sm" lay-event="edit">
-	        <i class="layui-icon layui-icon-edit"></i>
-	    </button>
-	    
-	    <button class="pear-btn pear-btn-danger pear-btn-sm" lay-event="remove">
-	        <i class="layui-icon layui-icon-delete"></i>
-	    </button>
 	</script>
 
-<script type="text/html" id="pur-type-enable">
-		<input type="checkbox" value="{{d.id}}" lay-skin="switch" lay-text="启用|禁用" lay-filter="pur-type-enable" {{d.enable== '0' ? 'checked' : '' }}>
-	</script>
+<script type="text/html" id="pur-type-enable"></script>
 
 <script type="text/html" id="pur-data-toolbar">
-		<button class="pear-btn pear-btn-primary pear-btn-md" lay-event="add">
-	        <i class="layui-icon layui-icon-add-1"></i>
-	        新增
-	    </button>
-		<button class="pear-btn pear-btn-danger pear-btn-md" lay-event="del">
-	        <i class="layui-icon layui-icon-delete"></i>
-            删除
-	    </button>
-	    <button class="pear-btn pear-btn-success pear-btn-md" id="importTwo">
-	        <i class="layui-icon layui-icon-upload-drag"></i>
-	        导入xlsx
-	    </button>
-        <button class="pear-btn pear-btn-md" id="importGoods">
-	        <i class="layui-icon layui-icon-upload"></i>
-	        导入商品
-	    </button>
 	</script>
 
-<script type="text/html" id="pur-data-bar">
-		<button class="pear-btn pear-btn-primary pear-btn-sm" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>
-	    </button>
-	    <button class="pear-btn pear-btn-danger pear-btn-sm" lay-event="remove"><i class="layui-icon layui-icon-delete"></i>
-	    </button>
-	</script>
+<script type="text/html" id="pur-data-bar"></script>
 
-<script type="text/html" id="pur-data-enable">
-		<input type="checkbox" value="{{d.id}}" lay-skin="switch" lay-text="启用|禁用" lay-filter="pur-data-enable" {{d.enable== '0' ? 'checked' : '' }}>
-	</script>
+<script type="text/html" id="pur-data-enable"></script>
 <script src="../config.js"></script>
 <script src="/static/layui/layui.js"></script>
 <script src="/static/ui/ui.js"></script>
@@ -178,25 +117,19 @@
         let cols = [
             [
                 {
-                    type: 'checkbox',
-                    field: 'id',
-                    minWidth: 50
-                },
-                {
                     title: 'ID',
                     field: 'id',
-                    minWidth: 60
+                    minWidth: 60,
+                    fixed: 'left'
                 },
                 {
                     title: '编号',
                     field: 'no',
-                    edit: true,
                     minWidth: 60
                 },
                 {
                     title: '名称',
                     field: 'name',
-                    edit: true,
                     align: 'center',
                     minWidth: 120,
                     totalRowText: '预算总计'
@@ -204,7 +137,6 @@
                 {
                     title: '数量',
                     field: 'num',
-                    edit: true,
                     align: 'center',
                     minWidth: 60
                 },
@@ -212,21 +144,18 @@
                     title: '单价',
                     field: 'price',
                     align: 'center',
-                    edit: true,
                     minWidth: 80
                 },
                 {
                     title: '费用',
                     field: 'all_price',
                     align: 'center',
-                    edit: true,
                     minWidth: 120,
                     totalRow: '{{= parseInt(d.TOTAL_NUMS) }}'
                 },
                 {
                     title: '说明',
                     field: 'remark',
-                    edit: true,
                     minWidth: 200,
                     align: 'center'
                 },
@@ -241,7 +170,7 @@
                     toolbar: '#pur-type-bar',
                     align: 'center',
                     fixed: 'right',
-                    width: 180
+                    width: 100
                 }
             ]
         ];
@@ -249,33 +178,26 @@
         let dataCols = [
             [
                 {
-                    type: 'checkbox',
-                    field: 'id',
-                    minWidth: 50
-                },
-                {
                     title: 'ID',
                     field: 'id',
-                    minWidth: 60
+                    minWidth: 60,
+                    fixed: 'left'
                 },
                 {
                     title: '型号',
                     field: 'name',
-                    edit: true,
                     align: 'center',
                     minWidth: 120
                 },
                 {
                     title: '说明',
                     field: 'desc',
-                    edit: true,
                     align: 'center',
                     minWidth: 150
                 },
                 {
                     title: '厂商',
                     field: 'supplier_name',
-                    edit: true,
                     align: 'center',
                     minWidth: 100,
                     totalRowText: '单项总计'
@@ -283,21 +205,18 @@
                 {
                     title: '单价',
                     field: 'price',
-                    edit: true,
                     align: 'center',
                     minWidth: 80
                 },
                 {
                     title: '数量',
                     field: 'num',
-                    edit: true,
                     align: 'center',
                     minWidth: 60
                 },
                 {
                     title: '总价',
                     field: 'all_price',
-                    edit: true,
                     align: 'center',
                     minWidth: 150,
                     totalRow: '{{= parseInt(d.TOTAL_NUMS) }}'
@@ -311,17 +230,8 @@
                 {
                     title: '备注',
                     field: 'remark',
-                    edit: true,
                     align: 'center',
                     minWidth: 300
-                },
-
-                {
-                    title: '操作',
-                    toolbar: '#pur-data-bar',
-                    align: 'center',
-                    fixed: 'right',
-                    width: 160
                 }
             ]
         ];
@@ -406,16 +316,6 @@
                         }
                     });
 
-                    $('#importGoods').click(() => {
-                        layer.open({
-                            type: 2,
-                            title: '导入商品',
-                            shade: 0.1,
-                            offset: 'lt',
-                            area: ['70%', '100%'],
-                            content: MODULE_PATH + 'goods.html?pid=' + pid + '&pur_id=' + purId
-                        });
-                    })
                 }
             });
             $('#objname').text(objname)
@@ -449,76 +349,15 @@
         });
 
 
-        window.addType = function () {
-            layer.open({
-                type: 2,
-                title: '新增',
-                shade: 0.1,
-                area: ['500px', '400px'],
-                content: MODULE_PATH + 'editone.html?pur_id=' + purId
-            });
-        }
 
-        window.editType = function (obj) {
-            layer.open({
-                type: 2,
-                title: '修改',
-                shade: 0.1,
-                area: ['500px', '400px'],
-                content: MODULE_PATH + 'editone.html?id=' + obj.data.id
-            });
-        }
 
-        window.removeType = function (obj) {
-            //layer.msg("删除");
-            layer.confirm('确定要删除', { icon: 3, title: '提示' }, function (index) {
-                layer.close(index);
-                _post(layui, 'purchase/delOne', { id: obj.data.id }, res => {
-                    layer.msg('删除成功', { icon: 1, time: 1000 }, () => {
-                        obj.del();
-                    });
-                }, err => {
-                    //layer.msg('删除失败',{icon:2,time:1000});
-                })
-            });
-        }
 
         window.refreshType = function () {
             table.reload('pur-type-table');
         }
 
-        window.addData = function (obj) {
-            layer.open({
-                type: 2,
-                title: '新增' + objname,
-                shade: 0.1,
-                area: ['500px', '450px'],
-                content: MODULE_PATH + 'edittwo.html?pid=' + typeCode + '&pur_id=' + purId
-            });
-        }
 
-        window.editData = function (obj) {
-            layer.open({
-                type: 2,
-                title: '修改' + objname,
-                shade: 0.1,
-                area: ['500px', '450px'],
-                content: MODULE_PATH + 'edittwo.html?pid=' + typeCode + '&id=' + obj.data.id + '&pur_id=' + purId
-            });
-        }
-
-        window.removeData = function (obj) {
-            layer.confirm('确定要删除', { icon: 3, title: '提示' }, function (index) {
-                layer.close(index);
-                _post(layui, 'purchase/delOne', { id: obj.data.id }, res => {
-                    layer.msg('删除成功', { icon: 1, time: 1000 }, () => {
-                        obj.del();
-                    });
-                }, err => {
-                    //layer.msg('删除失败',{icon:2,time:1000});
-                })
-            });
-        }
+      
 
         table.on('tool(pur-data-table)', function (obj) {
             if (obj.event === 'remove') {
@@ -595,74 +434,8 @@
         window.refreshData = function () {
             table.reload('pur-data-table');
         }
-        table.on('edit(pur-type-table)', function (obj) {
-            //console.log(obj)
-            let update = {
-                id: obj.data.id,
-                field: obj.field,
-                value: obj.value
-            }
-            //console.log(update)
-            //return;
-            _post(layui, 'purchase/editData', update, res => {
-                //console.log(res)
-                table.reload('pur-type-table');
-            }, err => {
-                //console.log(err)
-            })
-        });
-        table.on('edit(pur-data-table)', function (obj) {
-            //console.log(obj)
-            let update = {
-                id: obj.data.id,
-                field: obj.field,
-                value: obj.value
-            }
-            //console.log(update)
-            //return;
-            _post(layui, 'purchase/editData', update, res => {
-                //console.log(res)
-                table.reload('pur-data-table');
-            }, err => {
-                //console.log(err)
-            })
-        });
-        const downfile = (url, filename) => {
-            let link = document.createElement('a');
-            link.style.display = 'none';
-            link.href = url;
-            link.setAttribute('target', '_blank');
-            link.setAttribute('download', filename);
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        }
-        $('#downone').click(() => {
-            let url = '/static/tpl/pur/one.xlsx', filename = '大项模版'
-            downfile(url, filename)
-        })
-        $('#downtwo').click(() => {
-            let url = '/static/tpl/pur/two.xlsx', filename = '小项模版'
-            downfile(url, filename)
-        })
-        upload.render({
-            elem: '#importOne', //绑定元素
-            url: apiUrl + 'purchase/import?type=one&pur_id=' + purId, //上传接口
-            headers: getHeader(),
-            exts: 'xlsx',
-            field: 'file',
-            accept: 'file',
-            done: function (res) {
-                //上传完毕回调
-                console.log(res)
-                layer.msg('导入成功')
-                table.reload('pur-type-table');
-            },
-            error: function () {
-                //请求异常回调
-                layer.msg('导入失败', { icon: 2, time: 1000 })
-            }
-        });
+    
+      
         $('#leftbtn').click(() => {
             $('#leftbox').toggleClass('layui-col-md6')
             $('#rightbox').toggle()
@@ -673,74 +446,7 @@
             $('#leftbox').toggle()
             $('#rightbtn').toggleClass('layui-icon-next').toggleClass('layui-icon-prev')
         })
-        $('#countOne').click(() => {
-            layer.confirm('确认后主项的价格将会按子项计算', { icon: 3, title: '提示' }, function (index) {
-                layer.close(index);
-                _post(layui, 'purchase/countOne', { pur_id: purId }, res => {
-                    layer.msg('统计成功', { icon: 1, time: 1000 }, () => {
-                        //obj.del();
-                        table.reload('pur-type-table');
-                    });
-                }, err => {
-                    //layer.msg('删除失败',{icon:2,time:1000});
-                })
-            });
-        })
-        $('#tick').click(() => {
-            layer.confirm('提交审核后将不能编辑', { icon: 3, title: '提示' }, function (index) {
-                layer.close(index);
-                _post(layui, 'purchase/tickApprove', { pur_id: purId }, res => {
-                    layer.msg('统计成功', { icon: 1, time: 1000 }, () => {
-                        //obj.del();
-                        table.reload('pur-type-table');
-                    });
-                }, err => {
-                    //layer.msg('删除失败',{icon:2,time:1000});
-                })
-            });
-        })
-        window.delType = function (obj) {
-            let list = table.checkStatus('pur-type-table').data;
-            //console.log(list)
-            if (list.length < 1) {
-                layer.msg('请选择数据', { icon: 2, time: 1000 })
-                return false;
-            }
-            let ids = list.map(d => {
-                return d.id
-            });
-            //console.log(ids)
-            _post(layui, 'purchase/delAll', { pur_id: purId, ids: ids.join(',') }, res => {
-                layer.msg('删除成功', { icon: 1, time: 1000 }, () => {
-                    //obj.del();
-                    table.reload('pur-type-table');
-                });
-            }, err => {
-                //layer.msg('删除失败',{icon:2,time:1000});
-            })
-        }
-        window.delData = function (obj) {
-            let list = table.checkStatus('pur-data-table').data;
-            console.log(list)
-            if (list.length < 1) {
-                layer.msg('请选择数据', { icon: 2, time: 1000 })
-                return false;
-            }
-            let ids = list.map(d => {
-                return d.id
-            });
-            //console.log(ids)
-            _post(layui, 'purchase/delAll', { pur_id: purId, ids: ids.join(',') }, res => {
-                layer.msg('删除成功', { icon: 1, time: 1000 }, () => {
-                    //obj.del();
-                    table.reload('pur-data-table');
-                });
-            }, err => {
-                //layer.msg('删除失败',{icon:2,time:1000});
-            })
-        }
-
-
+        
     })
 </script>
 

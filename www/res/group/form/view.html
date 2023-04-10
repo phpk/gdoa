@@ -50,9 +50,11 @@
 				<i class="layui-icon layui-icon-delete"></i>
 			</button>
 		</script>
-    <script type="text/html" id="form-time">
-			{{layui.util.toDateString(d.add_time*1000, 'yyyy-MM-dd HH:mm:ss')}}
-		</script>
+    <script type="text/html" id="approve-status">
+        <button class="{{d._status_color}} layui-btn-sm">
+            {{d._status_name}}
+        </button>
+	</script>
     <script src="../config.js"></script>
     <script src="/static/layui/layui.js"></script>
     <script src="/static/ui/ui.js"></script>
@@ -109,13 +111,19 @@
                     }
                 })
                 cols.push({
+                    title: '状态',
+                    templet : '#approve-status',
+                    align: 'center',
+                    width: 150
+                })
+                cols.push({
                     title: '操作',
                     toolbar: '#form-bar',
                     align: 'center',
                     fixed : 'right',
                     width: 120
                 })
-                console.log(searchArr)
+                //console.log(searchArr)
                 if(searchArr.length > 0) {
                     let str = ''
                     searchArr.forEach(d => {

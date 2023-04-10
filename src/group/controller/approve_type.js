@@ -2,7 +2,7 @@ module.exports = [
     {
         id : 1,
         name : '表单',
-        table : 'from',
+        table : 'form_data',
         field : 'status',
         info : 'form/approveDataInfo',
         list : 'form/approveDataList',

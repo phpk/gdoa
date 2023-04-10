@@ -18,6 +18,13 @@
                 <div class="main-container">
                     <div id="formBuilder" style="width: 100%"></div>
                     <!-- // 表单隐藏域 -->
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">提交规则</label>
+                        <div class="layui-input-block">
+                            <input type="radio" name="post_type" value="0" title="仅保存" checked>
+                            <input type="radio" name="post_type" value="1" title="保存并提交审核">
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -88,11 +95,13 @@
                 let postData = {};
                 if (req.id) {
                     postData.id = req.id;
+                    
                     postUrl = 'form/editData';
                 }else{
                     postData.fid = req.fid;
                 }
                 postData.data = JSON.stringify(data)
+                postData.post_type = data.post_type;
                 //console.log(postData)
                 //return false;
                 _post(layui, postUrl, postData, res => {

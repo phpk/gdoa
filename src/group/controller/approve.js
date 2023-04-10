@@ -94,8 +94,7 @@ module.exports = class extends Base {
      */
     async statusListAction() {
         let { page, limit, param, aid } = this.get();
-        let wsql = { group_id: this.groupId, approve_id: aid };
-        if (param) wsql = this.turnSearch(param, wsql);
+        let wsql = this.turnSearch(param, {approve_id: aid});
         let list = await this.model('approve_status').where(wsql).page(page, limit).order('id desc').select();
         
         let count = await this.model('approve_status').where(wsql).count();
@@ -220,6 +219,10 @@ module.exports = class extends Base {
         //     })
         //     .find()
         // if (!think.isEmpty(hasUser)) return this.fail('该状态下存在权限用户');
+        let hasList = await this.model('approve_list').where({status_id : id}).find()
+        if(!think.isEmpty(hasList)) {
+            return this.fail('状态中存在审核数据')
+        }
         await this.model('approve_status').where({ id }).delete()
         await this.model('approve_auth').where({
             status_id : has.id,
@@ -245,12 +248,82 @@ module.exports = class extends Base {
         }
         let wsql = this.turnSearch(param, sql);
         let list = await this.model('approve_list').where(wsql).page(page, limit).order('id desc').select();
-    
-        // list.forEach(d => {
-        //     d.statusName = statusData.find(e => e.approve_id == d.approve_id).name
-        // })
+        let userList = await this.model('user').where({group_id : this.groupId}).select()
+        list.forEach(d => {
+            d.op_name = userList.find(e => e.id == d.op_id).name
+            d.user_name = userList.find(e => e.id == d.user_id).name
+            d.infoDetail = dataType.find(e => e.id == d.type).info
+        })
         let count = await this.model('approve_list').where(wsql).count();
         return this.success({ list, count })
+    }
+    //通过审核
+    async passApproveAction() {
+        let id = this.post('id')
+        let remark = this.post('remark')
+        let db = this.model('approve');
+        await db.startTrans()
+        try {
+            let rt = await db.accessApprove(id , this.userId, remark);
+            if(rt.code === 1) {
+                db.rollback()
+                return this.fail(rt.msg)
+            }else{
+                db.commit()
+                return this.success()
+            }
+
+        } catch (e) {
+            db.rollback()
+            return this.fail(e.message)
+        }
+        
+    }
+    //打回初始
+    async backOpenArrpoveAction() {
+        let id = this.post('id')
+        let remark = this.post('remark')
+        let db = this.model('approve');
+        await db.startTrans()
+        try {
+            let rt = await db.backOpenApprove(id , this.userId, remark);
+            if(rt.code === 1) {
+                db.rollback()
+                return this.fail(rt.msg)
+            }else{
+                db.commit()
+                return this.success()
+            }
+        } catch (e) {
+            db.rollback()
+            return this.fail(e.message)
+        }
+        
+    }
+    //打回上一步
+    async backPrevArrpoveAction() {
+        let id = this.post('id')
+        let remark = this.post('remark')
+        let db = this.model('approve');
+        await db.startTrans()
+        try {
+            let rt = await db.backPrevArrpove(id , this.userId, remark);
+            if(rt.code === 1) {
+                db.rollback()
+                return this.fail(rt.msg)
+            }else{
+                db.commit()
+                return this.success()
+            }
+        } catch (e) {
+            db.rollback()
+            return this.fail(e.message)
+        }
+        
+    }
+    //删除审批流
+    async delApproveListAction() {
+
     }
     async msgListAction() {
         let { page, limit, param, aid, uid, tid } = this.get();
@@ -307,6 +380,17 @@ module.exports = class extends Base {
      * 查看日志
      */
     async msgListAction() {
-
+        let { page, limit, param, uid} = this.get();
+        uid = uid ? uid*1 : 0;
+        let sql = {}
+        if(uid > 0) sql.to_user_id = uid;
+        let wsql = this.turnSearch(param, sql);
+        let list = await this.model('approve_msg').where(wsql).page(page, limit).order('id desc').select();
+        let userList = await this.model('user').where({group_id : this.groupId}).select()
+        list.forEach(d => {
+            d.name = userList.find(u => u.id == d.to_user_id).name
+        })
+        let count = await this.model('approve_msg').where(wsql).count();
+        return this.success({ list, count })
     }
 }

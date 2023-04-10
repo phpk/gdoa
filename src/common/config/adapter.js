@@ -57,7 +57,7 @@ exports.model = {
     user: conf.mysql.user,
     password: conf.mysql.password,
     dateStrings: conf.mysql.dateStrings,
-	reuseDB: true
+	  reuseDB: true
   },
   //mongod --dbpath 
   // mongo: {

@@ -1,5 +1,5 @@
 const apiUrl = '/group/';
-const TOKEN_NAME = 'group_token';
+const TOKEN_NAME = 'grouptoken';
 const notLoginUrl = '/group/login';
 
 const setToken = (res) => {
@@ -14,11 +14,11 @@ const getToken = () => {
 }
 const getHeader = () => {
     let token = getToken(),
-        rt = {};
+        grouptoken = {};
     if (token) {
-        rt[TOKEN_NAME] = token;
+        grouptoken[TOKEN_NAME] = token;
     }
-    return rt;
+    return grouptoken;
 }
 const errorStatus = (xhr, layui) => {
     //console.log(xhr)

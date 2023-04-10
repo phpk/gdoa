@@ -2,9 +2,9 @@
   "apps": [{
     "name": "godocms",
     "script": "development.js",
-    "cwd": "/data/www",
+    "cwd": "/data/gdoa",
     "exec_mode": "fork",
-    "max_memory_restart": "1G",
+    "max_memory_restart": "2G",
     "autorestart": true,
     "node_args": [],
     "args": [],
