@@ -172,7 +172,7 @@ module.exports = class extends Base {
         if (list && list.data) {
             //先清空
             await this.model('doc_cate').where({ did }).delete()
-            let uid = this.adminId, now = this.now();
+            let uid = this.userId, now = this.now();
             //await this.model('doc_cate').addMany()
             list.data.forEach(async d => {
                 let addData = {

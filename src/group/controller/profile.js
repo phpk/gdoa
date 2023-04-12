@@ -39,7 +39,7 @@ module.exports = class extends ProjectBase {
 	}
 	async addAction() {
 		let post = this.post();
-		post.user_id = this.adminId;
+		post.user_id = this.userId;
 		post.group_id = this.groupId;
 		let id = await this.model('project_file').add(post);
 		return this.success(id);

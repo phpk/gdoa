@@ -66,7 +66,7 @@ module.exports = class extends Base {
     async addAction() {
         let post = this.post();
         post.group_id = this.groupId;
-        post.user_id = this.adminId;
+        post.user_id = this.userId;
         //post.formdesign = JSON.parse(post.formdesign)
         //console.log(post)
         let id = await this.model('form').add(post);

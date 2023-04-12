@@ -115,7 +115,7 @@ module.exports = class extends Base {
 		let upData = {
 			id,
 			status: 2,
-			check_id : this.adminId,
+			check_id : this.userId,
 			check_time : think.datetime(new Date().getTime(), 'YYYY-MM-DD HH:mm:ss')
 		}
 		let inData = await this.model('stock_in').where({id : has.in_id}).find();
@@ -139,7 +139,7 @@ module.exports = class extends Base {
 			in_id: inData.id,
 			num: has.num,
 			user_id: has.user_id,
-			check_id: this.adminId,
+			check_id: this.userId,
 			goods_id: inData.goods_id,
 			goods_name: inData.goods_name,
 			group_id: inData.group_id,

@@ -58,7 +58,7 @@ module.exports = class extends stockBase {
 		//console.log(area)
 		let tmpIds = await this.model('stock_trans_tmp').where({
 			group_id: this.groupId,
-			user_id: this.adminId
+			user_id: this.userId
 		}).getField('in_id')
 		let stockTransNum = await this.getTransNum();
 		list.forEach(d => {
@@ -104,7 +104,7 @@ module.exports = class extends stockBase {
 			// })
 			let stockTransNum = await this.getTransNum();
 			stockTransNum[id] = trans_num;
-			await this.cache(this.adminId + '_stock_transfer_num', stockTransNum)
+			await this.cache(this.userId + '_stock_transfer_num', stockTransNum)
 		}
 		if (ids) {
 			//console.log(ids)
@@ -121,7 +121,7 @@ module.exports = class extends stockBase {
 			})
 			let cacheList = await this.model('stock_trans_tmp')
 				.where({
-					user_id: this.adminId,
+					user_id: this.userId,
 					in_id: ["IN", canIds]
 				})
 				.getField('in_id') || [];
@@ -131,14 +131,14 @@ module.exports = class extends stockBase {
 					stockTransNum[d] = trans_num;
 				}
 			})
-			await this.cache(this.adminId + '_stock_transfer_num', stockTransNum)
+			await this.cache(this.userId + '_stock_transfer_num', stockTransNum)
 
 		}
 
 		return this.success()
 	}
 	async getTransNum() {
-		let stockTransNum = await this.cache(this.adminId + '_stock_transfer_num');
+		let stockTransNum = await this.cache(this.userId + '_stock_transfer_num');
 		if (!stockTransNum) stockTransNum = {};
 		return stockTransNum;
 	}
@@ -165,14 +165,14 @@ module.exports = class extends stockBase {
 		let hasAreaId = await this.model('stock_trans_tmp')
 			.where({
 				group_id: this.groupId,
-				user_id: this.adminId
+				user_id: this.userId
 			})
 			.getField('area_id', true)
 
 
 		let has = await this.model('stock_trans_tmp').where({
 			in_id: id,
-			user_id: this.adminId
+			user_id: this.userId
 		}).find()
 
 		if (think.isEmpty(has)) {
@@ -184,7 +184,7 @@ module.exports = class extends stockBase {
 				return this.fail('请输入正确的调拨数')
 			}
 
-			inData.user_id = this.adminId;
+			inData.user_id = this.userId;
 			await this.model('stock_trans_tmp').add(inData);
 			//await this.model('stock_in').where({id}).update({is_lock : 1});
 		} else {
@@ -207,7 +207,7 @@ module.exports = class extends stockBase {
 		} = this.get();
 		let wsql = {
 			group_id: this.groupId,
-			user_id: this.adminId
+			user_id: this.userId
 		};
 		if (param) wsql = this.turnSearch(param, wsql);
 		let cates = await this.getCate();
@@ -277,7 +277,7 @@ module.exports = class extends stockBase {
 				in_id: d.in_id,
 				num: d.trans_num,
 				user_id: d.user_id,
-				check_id: this.adminId,
+				check_id: this.userId,
 				goods_id: d.goods_id,
 				goods_name: d.goods_name,
 				group_id: d.group_id,
@@ -317,7 +317,7 @@ module.exports = class extends stockBase {
 				ck_time,
 				status: 2,
 				ck_remark,
-				ck_user_id: this.adminId
+				ck_user_id: this.userId
 			}
 			transUp.push(t)
 		})
@@ -401,7 +401,7 @@ module.exports = class extends stockBase {
 				to_bar_id,
 				status: 3,
 				to_remark,
-				to_user_id: this.adminId
+				to_user_id: this.userId
 			}
 			transUp.push(t)
 		})
@@ -417,7 +417,7 @@ module.exports = class extends stockBase {
 				add_time : in_time,
 				up_time : in_time,
 				in_time : in_time,
-				user_id : this.adminId,
+				user_id : this.userId,
 				remark : to_remark,
 				area_id : inkey[d.id].to_area_id,
 				cate_id : d.cate_id,
@@ -452,7 +452,7 @@ module.exports = class extends stockBase {
 		//console.log(post)
 		let wsql = {
 			group_id: this.groupId,
-			user_id: this.adminId
+			user_id: this.userId
 		};
 
 		let list = await this.model('stock_trans_tmp')
@@ -476,7 +476,7 @@ module.exports = class extends stockBase {
 		if (hasLock > 0) return this.fail('物料中存在锁定的行')
 		let id = await this.model('stock_transfer').addMany(list);
 		await this.model('stock_trans_tmp').where(wsql).delete()
-		await this.cache(this.adminId + '_stock_transfer_num', {});
+		await this.cache(this.userId + '_stock_transfer_num', {});
 		await this.model("stock_in").where({
 			id: ["IN", inIds]
 		}).update({

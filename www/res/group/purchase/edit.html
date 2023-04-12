@@ -17,13 +17,13 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">采购名称</label>
                 <div class="layui-input-block">
-                    <input type="text" name="name" lay-verify="required" autocomplete="off" min="3" placeholder="请输入采购名称" class="layui-input">
+                    <input type="text" name="name" lay-verify="required" autocomplete="off" min="1" placeholder="请输入采购名称" class="layui-input">
                 </div>
             </div>
 			<div class="layui-form-item">
 			    <label class="layui-form-label">采购编号</label>
 			    <div class="layui-input-block">
-			        <input type="text" name="purchase_no" lay-verify="required" autocomplete="off" min="3" placeholder="请输入采购编号" class="layui-input">
+			        <input type="text" name="purchase_no" lay-verify="required" autocomplete="off" min="1" placeholder="请输入采购编号" class="layui-input">
 			    </div>
 			</div>
 			<div class="layui-form-item">
@@ -38,11 +38,11 @@
 			    <label class="layui-form-label">日期范围</label>
 			    <div class="layui-inline" id="test-range">
 			      <div class="layui-input-inline">
-			        <input type="text" name="start_time" id="startDate" class="layui-input" placeholder="开始日期">
+			        <input type="text" name="start_time" id="startDate" lay-verify="required" class="layui-input" placeholder="开始日期">
 			      </div>
 			      <div class="layui-form-mid">-</div>
 			      <div class="layui-input-inline">
-			        <input type="text" name="end_time" id="endDate" class="layui-input" placeholder="结束日期">
+			        <input type="text" name="end_time" id="endDate"  lay-verify="required" class="layui-input" placeholder="结束日期">
 			      </div>
 			    </div>
 			  </div>
@@ -50,7 +50,7 @@
 			<div class="layui-form-item">
 			    <label class="layui-form-label">采购负责人</label>
 			    <div class="layui-input-block">
-			        <input type="text" name="leader_name" lay-verify="required" autocomplete="off" min="3" placeholder="请输入采购负责人" class="layui-input">
+			        <input type="text" name="leader_name" lay-verify="required" autocomplete="off" min="1" placeholder="请输入采购负责人" class="layui-input">
 			    </div>
 			</div>
 			

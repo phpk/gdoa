@@ -17,7 +17,7 @@ module.exports = class extends Base {
 
     async addAction() {
         let post = this.getPost();
-        //post.user_id = this.adminId;
+        //post.user_id = this.userId;
         //post.add_time = this.now();
         //console.log(post)
         let name = Date.now() + post.title;

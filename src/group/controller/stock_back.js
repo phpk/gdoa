@@ -34,7 +34,7 @@ module.exports = class extends Base {
         await this.model('stock_apply').where({ id: post.apply_id }).update({status : 4})
 
         post.status = 1;
-        post.user_id = this.adminId
+        post.user_id = this.userId
         post.group_id = this.groupId
         let id = await this.model('stock_back').add(post);
         return this.success(id);
@@ -52,7 +52,7 @@ module.exports = class extends Base {
         let upData = {
 			id,
 			status: 2,
-			check_id : this.adminId,
+			check_id : this.userId,
 			check_time : now
 		}
         

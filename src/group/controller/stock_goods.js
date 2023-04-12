@@ -40,7 +40,7 @@ module.exports = class extends stockBase {
 	}
 	async addAction() {
 		let post = this.post();
-		post.user_id = this.adminId;
+		post.user_id = this.userId;
 		post.group_id = this.groupId;
 		let has = await this.model('stock_goods')
 			.where({

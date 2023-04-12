@@ -351,7 +351,42 @@
                 title: '刷新',
                 layEvent: 'refresh',
                 icon: 'layui-icon-refresh',
-            }, 'filter', 'print', 'exports']
+            }, 'filter', 'print', 'exports'],
+            done : () => {
+                $('#countOne').click(() => {
+                    layer.confirm('确认后主项的价格将会按子项计算', { icon: 3, title: '提示' }, function (index) {
+                        layer.close(index);
+                        _post(layui, 'purchase/countOne', { pur_id: purId }, res => {
+                            layer.msg('统计成功', { icon: 1, time: 1000 }, () => {
+                                //obj.del();
+                                table.reload('pur-type-table');
+                            });
+                        }, err => {
+                            //layer.msg('删除失败',{icon:2,time:1000});
+                        })
+                    });
+                })
+
+                upload.render({
+                    elem: '#importOne', //绑定元素
+                    url: apiUrl + 'purchase/import?type=one&pur_id=' + purId, //上传接口
+                    headers: getHeader(),
+                    exts: 'xlsx',
+                    field: 'file',
+                    accept: 'file',
+                    done: function (res) {
+                        //上传完毕回调
+                        console.log(res)
+                        layer.msg('导入成功')
+                        table.reload('pur-type-table');
+                    },
+                    error: function () {
+                        //请求异常回调
+                        layer.msg('导入失败', { icon: 2, time: 1000 })
+                    }
+                });
+
+            }
         });
 
         window.renderData = function (pid) {
@@ -645,24 +680,7 @@
             let url = '/static/tpl/pur/two.xlsx', filename = '小项模版'
             downfile(url, filename)
         })
-        upload.render({
-            elem: '#importOne', //绑定元素
-            url: apiUrl + 'purchase/import?type=one&pur_id=' + purId, //上传接口
-            headers: getHeader(),
-            exts: 'xlsx',
-            field: 'file',
-            accept: 'file',
-            done: function (res) {
-                //上传完毕回调
-                console.log(res)
-                layer.msg('导入成功')
-                table.reload('pur-type-table');
-            },
-            error: function () {
-                //请求异常回调
-                layer.msg('导入失败', { icon: 2, time: 1000 })
-            }
-        });
+        
         $('#leftbtn').click(() => {
             $('#leftbox').toggleClass('layui-col-md6')
             $('#rightbox').toggle()
@@ -674,19 +692,7 @@
             $('#leftbox').toggle()
             $('#rightbtn').toggleClass('layui-icon-next').toggleClass('layui-icon-prev')
         })
-        $('#countOne').click(() => {
-            layer.confirm('确认后主项的价格将会按子项计算', { icon: 3, title: '提示' }, function (index) {
-                layer.close(index);
-                _post(layui, 'purchase/countOne', { pur_id: purId }, res => {
-                    layer.msg('统计成功', { icon: 1, time: 1000 }, () => {
-                        //obj.del();
-                        table.reload('pur-type-table');
-                    });
-                }, err => {
-                    //layer.msg('删除失败',{icon:2,time:1000});
-                })
-            });
-        })
+        
         $('#tick').click(() => {
             layer.confirm('提交审核后将不能编辑', { icon: 3, title: '提示' }, function (index) {
                 layer.close(index);

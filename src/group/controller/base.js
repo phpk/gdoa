@@ -7,14 +7,14 @@ module.exports = class extends think.Controller {
     super(ctx);
     this.userId = 0;
     this.groupId = 0;
-    //this.adminId = 0;
+    //this.userId = 0;
   }
   async __before() {
     this.groupId = await this.session('groupId');
     this.userId = await this.session("userId");
     //适配管理端
-    // this.adminId = await this.session('adminId');
-    // if (this.adminId > 0) return true;
+    // this.userId = await this.session('userId');
+    // if (this.userId > 0) return true;
     //token校验
     if (!await this.checkToken()) return false;
     //权限验证
@@ -37,7 +37,7 @@ module.exports = class extends think.Controller {
     let url = `${this.ctx.controller}/${this.ctx.action}`;
     //console.log(url)
     let perms = await this.cache('group_perms_' + this.userId);
-    if (!perms.perms.includes(url)) {
+    if (!perms || !perms.perms || !perms.perms.includes(url)) {
       this.status = 400;
       this.ctx.body = {
         code: 400,
@@ -165,7 +165,7 @@ module.exports = class extends think.Controller {
     where.group_id = this.groupId;
     //console.log(where)
     //适配管理端
-    // if (this.adminId > 0) {
+    // if (this.userId > 0) {
     //   delete where.group_id;
     // }
     //console.log(where)

@@ -67,7 +67,7 @@ module.exports = class extends stockBase {
 			delete s.id;
 			delete s.add_time;
 			delete s.up_time;
-			s.user_id = this.adminId
+			s.user_id = this.userId
 			s.pan_num = 0
 			s.pan_no = pan_no
 			s.remark = remark

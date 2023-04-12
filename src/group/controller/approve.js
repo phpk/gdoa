@@ -113,7 +113,7 @@ module.exports = class extends Base {
         if (!aid) {
             return this.fail('输入错误')
         }
-        //post.user_id = this.adminId;
+        //post.user_id = this.userId;
         //post.group_id = this.groupId;
         if(!post.user_list) {
             return this.fail('请选择用户')

@@ -104,7 +104,7 @@ module.exports = class extends stockBase {
 		}
 		post.ext = JSON.stringify(ext);
 		post.group_id = this.groupId;
-		post.user_id = this.adminId;
+		post.user_id = this.userId;
 		let id = await this.model('stock_in').add(post);
 		await this.model('stock_goods').where({
 			id: post.goods_id
@@ -285,7 +285,7 @@ module.exports = class extends stockBase {
 		}
 		let goodsNames = [],
 			group_id = this.groupId,
-			user_id = this.adminId,
+			user_id = this.userId,
 			goods_id = 0;
 
 		resData.forEach(d => {

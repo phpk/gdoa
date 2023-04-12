@@ -16,7 +16,7 @@ module.exports = class extends Base {
     async addAction() {
         let post = this.post();
         post.group_id = this.groupId;
-        post.user_id = this.adminId;
+        post.user_id = this.userId;
         let id = await this.model('supplier').add(post);
         return this.success(id);
     }

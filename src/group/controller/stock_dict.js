@@ -21,7 +21,7 @@ module.exports = class extends stockBase {
 			return this.fail('同类中不能存在相同key')
 		}
 		post.group_id = this.groupId;
-		post.user_id = this.adminId;
+		post.user_id = this.userId;
         let id = await this.model('stock_dict').add(post);
 		await this.upDictCache();
         return this.success(id);

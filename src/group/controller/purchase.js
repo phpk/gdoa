@@ -29,7 +29,7 @@ module.exports = class extends ProjectBase {
     async addAction() {
         let post = this.post();
         post.group_id = this.groupId;
-        post.user_id = this.adminId;
+        post.user_id = this.userId;
         let id = await this.model('purchase').add(post);
         return this.success(id);
     }
@@ -112,7 +112,7 @@ module.exports = class extends ProjectBase {
             supplier_id = await this.model('supplier').add({
                 name : post.supplier_name,
                 group_id : this.groupId,
-                user_id : this.adminId
+                user_id : this.userId
             })
         }else{
             supplier_id = hasSupplier.id;
@@ -134,7 +134,7 @@ module.exports = class extends ProjectBase {
                 supplier_id,
                 supplier_name : post.supplier_name,
                 group_id : this.groupId,
-                user_id : this.adminId
+                user_id : this.userId
             }
             goodsId = await this.model('supplier_goods').add(goodsData)
         }else{
@@ -170,6 +170,7 @@ module.exports = class extends ProjectBase {
         }
 
         post = this.parsePrice(post);
+        post.pur_id = has.pur_id;
         await this.model('purchase_list').update(post);
         if(post.write_supplier*1 > 0) {
             await this.writeSupplier(post, has.id);  
@@ -215,7 +216,7 @@ module.exports = class extends ProjectBase {
         if(resData.length > 0) {
             let saveData = [];
             let group_id = this.groupId;
-            let user_id = this.adminId;
+            let user_id = this.userId;
             if(type == 'one') {
                 resData.forEach(d => {
                     let s = {
@@ -255,7 +256,7 @@ module.exports = class extends ProjectBase {
             await this.model('purchase_list').addMany(saveData)
         }
         //unlink(file.path)
-        await fs.unlink(file.path, res => { });
+        //await fs.unlink(file.path, res => { });
         return this.success()
     }
     async importGoodsAction() {
@@ -286,7 +287,7 @@ module.exports = class extends ProjectBase {
             pur_id,
             pid,
             group_id : this.groupId,
-            user_id : this.adminId
+            user_id : this.userId
         }
         await this.model('purchase_list').add(s)
         return this.success()
