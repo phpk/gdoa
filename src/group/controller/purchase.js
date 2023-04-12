@@ -9,8 +9,7 @@ module.exports = class extends ProjectBase {
 
     async listAction() {
         let { page, limit, param } = this.get();
-        let wsql = {group_id: this.groupId};
-        if (param) wsql = this.turnSearch(param, wsql);
+        let wsql = this.turnSearch(param, {user_id : this.userId});
         let list = await this.model('purchase')
                     .where(wsql)
                     .page(page, limit)

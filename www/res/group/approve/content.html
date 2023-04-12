@@ -140,7 +140,7 @@
 
 				table.render({
 					elem: '#approve-table',
-					url: apiUrl + 'approve/content',
+					url: apiUrl + 'approve/content?uid=' + req.uid + '&tid=' + req.tid + '&aid=' + req.aid,
 					headers : getHeader(),
 					parseData: function(res) {
 						//console.log(res)

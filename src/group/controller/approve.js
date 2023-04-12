@@ -325,6 +325,7 @@ module.exports = class extends Base {
     async delApproveListAction() {
 
     }
+    /*
     async msgListAction() {
         let { page, limit, param, aid, uid, tid } = this.get();
         aid = aid ? aid*1 : 0;
@@ -345,7 +346,7 @@ module.exports = class extends Base {
     
         let count = await this.model('approve_msg').where(wsql).count();
         return this.success({ list, count })
-    }
+    }*/
     /**
      * 用户管理
      */
@@ -380,15 +381,31 @@ module.exports = class extends Base {
      * 查看日志
      */
     async msgListAction() {
-        let { page, limit, param, uid} = this.get();
+        let { page, limit, param, uid, aid} = this.get();
+        //console.log(uid)
         uid = uid ? uid*1 : 0;
+        aid = aid ? aid*1 : 0;
+        //console.log(uid)
         let sql = {}
         if(uid > 0) sql.to_user_id = uid;
+        if(aid > 0) {
+            let approveData = await this.model('approve').where({id : aid}).find()
+            if(!think.isEmpty(approveData)) {
+                sql.ref_id = approveData.ref_id;
+                sql.type = approveData.type;
+            }
+        }
         let wsql = this.turnSearch(param, sql);
         let list = await this.model('approve_msg').where(wsql).page(page, limit).order('id desc').select();
         let userList = await this.model('user').where({group_id : this.groupId}).select()
+        let msgType = {
+            0 : '消息',
+            1 : '代办',
+            2 : '通知'
+        }
         list.forEach(d => {
             d.name = userList.find(u => u.id == d.to_user_id).name
+            d.msgtype = msgType[d.msg_type]
         })
         let count = await this.model('approve_msg').where(wsql).count();
         return this.success({ list, count })

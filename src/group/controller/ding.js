@@ -209,7 +209,7 @@ module.exports = class extends dingBase {
                 name : d.name,
                 password,
                 salt,
-                ding_user_id : d.user_id,
+                ding_user_id : d.userid,
                 avatar : d.avatar,
                 remark : d.title,
                 email : d.email,

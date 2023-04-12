@@ -55,13 +55,14 @@
 }
 
 .list .list-item {
-	height: 32px;
-	line-height: 32px;
+	height: 28px;
+	line-height: 28px;
 	color: gray;
 	padding: 5px;
-	padding-left: 15px;
 	border-radius: 4px;
 	margin-top: 5.2px;
+	width: 100%;
+	overflow: hidden;
 }
 
 .list .list-item:hover {
@@ -70,11 +71,11 @@
 
 .list .list-item .title {
 	font-size: 13px;
-	width: 100%;
+	width: 80%;
 }
 
 .list .list-item .footer {
-	position: absolute;
-	right: 30px;
+	width: 20%;
+	text-align: right;
 	font-size: 12px;
 }

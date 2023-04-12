@@ -36,29 +36,11 @@ module.exports = class extends think.Controller {
 		if (think.isEmpty(code)) {
 			return this.fail('code error');
 		}
-		let conf = await this.cache(id + '_ding_setting');
-		if (think.isEmpty(conf) || !conf.appKey) {
-			return this.fail('请管理员在后台配置钉钉');
+		let acctoken = await this.model('ding').token(id);
+		if(!acctoken) {
+			return this.fail('请管理员在后台配置钉钉')
 		}
-		let token = await this.cache(id + '_ding_token');
-		if (think.isEmpty(token)) {
-			let accountUrl = `https://oapi.dingtalk.com/gettoken?appkey=${conf.appKey}&appsecret=${conf.appSecret}`;
-			let resd = await this.fetch(accountUrl);
-			let accToken = await resd.json();
-			//console.log(accToken)
-			token = accToken.access_token;
-			await this.cache(id + '_ding_token', token, {
-				timeout: 3600 * 1000
-			});
-		}
-
-		let postUrl = `https://oapi.dingtalk.com/topapi/v2/user/getuserinfo?access_token=${token}`;
-		let postData = {
-			"code": code
-		}
-		//console.log(postData)
-		let res = await this.fetch(postUrl, { method: "post", body: JSON.stringify(postData) });
-		let d = await res.json();
+		let d = await this.model('ding').getUserLoginInfo(acctoken, code);
 		//console.log(d)
 		if (d.errcode !== 0) {
 			return this.fail(d.errmsg)
@@ -112,86 +94,11 @@ module.exports = class extends think.Controller {
 		//console.log(routeData)
 		//jwt校验用
 		await this.session('GroupSalt', md5Salt);
-
 		await this.session('loginNum', null);
-
 		return this.success(userToken);
 
-
 	}
-	async authAction() {
-		let code = this.get('code');
-		let accountUrl = 'https://oapi.dingtalk.com/gettoken?appkey=ding3qyv7yndlbjbckkd&appsecret=GywE2b6mocs1PvaXzFj716Os7lBfMmCdAOdfYuTRTXuvBC7sNH3eE76gfnvek0sZ';
-		//console.log(accountUrl)
-		let resd = await this.fetch(accountUrl);
-		let accToken = await resd.json();
-		//console.log(accToken)
-		let token = accToken.access_token;
 
-		let postUrl = `https://oapi.dingtalk.com/topapi/v2/user/getuserinfo?access_token=${token}`;
-		let postData = {
-			"code": code
-		}
-		//console.log(postData)
-		let res = await this.fetch(postUrl, { method: "post", body: JSON.stringify(postData) });
-		let d = await res.json();
-		//console.log(d)
-		if (d.errcode === 0) {
-			let username = d.result.unionid;
-			let user = await this.model('user').where({
-				username: username
-			}).find();
-			let userId = user.id;
-			if (think.isEmpty(user)) {
-				return this.fail('用户不存在');
-			}
-			if (user.status != 0) {
-				return this.fail('用户被禁用');
-			}
-			//查询用户租户
-			let groupData = await this.model('user_group')
-				.where({ id: user.group_id })
-				.find()
-			if (think.isEmpty(groupData)) {
-				return this.fail('租户不存在');
-			}
-			if (this.now() > this.now(groupData.end_time)) {
-				return this.fail('租户已过期');
-			}
-			//生成一个16位的随机数
-			let salt = this.service('login').randomString(),
-				md5Salt = think.md5(salt);
-			let token = jwt.sign({
-				userId: userId
-			}, md5Salt, {
-				expiresIn: 60 * 60 * 12 //12小时过期
-				//expiresIn:-1//永不过期
-			});
-			//更新用户密码和登录状态
-			await this.model('user')
-				.where({
-					id: userId
-				})
-				.update({
-					login_num: user.login_num + 1
-				})
-			//添加缓存
-			await this.session('userId', userId);
-			await this.session('groupId', user.group_id);
-			//设定权限缓存
-			await this.cache('auth_' + userId, JSON.parse(user.users));
-			//设置路由缓存
-			await this.model('menu').cacheData(user);
-			//console.log(routeData)
-			//jwt校验用
-			await this.session('GroupSalt', md5Salt);
-
-			await this.session('loginNum', null);
-
-			return this.success(token);
-		}
-
-	}
 	regAction() {
 		return this.display();
 	}

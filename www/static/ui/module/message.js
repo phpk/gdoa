@@ -51,7 +51,7 @@ layui.define(['table', 'jquery', 'element'], function(exports) {
 			data = result;
 		});
 		$.ajaxSettings.async = true;
-		return data;
+		return data.data;
 	}
 
 	function createHtml(option) {
@@ -73,11 +73,15 @@ layui.define(['table', 'jquery', 'element'], function(exports) {
 			}
 
 			$.each(item.children, function(i, note) {
-				noticeContent += '<div class="pear-notice-item" notice-form="' + note.form + '" notice-context="' + note.context +
-					'" notice-title="' + note.title + '" notice-id="' + note.id + '">' +
-					'<img src="' + note.avatar + '"/>' +
-					'<div style="display:inline-block;">' + note.title + '</div>'+
-					'<div class="pear-notice-end">' + note.time + '</div>' +
+				// noticeContent += '<div class="pear-notice-item" notice-form="' + note.form + '" notice-context="' + note.context +
+				// 	'" notice-title="' + note.title + '" notice-id="' + note.id + '">' +
+				// 	'<img src="' + note.avatar + '"/>' +
+				// 	'<div style="display:inline-block;">' + note.title + '</div>'+
+				// 	'<div class="pear-notice-end">' + note.time + '</div>' +
+				// 	'</div>';
+				noticeContent += '<div class="notice-item" notice-id="' + note.id + '">' +
+					'<div class="title">' + note.title + '</div>'+
+					'<div class="time">' + note.time + '</div>' +
 					'</div>';
 			})
 			noticeContent += '</div>';

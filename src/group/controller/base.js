@@ -80,7 +80,7 @@ module.exports = class extends think.Controller {
    */
   async chkJwt(token) {
     let salt = await this.session('GroupSalt'),
-      userId = await this.userId;
+      userId = this.userId;
     if (!salt || !userId) {
       return {
         code: 402,

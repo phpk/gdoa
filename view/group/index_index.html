@@ -11,7 +11,25 @@
   <link rel="stylesheet" href="/static/ui/admin/css/loader.css" />
   <!-- 布 局 样 式 -->
   <link rel="stylesheet" href="/static/ui/admin/css/admin.css" />
-  
+  <style>
+    .notice-item{
+      height : 48px;
+      display: block;
+      padding:10px 5px 10px 20px;
+    }
+    .notice-item .title{
+      width: 96%;
+      line-height: 28px;
+      display: block;
+      font-size: 14px;
+      overflow: hidden;
+    }
+    .notice-item time{
+      line-height: 20px;
+      font-size: 12px;
+      display: block;
+    }
+  </style>
 </head>
 <!-- 结 构 代 码 -->
 
@@ -22,9 +40,7 @@
     <div class="layui-header">
       <!-- 菜 单 顶 部 -->
       <div class="layui-logo">
-        <!-- 图 标 -->
         <img class="logo"></img>
-        <!-- 标 题 -->
         <span class="title"></span>
       </div>
       <!-- 顶 部 左 侧 功 能 -->
@@ -60,12 +76,10 @@
     <!-- 侧 边 区 域 -->
     <div class="layui-side layui-bg-black">
       <!-- 菜 单 顶 部 -->
-      <div class="layui-logo">
-        <!-- 图 标 -->
+      <!--div class="layui-logo">
         <img class="logo"></img>
-        <!-- 标 题 -->
         <span class="title"></span>
-      </div>
+      </div-->
       <!-- 菜 单 内 容 -->
       <div class="layui-side-scroll">
         <div id="sideMenu"></div>
@@ -169,7 +183,7 @@
           "autoHead": true
         },
         "header": {
-          "message": "/static/ui/admin/data/message.json"
+          "message": "/group/index/msg"
         }
       };
       admin.render(setting);
@@ -205,27 +219,12 @@
     })
 
 				// 初始化消息回调
-		admin.message();
-				//let h = getHeader();
-				//console.log(h)
-				// _get(layui, 'index/isLogin', res => {
-				// 	console.log(res)
-				// })
-				// $.ajax({
-				// 	url : '/admin/index/isLogin',
-				// 	headers : getHeader(),
-				// 	success : (res) => {
-				// 		console.log(res)
-				// 	},
-				// 	error : (err) => {
-				// 		console.log(err)
-				// 		if(err.status === 402) {
-				// 			location.href = "/res/admin/login.html";
-				// 		}
-				// 	}
-				// })
-				// admin.message(function(id, title, context, form) {});
-			})
+		//admin.message();
+		admin.message(function(id, title, context, form) {
+          console.log(id)
+    });
+				
+	})
   </script>
 </body>
 

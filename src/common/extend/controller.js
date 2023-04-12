@@ -58,7 +58,7 @@ async function err(name, msg) {
 // function mg(tabname) {
 //     return think.mongo(tabname, 'mongo');
 // }
-async function getCaptcha () {
+async function getCaptcha() {
     let option = {
         mathMin: 1,
         mathMax: 30,
@@ -80,12 +80,31 @@ async function chkCapcha(code) {
     await this.session('verifyCaptcha', null);
     return true;
 }
-
+async function getDingToken(id) {
+    let conf = await this.cache(id + '_ding_setting');
+    if (think.isEmpty(conf) || !conf.appKey) {
+        return this.fail('请管理员在后台配置钉钉');
+    }
+    //await this.cache(id + '_ding_token', null);
+    let token = await this.cache(id + '_ding_token');
+    if (think.isEmpty(token)) {
+        let accountUrl = `https://oapi.dingtalk.com/gettoken?appkey=${conf.appKey}&appsecret=${conf.appSecret}`;
+        let resd = await this.fetch(accountUrl);
+        let accToken = await resd.json();
+        //console.log(accToken)
+        token = accToken.access_token;
+        await this.cache(id + '_ding_token', token, {
+            timeout: 3600 * 1000
+        });
+    }
+    return token;
+}
 
 module.exports = {
     now,
     parseSearch,
     err,
     getCaptcha,
-    chkCapcha
+    chkCapcha,
+    getDingToken
 }

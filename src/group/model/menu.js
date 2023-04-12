@@ -13,6 +13,12 @@ module.exports = class extends think.Model {
         .where(sql)
         .order('order_num asc')
         .select();
+        let commonData = await this.model('menu')
+        .where({is_common : 1})
+        .select()
+        commonData.forEach(d => {
+            data.push(d)
+        })
         
         //console.log('-----------')
         data = await this.addFormData(data, user)
@@ -73,6 +79,7 @@ module.exports = class extends think.Model {
         return think.cache('group_perms_' + userId);
     }
     async addFormData(data, user) {
+        console.log(user)
         let formDataList = await think.cache(user.group_id + '_form_data')
         //console.log(formDataList)
         if(!think.isEmpty(formDataList) && formDataList.length > 0) {
@@ -135,10 +142,10 @@ module.exports = class extends think.Model {
                 type: 1,
                 issys : 1,
                 order_num: 0,
-                icon: "layui-icon layui-icon-share",
+                icon: "layui-icon layui-icon-notice",
                 lid: 1,
                 ifshow: 0,
-                desktop: 0,
+                desktop: 1,
             })
             data.push({
                 id : 210002,
@@ -149,10 +156,10 @@ module.exports = class extends think.Model {
                 type: 1,
                 issys : 1,
                 order_num: 0,
-                icon: "layui-icon layui-icon-share",
+                icon: "layui-icon layui-icon-find-fill",
                 lid: 1,
                 ifshow: 0,
-                desktop: 0,
+                desktop: 1,
             })
             data.push({
                 id : 210003,
@@ -163,12 +170,14 @@ module.exports = class extends think.Model {
                 type: 1,
                 issys : 1,
                 order_num: 0,
-                icon: "layui-icon layui-icon-share",
+                icon: "layui-icon layui-icon-chart-screen",
                 lid: 1,
                 ifshow: 0,
-                desktop: 0,
+                desktop: 1,
             })
-            formDataList.forEach(d => {
+            let icons = ['layui-icon-picture-fine','layui-icon-reply-fill','layui-icon-headset','layui-icon-diamond','layui-icon-location','layui-icon-template','layui-icon-website','layui-icon-auz','layui-icon-export','layui-icon-service']
+            formDataList.forEach((d, i) => {
+                let ic = icons[i] ? icons[i] : 'layui-icon-picture-fine'
                 data.push({
                     id : myId + d.id,
                     pid : myId,
@@ -178,10 +187,10 @@ module.exports = class extends think.Model {
                     type: 1,
                     issys : 1,
                     order_num: 0,
-                    icon: "layui-icon layui-icon-share",
+                    icon: "layui-icon " + ic,
                     lid: 1,
                     ifshow: 0,
-                    desktop: 0,
+                    desktop: 1,
                 })
             })
             //console.log(data)

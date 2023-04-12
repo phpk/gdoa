@@ -64,6 +64,7 @@
 				let form = layui.form;
 				let $ = layui.jquery;
 				let common = layui.common;
+				let req = _req();
 
 				let MODULE_PATH = "./";
 
@@ -85,7 +86,11 @@
 							field: 'name',
 							align: 'center'
 						},
-						
+						{
+							title: '类型',
+							field: 'msgtype',
+							align: 'center'
+						},
 						{
 							title: '发送时间',
 							field: 'add_time',
@@ -107,7 +112,7 @@
 
 				table.render({
 					elem: '#user-table',
-					url: apiUrl + 'approve/msgList',
+					url: apiUrl + 'approve/msgList?uid=' + req.uid + '&aid=' + req.aid,
 					headers : getHeader(),
 					parseData: function(res) {
 						//console.log(res)

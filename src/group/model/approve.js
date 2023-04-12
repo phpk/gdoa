@@ -258,10 +258,14 @@ module.exports = class extends think.Model {
                 list_id,
                 ref_id: has.ref_id,
                 isread: 0,
+                msg_type : 1,
                 remark
             })
         })
         await this.model('approve_msg').addMany(msgSave)
+        if(statusData.ding_notice > 0) {
+            await this.model('ding').sendApproveMsg(has.group_id, userList, statusData.my_msg, '')
+        }
         
     }
     /**
@@ -322,19 +326,23 @@ module.exports = class extends think.Model {
 
         }
         //给用户发送审核通过的消息
+        let sendmsg = oldStatusData.to_msg.replace("{{username}}", userInfo.name);
         let msgSave = {
             to_user_id: has.user_id,
-            msg: oldStatusData.to_msg.replace("{{username}}", userInfo.name),
+            msg: sendmsg,
             user_id: user_id,
             group_id: has.group_id,
             type: has.type,
             list_id: has.list_id,
             ref_id: has.ref_id,
             isread: 0,
+            msg_type : 0,
             remark : pass_remark
         }
         await this.model('approve_msg').add(msgSave)
-
+        if(oldStatusData.ding_notice > 0) {
+            await this.model('ding').sendApproveMsg(has.group_id, has.user_id, sendmsg, '')
+        }
         return { code: 0 };
     }
     /**
@@ -359,6 +367,7 @@ module.exports = class extends think.Model {
         //let statusCacheData = approveAndStatus.statusCacheData;
         await this.model('approve_list').where({ id: has.id }).update({ status: 2, back_remark })
         let passNum = await this.getPassNum(has, oldStatusData);
+        let toUserMsg = oldStatusData.back_msg.replace("{{username}}", userInfo.name);
         //执行回退
         if (passNum.back) {
             //一票否决情况下，该数据下的所有状态都要被打回
@@ -376,20 +385,25 @@ module.exports = class extends think.Model {
             await this.model(has.table).where({ id: has.data_id }).update({
                 status: 0
             })
+            toUserMsg += ',需要从新提交！';
         }
         //给用户发送打回的消息
         let msgSave = {
             to_user_id: has.user_id,
-            msg: oldStatusData.back_msg.replace("{{username}}", userInfo.name) + ',需要从新提交！',
+            msg: toUserMsg,
             user_id: user_id,
             group_id: has.group_id,
             type: has.type,
             list_id: has.list_id,
             ref_id: has.ref_id,
             isread: 0,
+            msg_type : 0,
             remark : back_remark
         }
         await this.model('approve_msg').add(msgSave)
+        if(oldStatusData.ding_notice > 0) {
+            await this.model('ding').sendApproveMsg(has.group_id, has.user_id, toUserMsg, '')
+        }
 
         return { code: 0 }
     }
@@ -444,28 +458,34 @@ module.exports = class extends think.Model {
             let statusData = statusCacheData.find(d => d.approve_id == has.approve_id && d.val == oldStatusData.back_val)
             //上一步
             //console.log(statusData)
-            if (think.isEmpty(statusData)) {
-                return {
-                    code: 2,
-                    msg: '没有上一步操作'
-                }
+            if (!think.isEmpty(statusData)) {
+                // return {
+                //     code: 2,
+                //     msg: '没有上一步操作'
+                // }
+                has.user_id = user_id;
+                await this.addApprove(has, approveData, statusData, back_remark);
             }
-            has.user_id = user_id;
-            await this.addApprove(has, approveData, statusData, back_remark);
+            
         }
         //给用户发送打回的消息
+        let toUserMsg = oldStatusData.back_msg.replace("{{username}}", userInfo.name)
         let msgSave = {
             to_user_id: has.user_id,
-            msg: oldStatusData.back_msg.replace("{{username}}", userInfo.name),
+            msg: toUserMsg,
             user_id: user_id,
             group_id: has.group_id,
             type: has.type,
             list_id: has.list_id,
             ref_id: has.ref_id,
             isread: 0,
+            msg_type : 0,
             remark : back_remark
         }
         await this.model('approve_msg').add(msgSave)
+        if(oldStatusData.ding_notice > 0) {
+            await this.model('ding').sendApproveMsg(has.group_id, has.user_id, toUserMsg, '')
+        }
 
         return { code: 0 }
     }

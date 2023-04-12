@@ -361,7 +361,7 @@
 
             table.render({
                 elem: '#pur-data-table',
-                //url: "../../admin/data/dictData.json",
+                //url: "../../libs/data/dictData.json",
                 url: apiUrl + 'purchase/detail?pid=' + pid + '&pur_id=' + purId,
                 headers: getHeader(),
                 parseData: function (res) {
@@ -667,6 +667,7 @@
             $('#leftbox').toggleClass('layui-col-md6')
             $('#rightbox').toggle()
             $('#leftbtn').toggleClass('layui-icon-next').toggleClass('layui-icon-prev')
+            table.reload('pur-type-table');
         })
         $('#rightbtn').click(() => {
             $('#rightbox').toggleClass('layui-col-md6')

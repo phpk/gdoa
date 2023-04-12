@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>excel管理</title>
+        <meta name="renderer" content="webkit">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <link rel="stylesheet" href="/static/layui/css/layui.css" />
+<link rel="stylesheet" href="/static/ui/css/ui.css" />
+        <link rel='stylesheet' href='/libs/excel/plugins/css/pluginsCss.css'/>
+        <link rel='stylesheet' href='/libs/excel/plugins/plugins.css'/>
+        <link rel='stylesheet' href='/libs/excel/css/luckysheet.css'/>
+        <link rel='stylesheet' href='/libs/excel/assets/iconfont/iconfont.css'/>
+        <script src="../config.js"></script>
+        <script src="/libs/excel/plugins/js/plugin.js"></script>
+        <script src="/libs/excel/luckysheet.umd.js"></script>
+        <script src="/libs/excel/export/exceljs.min.js"></script>
+        <script src="/libs/excel/export/FileSaver.js"></script>
+        <script src="/libs/excel/export/export.js"></script>
+        <script src="/libs/excel/export/easyuploader.js"></script>
+        
+    </head>
+    <body>
+        <div id="luckysheet" style="margin:0px;padding:0px;position:absolute;width:100%;height:100%;left: 0px;top: 0px;"></div>
+
+        <script>
+            $(function () {
+                //配置项
+                let autoSave;
+                let req = _req(),
+                    id = req.id;
+                $.ajaxSetup({
+                    xhrFields: {
+                        withCredentials: true
+                    }
+                });
+                const _msg = (msg) => {
+                    let m = document.createElement('div');
+                    m.innerHTML = msg;
+                    m.style.cssText = "font-size: .9rem;color: rgb(255, 255, 255);background-color: rgba(0, 0, 0, 0.6);padding: 10px 15px;margin: 0 0 0 -60px;border-radius: 4px;position: fixed;    top: 50%;left: 50%;text-align: center;z-index:20211223";
+                    document.body.appendChild(m);
+                    setTimeout(() => {
+                        let d = 0.5;
+                        m.style.opacity = '0';
+                        setTimeout( () => { document.body.removeChild(m) }, d * 1000);
+                    }, 2000);
+                }
+                const saveData = (title, content) => {
+                    if (!id) {
+                        $.ajax({
+                            type: "post",
+                            url: apiUrl + 'excel/add',
+                            headers: getHeader(),
+                            data: {
+                                title,
+                                content: JSON.stringify(content)
+                            },
+                            success: (res) => {
+                                console.log(res)
+                                id = res.data;
+                                //_msg('保存成功')
+                            },
+                            error: (xhr) => {
+                                console.log(xhr)
+                            }
+                        });
+                    } else {
+                        $.ajax({
+                            type: "post",
+                            url: apiUrl + 'excel/edit',
+                            headers: getHeader(),
+                            data: {
+                                id,
+                                title,
+                                content: JSON.stringify(content)
+                            },
+                            success: (res) => {
+                                console.log(res)
+                                //_msg('编辑成功')
+                            },
+                            error: (xhr) => {
+                                console.log(xhr)
+                            }
+                        });
+                    }
+                }
+                const addEvents = () => {
+                    $('#luckysheet_op_save').on('click', e => {
+                        let title = $('#luckysheet_info_detail_input').val();
+                        let content = luckysheet.getAllSheets();
+                        //去除临时数据,减小体积
+                        for (let i in content) 
+                            content[i].data = undefined
+                            //console.log(title)
+                        //console.log(content)
+                        saveData(title, content);
+                        _msg('保存成功')
+                    })
+                    $('#luckysheet_op_export').on('click', e=> {
+                        let title = $('#luckysheet_info_detail_input').val();
+                        exportExcel(luckysheet.getAllSheets(), title);
+                    })
+                    //$('#luckysheet_op_import').on('click', e=> {
+
+                    //})
+                    new EasyUploader({
+                        'el': '#luckysheet_op_import',
+                        //'accept': 'image/*',
+
+                        'url': 'excel/import',
+                        'autoUpload': true,
+                        'allowFileExt': ['xlsx'],
+                        'language': 'cn',
+                        'maxFileSize': '50 * 1024 * 1024',
+                        onUploadProgress: function(e) {
+                            console.log('the progress:' + ((e.loaded / e.total) * 100).toFixed(2) + '%');
+                        },
+                        onUploadStart: function(e) {
+                            console.log('the file will upload');
+                        },
+                        onUploadComplete: function(res) {
+                            //console.log(data)
+                            luckysheet.destroy();
+                            options.data = res.data.content;
+                            options.title = res.data.title;
+                            luckysheet.create(options)
+                            addEvents()
+                        },
+                        onUploadError: function(statusCode) {
+                            console.log(statusCode);
+                        }
+                    });
+                }
+                //let updatedFunc =
+                const options = {
+                    container: 'luckysheet', // 设定DOM容器的id
+                    title: 'excel 表格', // 设定表格名称
+                    lang: 'zh', // 设定表格语言
+                    //allowUpdate: true,
+                    hook: {
+                        updated: (e) => {
+                            //监听更新,并在1s后自动保存
+                            if (autoSave) 
+                                clearTimeout(autoSave)
+                            $('#luckysheet_info_detail_save').text("已修改")
+
+                            autoSave = setTimeout(() => {
+                                //console.log(e)
+                                let title = $('#luckysheet_info_detail_input').val();
+                                let content = luckysheet.getAllSheets();
+                                //去除临时数据,减小体积
+                                for (let i in content) 
+                                    content[i].data = undefined
+                                    //console.log(title)
+                                //console.log(content)
+                                saveData(title, content);
+                            }, 1000)
+                            return true;
+                        }
+                    },
+                    //updateUrl: "ws://" + location.hostname +":11551/" + name
+
+                }
+
+                if (!id) {
+                    luckysheet.create(options)
+                    addEvents()
+                } else {
+                    $.ajax({
+                        type: "get",
+                        url: apiUrl + 'excel/editBefore?id=' + id,
+                        headers: getHeader(),
+                        success: (res) => {
+                            //console.log(res)
+                            options.data = JSON.parse(res.data.content)
+                            options.title = res.data.title;
+                            luckysheet.create(options)
+                            addEvents()
+                        },
+                        error: (xhr) => {
+                            console.log(xhr)
+                        }
+                    });
+                }
+                
+            })
+        </script>
+
+    </body>
+</html>

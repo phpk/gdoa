@@ -1,4 +1,4 @@
-const Base = require('./base.js');
+//const Base = require('./base.js');
 
 module.exports = class extends think.Controller {
   async __before() {
@@ -17,8 +17,58 @@ module.exports = class extends think.Controller {
 
 
   }
+  async msgAction() {
+    let msgList = await this.model('approve_msg').where({to_user_id : this.userId}).order("id desc").limit(30).select();
+    let rt0 = {
+      "id": 1,
+      "title": "通知",
+      "children": []
+    }
+    let rt1 = {
+      "id": 2,
+      "title": "消息",
+      "children": []
+    }
+    let rt2 = {
+      "id": 3,
+      "title": "代办",
+      "children": []
+    }
+    msgList.forEach(d => {
+      if(d.msg_type === 0) {
+        rt0.children.push({
+          id : d.id,
+          title : d.msg,
+          time : think.datetime(d.add_time, "MM-DD HH:mm")
+        })
+      }
+      else if(d.msg_type === 1) {
+        rt1.children.push({
+          id : d.id,
+          title : d.msg,
+          time : think.datetime(d.add_time, "MM-DD HH:mm")
+        })
+      }
+      else if(d.msg_type === 2) {
+        rt2.children.push({
+          id : d.id,
+          title : d.msg,
+          time : think.datetime(d.add_time, "MM-DD HH:mm")
+        })
+      }
+    })
+    return this.success([rt0, rt1, rt2])
+  }
   async welcomeAction() {
-    this.assign('destops', this.perms.destops)
+    let userInfo = await this.model('user').where({id : this.userId}).find();
+    userInfo.avatar = userInfo.avatar ? userInfo.avatar : '/static/images/avatar.png'
+    this.assign('user', userInfo);
+    let msgList = await this.model('approve_msg').where({to_user_id : this.userId}).order("id desc").limit(10).select();
+    msgList.forEach(d => {
+      d.add_time = think.datetime(d.add_time, "MM-DD HH:mm")
+    })
+    this.assign('msglist', msgList);
+    this.assign('desktops', this.perms.desktops)
     return this.display();
   }
   async areaAction() {
