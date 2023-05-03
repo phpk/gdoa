@@ -45,7 +45,7 @@ const errorStatus = (xhr, layui) => {
         });
         top.location.href = notLoginUrl;
     }
-    else if (xhr.status === 406) {
+    else if (xhr.status === 409) {
         layui.layer.msg('一段时间未操作，超过保活时间！', {
             icon: 2, time: 2000
         });

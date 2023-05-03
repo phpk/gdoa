@@ -60,12 +60,12 @@
 					快捷菜单
 				</div>
 				<div class="layui-card-body">
-					<div class="layui-row layui-col-space10">
+					<div class="layui-row layui-col-space10" style="padding-bottom: 15px;">
 						{% for el in desktops %}
 						<div class="layui-col-xs4 layui-col-sm3 layui-col-md2" style="text-align:center;margin-top:15px">
 							<div class="pear-card quickto" data-id="{{el.id}}" data-title="{{el.title}}"
 								data-url="{{el.href}}">
-								<i class="layui-icon {{el.icon}}" style="font-size: 30px;"></i>
+								<i class="layui-icon {{el.icon}}" style="font-size: 30px;color: #1E9FFF;"></i>
 							</div>
 							<span class="pear-card-title">{{el.title}}</span>
 						</div>

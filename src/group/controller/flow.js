@@ -35,14 +35,23 @@ module.exports = class extends Base {
         let has = await this.model('flow').where({ id: post.id }).find();
         if (think.isEmpty(has)) return this.fail('编辑的数据不存在');
         await this.model('flow').update(post);
+        //分享处理
+        post.ref_id = has.type;
+        await this.model('share').addHistory('flow', this.userId, has, post);
         return this.success()
     }
 
     async editBeforeAction() {
+        // let id = this.get('id');
+        // let data = await this.model('flow').where({ id }).find()
+        // if (think.isEmpty(data)) return this.fail('数据为空')
+        // return this.success(data);
         let id = this.get('id');
-        let data = await this.model('flow').where({ id }).find()
-        if (think.isEmpty(data)) return this.fail('数据为空')
-        return this.success(data);
+        let rt = await this.model('share').viewBefore(id, 'flow', this.userId);
+        if(rt.code > 0) {
+            return this.fail(rt.msg)
+        }
+        return this.success(rt.data);
     }
 
     async delAction() {

@@ -45,6 +45,7 @@
 		</script>
 
 		<script type="text/html" id="baiban-bar">
+			<button class="pear-btn pear-btn-success pear-btn-sm" lay-event="share"><i class="layui-icon layui-icon-share"></i></button>
 			<button class="pear-btn pear-btn-primary pear-btn-sm" lay-event="edit"><i class="layui-icon layui-icon-edit"></i></button>
 		    <button class="pear-btn pear-btn-danger pear-btn-sm" lay-event="remove"><i class="layui-icon layui-icon-delete"></i></button>
 		</script>
@@ -85,7 +86,7 @@
 							title: '操作',
 							toolbar: '#baiban-bar',
 							align: 'center',
-							width: 130
+							width: 150
 						}
 					]
 				]
@@ -120,6 +121,8 @@
 						window.remove(obj);
 					} else if (obj.event === 'edit') {
 						window.edit(obj);
+					} else if (obj.event === 'share') {
+						window.share(obj);
 					}
 				});
 
@@ -154,7 +157,19 @@
 					});
 					return false;
 				})
-
+				window.share = function(obj) {
+					//console.log(obj.data)
+					layer.open({
+						type: 2,
+						title: '分享-' + obj.data.title,
+						shade: 0.1,
+						offset: 'rt',
+						area: ['90%', '100%'],
+						anim: 1,
+						maxmin: true,
+						content: `/res/group/share/touser.html?id=${obj.data.id}&type=baiban`
+					});
+				}
 				window.add = function() {
 					layer.open({
 						type: 2,

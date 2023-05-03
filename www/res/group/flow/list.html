@@ -61,14 +61,15 @@
 		</script>
 
 		<script type="text/html" id="flow-bar">
+			<button class="pear-btn pear-btn-success pear-btn-sm" lay-event="share"><i class="layui-icon layui-icon-share"></i></button>
 			<button class="pear-btn pear-btn-primary pear-btn-sm" lay-event="edit"><i class="layui-icon layui-icon-edit"></i></button>
 		    <button class="pear-btn pear-btn-danger pear-btn-sm" lay-event="remove"><i class="layui-icon layui-icon-delete"></i></button>
 		</script>
 		<script type="text/html" id="flow-time">
-			{{layui.util.toDateString(d.add_time*1000, 'yyyy-MM-dd HH:mm:ss')}}
+			{{layui.util.toDateString(d.add_time, 'yyyy-MM-dd HH:mm:ss')}}
 		</script>
 		<script type="text/html" id="up-time">
-			{{layui.util.toDateString(d.update_time*1000, 'yyyy-MM-dd HH:mm:ss')}}
+			{{layui.util.toDateString(d.update_time, 'yyyy-MM-dd HH:mm:ss')}}
 		</script>
 		<script src="../config.js"></script>
 		<script src="/static/layui/layui.js"></script>
@@ -116,7 +117,7 @@
 							title: '操作',
 							toolbar: '#flow-bar',
 							align: 'center',
-							width: 130
+							width: 150
 						}
 					]
 				]
@@ -151,6 +152,8 @@
 						window.remove(obj);
 					} else if (obj.event === 'edit') {
 						window.edit(obj);
+					} else if (obj.event === 'share') {
+						window.share(obj);
 					}
 				});
 
@@ -179,7 +182,19 @@
 					})
 				});
 				// 监听搜索操作
-
+				window.share = function(obj) {
+					//console.log(obj.data)
+					layer.open({
+						type: 2,
+						title: '分享-' + obj.data.title,
+						shade: 0.1,
+						offset: 'rt',
+						area: ['90%', '100%'],
+						anim: 1,
+						maxmin: true,
+						content: `/res/group/share/touser.html?id=${obj.data.id}&type=flow&ref_id=${obj.data.type}`
+					});
+				}
 				form.on('submit(flow-query)', function(data) {
 					table.reload('flow-table', {
 						where: {

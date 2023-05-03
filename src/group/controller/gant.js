@@ -34,15 +34,22 @@ module.exports = class extends Base {
             content: post.content
         }
         await this.model('gant').where({id : post.id}).update(data);
+        await this.model('share').addHistory('gant', this.userId, has, post);
         return this.success()
     }
 
     async editBeforeAction() {
-        let id = this.get('id');
-        let data = await this.model('gant').where({ id }).find()
-        if (think.isEmpty(data)) return this.fail('数据为空')
+        // let id = this.get('id');
+        // let data = await this.model('gant').where({ id }).find()
+        // if (think.isEmpty(data)) return this.fail('数据为空')
         
-        return this.success(data);
+        // return this.success(data);
+        let id = this.get('id');
+        let rt = await this.model('share').viewBefore(id, 'gant', this.userId);
+        if(rt.code > 0) {
+            return this.fail(rt.msg)
+        }
+        return this.success(rt.data);
     }
 
     async delAction() {

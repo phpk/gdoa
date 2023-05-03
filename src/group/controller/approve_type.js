@@ -52,5 +52,5 @@ module.exports = [
         field : 'status',
         info : 'project/approveDataInfo',
         list : 'project/approveDataList'
-    },
+    }
 ]

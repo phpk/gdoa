@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>分享给我管理</title>
+		<link rel="stylesheet" href="/static/layui/css/layui.css" />
+<link rel="stylesheet" href="/static/ui/css/ui.css" />
+	</head>
+	<body class="pear-container">
+		<div class="layui-card">
+			<div class="layui-card-body">
+				<form class="layui-form" action="">
+					<div class="layui-form-item">
+						<div class="layui-form-item layui-inline">
+							<input type="text" name="title" placeholder="标题" class="layui-input">
+						</div>
+						<div class="layui-input-inline" style="width: 100px;">
+							<select name="type" id="type-area">
+								<option value="">选择类别</option>
+							</select>
+						</div>
+						<div class="layui-form-item layui-inline">
+							<button class="pear-btn pear-btn-md pear-btn-primary" lay-submit lay-filter="share-query">
+								<i class="layui-icon layui-icon-search"></i>
+								查询
+							</button>
+							<button type="reset" class="pear-btn pear-btn-md" lay-filter="share-reset" lay-submit>
+								<i class="layui-icon layui-icon-refresh"></i>
+								重置
+							</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+		<div class="layui-card">
+			<div class="layui-card-body">
+				<table id="share-table" lay-filter="share-table"></table>
+			</div>
+		</div>
+
+
+		<script type="text/html" id="share-bar">
+            <button class="pear-btn pear-btn-sm" lay-event="view" title="查看">
+                <i class="layui-icon layui-icon-cols"></i>
+            </button>
+			{{# if(d.can_edit == 1){ }}
+			<button class="pear-btn pear-btn-primary pear-btn-sm" lay-event="edit" title="编辑">
+                <i class="layui-icon layui-icon-edit"></i>
+            </button>
+            <button class="pear-btn pear-btn-success pear-btn-sm" lay-event="history" title="历史">
+                <i class="layui-icon layui-icon-time"></i>
+            </button>
+			{{# } }}
+		</script>
+		<script src="../config.js"></script>
+		<script src="/static/layui/layui.js"></script>
+		<script src="/static/ui/ui.js"></script>
+		<script>
+			layui.use(['table', 'form', 'jquery','common'], function() {
+				let table = layui.table;
+				let form = layui.form;
+				let $ = layui.jquery;
+				let common = layui.common;
+
+				let MODULE_PATH = "./";
+
+				let cols = [
+					[
+						{
+							title: 'ID',
+							field: 'id',
+							align: 'center',
+                            width:80
+						},
+						{
+							title: '分享人',
+							field: 'username',
+							align: 'center',
+                            width:150,
+						},
+						{
+							title: '类别',
+							field: 'typename',
+							align: 'center',
+                            width:100,
+						},
+                        {
+							title: '数据ID',
+							field: 'data_id',
+							align: 'center',
+                            width:80,
+						},
+						{
+							title: '标题',
+							field: 'title',
+							align: 'center',
+                            width:150,
+						},
+						{
+							title: '分享时间',
+							field: 'add_time',
+							align: 'center'
+						},
+						{
+							title: '操作',
+							toolbar: '#share-bar',
+							align: 'center',
+							width: 230,
+							fixed : 'right'
+						}
+					]
+				]
+                let shareCate;
+				table.render({
+					elem: '#share-table',
+					url: apiUrl + 'share/tome',
+					headers : getHeader(),
+					parseData: function(res) {
+						//console.log(res)
+                        shareCate = res.data.shareCate;
+						return {
+							"code": res.code, //解析接口状态
+							"msg": res.message, //解析提示文本
+							"count": res.data.count, //解析数据长度
+							"data": res.data.list //解析数据列表
+						};
+					},
+					page: true,
+					cols: cols,
+					skin: 'line',
+
+					toolbar: '#share-toolbar',
+					defaultToolbar: [{
+						title: '刷新',
+						layEvent: 'refresh',
+						icon: 'layui-icon-refresh',
+					}, 'filter', 'print', 'exports'],
+                    done : () => {
+                        let str = `<option value="">选择类别</option>`
+                        for(let p in shareCate) {
+                            str += `<option value="${p}">${shareCate[p]['name']}</option>`;
+                        }
+                        $("#type-area").html(str)
+                        form.render('select')
+                    }
+				});
+
+				table.on('tool(share-table)', function(obj) {
+					if (obj.event === 'view') {
+						window.view(obj);
+					} else if (obj.event === 'edit' && obj.data.can_edit > 0) {
+						window.edit(obj);
+					} else if (obj.event === 'history' && obj.data.can_edit > 0) {
+						window.historys(obj);
+					}
+                    //else if (obj.event === 'out' && obj.data.can_out > 0) {
+					//	window.out(obj);
+					//}
+				});
+
+				table.on('toolbar(share-table)', function(obj) {
+					if (obj.event === 'refresh') {
+						window.refresh();
+					}
+				});
+				// 监听搜索操作
+
+				form.on('submit(share-query)', function(data) {
+					table.reload('share-table', {
+						where: {
+							param : $('form').serialize()
+						},
+						page: {
+					        curr: 1
+					    }
+					})
+					return false;
+				});
+				form.on('submit(share-reset)', function(data){
+					table.reload('share-table', {
+						where: {
+							param : ''
+						},
+						page: {
+					        curr: 1
+					    }
+					});
+					return false;
+				})
+
+				window.view = function(obj) {
+					window.open(obj.data.viewurl)
+				}
+
+				window.edit = function(obj) {
+					layer.open({
+						type: 2,
+						title: '编辑-' + obj.data.title,
+						shade: 0.1,
+						offset: 'rt',
+						area: ['90%', '100%'],
+						anim: 1,
+						maxmin: true,
+						content: obj.data.editurl,
+						cancel: function(index, layero){ 
+							table.reload('share-table');
+							layer.close(index);
+							return false; 
+						} 
+					});
+				}
+                window.historys = function(obj) {
+					layer.open({
+						type: 2,
+						title: '查看历史-' + obj.data.title,
+						shade: 0.1,
+						offset: 'rt',
+						area: ['90%', '100%'],
+						anim: 1,
+						maxmin: true,
+						content: './history.html?data_id=' + obj.data.data_id + '&type=' + obj.data.type,
+						cancel: function(index, layero){ 
+							table.reload('share-table');
+							layer.close(index);
+							return false; 
+						} 
+					});
+				}
+				
+
+
+				window.refresh = function(param) {
+					table.reload('share-table');
+				}
+			})
+		</script>
+	</body>
+</html>

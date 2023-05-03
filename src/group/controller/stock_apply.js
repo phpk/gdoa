@@ -19,14 +19,15 @@ module.exports = class extends Base {
 			count
 		})
 	}
+	
 	async checkAction() {
 		let {
 			username,
 			in_id
 		} = this.post();
-		let user_id = await this.model('admin').where({
+		let user_id = await this.model('user').where({
 			username
-		}).getField('admin_id', true)
+		}).getField('id', true)
 		if (think.isEmpty(user_id)) return this.fail('用户不存在')
 		let data = await this.model("stock_in").where({
 			id: in_id
@@ -68,10 +69,10 @@ module.exports = class extends Base {
 		if (data.is_lock > 0) {
 			return this.fail('商品被锁定')
 		}
-		let username = await this.model('admin')
+		let username = await this.model('user')
 			.where({
-				admin_id: post.user_id
-			}).getField('username', true)
+				id: post.user_id
+			}).getField('name', true)
 		if (think.isEmpty(username)) {
 			return this.fail('用户不存在')
 		}
@@ -203,5 +204,36 @@ module.exports = class extends Base {
 			id
 		}).delete()
 		return this.success()
+	}
+	async userListAction() {
+		let {
+			page,
+			limit,
+			param
+		} = this.get();
+		let wsql = this.turnSearch(param, {user_id : this.userId});
+		let list = await this.model('stock_apply').where(wsql).page(page, limit).order('id desc').select();
+		let count = await this.model('stock_apply').where(wsql).count();
+		return this.success({
+			list,
+			count
+		})
+	}
+	async userAddBeforeAction() {
+		let {
+			user_id,
+			id
+		} = this.get();
+		// let user = await this.model('admin').where({
+		// 	user_id
+		// }).field('user_id,username,name').find();
+		let data = await this.model('stock_in').where({
+			id
+		}).find();
+		delete data.id;
+		data.in_id = id;
+		data.user_id = user_id;
+		return this.success(data)
+
 	}
 }

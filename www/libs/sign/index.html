@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>手写签名</title>
+    <meta name="description" content="Signature Pad - HTML5 canvas based smooth signature drawing using variable width spline interpolation.">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <link rel="stylesheet" href="/libs/sign/css/signature-pad.css">
+
+    <!--[if IE]>
+    <link rel="stylesheet" type="text/css" href="/libs/sign/css/ie9.css">
+  <![endif]-->
+
+</head>
+
+<body onselectstart="return false">
+    <div id="signature-pad" class="signature-pad">
+        <div class="signature-pad--body">
+            <canvas></canvas>
+        </div>
+        <div class="signature-pad--footer">
+            <div class="signature-pad--actions">
+                <div>
+                    <button type="button" class="button clear" data-action="clear">清除</button>
+                    <button type="button" class="button" data-action="change-color">更换颜色</button>
+                    <button type="button" class="button" data-action="undo">回退</button>
+
+                </div>
+                <div>
+                    <button type="button" id="closeBtn" class="close" data-action="submit">提交</button>
+                    <!--button type="button" class="button save" data-action="save-png">Save as PNG</button>
+                    <button type="button" class="button save" data-action="save-jpg">Save as JPG</button>
+                    <button type="button" class="button save" data-action="save-svg">Save as SVG</button-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/libs/sign/js/signature_pad.umd.js"></script>
+    <script src="/libs/sign/js/app.js"></script>
+</body>
+
+</html>

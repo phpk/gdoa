@@ -35,13 +35,20 @@ module.exports = class extends Base {
             content: Buffer.from(post.content).toString('ascii')
         }
         await this.model('txt').where({id}).update(data);
+        //分享处理
+        await this.model('share').addHistory('txt', this.userId, has, data);
         return this.success()
     }
 
     async editBeforeAction() {
         let id = this.get('id');
-        let data = await this.model('txt').where({ id }).find();
-        if (think.isEmpty(data)) return this.fail('数据为空');
+        // let data = await this.model('txt').where({ id }).find();
+        // if (think.isEmpty(data)) return this.fail('数据为空');
+        let rt = await this.model('share').viewBefore(id, 'txt', this.userId);
+        if(rt.code > 0) {
+            return this.fail(rt.msg)
+        }
+        let data = rt.data;
         data.content = Buffer.from(data.content, 'ascii').toString();
         return this.success(data);
     }

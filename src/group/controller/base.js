@@ -194,6 +194,7 @@ module.exports = class extends think.Controller {
     }
     return false;
   }
+  
   __after() {
 
   }

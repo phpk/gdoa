@@ -35,20 +35,33 @@ module.exports = class extends Base {
         let post = this.post();
         let has = await this.model('svg').where({ id: post.id }).find();
         if (think.isEmpty(has)) return this.fail('编辑的数据不存在');
-        let filepath = path.join(think.ROOT_PATH, 'www/upload/svg/' + has.url);
+        let url = Date.now() + '.svg';
+        let filepath = path.join(think.ROOT_PATH, 'www/upload/svg/' + url);
         fs.writeFileSync(filepath, post.content)
         let save = {
-            title: post.title
+            title: post.title,
+            url
         }
         await this.model('svg').where({id : post.id}).update(save);
         //await this.adminOpLog('编辑svg');
+        //分享处理
+        has.content = has.url;
+        save.content = url;
+        await this.model('share').addHistory('svg', this.userId, has, save);
         return this.success()
     }
 
     async editBeforeAction() {
         let id = this.get('id');
-        let data = await this.model('svg').where({ id }).find()
-        if (think.isEmpty(data)) return this.fail('数据为空')
+        // let data = await this.model('svg').where({ id }).find()
+        // if (think.isEmpty(data)) return this.fail('数据为空')
+        let rt = await this.model('share').viewBefore(id, 'svg', this.userId);
+        if(rt.code > 0) {
+            return this.fail(rt.msg)
+        }
+        let data = rt.data;
+        data.url = data.content ? data.content : data.url;
+        //data.content = data.url;
         return this.success(data);
     }
 

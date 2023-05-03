@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>查看文档</title>
+        <link rel="stylesheet" href="/static/layui/css/layui.css" />
+<link rel="stylesheet" href="/static/ui/css/ui.css" />
+        <style type="text/css">
+            table {
+                margin: 20px;
+                border-collapse: collapse;
+                border-spacing: 0;
+                empty-cells: show;
+                border: 1px solid #cbcbcb;
+            }
+
+            td,
+            th {
+                padding: 0;
+            }
+
+            table td,
+            table th {
+                border-left: 1px solid #cbcbcb;
+                border-width: 0 0 0 1px;
+                font-size: inherit;
+                margin: 0;
+                overflow: visible;
+                padding: 0.5em 1em;
+            }
+
+            table thead {
+                background-color: #e0e0e0;
+                color: #000;
+                text-align: left;
+                vertical-align: bottom;
+            }
+
+            table tbody tr:nth-child(odd) {
+                background-color: transparent;
+            }
+
+            table tbody tr:nth-child(even) {
+                background-color: #f2f2f2;
+            }
+            pre {
+                background-color: #f2f2f2;
+                padding: 20px;
+            }
+            #content img{
+                max-width:90%;
+            }
+        </style>
+    </head>
+    <body class="pear-container">
+        <div class="layui-card">
+
+            <div class="layui-card-body">
+                <div id="content"></div>
+            </div>
+        </div>
+        <script src="../config.js"></script>
+        <script src="/static/layui/layui.js"></script>
+		<script src="/static/ui/ui.js"></script>
+        <script src="/static/docs/js/marked.min.js"></script>
+        <script src="/static/docs/js/html2pdf.js"></script>
+
+        <script>
+            layui.use([
+                'table', 'jquery', 'common', 'layer'
+            ], function () {
+                let table = layui.table;
+                let $ = layui.jquery;
+                let common = layui.common,
+                    layer = layui.layer,
+                    req = _req();
+
+                let MODULE_PATH = "./";
+                _get(layui, 'doc/editmdBefore?id=' + req.id, res => {
+                    console.log(res)
+                    $('#content').html(marked.parse(res.content));
+                })
+            })
+        </script>
+    </body>
+</html>

@@ -96,6 +96,8 @@ module.exports = class extends Base {
         await this.model('doc_cate').where({ id: data.id }).update(upData);
 
         await this.updateFile(post);
+        //分享处理
+        await this.model('share').addHistory('doc_cate', this.userId, data, post);
         return this.success()
 
     }
@@ -227,9 +229,14 @@ module.exports = class extends Base {
     }
     async editmdBeforeAction() {
         let id = this.get('id');
-        if (!id) return this.fail('id为空')
-        let data = await this.model('doc_cate').where({ id }).find()
-        if (think.isEmpty(data)) return this.fail('数据为空')
+        // if (!id) return this.fail('id为空')
+        // let data = await this.model('doc_cate').where({ id }).find()
+        // if (think.isEmpty(data)) return this.fail('数据为空')
+        let rt = await this.model('share').viewBefore(id, 'doc_cate', this.userId);
+        if(rt.code > 0) {
+            return this.fail(rt.msg)
+        }
+        let data = rt.data;
         data.cate = await this.model('doc_cate').field('id,title').where({ type: 0, did: data.did }).select();
         data.cate.forEach(d => {
             if (d.id == data.pid) {
@@ -267,6 +274,7 @@ module.exports = class extends Base {
         let up = {};
         up[field] = value;
         await this.model('doc_cate').where({ id }).update(up);
+
         return this.success()
     }
     async delAction() {

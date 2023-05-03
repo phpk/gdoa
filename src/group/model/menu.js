@@ -79,31 +79,16 @@ module.exports = class extends think.Model {
         return think.cache('group_perms_' + userId);
     }
     async addFormData(data, user) {
-        console.log(user)
+        //console.log(user)
         let formDataList = await think.cache(user.group_id + '_form_data')
         //console.log(formDataList)
         if(!think.isEmpty(formDataList) && formDataList.length > 0) {
             let workId = 100000;
-            let mgrwork = {
-                id : workId,
-                pid : 570,
-                title: "表单数据",
-                route: "oa",
-                href: "oa",
-                type: 0,
-                issys : 1,
-                order_num: 0,
-                icon: "layui-icon layui-icon-share",
-                lid: 1,
-                ifshow: 0,
-                desktop: 0,
-            }
-            data.push(mgrwork);
             
             formDataList.forEach(d => {
                 data.push({
                     id : workId + d.id,
-                    pid : workId,
+                    pid : 581,
                     title: d.form_name,
                     route: "form/listData?fid=" + d.id,
                     href: "form/view.html?id=" + d.id,
@@ -118,24 +103,9 @@ module.exports = class extends think.Model {
             })
 
             let myId = 200000;
-            let mywork = {
-                id : myId,
-                pid : 305,
-                title: "我的工作台",
-                route: "oa",
-                href: "oa",
-                type: 0,
-                issys : 1,
-                order_num: 0,
-                icon: "layui-icon layui-icon-share",
-                lid: 1,
-                ifshow: 0,
-                desktop: 0,
-            }
-            data.push(mywork);
             data.push({
                 id : 210001,
-                pid : myId,
+                pid : 582,
                 title: '我的消息',
                 route: "approve/msgList?uid=" + user.id,
                 href: "approve/msg.html?uid=" + user.id,
@@ -149,7 +119,7 @@ module.exports = class extends think.Model {
             })
             data.push({
                 id : 210002,
-                pid : myId,
+                pid : 582,
                 title: '我的审核',
                 route: "approve/content?tid=" + user.id,
                 href: "approve/content.html?tid=" + user.id,
@@ -163,7 +133,7 @@ module.exports = class extends think.Model {
             })
             data.push({
                 id : 210003,
-                pid : myId,
+                pid : 582,
                 title: '我的申请',
                 route: "approve/content?uid=" + user.id,
                 href: "approve/content.html?uid=" + user.id,
@@ -180,7 +150,7 @@ module.exports = class extends think.Model {
                 let ic = icons[i] ? icons[i] : 'layui-icon-picture-fine'
                 data.push({
                     id : myId + d.id,
-                    pid : myId,
+                    pid : 582,
                     title: d.form_name,
                     route: "form/listData?fid=" + d.id,
                     href: "form/view.html?id=" + d.id + '&uid=' + user.id,

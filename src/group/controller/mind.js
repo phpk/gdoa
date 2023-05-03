@@ -24,14 +24,18 @@ module.exports = class extends Base {
         let has = await this.model('mind').where({ id: post.id }).find();
         if (think.isEmpty(has)) return this.fail('编辑的数据不存在');
         await this.model('mind').update(post);
+        //分享处理
+        await this.model('share').addHistory('mind', this.userId, has, post);
         return this.success()
     }
 
     async editBeforeAction() {
         let id = this.get('id');
-        let data = await this.model('mind').where({ id }).find()
-        if (think.isEmpty(data)) return this.fail('数据为空')
-        return this.success(data);
+        let rt = await this.model('share').viewBefore(id, 'mind', this.userId);
+        if(rt.code > 0) {
+            return this.fail(rt.msg)
+        }
+        return this.success(rt.data);
     }
 
     async delAction() {

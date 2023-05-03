@@ -38,8 +38,14 @@
 
     <script type="text/html" id="power-bar">
             {{# if(d.type == 1){ }}
+            <button class="pear-btn pear-btn-success pear-btn-sm" lay-event="share">
+                <i class="layui-icon layui-icon-share"></i>
+            </button>
             <button class="pear-btn pear-btn-primary pear-btn-sm" lay-event="edit">
                 <i class="layui-icon layui-icon-edit"></i>
+            </button>
+            <button class="pear-btn pear-btn-sm" lay-event="viewone">
+                <i class="layui-icon layui-icon-camera"></i>
             </button>
             {{# } }}
             <button class="pear-btn pear-btn-danger pear-btn-sm" lay-event="remove">
@@ -96,7 +102,7 @@
                         title: 'ID'
                     }, {
                         field: 'title',
-                        width: 300,
+                        width: 200,
                         edit: 'text',
                         title: '名称'
                     }, {
@@ -121,7 +127,7 @@
                     }, {
                         title: '操作',
                         templet: '#power-bar',
-                        width: 150,
+                        width: 200,
                         fixed : 'right',
                         align: 'center'
                     }
@@ -134,9 +140,28 @@
                     window.remove(obj);
                 } else if (obj.event === 'edit') {
                     window.edit(obj);
+                } else if (obj.event === 'share') {
+                    window.share(obj);
+                } else if (obj.event === 'viewone') {
+                    window.viewone(obj);
                 }
             })
-
+            window.share = function(obj) {
+                //console.log(obj.data)
+                layer.open({
+                    type: 2,
+                    title: '分享-' + obj.data.title,
+                    shade: 0.1,
+                    offset: 'rt',
+                    area: ['90%', '100%'],
+                    anim: 1,
+                    maxmin: true,
+                    content: `/res/group/share/touser.html?id=${obj.data.id}&type=doc_cate`
+                });
+            }
+            window.viewone = function(obj) {
+                window.open('/res/group/doc/view.html?id=' + obj.data.id);
+            }
             treeTable.on('toolbar(power-table)', function (obj) {
                 if (obj.event === 'add') {
                     window.addmd();
@@ -198,10 +223,10 @@
                 });
             })
 
-            $("#edit").click(function (obj) {
+            window.edit = function (obj) {
                 parent.layui.admin.addTab('godocmsdocsedit_' + obj.data.id + 111,
                     obj.data.title + '-修改文档',
-                    '/libs/view/doc/editmd.html?id=' + obj.data.id + '&did=' + req.did)
+                    '/res/group/doc/editmd.html?id=' + obj.data.id + '&did=' + req.did)
                 //console.log(obj)
                 /*
                 layer.open({
@@ -216,7 +241,7 @@
                     maxmin: true,
                     content: MODULE_PATH + 'editmd.html?id=' + obj.data.id + '&did=' + req.did
                 });*/
-            })
+            }
             $("#back").click(function (obj) {
                 layer.confirm('回写将按summary.md结构的md文件重置写入数据库！', {
                     icon: 3,

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>分享编辑历史</title>
+		<link rel="stylesheet" href="/static/layui/css/layui.css" />
+<link rel="stylesheet" href="/static/ui/css/ui.css" />
+	</head>
+	<body class="pear-container">
+		<div class="layui-card">
+			<div class="layui-card-body">
+				<form class="layui-form" action="">
+					<div class="layui-form-item">
+						<div class="layui-form-item layui-inline">
+							<input type="text" name="username" placeholder="编辑人" class="layui-input">
+						</div>
+						<div class="layui-form-item layui-inline">
+							<button class="pear-btn pear-btn-md pear-btn-primary" lay-submit lay-filter="share-query">
+								<i class="layui-icon layui-icon-search"></i>
+								查询
+							</button>
+							<button type="reset" class="pear-btn pear-btn-md" lay-filter="share-reset" lay-submit>
+								<i class="layui-icon layui-icon-refresh"></i>
+								重置
+							</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+		<div class="layui-card">
+			<div class="layui-card-body">
+				<table id="share-table" lay-filter="share-table"></table>
+			</div>
+		</div>
+
+
+		<script type="text/html" id="share-bar">
+            <button class="pear-btn pear-btn-sm" lay-event="view" title="查看">
+                <i class="layui-icon layui-icon-cols"></i>
+            </button>
+            <button class="pear-btn pear-btn-sm" lay-event="reback" title="还原至编辑前">
+                <i class="layui-icon layui-icon-refresh-3"></i>
+            </button>
+		</script>
+		<script src="../config.js"></script>
+		<script src="/static/layui/layui.js"></script>
+		<script src="/static/ui/ui.js"></script>
+		<script>
+			layui.use(['table', 'form', 'jquery','common'], function() {
+				let table = layui.table;
+				let form = layui.form;
+				let $ = layui.jquery;
+				let common = layui.common;
+                let req = _req();
+                let data_id = req.data_id;
+				let type = req.type;
+                //console.log(data_id)
+				let MODULE_PATH = "./";
+
+				let cols = [
+					[
+						{
+							title: 'ID',
+							field: 'id',
+							align: 'center',
+                            width:80
+						},
+                        {
+							title: '操作人',
+							field: 'opname',
+							align: 'center',
+                            width:100,
+						},
+						{
+							title: '分享者',
+							field: 'username',
+							align: 'center',
+                            width:100,
+						},
+                        {
+							title: '分享给',
+							field: 'toname',
+							align: 'center',
+                            width:100,
+						},
+                        {
+							title: '数据ID',
+							field: 'data_id',
+							align: 'center',
+                            width:80,
+						},
+						{
+							title: '标题',
+							field: 'title',
+							align: 'center',
+                            width:150,
+						},
+						{
+							title: '编辑时间',
+							field: 'add_time',
+							align: 'center'
+						},
+						{
+							title: '操作',
+							toolbar: '#share-bar',
+							align: 'center',
+							width: 120,
+							fixed : 'right'
+						}
+					]
+				]
+				table.render({
+					elem: '#share-table',
+					url: apiUrl + 'share/history?data_id=' + data_id + '&type=' + type,
+					headers : getHeader(),
+					parseData: function(res) {
+						console.log(res)
+						return {
+							"code": res.code, //解析接口状态
+							"msg": res.message, //解析提示文本
+							"count": res.data.count, //解析数据长度
+							"data": res.data.list //解析数据列表
+						};
+					},
+					page: true,
+					cols: cols,
+					skin: 'line',
+
+					toolbar: '#share-toolbar',
+					defaultToolbar: [{
+						title: '刷新',
+						layEvent: 'refresh',
+						icon: 'layui-icon-refresh',
+					}, 'filter', 'print', 'exports']
+				});
+
+				table.on('tool(share-table)', function(obj) {
+					if (obj.event === 'reback') {
+						window.reback(obj);
+					}
+                    else if (obj.event === 'view') {
+						window.view(obj);
+					} 
+				});
+
+				table.on('toolbar(share-table)', function(obj) {
+					if (obj.event === 'refresh') {
+						window.refresh();
+					}
+
+				});
+				// 监听搜索操作
+
+				form.on('submit(share-query)', function(data) {
+					table.reload('share-table', {
+						where: {
+							param : $('form').serialize()
+						},
+						page: {
+					        curr: 1
+					    }
+					})
+					return false;
+				});
+				form.on('submit(share-reset)', function(data){
+					table.reload('share-table', {
+						where: {
+							param : ''
+						},
+						page: {
+					        curr: 1
+					    }
+					});
+					return false;
+				})
+                window.view = function(obj) {
+					window.open(obj.data.viewurl)
+				}
+				window.reback = function(obj) {
+                    layer.confirm('本操作将还原到该节点的操作前，确定还原？', {icon: 3, title:'提示'}, function(index){
+					    layer.close(index);
+                        _post(layui, 'share/reback', {id : obj.data.id}, res => {
+                            layer.msg('还原成功')
+                            table.reload('share-table');
+                        })
+                    });
+                    
+				}
+
+				window.refresh = function(param) {
+					table.reload('share-table');
+				}
+			})
+		</script>
+	</body>
+</html>

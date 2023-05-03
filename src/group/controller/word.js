@@ -44,14 +44,20 @@ module.exports = class extends Base {
             content: post.content
         }
         await this.model('word').where({id}).update(data);
+        //分享处理
+        await this.model('share').addHistory('word', this.userId, has, data);
         return this.success()
     }
 
     async editBeforeAction() {
         let id = this.get('id');
-        let data = await this.model('word').where({ id }).find()
-        if (think.isEmpty(data)) return this.fail('数据为空')
-        return this.success(data);
+        // let data = await this.model('word').where({ id }).find()
+        // if (think.isEmpty(data)) return this.fail('数据为空')
+        let rt = await this.model('share').viewBefore(id, 'word', this.userId);
+        if(rt.code > 0) {
+            return this.fail(rt.msg)
+        }
+        return this.success(rt.data);
     }
 
     async delAction() {
