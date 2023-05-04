@@ -14,9 +14,6 @@
 						<div class="layui-form-item layui-inline">
 							<input type="number" name="id" placeholder="申请id" class="layui-input">
 						</div>
-						<div class="layui-form-item layui-inline">
-							<input type="text" name="username" placeholder="申请人" class="layui-input">
-						</div>
 						<div class="layui-input-inline" style="width: 100px;">
 							<select name="status">
 								<option value="">选择状态</option>
@@ -56,16 +53,19 @@
 		        新增
 		    </button>
 		</script>
-		<script type="text/html" id="stock_sign">
-			<button class="pear-btn pear-btn-primary pear-btn-sm" lay-event="sign">
-				<i class="layui-icon layui-icon-edge"></i>
-			</button>
-		    
-		</script>
+
 		<script type="text/html" id="stock_apply-bar">
-			{{# if(d.status == 1){ }}
-			<button class="pear-btn pear-btn-primary pear-btn-sm" lay-event="edit"><i class="layui-icon layui-icon-auz"></i></button>
-		    <button class="pear-btn pear-btn-danger pear-btn-sm" lay-event="remove"><i class="layui-icon layui-icon-delete"></i></button>
+            {{# if(d.status == 2 || d.status == 5){ }}
+			<button class="pear-btn pear-btn-primary pear-btn-sm" lay-event="back" title="归还">
+				<i class="layui-icon layui-icon-refresh-3"></i>
+			</button>
+			{{# } else if(d.status == 1){ }}
+			<button class="pear-btn pear-btn-primary pear-btn-sm" lay-event="edit" title="编辑">
+                <i class="layui-icon layui-icon-edit"></i>
+            </button>
+		    <button class="pear-btn pear-btn-danger pear-btn-sm" lay-event="remove" title="删除">
+                <i class="layui-icon layui-icon-delete"></i>
+            </button>
 			{{# } }}
 		</script>
 		<script type="text/html" id="stock_apply-status">
@@ -101,11 +101,6 @@
 							align: 'center'
 						},
 						{
-							title: '申请人',
-							field: 'username',
-							align: 'center'
-						},
-						{
 							title: '商品名称',
 							field: 'goods_name',
 							align: 'center'
@@ -124,11 +119,6 @@
 							title: '归还数',
 							field: 'back_num',
 							align: 'center'
-						},
-						{
-							title: '签名',
-							field: 'sign',
-							templet: '#stock_sign'
 						},
 						{
 							title: '状态',
@@ -154,7 +144,7 @@
 
 				table.render({
 					elem: '#stock_apply-table',
-					url: apiUrl + 'stock_apply/list',
+					url: apiUrl + 'stock_apply/userlist',
 					headers : getHeader(),
 					parseData: function(res) {
 						//console.log(res)
@@ -168,7 +158,6 @@
 					page: true,
 					cols: cols,
 					skin: 'line',
-
 					toolbar: '#stock_apply-toolbar',
 					defaultToolbar: [{
 						title: '刷新',
@@ -183,8 +172,8 @@
 					} else if (obj.event === 'edit') {
 						window.edit(obj);
 					}
-					else if (obj.event === 'sign') {
-						window.sign(obj);
+                    else if (obj.event === 'back') {
+						window.back(obj);
 					}
 				});
 
@@ -219,22 +208,7 @@
 					});
 					return false;
 				})
-				window.sign = function(obj) {
-					layer.photos({
-						skin: 'layui-layer-win10',
-						photos: {
-						  "title": obj.data.username + ' 签名',
-						  "start": 0,
-						  "data": [
-							{
-							  "alt": "layer",
-							  "pid": 1,
-							  "src": obj.data.sign,
-							}
-						  ]
-						}
-					  });
-				}
+
 				window.add = function() {
 					layer.open({
 						type: 2,
@@ -244,22 +218,34 @@
 						area: ['80%', '100%'],
 						anim: 1,
 						maxmin: true,
-						content: MODULE_PATH + 'check.html'
+						content: MODULE_PATH + 'user.html'
 					});
 				}
-
-				window.edit = function(obj) {
-					layer.confirm('审核通过后库存将减少', {icon: 3, title:'提示'}, function(index){
-					    layer.close(index);
-					    _post(layui, 'stock_apply/edit',{id : obj.data.id}, res => {
-							layer.msg('审核成功',{icon:1,time:1000},() => {
-								table.reload('stock_apply-table')
-							});
-						}, err => {
-							//layer.msg('删除失败',{icon:2,time:1000});
-						})
+                window.edit = function(obj) {
+					layer.open({
+						type: 2,
+						title: '编辑',
+						shade: 0.1,
+						offset: 'rt',
+						area: ['80%', '100%'],
+						anim: 1,
+						maxmin: true,
+						content: MODULE_PATH + 'user.html?id=' + obj.data.id
 					});
 				}
+                window.back = function(obj) {
+					layer.open({
+						type: 2,
+						title: '归还',
+						shade: 0.1,
+						offset: 'rt',
+						area: ['80%', '100%'],
+						anim: 1,
+						maxmin: true,
+						content: MODULE_PATH + 'userback.html?id=' + obj.data.id
+					});
+				}
+				
 				window.remove = function(obj){
 		            layer.confirm('确定要删除', {icon: 3, title:'提示'}, function(index){
 		                layer.close(index);

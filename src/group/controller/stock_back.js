@@ -36,6 +36,7 @@ module.exports = class extends Base {
         post.status = 1;
         post.user_id = this.userId
         post.group_id = this.groupId
+        
         let id = await this.model('stock_back').add(post);
         return this.success(id);
     }

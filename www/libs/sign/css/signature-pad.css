@@ -168,7 +168,7 @@
     to { background-color: #A2D603; -webkit-box-shadow: 0 0 9px #333; }
 }
 .close{
-    padding-top:3px;
+    padding:3px 15px;
     border:1px solid #FFFFFF;
     color:#FFFFFF;
     font-size:14px;

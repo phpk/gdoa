@@ -104,13 +104,16 @@ submitButton.addEventListener("click", function(event) {
         alert("Please provide a signature first.");
     } else {
         // var canvas = document.getElementById("canvas");
-        var image = document.getElementById("imgSignature");
+        //var image = document.getElementById("imgSignature");
+        var image = parent.document.getElementById("imgSignature");
+
         // var image = document.createElement("img");
         image.src = signaturePad.toDataURL("image/svg+xml");
+        parent.layer.close(parent.layer.getFrameIndex(window.name));
         // document.getElementById("mycanvas").appendChild(image);
     }
 });
-
+/*
 savePNGButton.addEventListener("click", function(event) {
     if (signaturePad.isEmpty()) {
         alert("Please provide a signature first.");
@@ -137,3 +140,4 @@ saveSVGButton.addEventListener("click", function(event) {
         download(dataURL, "signature.svg");
     }
 });
+*/
