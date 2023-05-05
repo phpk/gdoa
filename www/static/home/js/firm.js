@@ -1,10 +1,3 @@
-/**
- 
- @Name: layuiNetCompany - 大气风格的网络公司企业模版
- @Author: xuxingyu
- @Copyright: layui.com
- 
- */
 
 layui.define(['jquery', 'element', 'carousel', 'laypage'], function(exports){
   var $ = layui.jquery
