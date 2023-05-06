@@ -49,7 +49,12 @@ module.exports = class extends Base {
             for(let p in val) {
                 d[p] = val[p]
             }
-            d.user_name = userList.find(u => u.id == d.user_id).name
+            if(d.user_id > 0) {
+                d.user_name = userList.find(u => u.id == d.user_id).name
+            }else {
+                d.user_name = '游客'
+            }
+            
             if(!think.isEmpty(statusData)) {
                 let statusVal = this.service('approve').getStatusValue(statusData, d.status)
                 d._status_name = statusVal.name;
@@ -112,8 +117,9 @@ module.exports = class extends Base {
 
     async addDataAction() {
         let post = this.post();
+        let userId = this.userId;
         post.group_id = this.groupId;
-        post.user_id = this.userId;
+        post.user_id = userId;
         //post.formdesign = JSON.parse(post.formdesign)
         //console.log(post)
         //post.data = JSON.stringify(post);
@@ -126,7 +132,7 @@ module.exports = class extends Base {
         await db.startTrans()
         try {
             let id = await this.model('form_data').add(post);
-            let rt = await this.model('approve').tickApprove(this.groupId, this.userId, 1, post.fid, id, '');
+            let rt = await this.model('approve').tickApprove(this.groupId, userId, 1, post.fid, id, '');
             if(rt.code > 0) {
                 db.rollback()
                 return this.fail(rt.msg)

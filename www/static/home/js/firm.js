@@ -86,6 +86,8 @@ layui.define(['jquery', 'element', 'carousel', 'laypage'], function(exports){
       });
     });
   });  
-
+  $(".reg").click(e => {
+    window.open("/group")
+  })
   exports('firm', {}); 
 });

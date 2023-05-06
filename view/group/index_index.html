@@ -60,8 +60,13 @@
         <!--li class="layui-nav-item layui-hide-xs"><a href="#" class="layui-icon layui-icon-release" id="changeTheme"></a>
         </li-->
         <li class="layui-nav-item layui-hide-xs message"></li>
-        <li class="layui-nav-item layui-hide-xs logout"><a href="#" class="layui-icon layui-icon-logout"
-            id="loginout"></a></li>
+        <li class="layui-nav-item layui-hide-xs user">
+          <a href="#" class="layui-icon layui-icon-username" id="changepwd"></a>
+        </li>
+        <li class="layui-nav-item layui-hide-xs logout">
+          <a href="#" class="layui-icon layui-icon-logout"
+            id="loginout"></a>
+        </li>
         <!--li class="layui-nav-item layui-hide-xs message"></li-->
         <!--li class="layui-nav-item user">
 						<a class="layui-icon layui-icon-username" href="javascript:;"></a>
@@ -114,12 +119,6 @@
         admin = layui.admin,
         popup = layui.popup,
         layer = layui.layer;
-
-      //admin.setConfigType("yml");
-      //admin.setConfigPath("config/pear.config.yml");
-
-      //admin.setConfigType("json");
-      //admin.setConfigPath("/static/ui/admin/config/setting.json");
       let setting = {
         "logo": {
           "title": "GodoOA",
@@ -223,6 +222,19 @@
 		admin.message(function(id, title, context, form) {
           console.log(id)
     });
+    $('#changepwd').click(e => {
+      layer.open({
+        type: 2,
+        title: '修改密码',
+        shadeClose: true,
+        shade: 0.8,
+        shadeClose: true, // 点击遮罩区域，关闭弹层
+        maxmin: true, // 允许全屏最小化
+        anim: 0, // 0-6 的动画形式，-1 不开启
+        area: ['500px', '300px'],
+        content: '/res/group/user/changepwd.html' // iframe 的 url
+      });
+    })
 				
 	})
   </script>

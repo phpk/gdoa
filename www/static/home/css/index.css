@@ -105,18 +105,22 @@ body{background: #FFF;}
 .main-news .content .news-img img{max-width: 90%;}
 .main-news .content .news-panel{display: inline-block; width: 70%; vertical-align: top; padding-left: 5px; box-sizing: border-box;}
 .main-news .content .news-panel strong a{display: block; color: #555; font-size: 18px; line-height: 26px; overflow: hidden; text-overflow:ellipsis; white-space: nowrap;}
-.main-news .content .news-panel p.detail{color: #777; line-height: 24px;}
-.main-news .content .news-panel p.read-push{color: #AAA; padding-top: 5px;}
+.main-news .content .news-panel p.detail{display: block;color: #777; line-height: 24px;}
+.main-news .content .news-panel p.read-push{display: block;color: #AAA; padding-top: 5px;}
 .main-news #newsPage .layui-laypage{display: block; text-align: center; margin-top: 70px;}
 .main-news #newsPage .layui-laypage a,.main-news #newsPage .layui-laypage span{font-size: 18px; line-height: 40px; height: 40px; margin-right: 20px; border-radius: 3px; color: #e3e3e3;}
 /*动态详情页*/
-.main-newsdate{margin-top: 80px; text-align: center;}
+.main-newsdate{margin-top: 80px; }
 .main-newsdate .news{text-align: left; line-height: 104px;}
-.main-newsdate h1{padding-top: 6px;}
-.main-newsdate .pushtime{color: #686868; font-size: 18px; line-height: 82px;}
-.main-newsdate .introTop{padding-bottom: 28px; font-size: 18px; line-height: 20px; text-align: left;}
+.main-newsdate h1{padding-top: 6px;text-align: center;}
+.main-newsdate .pushtime{color: #686868; font-size: 18px;text-align: center; line-height: 40px;}
+.main-newsdate .introTop{padding-bottom: 18px; font-size: 18px; line-height: 20px; text-align: left;}
+.main-newsdate .introTop p{text-align: left;text-indent: 2rem;}
 .main-newsdate .introBott{font-size: 18px; line-height: 42px; text-align: justify; padding: 40px 0 102px 0;}
 .main-newsdate img{max-width: 100%;}
+.newscontent{
+  padding: 18px 20px; font-size: 16px; line-height: 30px;text-indent: 32px;
+}
 
 
 /** 案例 */
@@ -199,7 +203,7 @@ body{background: #FFF;}
   .main.product .content .content-img{text-align: left;}
   .main-news .content .news-panel strong a{font-size: 20px; line-height: 30px;}
   .main-news .content .news-panel p.read-push{padding-top: 0; position: absolute; bottom: 40px;}
-  .main-newsdate .pushtime{line-height: 142px;}
+  .main-newsdate .pushtime{line-height: 42px;}
   .main-case .content{width: 45%;}
   .main-case .content.even{margin-left: 9%;}
   .main-about ul.aboutab li{padding: 0 32px; font-size: 24px; margin-left: 30px; line-height: 50px;}

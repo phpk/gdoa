@@ -48,6 +48,9 @@ module.exports = class extends Base {
         let has = await this.model('article').where({ id: post.id }).find();
         if (think.isEmpty(has)) return this.fail('编辑的数据不存在');
         await this.model('article').update(post);
+        if(has.image && post.image != has.image) {
+            fs.unlink(path.join(think.ROOT_PATH, 'www' + has.image), (e)=>{})
+        }
         return this.success()
     }
 
@@ -55,6 +58,7 @@ module.exports = class extends Base {
         let id = this.get('id');
         let data = await this.model('article').where({ id }).find()
         if (think.isEmpty(data)) return this.fail('数据为空')
+        data.artCate = artCate;
         return this.success(data);
     }
 

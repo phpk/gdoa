@@ -25,6 +25,7 @@ specifiers:
   koa-static-router: ^1.5.0
   koa2-ratelimit: ^0.9.0
   luckyexcel: ^1.0.1
+  marked: ^5.0.0
   minimist: ^1.2.5
   mysql-import: ^5.0.21
   mysql-ssh: ^1.0.6
@@ -68,6 +69,7 @@ dependencies:
   koa-static-router: 1.5.0
   koa2-ratelimit: 0.9.1
   luckyexcel: 1.0.1
+  marked: 5.0.0
   mysql-import: 5.0.26
   mysql-ssh: 1.0.6
   mysqldump: 3.2.0
@@ -3425,7 +3427,7 @@ packages:
     resolution: {integrity: sha512-oWb1Z6mkHIskLzEJ/XWX0srkpkTQ7vaopMQkyaEIoq0fmtFVxOthb8cCxeT+p3ynTdkk/RZwbgG4brR5BeWECw==}
     engines: {node: '>= 4.0'}
     os: [darwin]
-    deprecated: fsevents 1 will break on node v14+ and could be using insecure binaries. Upgrade to fsevents 2.
+    deprecated: The v1 package contains DANGEROUS / INSECURE binaries. Upgrade to safe fsevents v2
     requiresBuild: true
     dependencies:
       bindings: 1.5.0
@@ -5482,6 +5484,12 @@ packages:
   /marked/0.6.2:
     resolution: {integrity: sha512-LqxwVH3P/rqKX4EKGz7+c2G9r98WeM/SW34ybhgNGhUQNKtf1GmmSkJ6cDGJ/t6tiyae49qRkpyTw2B9HOrgUA==}
     engines: {node: '>=0.10.0'}
+    hasBin: true
+    dev: false
+
+  /marked/5.0.0:
+    resolution: {integrity: sha512-YQ6+L9l/NSBDjFgCQQebmTCc62EUdZ5RpIZ7A/FmC8IYMB5s7Cz8sT7imuMAkbIL4CvXpQLdW45fpK5UwiU7DA==}
+    engines: {node: '>= 18'}
     hasBin: true
     dev: false
 

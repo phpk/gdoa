@@ -6,12 +6,6 @@ const jwt = require('jsonwebtoken');
  */
 module.exports = class extends think.Controller {
 	indexAction() {
-		// let code = this.get('authCode');
-		// console.log(code)
-		// if (think.isEmpty(code)) {
-		// 	this.redirect("https://login.dingtalk.com/oauth2/auth?redirect_uri=http%3A%2F%2Fgdoa.roter.me/group/login%2Fauth&response_type=code&client_id=ding3qyv7yndlbjbckkd&scope=openid&state=dddd&prompt=consent")
-		// 	return;
-		// }
 		return this.display();
 	}
 	async dingAction() {
