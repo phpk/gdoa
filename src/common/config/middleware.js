@@ -71,7 +71,9 @@ module.exports = [
   },
   {
     handle: 'router',
-    options: {}
+    options: {
+      suffix: ['.html'],
+    }
   },
   'logic',
   'controller'

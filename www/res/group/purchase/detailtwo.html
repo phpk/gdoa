@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>预算详情</title>
+    <link rel="stylesheet" href="/static/layui/css/layui.css" />
+    <link rel="stylesheet" href="/static/ui/css/ui.css" />
+</head>
+
+<body class="pear-container">
+    <div class="layui-row layui-col-space10">
+
+        <div class="layui-col-md12" id="rightbox">
+            <div class="layui-card">
+                <div class="layui-card-body">
+                    <form class="layui-form" action="" id="data-from">
+                        <div class="layui-form-item">
+                            <div class="layui-input-inline" style="width:100px">
+                                <input type="text" name="name" placeholder="型号" class="layui-input">
+                            </div>
+                            <div class="layui-input-inline" style="width:100px">
+                                <input type="text" name="supplier_name" placeholder="厂商" class="layui-input">
+                            </div>
+                            <button class="pear-btn pear-btn-md pear-btn-primary" lay-submit
+                                lay-filter="pur-data-query">
+                                <i class="layui-icon layui-icon-search"></i>
+                                查询
+                            </button>
+                            <button type="reset" class="pear-btn pear-btn-md" lay-filter="pur-data-reset" lay-submit>
+                                <i class="layui-icon layui-icon-refresh"></i>
+                                重置
+                            </button>
+                            <span class="pear-btn pear-btn-md pear-btn-danger" id="downtwo">
+                                <i class="layui-icon layui-icon-print"></i>
+                                模版
+                            </span>
+                        </div>
+                    </form>
+                </div>
+                <div class="layui-card-body">
+                    <table id="pur-data-table" lay-filter="pur-data-table"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+
+<script type="text/html" id="pur-data-toolbar">
+		<button class="pear-btn pear-btn-primary pear-btn-md" lay-event="add">
+	        <i class="layui-icon layui-icon-add-1"></i>
+	        新增
+	    </button>
+		<button class="pear-btn pear-btn-danger pear-btn-md" lay-event="del">
+	        <i class="layui-icon layui-icon-delete"></i>
+            删除
+	    </button>
+	    <button class="pear-btn pear-btn-success pear-btn-md" id="importTwo">
+	        <i class="layui-icon layui-icon-upload-drag"></i>
+	        导入xlsx
+	    </button>
+        <button class="pear-btn pear-btn-md" id="importGoods">
+	        <i class="layui-icon layui-icon-upload"></i>
+	        导入商品
+	    </button>
+        <button class="pear-btn pear-btn-md" id="countOne">
+	        <i class="layui-icon layui-icon-engine"></i>
+	        统计
+	    </button>
+</script>
+
+<script type="text/html" id="pur-data-bar">
+    <button class="pear-btn pear-btn-warming pear-btn-sm" lay-event="details">
+        <i class="layui-icon layui-icon-transfer"></i>
+    </button>
+	<button class="pear-btn pear-btn-primary pear-btn-sm" lay-event="edit">
+        <i class="layui-icon layui-icon-edit"></i>
+	</button>
+	<button class="pear-btn pear-btn-danger pear-btn-sm" lay-event="remove">
+        <i class="layui-icon layui-icon-delete"></i>
+	</button>
+</script>
+
+<script src="../config.js"></script>
+<script src="/static/layui/layui.js"></script>
+<script src="/static/ui/ui.js"></script>
+<script>
+    layui.use(['table', 'form', 'jquery', 'upload'], function () {
+        let table = layui.table;
+        let form = layui.form;
+        let $ = layui.jquery;
+        let req = _req();
+        let purId = req.pur_id;
+        let pid = req.pid;
+        let MODULE_PATH = "./";
+        let upload = layui.upload;
+        let pData;
+
+
+        let dataCols = [
+            [
+                {
+                    type: 'checkbox',
+                    field: 'id',
+                    minWidth: 50
+                },
+                {
+                    title: 'ID',
+                    field: 'id',
+                    minWidth: 60
+                },
+                {
+                    title: '型号',
+                    field: 'name',
+                    edit: true,
+                    align: 'center',
+                    minWidth: 120
+                },
+                {
+                    title: '说明',
+                    field: 'desc',
+                    edit: true,
+                    align: 'center',
+                    minWidth: 150
+                },
+                {
+                    title: '厂商',
+                    field: 'supplier_name',
+                    edit: true,
+                    align: 'center',
+                    minWidth: 100,
+                    totalRowText: '单项总计'
+                },
+                {
+                    title: '单价',
+                    field: 'price',
+                    edit: true,
+                    align: 'center',
+                    minWidth: 80,
+                    totalRow: '{{= parseInt(d.TOTAL_NUMS) }}'
+                },
+                {
+                    title: '数量',
+                    field: 'num',
+                    edit: true,
+                    align: 'center',
+                    minWidth: 60,
+                    totalRow: '{{= parseInt(d.TOTAL_NUMS) }}'
+                },
+                {
+                    title: '总价',
+                    field: 'all_price',
+                    edit: true,
+                    align: 'center',
+                    minWidth: 150,
+                    totalRow: '{{= parseInt(d.TOTAL_NUMS) }}'
+                },
+                {
+                    title: '占比',
+                    field: 'per',
+                    align: 'center',
+                    minWidth: 90
+                },
+                {
+                    title: '备注',
+                    field: 'remark',
+                    edit: true,
+                    align: 'center',
+                    minWidth: 300
+                },
+
+                {
+                    title: '操作',
+                    toolbar: '#pur-data-bar',
+                    align: 'center',
+                    fixed: 'right',
+                    width: 160
+                }
+            ]
+        ];
+        _get(layui, 'purchase/editOneBefore?id=' + pid, res => {
+            renderData(pid)
+            pData = res;
+        })
+
+        window.renderData = function (pid) {
+            table.render({
+                elem: '#pur-data-table',
+                //url: "../../libs/data/dictData.json",
+                url: apiUrl + 'purchase/detail?pid=' + pid + '&pur_id=' + purId,
+                headers: getHeader(),
+                parseData: function (res) {
+                    //console.log(res)
+                    return {
+                        "code": res.code, //解析接口状态
+                        "msg": res.message, //解析提示文本
+                        "count": res.data.count, //解析数据长度
+                        "data": res.data.list //解析数据列表
+                    };
+                },
+                page: true,
+                totalRow: true,
+                limit: 100,
+                limits: [100, 200, 300, 400, 500, 1000],
+                height: 'full-148',
+                cols: dataCols,
+                skin: 'line',
+                toolbar: '#pur-data-toolbar',
+                defaultToolbar: [{
+                    title: '刷新',
+                    layEvent: 'refresh',
+                    icon: 'layui-icon-refresh',
+                }, 'filter', 'print', 'exports'],
+                done: () => {
+                    tableEvent()
+                }
+            });
+
+        }
+        function tableEvent() {
+            upload.render({
+                elem: '#importTwo', //绑定元素
+                url: apiUrl + 'purchase/import?type=two&pur_id=' + purId + '&pid=' + pid, //上传接口
+                headers: getHeader(),
+                exts: 'xlsx',
+                field: 'file',
+                accept: 'file',
+                done: function (res) {
+                    //上传完毕回调
+                    console.log(res)
+                    layer.msg('导入成功')
+                    table.reload('pur-data-table');
+                },
+                error: function () {
+                    //请求异常回调
+                    layer.msg('导入失败', { icon: 2, time: 1000 })
+                }
+            });
+
+            $('#importGoods').click(() => {
+                layer.open({
+                    type: 2,
+                    title: '导入商品',
+                    shade: 0.1,
+                    offset: 'lt',
+                    area: ['70%', '100%'],
+                    content: MODULE_PATH + 'goods.html?pid=' + pid + '&pur_id=' + purId
+                });
+            })
+            $('#countOne').click(() => {
+                layer.confirm('确认后主项的价格将会按子项计算', { icon: 3, title: '提示' }, function (index) {
+                    layer.close(index);
+                    _post(layui, 'purchase/countOne', { pur_id: purId, pid: pid }, res => {
+                        layer.msg('统计成功', { icon: 1, time: 1000 }, () => {
+                            //obj.del();
+                            table.reload('pur-data-table');
+                        });
+                    }, err => {
+                        //layer.msg('删除失败',{icon:2,time:1000});
+                    })
+                });
+            })
+        }
+
+
+        window.addData = function (obj) {
+            layer.open({
+                type: 2,
+                title: '新增' + pData.name,
+                shade: 0.1,
+                area: ['500px', '450px'],
+                content: MODULE_PATH + 'edittwo.html?pid=' + pid + '&pur_id=' + purId
+            });
+        }
+
+        window.editData = function (obj) {
+            layer.open({
+                type: 2,
+                title: '修改' + obj.data.name,
+                shade: 0.1,
+                area: ['500px', '450px'],
+                content: MODULE_PATH + 'edittwo.html?pid=' + pid + '&id=' + obj.data.id + '&pur_id=' + purId
+            });
+        }
+
+        window.removeData = function (obj) {
+            layer.confirm('确定要删除', { icon: 3, title: '提示' }, function (index) {
+                layer.close(index);
+                _post(layui, 'purchase/delOne', { id: obj.data.id }, res => {
+                    layer.msg('删除成功', { icon: 1, time: 1000 }, () => {
+                        obj.del();
+                    });
+                }, err => {
+                    //layer.msg('删除失败',{icon:2,time:1000});
+                })
+            });
+        }
+
+        table.on('tool(pur-data-table)', function (obj) {
+            if (obj.event === 'remove') {
+                window.removeData(obj);
+            } else if (obj.event === 'edit') {
+                window.editData(obj);
+            } else if (obj.event === 'details') {
+                window.opentwo(obj);
+            }
+        });
+        window.opentwo = function (obj) {
+            layer.open({
+                type: 2,
+                title: '修改详情' + obj.data.name,
+                shade: 0.1,
+                offset: 'rt',
+                area: ['98%', '100%'],
+                anim: 1,
+                maxmin: true,
+                content: MODULE_PATH + 'detailtwo.html?pid=' + obj.data.id + '&pur_id=' + purId
+            });
+        }
+        table.on('toolbar(pur-data-table)', function (obj) {
+            if (obj.event === 'add') {
+                window.addData(obj);
+            }
+            else if (obj.event === 'refresh') {
+                window.refreshData(obj);
+            }
+            // else if (obj.event === 'batchRemove') {
+            //     layer.msg("批量删除")
+            // }
+            else if (obj.event === 'del') {
+                //layer.msg("批量删除")
+                window.delData(obj);
+            }
+        });
+
+        form.on('submit(pur-data-query)', function (data) {
+            table.reload('pur-data-table', {
+                where: {
+                    param: $('#data-from').serialize()
+                },
+                page: {
+                    curr: 1
+                }
+            })
+            return false;
+        });
+
+        form.on('submit(pur-data-reset)', function (data) {
+            table.reload('pur-data-table', {
+                where: {
+                    param: ''
+                },
+                page: {
+                    curr: 1
+                }
+            });
+            return false;
+        })
+
+        window.refreshData = function () {
+            table.reload('pur-data-table');
+        }
+
+        table.on('edit(pur-data-table)', function (obj) {
+            //console.log(obj)
+            let update = {
+                id: obj.data.id,
+                field: obj.field,
+                value: obj.value
+            }
+            //console.log(update)
+            //return;
+            _post(layui, 'purchase/editData', update, res => {
+                //console.log(res)
+                table.reload('pur-data-table');
+            }, err => {
+                //console.log(err)
+            })
+        });
+        const downfile = (url, filename) => {
+            let link = document.createElement('a');
+            link.style.display = 'none';
+            link.href = url;
+            link.setAttribute('target', '_blank');
+            link.setAttribute('download', filename);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        $('#downtwo').click(() => {
+            let url = '/static/tpl/pur/two.xlsx', filename = '小项模版'
+            downfile(url, filename)
+        })
+
+
+
+
+        window.delData = function (obj) {
+            let list = table.checkStatus('pur-data-table').data;
+            console.log(list)
+            if (list.length < 1) {
+                layer.msg('请选择数据', { icon: 2, time: 1000 })
+                return false;
+            }
+            let ids = list.map(d => {
+                return d.id
+            });
+            //console.log(ids)
+            _post(layui, 'purchase/delAll', { pur_id: purId, ids: ids.join(',') }, res => {
+                layer.msg('删除成功', { icon: 1, time: 1000 }, () => {
+                    //obj.del();
+                    table.reload('pur-data-table');
+                });
+            }, err => {
+                //layer.msg('删除失败',{icon:2,time:1000});
+            })
+        }
+
+
+    })
+</script>
+
+</html>

@@ -297,6 +297,10 @@
                 $('#set_field').removeClass('layui-this')
                 $('#set_val').addClass('layui-this')
             }
+            document.body.ondrop = function (event) { 
+                event.preventDefault(); 
+                event.stopPropagation(); 
+            }
             //form.on('submit(submitIframe)', function (data) {
             $("#submitBtn").click(() =>{
                 //console.log($("#editform").serializeArray())

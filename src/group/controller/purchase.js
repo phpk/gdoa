@@ -267,7 +267,7 @@ module.exports = class extends ProjectBase {
             return this.fail('审核状态不可编辑')
         }
 
-        let has = await this.model('purchase_list').where({pid, goods_id, pur_id}).find()
+        let has = await this.model('purchase_list').where({ goods_id, pur_id}).find()
         if(!think.isEmpty(has)) {
             return this.fail('该商品已导入')
         }
@@ -327,6 +327,7 @@ module.exports = class extends ProjectBase {
     }
     async countOneAction() {
         let pur_id = this.post('pur_id')*1
+        let pid = this.post('pid') * 1
         let statusCheck = await this.model('purchase').where({ id: pur_id }).find()
         if(think.isEmpty(statusCheck) || statusCheck.status > 0) {
             return this.fail('审核状态不可编辑')
@@ -334,10 +335,10 @@ module.exports = class extends ProjectBase {
         let list = await this.model('purchase_list').where({pur_id}).select()
         let top = []
         list.forEach(d => {
-            if(d.pid < 1) {
+            if(d.pid  == pid) {
                 top.push({
                     id : d.id,
-                    num : d.num,
+                    num : 0,
                     price : 0,
                     all_price : 0
                 })
@@ -346,9 +347,11 @@ module.exports = class extends ProjectBase {
         top.forEach(d => {
             list.forEach(k => {
                 if(k.pid == d.id) {
+                    d.num = d.num + k.num;
                     d.price = d.price + k.all_price
                 }
             })
+            //d.num = 
             d.all_price = d.num*d.price
         })
         await this.model('purchase_list').updateMany(top)

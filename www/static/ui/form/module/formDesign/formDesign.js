@@ -7,7 +7,7 @@
 // +----------------------------------------------------------------------
 // | Author: meystack <coolsec@foxmail.com> Apache 2.0 License Code
 // +----------------------------------------------------------------------
-layui.define(['form', 'jquery', 'layer', 'cascader', 'tags'], function (exports) {
+layui.define(['form', 'jquery', 'layer', 'cascader', 'tags', 'iconSelected'], function (exports) {
   "use strict";
 
   var $ = layui.$
@@ -15,7 +15,7 @@ layui.define(['form', 'jquery', 'layer', 'cascader', 'tags'], function (exports)
     , layer = layui.layer
     , tags = layui.tags
     , cascader = layui.cascader
-
+    , iconSelected = layui.iconSelected
     //模块名
     , MOD_NAME = 'formDesign'
     , MOD_INDEX = 'layui_' + MOD_NAME + '_index' //模块索引名
@@ -145,7 +145,11 @@ layui.define(['form', 'jquery', 'layer', 'cascader', 'tags'], function (exports)
     data_value: '选项值',
     data_parents: '关联父类',
     tips: '文字提示',
+    icon : '图标',
     size: '文件大小',
+    iconsize: '图标大小',
+    fontsize :'字体大小',
+    href : '链接',
     data_size: '文件大小',
     data_accept: '上传类型',
     msg: '消息提示',
@@ -433,6 +437,16 @@ layui.define(['form', 'jquery', 'layer', 'cascader', 'tags'], function (exports)
       name: '-1',
       msg: '消息提示',
       offset: 4,
+    },
+    icon: {
+      index: '-1',
+      tag: "icon",
+      name: '-1',
+      text: '图标',
+      iconsize : 25,
+      fontsize : 12,
+      icon: 'layui-icon layui-icon-username',
+      href : ''
     },
     button: {
       index: '-1',
@@ -1248,6 +1262,7 @@ layui.define(['form', 'jquery', 'layer', 'cascader', 'tags'], function (exports)
     var that = this,
       options = that.config,
       optionsHtml = STR_EMPTY;
+      //console.log(data)
     for (const key in data) {
       // 过滤index
       if (key == 'index') {
@@ -1270,12 +1285,19 @@ layui.define(['form', 'jquery', 'layer', 'cascader', 'tags'], function (exports)
           break;
         case 'name':
         case 'msg':
+        case 'href':
+        case 'iconsize':
+        case 'fontsize':
         case 'text':
         case 'color':
         case 'default':
         case 'data_default':
         case 'data_theme':
           optionsHtml += '<input class="layui-input layui-change" value="' + value + '" id="' + key + '">';
+          break;
+        case 'icon':
+          optionsHtml += '<input class="layui-input icon-selected layui-change" value="' + value + '" id="' + data.name + '_iconcheck">';
+          
           break;
         case 'type':
           optionsHtml += '<select lay-filter="componentSelected" data-field="type">';
@@ -1431,6 +1453,7 @@ layui.define(['form', 'jquery', 'layer', 'cascader', 'tags'], function (exports)
         case 'max':
         case 'min':
         case 'size':
+        
         case 'height':
         case 'data_max':
         case 'data_min':
@@ -1587,7 +1610,7 @@ layui.define(['form', 'jquery', 'layer', 'cascader', 'tags'], function (exports)
           optionsHtml += LAY_FORM_DIV + LAY_FORM_DIV;
           break;
         case 'column':
-          var attrs = [2, 3, 4];
+          var attrs = [2, 3, 4, 6];
           optionsHtml += '<select lay-filter="componentSelected" data-field="column">';
           for (const i in attrs) {
             var val = attrs[i];
@@ -1627,6 +1650,36 @@ layui.define(['form', 'jquery', 'layer', 'cascader', 'tags'], function (exports)
         }
       });
     })
+    iconSelected.render(".icon-selected", {
+      width : 180,
+      event: {
+        select(event, data) {
+          let element = that.recursiveFindElem(options.data, options.state.name);
+          //console.log(element)
+          //console.log(options.data)
+          $("#" + element.name + "_icon").attr("class", data.icon)
+          element.icon = data.icon;
+        } 
+      }
+    });
+    /*
+    $(".icon-selected").each((index, obj) => {
+      let id = $(obj).attr('id').replace('_iconcheck','')
+      iconSelected.render("#" + id + "_iconcheck", {
+        width : 180,
+        event: {
+          select(event, data) {
+            //console.log(this)
+            $("#" + id + "_icon").attr("class", data.icon)
+            //$("#" + id + "_iconcheck").val(data.icon)
+             // console.log("选中的图标数据", { event, data });
+              
+          },
+        }
+      });
+    })
+    */
+    
 
     // 选项拖动接口
     if ($('#Propertie #form-options').length) {
@@ -2419,6 +2472,25 @@ layui.define(['form', 'jquery', 'layer', 'cascader', 'tags'], function (exports)
         return html;
       }
     },
+    icon: {
+      render: function (data) {
+        var html = getBeforeItem(data);
+        html += '<div class="' + LAY_INLINE_CLASS + '" style="text-align:center">';
+        if(data.href){
+          html += '<a href="'+data.href+'">'
+        }
+        html += ' <i style="font-size:' + data.iconsize + 'px" class="' + data.icon + '" id="' + data.name+'_icon"></i>';
+        if(data.href){
+          html += '</a>'
+        }
+        if(data.text) {
+          html += '<div style="font-size:' + data.fontsize + 'px" id="' + data.name+'_label">' + data.text + '</div>';
+        }
+        html += LAY_FORM_DIV;
+        html += LAY_FORM_DIV;
+        return html;
+      }
+    },
     button: {
       render: function (data) {
         var html = getBeforeItem(data);
@@ -2552,7 +2624,14 @@ layui.define(['form', 'jquery', 'layer', 'cascader', 'tags'], function (exports)
           var data = that.getComponentJson($(item).data('tag'));
           data.index = options.count++;
           data.name = data.tag + '_' + data.index;
+          if(!gridElem.children[parentIndex]) {
+            gridElem.children[parentIndex] = {}
+          }
+          if(!gridElem.children[parentIndex].children) {
+            gridElem.children[parentIndex].children = []
+          }
           gridElem.children[parentIndex].children.splice(evt.newIndex, 0, data);
+         
         }
 
         options.state = data;
