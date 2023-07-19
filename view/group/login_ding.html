@@ -27,6 +27,7 @@
     <!-- 框 架 初 始 化 -->
     <script>
         layui.use(['admin', 'jquery', 'popup', 'layer'], function () {
+            
             dd.runtime.permission.requestAuthCode({
                 corpId: "{{ corpId }}",
                 onSuccess: function (result) {

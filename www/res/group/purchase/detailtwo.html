@@ -72,6 +72,11 @@
 </script>
 
 <script type="text/html" id="pur-data-bar">
+    {{#  if(d.status === 0){ }}
+    <button class="pear-btn pear-btn-success pear-btn-sm" lay-event="tock">
+        <i class="layui-icon layui-icon-key"></i>
+    </button>
+    {{#  } }}
     <button class="pear-btn pear-btn-warming pear-btn-sm" lay-event="details">
         <i class="layui-icon layui-icon-transfer"></i>
     </button>
@@ -176,7 +181,7 @@
                     toolbar: '#pur-data-bar',
                     align: 'center',
                     fixed: 'right',
-                    width: 160
+                    width: 200
                 }
             ]
         ];
@@ -306,7 +311,21 @@
             } else if (obj.event === 'details') {
                 window.opentwo(obj);
             }
+            else if (obj.event === 'tock') {
+                window.tock(obj);
+            }
         });
+        window.tock = function(obj) {
+            layer.confirm('确定提交审核？', { icon: 3, title: '提示' }, function (index) {
+                layer.close(index);
+                _post(layui, 'purchase/tock', { id: obj.data.id }, res => {
+                    layer.msg('提交成功', { icon: 1, time: 1000 });
+                    table.reload('pur-data-table');
+                }, err => {
+                    //layer.msg('删除失败',{icon:2,time:1000});
+                })
+            });
+        }
         window.opentwo = function (obj) {
             layer.open({
                 type: 2,

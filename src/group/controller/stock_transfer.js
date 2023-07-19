@@ -190,7 +190,7 @@ module.exports = class extends stockBase {
 		} else {
 			//return this.fail('数据已转入')
 			await this.model('stock_trans_tmp').where({
-				id: has.id
+				tmp_id: has.tmp_id
 			}).delete()
 			//await this.model('stock_in').where({id}).update({is_lock : 0});
 		}

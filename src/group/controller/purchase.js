@@ -327,7 +327,7 @@ module.exports = class extends ProjectBase {
     }
     async countOneAction() {
         let pur_id = this.post('pur_id')*1
-        let pid = this.post('pid') * 1
+        let pid = this.post('pid') * 1 || 0
         let statusCheck = await this.model('purchase').where({ id: pur_id }).find()
         if(think.isEmpty(statusCheck) || statusCheck.status > 0) {
             return this.fail('审核状态不可编辑')
@@ -348,11 +348,15 @@ module.exports = class extends ProjectBase {
             list.forEach(k => {
                 if(k.pid == d.id) {
                     d.num = d.num + k.num;
-                    d.price = d.price + k.all_price
+                    //d.price = d.price + k.all_price
+                    d.all_price = d.all_price + k.all_price
+                    //d.price = d.price + k.price
                 }
             })
+            d.price = d.all_price/d.num;
+            //d.num = 0;
             //d.num = 
-            d.all_price = d.num*d.price
+            //d.all_price = d.num*d.price
         })
         await this.model('purchase_list').updateMany(top)
         return this.success()
@@ -405,5 +409,132 @@ module.exports = class extends ProjectBase {
             db.rollback()
             return this.fail(e.message)
         }
+    }
+    async tockAction() {
+        let id = this.post('id');
+        //console.log(id)
+        let data = await this.model('purchase_list').where({id}).find();
+        if(think.isEmpty(data)) {
+            return this.fail('数据不存在')
+        }
+        if(data.status > 0) {
+            return this.fail('已提交')
+        }
+        if(data.all_price < 1) {
+            return this.fail('提交的预算金额不能小于1 ')
+        }
+        let purId = data.pur_id;
+        let statusCheck = await this.model('purchase').where({ id: purId }).find()
+        console.log(statusCheck)
+        if(think.isEmpty(statusCheck) || statusCheck.status < 1) {
+            return this.fail('请先提交全局审核')
+        }
+        let list =await this.model('purchase_list').where({pur_id : purId}).select();
+        //查找所有的父Id
+        let topArr = []
+        let findTop = (pid) => {
+            list.forEach(d => {
+                if(d.id === pid) {
+                    topArr.push(d.id)
+                    if(d.pid > 0) {
+                        findTop(d.pid)
+                    }
+                }
+            })
+        }
+        findTop(data.pid);
+        //查找所有的子id
+        let sunArr = []
+        let findSun = (id) => {
+            list.forEach(d => {
+                if(d.pid === id) {
+                    sunArr.push(d.id);
+                    findSun(d.id)
+                }
+            })
+        }
+        findSun(data.id)
+        //console.log(topArr)
+        //console.log(sunArr)
+        //如果父id有提交的则禁止提交
+        let hasTop = false;
+        topArr.forEach(d => {
+            let topData = list.find(t => {
+                return t.id == d.id
+            })
+            if(topData && topData.status > 0) {
+                hasTop = true;
+            }
+        })
+        if(hasTop) {
+            return this.fail('父类已提交，无需重复提交！')
+        }
+        let hasSun = false;
+        sunArr.forEach(d => {
+            let sunData = list.find(t => {
+                return t.id == d.id
+            })
+            if(sunData && sunData.status > 0) {
+                hasSun = true;
+            }
+        })
+        if(hasSun) {
+            return this.fail('有提交的子项，请逐步提交子项！')
+        }
+        let allTick = 0, hasTick = 0;
+        list.forEach(d => {
+            if(d.pid === 0) {
+                allTick += d.all_price;
+            }
+            if(d.status > 0 || d.id == data.id) {
+                hasTick += d.all_price;
+            }
+        })
+        if(hasTick > allTick) {
+            return this.fail('已超额提交')
+        }
+        let db = this.model('approve');
+        await db.startTrans()
+        try {
+            let rt = await db.tickApprove(this.groupId, this.userId, 6, 0, data.id, '');
+            if(rt.code > 0) {
+                db.rollback()
+                return this.fail(rt.msg)
+            }else{
+                db.commit()
+                return this.success();
+            }
+
+        } catch (e) {
+            db.rollback()
+            return this.fail(e.message)
+        }
+        //return this.success()
+    }
+    async viewBuyDataInfoAction() {
+        let id = this.get('id');
+        let info = await this.model('purchase_list').where({id}).find();
+        //let data = await this.model('purchase_list').where({id}).find();
+        let listAll = await this.model('purchase_list').where({pur_id : info.pur_id}).select();
+        let data = [],list = [];
+        console.log(listAll)
+        listAll.forEach(d => {
+            if(d.id == id) {
+                data.push(d)
+            }
+            if(d.pid == id) {
+                list.push(d)
+            }
+        })
+        list.forEach(d => {
+            d.have_child = false;
+            listAll.forEach(e => {
+                if(e.pid == d.id) {
+                    d.have_child = true;
+                }
+            })
+        })
+
+        return this.success({data, list, count : list.length})
     }
 }

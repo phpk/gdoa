@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>采购审核</title>
+    <link rel="stylesheet" href="/static/layui/css/layui.css" />
+    <link rel="stylesheet" href="/static/ui/css/ui.css" />
+</head>
+
+<body class="pear-container">
+    
+    <div class="layui-card">
+        <div class="layui-card-body">
+            <table id="all-table" lay-filter="all-table"></table>
+            <div class="layui-btn-group">
+                <!--button class="layui-btn layui-btn-primary layui-border-red layui-btn-sm" id="add">
+					<i class="layui-icon layui-icon-add-1"></i>
+					审核通过
+				</button-->
+                <button id="btnExpandAll" class="layui-btn layui-btn-sm layui-btn-normal">
+                    <i class="layui-icon">&#xe668;</i>展开全部
+                </button>
+                <button id="btnFoldAll" class="layui-btn layui-btn-sm layui-btn-warm">
+                    <i class="layui-icon">&#xe66b;</i>折叠全部
+                </button>
+            </div>
+            <table id="dept-table" lay-filter="dept-table"></table>
+        </div>
+    </div>
+
+
+
+    <script type="text/html" id="dept-bar">
+			<button class="layui-btn layui-btn-primary layui-btn-sm" lay-event="edit"><i class="layui-icon layui-icon-edit"></i></button>
+		    <button class="layui-btn layui-btn-danger layui-btn-sm" lay-event="remove"><i class="layui-icon layui-icon-delete"></i></button>
+		</script>
+    <script type="text/html" id="dept-time">
+			{{layui.util.toDateString(d.add_time*1000, 'yyyy-MM-dd HH:mm:ss')}}
+		</script>
+    <script src="../config.js"></script>
+    <script src="/static/layui/layui.js"></script>
+    <script src="/static/ui/ui.js"></script>
+    <script>
+        layui.use(['table', 'form', 'jquery', 'common', 'treeTable'], function () {
+            let table = layui.table;
+            let form = layui.form;
+            let $ = layui.jquery;
+            let common = layui.common;
+            let treeTable = layui.treeTable;
+            let MODULE_PATH = "./";
+            let req = _req();
+            let id = req.id;
+
+            let cols = [
+
+                {
+                    title: '型号',
+                    field: 'name',
+                    align: 'center',
+                    minWidth: 150
+                },
+                {
+                    title: '总价',
+                    field: 'all_price',
+                    align: 'center',
+                    minWidth: 120
+                },
+                {
+                    title: '单价',
+                    field: 'price',
+                    align: 'center',
+                    minWidth: 80
+                },
+                {
+                    title: '数量',
+                    field: 'num',
+                    align: 'center',
+                    minWidth: 60
+                },
+                {
+                    title: '说明',
+                    field: 'desc',
+                    align: 'center',
+                    minWidth: 150
+                },
+                {
+                    title: '厂商',
+                    field: 'supplier_name',
+                    align: 'center',
+                    minWidth: 100
+                },
+
+                {
+                    title: '备注',
+                    field: 'remark',
+                    align: 'center',
+                    minWidth: 300
+                },
+
+            ];
+            let insTb = treeTable.render({
+                elem: '#dept-table',
+                toolbar: '#dept-toolbar',
+                tree: {
+                    iconIndex: 1,  // 折叠图标显示在第几列
+                    idName: 'id',  // 自定义id字段的名称
+                    pidName: 'pid',  // 自定义标识是否还有子节点的字段名称
+                    haveChildName: 'have_child',  // 自定义标识是否还有子节点的字段名称
+                    isPidData: true  // 是否是pid形式数据
+                },
+                cols: cols,
+                reqData: function (d, callback) {
+                    let pid = d ? d.id : id;
+                    //console.log(pid)
+                    _get(layui, 'purchase/viewBuyDataInfo?id=' + pid, function (res) {
+                        //console.log(res)
+                        callback(res.list);  // 参数是数组类型
+                        table.render({
+                            elem: '#all-table',
+                            cols: [cols],
+                            data: res.data,
+                            //skin: 'line', // 表格风格
+                            //even: true,
+                            page: false, // 是否显示分页
+                        });
+                    });
+                }
+            })
+
+
+
+            treeTable.on('tool(dept-table)', function (obj) {
+                if (obj.event === 'remove') {
+                    window.remove(obj);
+                } else if (obj.event === 'edit') {
+                    window.edit(obj);
+                }
+            });
+
+
+            // 监听搜索操作
+
+            form.on('submit(dept-query)', function (data) {
+                treeTable.reload('dept-table', {
+                    where: {
+                        param: $('form').serialize()
+                    },
+                    page: {
+                        curr: 1
+                    }
+                })
+                return false;
+            });
+            form.on('submit(dept-reset)', function (data) {
+                treeTable.reload('dept-table', {
+                    where: {
+                        param: ''
+                    },
+                    page: {
+                        curr: 1
+                    }
+                });
+                return false;
+            })
+
+            $("#add").click(function () {
+                layer.open({
+                    type: 2,
+                    title: '新增部门',
+                    shade: 0.1,
+                    offset: 'rt',
+                    area: ['80%', '100%'],
+                    anim: 1,
+                    maxmin: true,
+                    content: MODULE_PATH + 'edit.html'
+                });
+            })
+            // 全部展开
+            $('#btnExpandAll').click(function () {
+                insTb.expandAll();
+            });
+
+            // 全部折叠
+            $('#btnFoldAll').click(function () {
+                insTb.foldAll();
+            });
+
+
+
+        })
+    </script>
+</body>
+
+</html>

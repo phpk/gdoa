@@ -46,11 +46,20 @@ module.exports = [
         back : ''
     },
     {
-        id : 6,
+        id : 7,
         name : '项目',
         table : 'project',
         field : 'status',
         info : 'project/approveDataInfo',
         list : 'project/approveDataList'
+    },
+    {
+        id : 6,
+        name : '采购',
+        table : 'purchase_list',
+        field : 'status',
+        info : 'purchase/buyDataInfo',
+        list : 'purchase/buyeDataList',
+        back : ''
     }
 ]
