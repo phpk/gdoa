@@ -17,8 +17,8 @@ module.exports = class extends Base {
         this.catesData = catesData;
     }
     async __before() {
-        this.userId = await this.session('userId')
-        this.groupId = await this.session('groupId')
+        //this.userId = await this.session('userId')
+        //this.groupId = await this.session('groupId')
     }
     async getCate(sid = 1) {
         let cates = await this.cache(this.groupId + '_projects_cate');

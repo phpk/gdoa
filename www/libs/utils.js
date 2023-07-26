@@ -81,7 +81,7 @@ const _ajax = (url, method = "GET", params, callback) => {
 
     // 建立连接  
     xmlhttp.open(method, url, true);
-    xmlhttp.withCredentials = true;
+    //xmlhttp.withCredentials = true;
     xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     //xmlhttp.setRequestHeader("Content-type", "application/json");
     xmlhttp.setRequestHeader(TOKEN_NAME, getToken());

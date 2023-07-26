@@ -27,7 +27,7 @@ module.exports = class extends Base {
         let { page, limit, param, fid, uid } = this.get();
         fid = fid*1;
         uid = uid * 1;
-        page = page*1 - 1
+        page = page*1 - 1;
         page = page < 0 ? 0 : page;
         let wStr = `( group_id = ${this.groupId} ) AND ( fid = ${fid} )`;
         if(!think.isEmpty(uid)) {

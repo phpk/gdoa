@@ -95,7 +95,7 @@ exports.session = {
       maxAge: conf.session.maxAge,
       //expires: '',
       path: '/',  //a string indicating the path of the cookie
-      //domain: '',
+      //domain: '*',
       //secure: false,
       //keys: [],
       httpOnly: true,

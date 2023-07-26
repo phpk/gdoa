@@ -10,7 +10,16 @@ function now(t = '') {
     }
 }
 
-
+function randomStr(len = 16) {
+    let $chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678',
+        maxPos = $chars.length,
+        pwd = '',
+        i = 0;
+    for (; i < len; i++) {
+        pwd += $chars.charAt(Math.floor(Math.random() * maxPos));
+    }
+    return pwd;
+}
 
 /**
  * 列表搜索
@@ -68,16 +77,17 @@ async function getCaptcha() {
         background: '#eeeeee' // 验证码图片背景颜色
     };
     const captcha = svgCaptcha.createMathExpr(option);
-    await this.session('verifyCaptcha', captcha.text.toLowerCase());
-    return captcha.data;
+    const key = randomStr()
+    await this.cache(key, captcha.text);
+    return {svg : captcha.data, key};
 }
-async function chkCapcha(code) {
-    let verify = await this.session('verifyCaptcha');
-    if (verify != code.toLowerCase()) {
+async function chkCapcha(key, code) {
+    let verify = await this.cache(key);
+    if (verify != code) {
         return false;
     }
     //验证成功清空
-    await this.session('verifyCaptcha', null);
+    await this.cache(key, null);
     return true;
 }
 async function getDingToken(id) {
@@ -104,6 +114,7 @@ module.exports = {
     now,
     parseSearch,
     err,
+    randomStr,
     getCaptcha,
     chkCapcha,
     getDingToken

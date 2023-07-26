@@ -1,9 +1,35 @@
+const dataType = require('../controller/approve_type.js')
 module.exports = class extends think.Service {
+    async upApproveCache(groupId) {
+        let list = await this.model('approve').where({group_id : groupId}).select()
+        list.forEach(d => {
+            d.info = dataType.find(e => e.id == d.type);
+        })
+        await think.cache(groupId+ '_approve_data', list, {
+			timeout: 24 * 3600 * 1000 * 36500
+		});
+        return list;
+    }
+    async upStatusCache(groupId) {
+        let list = await this.model('approve_status').where({group_id : groupId}).select()
+        await think.cache(groupId + '_status_data', list, {
+			timeout: 24 * 3600 * 1000 * 36500
+		});
+        return list;
+    }
     async getApproveData(groupId) {
-        return await think.cache(groupId + '_approve_data');
+        let data = await think.cache(groupId + '_approve_data');
+        if(think.isEmpty(data)) {
+            data = await this.upApproveCache(groupId)
+        }
+        return data;
     }
     async getStatusData(groupId) {
-        return await think.cache(groupId + '_status_data');
+        let data = await think.cache(groupId + '_status_data');
+        if(think.isEmpty(data)) {
+            data = await this.upStatusCache(groupId)
+        }
+        return data;
     }
     getStatusValue(statusData, val) {
         if(val > 1) {

@@ -47,11 +47,14 @@ layui.define(['table', 'jquery', 'element'], function(exports) {
 	function getData(url) {
 		$.ajaxSettings.async = false;
 		var data = null;
-		$.get(url, function(result) {
-			data = result;
-		});
+		_get(layui, url, res => {
+			data = res;
+		})
+		// $.get(url, function(result) {
+		// 	data = result;
+		// });
 		$.ajaxSettings.async = true;
-		return data.data;
+		return data;
 	}
 
 	function createHtml(option) {

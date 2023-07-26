@@ -115,18 +115,14 @@ module.exports = class extends think.Controller {
 	 * "data":token
 	 * }
 	 */
-	async doAction() {
+	async loginInAction() {
 		let post = this.post();
-		let chkCode = await this.chkCapcha(post.captcha);
+		//console.log(post)
+		let chkCode = await this.chkCapcha(post.codekey, post.captcha);
 		if (!chkCode) {
 			return this.fail('验证码错误')
 		}
-		//杜绝用户反复查表
-		let loginNum = await this.session('loginNum');
-		loginNum = loginNum ? loginNum : 0;
-		if (loginNum > 10) {
-			return this.fail('登录错误次数太多，大侠请留步，请一小时后再试!');
-		}
+		
 		let user = await this.model('user').where({
 			username: post.username,
 			name: post.username,
@@ -135,35 +131,22 @@ module.exports = class extends think.Controller {
 		}).find();
 		let userId = user.id;
 		if (think.isEmpty(user)) {
-			await this.session('loginNum', loginNum + 1);
 			return this.fail('用户不存在');
 		}
 		if (user.status != 0) {
-			await this.session('loginNum', loginNum + 1);
 			return this.fail('用户被禁用');
 		}
 		let pwd = this.service('login').createPassword(post.password, user.salt);
 		//console.log(pwd)
 		if (pwd != user.password) {
-			await this.session('loginNum', loginNum + 1);
 			return this.fail('密码错误');
 		}
-		//查询用户租户
-		let groupData = await this.model('user_group')
-			.where({ id: user.group_id })
-			.find()
-		if (think.isEmpty(groupData)) {
-			return this.fail('租户不存在');
-		}
-		if (this.now() > this.now(groupData.end_time)) {
-			return this.fail('租户已过期');
-		}
 		//生成一个16位的随机数
-		let salt = this.service('login').randomString(),
-			md5Salt = think.md5(salt);
+		let salt = this.service('login').randomString();
 		let token = jwt.sign({
-			userId: userId
-		}, md5Salt, {
+			userId: userId,
+			username : user.username
+		}, think.config('tokenKey'), {
 			expiresIn: 60 * 60 * 12 //12小时过期
 			//expiresIn:-1//永不过期
 		});
@@ -182,17 +165,17 @@ module.exports = class extends think.Controller {
 
 
 		//添加缓存
-		await this.session('userId', userId);
-		await this.session('groupId', user.group_id);
+		//await this.session('userId', userId);
+		//await this.session('groupId', user.group_id);
 		//设定权限缓存
 		await this.cache('auth_' + userId, JSON.parse(user.users));
 		//设置路由缓存
 		await this.model('menu').cacheData(user);
 		//console.log(routeData)
 		//jwt校验用
-		await this.session('GroupSalt', md5Salt);
+		//await this.session('GroupSalt', md5Salt);
 
-		await this.session('loginNum', null);
+		//await this.session('loginNum', null);
 
 		return this.success(token);
 	}
@@ -206,8 +189,9 @@ module.exports = class extends think.Controller {
 
 	async captchaAction() {
 		let captchaData = await this.getCaptcha();
-		this.header('Content-Type', 'image/svg+xml');
-		this.ctx.body = captchaData;
+		//this.header('Content-Type', 'image/svg+xml');
+		//this.ctx.body = captchaData;
+		return this.success(captchaData)
 	}
 	/**
 	 * @api {post} login/do  用户登录

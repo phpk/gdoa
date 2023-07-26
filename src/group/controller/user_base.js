@@ -6,8 +6,8 @@ const TIMEOUT = 24 * 3600 * 1000 * 36500 //100年不过期
  */
 module.exports = class extends Base {
     async __before() {
-        this.userId = await this.session('userId')
-        this.groupId = await this.session('groupId')
+        //this.userId = await this.session('userId')
+        //this.groupId = await this.session('groupId')
     }
     //地区
     async getSysArea() {

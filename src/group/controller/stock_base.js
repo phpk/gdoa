@@ -6,8 +6,8 @@ const TIMEOUT = 24 * 3600 * 1000 * 36500 //100年不过期
  */
 module.exports = class extends Base {
 	async __before() {
-        this.userId = await this.session('userId')
-        this.groupId = await this.session('groupId')
+        //this.userId = await this.session('userId')
+        //this.groupId = await this.session('groupId')
     }
 	async getDict(id = 0) {
 		let rt = await this.cache(this.groupId + '_stock_dict');
@@ -47,7 +47,7 @@ module.exports = class extends Base {
 		if (think.isEmpty(rt)) {
 			rt = await this.upCateListCache();
 		}
-		let dictList = await this.cache(this.groupId + '_stock_dict');
+		let dictList = await this.getDict(0);
 		rt.forEach(d => {
 			if(d.ext && d.ext.length > 0) {
 				d.ext.forEach(e => {

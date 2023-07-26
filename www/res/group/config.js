@@ -1,6 +1,6 @@
-const apiUrl = '/group/';
+const apiUrl = 'http://localhost:8200/group/';
 const TOKEN_NAME = 'grouptoken';
-const notLoginUrl = '/group/login';
+const notLoginUrl = 'http://localhost:3000/res/group/login.html';
 
 const setToken = (res) => {
     localStorage.setItem(TOKEN_NAME, res);
@@ -18,6 +18,7 @@ const getHeader = () => {
     if (token) {
         grouptoken[TOKEN_NAME] = token;
     }
+    //grouptoken['Content-Type'] = 'application/x-www-form-urlencoded';
     return grouptoken;
 }
 const errorStatus = (xhr, layui) => {
@@ -85,6 +86,11 @@ const parseMsg = (msgs, layui) => {
 }
 const _get = (layui, url, suc, err) => {
     //console.log(`${apiUrl}${url}`)
+    // layui.$.ajaxSetup({
+    //     xhrFields: {
+    //         withCredentials: true
+    //     }
+    // });
     layui.$.ajax({
         type: "get",
         url: `${apiUrl}${url}`,
@@ -115,11 +121,11 @@ const _get = (layui, url, suc, err) => {
 }
 const _post = (layui, url, data, suc, err) => {
     //console.log(`${apiUrl}${url}`)
-    layui.$.ajaxSetup({
-        xhrFields: {
-            withCredentials: true
-        }
-    });
+    // layui.$.ajaxSetup({
+    //     xhrFields: {
+    //         withCredentials: true
+    //     }
+    // });
     layui.$.ajax({
         type: "post",
         url: `${apiUrl}${url}`,

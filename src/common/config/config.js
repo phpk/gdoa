@@ -4,8 +4,9 @@ module.exports = {
     port: 8200, //启动端口
     statusTime: 12 * 60 * 60, //保活时间，默认12小时
     adminDir: 'server', //后端目录
+    tokenKey : 'fdsfkdsfda@#2',
     csrf: {
-        headerName: 'csrf_token',
+        headerName: 'grouptoken',
         enable: true
     },
     helmet: {
@@ -23,7 +24,7 @@ module.exports = {
         timeout: 24 * 3600 * 1000
     },
     cookie: {
-        name: 'csrf_token',
+        name: 'thinkjs',
         maxAge: 12 * 3600 * 1000
     },
     session: {

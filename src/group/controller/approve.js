@@ -56,7 +56,7 @@ module.exports = class extends Base {
         data.ding_notice = post.ding_notice;
         delete data.id;
         let id = await this.model('approve').add(data);
-        await this.upApproveCache();
+        await this.service("approve").upApproveCache(this.groupId);
         return this.success(id);
     }
 
@@ -70,7 +70,7 @@ module.exports = class extends Base {
             remark: post.remark
         }
         await this.model('approve').update(upData);
-        await this.upApproveCache();
+        await this.service("approve").upApproveCache(this.groupId);
         return this.success()
     }
 
@@ -86,7 +86,7 @@ module.exports = class extends Base {
         if (!await this.hasData('approve', { id }))
             return this.fail('数据不存在')
         await this.model('approve').where({ id }).delete()
-        await this.upApproveCache();
+        await this.service("approve").upApproveCache(this.groupId);
         return this.success()
     }
     /**
@@ -150,7 +150,7 @@ module.exports = class extends Base {
             })
         })
         await this.model('approve_auth').addMany(userSave)
-        await this.upStatusCache();
+        await this.service("approve").upStatusCache(this.groupId);
         return this.success(id);
     }
     /**
@@ -183,7 +183,7 @@ module.exports = class extends Base {
             })
         })
         await this.model('approve_auth').addMany(userSave)
-        await this.upStatusCache();
+        await this.service("approve").upStatusCache(this.groupId);
         return this.success()
     }
     async statusEditBeforeAction() {
@@ -228,7 +228,7 @@ module.exports = class extends Base {
             status_id : has.id,
             approve_id : has.approve_id
         }).delete()
-        await this.upStatusCache();
+        await this.service("approve").upStatusCache(this.groupId);
         return this.success()
     }
     async contentAction() {
@@ -362,6 +362,7 @@ module.exports = class extends Base {
         let count = await this.model('approve_auth').where(wsql).count();
         return this.success({ list, count })
     }
+    /*
     async upApproveCache() {
         let list = await this.model('approve').where({group_id : this.groupId}).select()
         list.forEach(d => {
@@ -376,7 +377,7 @@ module.exports = class extends Base {
         await this.cache(this.groupId + '_status_data', list, {
 			timeout: 24 * 3600 * 1000 * 36500
 		});
-    }
+    }*/
     /**
      * 查看日志
      */

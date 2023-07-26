@@ -21,7 +21,9 @@ specifiers:
   gulp-uglify: ^3.0.2
   json2md: ^1.12.0
   jsonwebtoken: ^8.5.1
+  koa-cors: ^0.0.16
   koa-helmet: ^6.1.0
+  koa-static: ^5.0.0
   koa-static-router: ^1.5.0
   koa2-ratelimit: ^0.9.0
   luckyexcel: ^1.0.1
@@ -65,7 +67,9 @@ dependencies:
   cron-parser: 4.7.1
   json2md: 1.13.0
   jsonwebtoken: 8.5.1
+  koa-cors: 0.0.16
   koa-helmet: 6.1.0
+  koa-static: 5.0.0
   koa-static-router: 1.5.0
   koa2-ratelimit: 0.9.1
   luckyexcel: 1.0.1
@@ -5039,6 +5043,10 @@ packages:
       koa-compose: 4.1.0
     dev: false
 
+  /koa-cors/0.0.16:
+    resolution: {integrity: sha512-s15knPxe3AJBi2I/ZMPL0pSqU+PLYLO6k5tI0AqClkzavowvocPlSdFUwaHNqtjHMhsGmiq2tiX/25iILJx9YA==}
+    dev: false
+
   /koa-helmet/6.1.0:
     resolution: {integrity: sha512-WymEv4qo/7ghh15t+1qTjvZBmZkmVlTtfnpe5oxn8m8mO2Q2rKJ3eMvWuQGW/6yVxN9+hQ75evuWcg3XBbFLbg==}
     engines: {node: '>= 8.0.0'}
@@ -5072,6 +5080,16 @@ packages:
     resolution: {integrity: sha512-7ykpzpCs6Wjl2FPh7+582Fv2k6vF2WY4Se4dHPxVKtU7fC3CZKvJnLG44zqf8WGTwSyE7aL5yJgX/Pe0rHZqSg==}
     engines: {node: '>= 7.6.0'}
     dependencies:
+      koa-send: 5.0.1
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
+
+  /koa-static/5.0.0:
+    resolution: {integrity: sha512-UqyYyH5YEXaJrf9S8E23GoJFQZXkBVJ9zYYMPGz919MSX1KuvAcycIuS0ci150HCoPf4XQVhQ84Qf8xRPWxFaQ==}
+    engines: {node: '>= 7.6.0'}
+    dependencies:
+      debug: 3.2.7
       koa-send: 5.0.1
     transitivePeerDependencies:
       - supports-color

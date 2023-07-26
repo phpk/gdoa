@@ -6,21 +6,17 @@ module.exports = class extends think.Controller {
   constructor(ctx) {
     super(ctx);
     this.userId = 0;
-    this.groupId = 0;
+    this.groupId = 1;
     //this.userId = 0;
   }
   async __before() {
-    this.groupId = await this.session('groupId');
-    this.userId = await this.session("userId");
-    //适配管理端
-    // this.userId = await this.session('userId');
-    // if (this.userId > 0) return true;
+
     //token校验
     if (!await this.checkToken()) return false;
     //权限验证
     if (!await this.checkAuth()) return false;
+    this.groupId = 1;
 
-    
     //console.log(this.groupId);
     //console.log(this.userId)
     if (this.userId < 1 || this.groupId < 1) return false;
@@ -28,6 +24,13 @@ module.exports = class extends think.Controller {
     //this.post('group_id') = this.groupId;
     //this.post('user_id') = this.userId;
     //}
+  }
+  rt404() {
+    this.status = 400;
+    this.ctx.body = {
+      code: 400,
+      message: 'auth error!'
+    };
   }
   /**
    * 权限校验
@@ -37,12 +40,12 @@ module.exports = class extends think.Controller {
     let url = `${this.ctx.controller}/${this.ctx.action}`;
     //console.log(url)
     let perms = await this.cache('group_perms_' + this.userId);
-    if (!perms || !perms.perms || !perms.perms.includes(url)) {
-      this.status = 400;
-      this.ctx.body = {
-        code: 400,
-        message: 'auth error!'
-      };
+    if (!perms || !perms.perms) {
+      this.rt404();
+      return false;
+    }
+    if(this.ctx.controller != 'index' && !perms.perms.includes(url)) {
+      this.rt404();
       return false;
     }
     return true;
@@ -54,6 +57,7 @@ module.exports = class extends think.Controller {
   async checkToken() {
     let headers = this.ctx.headers;
     //console.log(this.ctx)
+    console.log(headers)
     if (!headers.grouptoken || headers.grouptoken == 'undefined') {
       this.status = 401;
       this.ctx.body = {
@@ -79,21 +83,20 @@ module.exports = class extends think.Controller {
    * @returns object
    */
   async chkJwt(token) {
-    let salt = await this.session('GroupSalt'),
-      userId = this.userId;
-    if (!salt || !userId) {
+    let salt = think.config('tokenKey')
+    if (!salt) {
       return {
         code: 402,
-        message: 'session 不存在'
+        message: 'salt 不存在'
       };
     }
     //校验
     try {
-      let rt = await jwt.verify(token, salt);
-      //console.log(rt)
+      let rt = jwt.verify(token, salt);
+      console.log(rt)
       //过期
-      if (rt.userId != userId) {
-        await this.clearSatus(userId);
+      if (!rt.userId) {
+        //await this.clearSatus();
         return {
           code: 403,
           message: '认证过期'
@@ -123,8 +126,6 @@ module.exports = class extends think.Controller {
     //await this.cache('user_' + userId, null);
     await this.cache('auth_' + userId, null);
     await this.cache('group_perms_' + userId, null);
-    await this.session('userId', null);
-    await this.session('groupId', null);
 
   }
   /**
@@ -175,7 +176,7 @@ module.exports = class extends think.Controller {
     let data = this.post()
     data.group_id = this.groupId;
     data.user_id = this.userId;
-    
+
     return data;
   }
 
@@ -194,7 +195,7 @@ module.exports = class extends think.Controller {
     }
     return false;
   }
-  
+
   __after() {
 
   }
