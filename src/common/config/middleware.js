@@ -6,7 +6,7 @@ module.exports = [
   {
     handle: 'csrf',
     enable: conf.csrf.enable,
-    match: /^\/server|users/,
+    match: /^\/group|home/,
     options: {
       headerName: conf.csrf.headerName
     }
@@ -14,7 +14,7 @@ module.exports = [
   {
     handle: 'helmet',
     enable: conf.helmet.enable,
-    match: /^\/server|users/,
+    match: /^\/group|home/,
     options: {
       enable: conf.helmet.enable
     }
@@ -22,7 +22,7 @@ module.exports = [
   {
     handle: 'ratelimit',
     enable: conf.ratelimit.enable,
-    match: /^\/server|users/,
+    match: /^\/group|home/,
   },
   {
     handle: 'plugins',
@@ -33,7 +33,7 @@ module.exports = [
   },
   {
     handle: 'meta',
-    match: /^\/server/,
+    match: /^\/group/,
     options: {
       logRequest: isDev,
       sendResponseTime: isDev

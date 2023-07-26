@@ -35,7 +35,7 @@ module.exports = {
         prefix: 'rt_',
         encoding: 'utf8',
         host: '127.0.0.1',
-        database: 'gdcms',
+        database: 'godocms',
         port: '8889',
         user: 'root',
         password: 'root',
