@@ -30,17 +30,18 @@
 				<input placeholder="重复密码" name="repassword" value="" lay-verify="required" hover class="layui-input" type="password" />
 			</div>
             <div class="layui-form-item">
-				<input placeholder="企业名称" value="" name="name" lay-verify="required" hover class="layui-input"  />
+				<input placeholder="姓名" value="" name="name" lay-verify="required" hover class="layui-input"  />
 			</div>
-			<div class="layui-form-item">
+			<!--div class="layui-form-item">
 				<input placeholder="联系人" value="" name="contact" lay-verify="required" hover class="layui-input"  />
-			</div>
+			</div-->
 			<div class="layui-form-item">
-				<input placeholder="联系电话" value="" name="tel" lay-verify="required" hover class="layui-input"  />
+				<input placeholder="电话" value="" name="tel" lay-verify="required" hover class="layui-input"  />
 			</div>
 			<div class="layui-form-item">
 				<input placeholder="验证码" name="captcha" id="captcha"  hover  lay-verify="required" class="code layui-input layui-input-inline"  />
 				<img src="" id="codeImage" class="codeImage" />
+				<input type="hidden" value="" name="codekey" id="codekey">
 			</div>
 			<div class="layui-form-item">
 				<input type="checkbox" name="remberpwd" title="记住密码" lay-skin="primary" checked>
@@ -70,7 +71,15 @@
 					$ = layui.$,
 					layer = layui.layer;
 					changeImg = () => {
-						$('#codeImage').attr('src',apiUrl + 'login/captcha?t='+ Math.random());
+						//$('#codeImage').attr('src',apiUrl + 'login/captcha?t='+ Math.random());
+						let url = apiUrl + 'login/captcha';
+
+						$.get(url, res => {
+							// 通过window.btoa() 方法用于创建一个 base-64 编码的字符串
+							const img = `data:image/svg+xml;base64,${window.btoa(res.data.svg)}`;
+							$('#codeImage').attr('src',img);
+							$('#codekey').val(res.data.key)
+						})
 					}
 				changeImg();
 				$('#codeImage').click(() => {
@@ -117,15 +126,16 @@
 						username: data.username,
                         name : data.name,
                         tel : data.tel,
-                        contact : data.contact,
-						captcha: data.captcha
+                        //contact : data.contact,
+						captcha: data.captcha,
+						codekey : data.codekey
 					};
 					_post(layui, 'login/regDo', postData, res => {
 						layer.close(index);
 						//console.log(res)
 						//setToken(res);
 						layer.msg('注册成功！');
-						location.href = '/group/login';
+						location.href = './login.html';
 					}, err => {
 						layer.close(index);
 						//console.log(err)
