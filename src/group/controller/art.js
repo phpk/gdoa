@@ -24,7 +24,7 @@ module.exports = class extends Base {
 
     async listAction() {
         let { page, limit, param } = this.get();
-        let wsql = {user_id: this.adminId};
+        let wsql = {user_id: this.userId};
         if (param) wsql = this.parseSearch(param, wsql);
         let list = await this.model('article').where(wsql).page(page, limit).order('id desc').select();
         list.forEach(d => {
@@ -38,7 +38,7 @@ module.exports = class extends Base {
     }
     async addAction() {
         let post = this.post();
-        post.user_id = this.adminId;
+        post.user_id = this.userId;
         let id = await this.model('article').add(post);
         return this.success(id);
     }

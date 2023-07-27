@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>文章管理</title>
+		<link rel="stylesheet" href="/static/layui/css/layui.css" />
+<link rel="stylesheet" href="/static/ui/css/ui.css" />
+	</head>
+	<body class="pear-container">
+		
+		<div class="layui-card">
+			<div class="layui-card-body">
+				<table id="art-table" lay-filter="art-table"></table>
+			</div>
+		</div>
+
+		<script type="text/html" id="art-toolbar">
+			<button class="layui-btn layui-btn-primary layui-border-red layui-btn-sm" lay-event="add">
+		        <i class="layui-icon layui-icon-add-1"></i>
+		        新增
+		    </button>
+		</script>
+
+		
+		<script type="text/html" id="art-bar">
+			<button class="pear-btn pear-btn-primary pear-btn-sm" lay-event="edit">
+				<i class="layui-icon layui-icon-edit"></i>
+			</button>
+			<button class="pear-btn pear-btn-danger pear-btn-sm" lay-event="remove">
+				<i class="layui-icon layui-icon-delete"></i>
+			</button>
+		</script>
+        <script src="../config.js"></script>
+		<script src="/static/layui/layui.js"></script>
+		<script src="/static/ui/ui.js"></script>
+		<script>
+			layui.use(['table', 'form', 'jquery','common'], function() {
+				let table = layui.table;
+				let form = layui.form;
+				let $ = layui.jquery;
+				let common = layui.common;
+
+				let cols = [
+					[
+                        {
+						title: 'ID',
+                        field: 'id',
+						align: 'center'
+					}, {
+						title: '标题',
+						field: 'name',
+						align: 'center'
+					}, {
+						title: '分类',
+						field: 'cname',
+						align: 'center'
+					}, 
+					{
+						title: '添加时间',
+						field: 'add_time',
+						align: 'center'
+					}, 
+                    {
+						title: '操作',
+						toolbar: '#art-bar',
+						align: 'center'
+					}
+					]
+				]
+
+				table.render({
+					elem: '#art-table',
+					url: apiUrl + 'art/list',
+				    headers: getHeader(),
+					page: true,
+                    parseData: function (res) {
+						//setRoute(res.data.routeData);
+						//layui.menu.reload();
+                        return {
+                            "code": res.code, //解析接口状态
+                            "msg": res.message, //解析提示文本
+                            "count": res.data.count, //解析数据长度
+                            "data": res.data.list //解析数据列表
+                        };
+                    },
+					cols: cols,
+					skin: 'line',
+					toolbar: '#art-toolbar',
+					defaultToolbar: [{
+						title: '刷新',
+						layEvent: 'refresh',
+						icon: 'layui-icon-refresh',
+					}, 'filter', 'print', 'exports']
+				});
+                table.on('tool(art-table)', function(obj) {
+					if (obj.event === 'remove') {
+						window.remove(obj);
+					} else if (obj.event === 'edit') {
+						window.edit(obj);
+					}
+				});
+				
+				window.add = function(obj) {
+					layer.open({
+						type: 2,
+						title: '添加文章',
+						offset: 'rt',
+                        area: [
+                            '80%', '100%'
+                        ],
+                        anim: 1,
+                        maxmin: true,
+						content: './add.html'
+					});
+				}
+                
+                table.on('toolbar(art-table)', function(obj) {
+					if (obj.event === 'add') {
+						window.add();
+					} else if (obj.event === 'refresh') {
+						window.refresh();
+					}
+				});
+				
+				
+				window.edit = function(obj) {
+					layer.open({
+						type: 2,
+						title: '修改-' + obj.data.name,
+						offset: 'rt',
+                        area: [
+                            '80%', '100%'
+                        ],
+                        anim: 1,
+                        maxmin: true,
+						content: './add.html?id=' + obj.data.id
+					});
+				}
+
+				window.remove = function(obj){
+		            layer.confirm('确定要删除吗', {icon: 3, title:'提示'}, function(index){
+		                layer.close(index);
+		                _post(layui, 'art/delete',{id : obj.data.id}, res => {
+							layer.msg('删除成功',{icon:1,time:1000},() => {
+								obj.del();
+							});
+						}, err => {
+							//layer.msg('删除失败',{icon:2,time:1000});
+						})
+		            });
+		        }
+                //类目管理结束-------------------------------------//
+
+				window.refresh = function(param) {
+					table.reload('art-table');
+				}
+			})
+		</script>
+	</body>
+</html>

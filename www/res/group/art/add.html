@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>添加文章管理</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="/static/layui/css/layui.css" />
+    <link rel="stylesheet" href="/static/ui/css/ui.css" />
+    <link rel="stylesheet" href="/libs/vditor/index.css" />
+</head>
+
+<body>
+    <form class="layui-form" action="" lay-filter="editform">
+        <div class="mainBox">
+            <div class="main-container">
+                <div class="main-container">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">名称</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="name" lay-verify="required|len" autocomplete="off" min="3"
+                                placeholder="请输入名称" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">分类</label>
+                        <div class="layui-input-block">
+                            <select name="cid" id="cid"></select>
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">内容</label>
+                        <div class="layui-input-block">
+                            <div id="veditor"></div>
+                        </div>
+
+                    </div>
+                    <div class="layui-form-item layui-form-text">
+                        <label class="layui-form-label">备注</label>
+                        <div class="layui-input-block">
+                            <textarea name="desc" placeholder="请输入备注" class="layui-textarea"></textarea>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">作者</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="author" autocomplete="off" placeholder="请输入作者" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">发布时间</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="show_time" class="layui-input" id="laydate-type"
+                                placeholder="yyyy-MM-dd HH:mm:ss">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">缩略图</label>
+                        <div class="layui-upload-drag" id="upload-drag">
+                            <i class="layui-icon layui-icon-upload"></i>
+                            <div>点击上传，或将文件拖拽到此处</div>
+                            <div class="layui-hide" id="upload-drag-preview">
+                                <hr> <img src="" alt="上传成功后渲染" style="max-width: 100%">
+                            </div>
+                            <input type="hidden" name="image" id="image">
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="bottom">
+            <div class="button-container">
+                <button type="submit" class="pear-btn pear-btn-primary pear-btn-sm" lay-submit="" lay-filter="art-save">
+                    <i class="layui-icon layui-icon-ok"></i>
+                    提交
+                </button>
+            </div>
+        </div>
+    </form>
+    <script src="../config.js"></script>
+    <script src="/static/layui/layui.js"></script>
+    <script src="/static/ui/ui.js"></script>
+    <script src="/libs/vditor/dist/js/lute/lute.min.js"></script>
+    <script src="/libs/vditor/index.min.js"></script>
+    
+    <script>
+        layui.use(['form', 'layer', 'upload', 'laydate'], function () {
+            let form = layui.form
+                , layer = layui.layer
+                , $ = layui.$
+                , upload = layui.upload
+                , laydate = layui.laydate
+                , req = _req();
+            form.verify({
+                len: (val, item) => {
+                    let min = item.getAttribute("min")
+                    if (val.length < min) {
+                        return '长度不能小于' + min;
+                    }
+                }
+            })
+            laydate.render({
+                elem: '#laydate-type',
+                type: 'datetime',
+                calendar: true,
+                value: new Date()
+            });
+            upload.render({
+                elem: '#upload-drag',
+                url: apiUrl + 'art/upload',
+                headers: getHeader(),
+                field: 'file[]',
+                done: function (res) {
+                    layer.msg('上传成功');
+                    $('#upload-drag-preview').removeClass('layui-hide')
+                        .find('img').attr('src', res.data.filename);
+                    $('#image').val(res.data.filename);
+                    console.log(res)
+                }
+            });
+            let vditorOption = {
+                height: 480,
+                placeholder: '请输入内容',
+                value: '',
+                cdn: '/libs/vditor',
+                "resize": {
+                    "enable": true
+                },
+                //mode : 'wysiwyg',
+                preview: {
+                    markdown: {
+                        toc: true,
+                        mark: true,
+                        footnotes: true,
+                        autoSpace: true,
+                    },
+                    math: {
+                        engine: 'KaTeX',
+                    },
+                },
+                cache: {
+                    enable: false
+                },
+                upload: {
+                    url: apiUrl + 'art/upload',
+                    headers: getHeader(),
+                    withCredentials: true,
+                    format: (file, res) => {
+                        //console.log(res)
+                        let rt = JSON.parse(res);
+                        let r = {
+                            "msg": rt.message,
+                            "code": rt.code,
+                            "data": {
+                                "errFiles": [],
+                                "succMap": {}
+                            }
+                        }
+                        if (rt.code != 0) {
+                            layer.msg(rt.message);
+                        } else {
+                            r.data.succMap[rt.data.name] = rt.data.filename;
+                        }
+                        return JSON.stringify(r)
+                    }
+
+                }
+            };
+            let vditor;
+            const renderCate = (res) => {
+                let str = ``;
+                res.forEach(d => {
+                    str += `<option value="${d.id}">${d.name}</option>`;
+                })
+                $("#cid").html(str)
+                form.render('select')
+            }
+            if (req.id) {
+                //渲染
+                _get(layui, 'art/editBefore?id=' + req.id, res => {
+                    renderCate(res.artCate)
+                    form.val('editform', res)
+                    //vditor.clearCache()
+                    
+                    if(res.image) {
+                        $('#upload-drag-preview').removeClass('layui-hide')
+                        .find('img').attr('src', res.image);
+                        $('#image').val(res.image);
+                    }
+                    vditorOption.value = res.content;
+                    vditor = new Vditor('veditor', vditorOption);
+                    //vditor.setValue(res.content)
+                });
+            } else {
+                vditor = new Vditor('veditor', vditorOption);
+                _get(layui, 'art/addBefore', res => {
+                    renderCate(res)
+                })
+            }
+
+            //监听提交
+            form.on('submit(art-save)', function (data) {
+                data = data.field;
+                data.content = vditor.getValue();
+                let postUrl;
+                if (req.id) {
+                    postUrl = 'art/edit';
+                    data.id = req.id;
+                } else {
+                    postUrl = 'art/add';
+                }
+                // console.log(data)
+                // return false;
+                _post(layui, postUrl, data, res => {
+                    //console.log(res)
+                    parent.layui.table.reload("art-table");
+                    parent.layer.close(parent.layer.getFrameIndex(window.name));//关闭当前页
+
+                })
+
+                return false;
+            });
+
+        });
+    </script>
+
+</body>
+
+</html>

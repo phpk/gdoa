@@ -97,6 +97,10 @@ module.exports = class extends Base {
 
         return this.success(data)
     }
+    async cacheMenu() {
+        let routeData = await this.model('menu').cacheDataByUid(this.userId);
+        return routeData;
+    }
     /**
      *
      * @api {post} menu/edit 编辑菜单
@@ -123,7 +127,7 @@ module.exports = class extends Base {
             return this.fail("编辑的菜单不存在");
         
         let rt = await this.model('menu').where({ id }).update(post)
-        let routeData = await this.model('menu').cacheData(this.userId);
+        let routeData = await this.cacheMenu();
         
         return this.success({rt, routeData})
     }
@@ -137,7 +141,7 @@ module.exports = class extends Base {
         let up = {};
         up[field] = value;
         await this.model('menu').where({ id }).update(up);
-        let routeData = await this.model('menu').cacheData(this.userId);
+        let routeData = await this.cacheMenu();
         return this.success({routeData})
     }
     /**
@@ -162,7 +166,7 @@ module.exports = class extends Base {
     async addAction() {
         let post = this.post();
         let rt = await this.model('menu').add(post);
-        let routeData = await this.model('menu').cacheData(this.userId);
+        let routeData = await this.cacheMenu();
        
         return this.success({rt, routeData})
     }
@@ -188,7 +192,7 @@ module.exports = class extends Base {
             save.push(s)
         })
         let rt = await this.model('menu').addMany(save);
-        let routeData = await this.model('menu').cacheData(this.userId);
+        let routeData = await this.cacheMenu();
         return this.success({rt, routeData})
 
     }
@@ -215,7 +219,7 @@ module.exports = class extends Base {
             .update({
                 ifshow: post.ifshow
             })
-        let routeData = await this.model('menu').cacheData(this.userId);
+        let routeData = await this.cacheMenu();
         return this.success({rt, routeData})
 
     }
@@ -242,7 +246,7 @@ module.exports = class extends Base {
             return this.fail("请先删除菜单下的子目录");
         
         let rt = await this.model('menu').where({ id }).delete();
-        let routeData = await this.model('menu').cacheData(this.userId);
+        let routeData = await this.cacheMenu();
         return this.success({rt, routeData})
     }
     /**
