@@ -40,10 +40,6 @@ module.exports = {
         port: '8889',
         user: 'root',
         password: 'root',
-        // database: 'gdoa',
-        // password: 'Hnaqw2021!@#Rt',
-        // port: '3306',
-        // user: 'root',
 
         dateStrings: true
     },
@@ -76,7 +72,7 @@ module.exports = {
         //用户信息
         auth: {
             user: 'godocms@163.com',
-            pass: 'HUTGFDVQFTSXRXFK'
+            pass: ''
         }
     }
 };
