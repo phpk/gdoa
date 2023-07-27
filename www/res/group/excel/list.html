@@ -229,7 +229,7 @@
 				}
 				$.ajaxSetup({
 					xhrFields: {
-						withCredentials: true
+						//withCredentials: true
 					}
 				});
 				let uploadInst = upload.render({
@@ -242,9 +242,9 @@
 					}
 					,done: function(res, index, upload){
 					//上传完毕回调
-						console.log(res)
-						console.log(index)
-						console.log(upload)
+						// console.log(res)
+						// console.log(index)
+						// console.log(upload)
 						layer.closeAll('loading'); 
 						layer.msg('上传成功')
 						table.reload('excel-table');

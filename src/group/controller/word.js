@@ -134,7 +134,7 @@ module.exports = class extends Base {
     }
     async openPic(filepath) {
         const worker = await getWorker({
-            tessdata: path.join(think.ROOT_PATH, 'data/ocr/lang'),
+            tessdata: path.join(think.ROOT_PATH, 'src/group/data/ocr/lang'),
             languages: ['chi_sim']  
         });
         return await worker.recognize(filepath, 'chi_sim');

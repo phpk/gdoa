@@ -34,12 +34,14 @@ body{background: #FFF;}
 /*轮播*/
 #banner img{min-width: 100%; height: 898px;}
 #banner .panel{width: 400px; position: absolute; top: 25%; left: 50%; margin-left: -200px; text-align: center;}
-#banner .panel p{color: #8c8c8c; font-size: 44px; line-height: 80px; letter-spacing: 15px;}
+#banner .panel p{color: #8c8c8c; font-size: 30px; line-height: 80px; letter-spacing: 10px;}
 #banner .panel p.title{color: #4a4a4a; font-size: 54px; letter-spacing: 10px;}
-
+.homeicon{
+  font-size: 66px; color: #2db5a3;
+}
 /*主体—产品*/
 .main-product{padding-top: 90px; padding-bottom: 130px;}
-.main-product p{font-size: 16px; color: #ababab; line-height: 28px;}
+.main-product p.txt{font-size: 16px; color: #ababab; line-height: 28px; text-align:left;height: 112px;overflow: hidden;}
 .main-product p.title
 ,.main-service p.title{color: #484848; font-size: 24px; text-align: center; line-height: 160px;}
 .main-product p.title span
@@ -48,8 +50,8 @@ body{background: #FFF;}
 .main-product .content p.label{font-size: 18px; color: #939393; line-height: 46px; padding-top: 6px;}
 .main-product .content a{font-size: 18px; color: #a1d8cb; line-height: 68px;}
 .main-product .content:hover{box-shadow: 0 0 3px 3px #EEE; transition: 0.3s;}
-.main-product .content img{transition: 2s;}
-.main-product .content img:hover{transform: rotateY(180deg);}
+.main-product .content i{transition: 2s;}
+.main-product .content i:hover{transform: rotateY(180deg);}
 
 /*主体-服务*/
 .main-service{background: #f8f8f8;}

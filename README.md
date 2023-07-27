@@ -6,8 +6,7 @@ Godo OA开发原则是“**易上手，容易改**”。前端工程师和后端
 
 ## 项目地址
 
-[https://github.com/godocms/godocms](https://github.com/godocms/godocms)
 
-[https://gitee.com/ruitao_admin/godocms](https://gitee.com/ruitao_admin/godocms)
+[https://gitee.com/ruitao_admin/godooa](https://gitee.com/ruitao_admin/godooa)
 
 ## 项目演示
