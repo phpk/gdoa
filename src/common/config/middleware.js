@@ -71,7 +71,8 @@ module.exports = [
     handle: 'payload',
     options: {
       keepExtensions: true,
-      limit: '5mb'
+      limit: '20mb',
+      uploadDir : path.join(think.ROOT_PATH, 'www/upload')
     }
   },
   {

@@ -39,7 +39,7 @@ pm2 start pm2.json
 
 ## 演示地址
 
-[http://gdoa.top/res/group/login.html](http://gdoa.top)
+[http://gdoa.top](http://gdoa.top/res/group/login.html)
 ```
 账户：admin
 
@@ -140,6 +140,23 @@ pm2 start pm2.json
 
 - 办公白板/思维导图/excel表格/流程图/文集管理/甘特图/文档/文本可分享给组织内部其他人编辑，每次编辑都可查看历史可回档。
 
+18. 钉钉同步
+
+- 使用钉钉企业内部应用，支持钉钉配置登录，同步钉钉部门/用户/角色。
+
+19. 供应商管理
+
+- 和采购/库存结合，支持供应商商品管理。
+
+20. 项目管理
+
+- 简洁的项目管理体系，包含项目管理/项目文件/项目分类。
+
+21. 权限管理
+
+- 完备的权限管理机制，支持部门/用户/角色/公司/岗位/门店/项目多维度管理。
+
+
 
 ## 演示图片
 
@@ -162,5 +179,5 @@ pm2 start pm2.json
 - 承诺永久免费开源
 - 允许企业/个人单独使用
 - 如用于商业活动或二次开发，请购买相关版权
-- 不提供维护工作，如有bug请 [issures](https://gitee.com/ruitao_admin/godooa/issues) 提交
+- 不提供私下维护工作，如有bug请 [issures](https://gitee.com/ruitao_admin/godooa/issues) 提交
 - 请尊重作者的劳动成果

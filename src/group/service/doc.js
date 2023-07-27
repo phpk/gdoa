@@ -1,7 +1,7 @@
 const path = require('path');
 const fs = require('fs');
 const docBasePath = path.join(think.ROOT_PATH, 'www/docs/');
-const tplPath = path.join(think.ROOT_PATH, 'data/doc/');
+const tplPath = path.join(think.ROOT_PATH, 'src/group/data/doc/');
 
 const rename = think.promisify(fs.rename, fs);
 module.exports = class extends think.Service {
