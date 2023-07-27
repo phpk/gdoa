@@ -3,7 +3,7 @@ module.exports = {
     workers: 0,
     port: 8200, //启动端口
     statusTime: 12 * 60 * 60, //保活时间，默认12小时
-    adminDir: 'server', //后端目录
+    adminDir: 'group', //后端目录
     tokenKey : 'fdsfkdsfda@#2',
     csrf: {
         headerName: 'grouptoken',
@@ -40,6 +40,10 @@ module.exports = {
         port: '8889',
         user: 'root',
         password: 'root',
+        // database: 'godo',
+        // password: 'Hnaqw2021!@#Rt',
+        // port: '3306',
+        // user: 'root',
 
         dateStrings: true
     },
@@ -72,7 +76,7 @@ module.exports = {
         //用户信息
         auth: {
             user: 'godocms@163.com',
-            pass: ''
+            pass: 'HUTGFDVQFTSXRXFK'
         }
     }
 };

@@ -37,11 +37,19 @@ pm2 start pm2.json
 密码：111111
 ```
 
+## 演示地址
+
+[http://gdoa.top/res/group/login.html](http://gdoa.top)
+```
+账户：admin
+
+密码：111111
+```
 
 ## 项目地址
 
 
-[https://gitee.com/ruitao_admin/godooa](https://gitee.com/ruitao_admin/godooa)
+[https://gitee.com/ruitao_admin/gdoa](https://gitee.com/ruitao_admin/gdoa)
 
 ## 功能说明
 
@@ -133,7 +141,7 @@ pm2 start pm2.json
 - 办公白板/思维导图/excel表格/流程图/文集管理/甘特图/文档/文本可分享给组织内部其他人编辑，每次编辑都可查看历史可回档。
 
 
-## 项目演示
+## 演示图片
 
 ![输入图片说明](docs/1.jpg)
 ![输入图片说明](docs/2.jpg)
