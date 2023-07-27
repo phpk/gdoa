@@ -6,10 +6,10 @@ Godo OA开发原则是“**易上手，容易改**”。前端工程师和后端
 
 ## 版本要求
 
+```
 node >=16
-
-mysql 5.7
-
+mysql >=5.7
+```
 ## 安装
 
 
@@ -18,17 +18,23 @@ mysql 5.7
 pnpm i
 ```
 
+
 2. 修改src/common/config.js数据库配置，并用数据库管理软件导入data/godocms.sql文件
 
 3. 测试环境运行
 ```
 pnpm dev
 ```
+然后访问
+```
+http://localhost:8200/res/group/login.html
+```
 
 4. 正式环境运行
 ```
 pm2 start pm2.json
 ```
+参考根目录nginx.conf配置文件配置nginx
 
 5. 后台登录
 ```
