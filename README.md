@@ -141,3 +141,11 @@ pm2 start pm2.json
 
 ## 微信群
 ![微信群](docs/wx.png)
+
+## 开源
+
+- 承诺永久免费开源
+- 允许企业/个人单独使用
+- 如用于商业活动或二次开发，请购买相关版权
+- 不提供维护工作，如有bug请 [issures](https://gitee.com/ruitao_admin/godooa/issues) 提交
+- 请尊重作者的劳动成果
