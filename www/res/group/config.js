@@ -1,7 +1,8 @@
-const apiUrl = 'http://localhost:8200/group/';
+//const apiUrl = 'http://localhost:8200/group/';
+const apiUrl = '/group/';
 const TOKEN_NAME = 'grouptoken';
-const notLoginUrl = 'http://localhost:3000/res/group/login.html';
-
+//const notLoginUrl = 'http://localhost:3000/res/group/login.html';
+const notLoginUrl = '/res/group/login.html';
 const setToken = (res) => {
     localStorage.setItem(TOKEN_NAME, res);
 }
