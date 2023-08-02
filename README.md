@@ -55,7 +55,9 @@ pm2 start pm2.json
 ## 项目地址
 
 
-[https://gitee.com/ruitao_admin/gdoa](https://gitee.com/ruitao_admin/gdoa)
+[gitee](https://gitee.com/ruitao_admin/gdoa)
+
+[github](https://github.com/phpk/gdoa)
 
 ## 功能说明
 
