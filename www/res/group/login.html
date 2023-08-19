@@ -29,7 +29,6 @@
 			<div class="layui-form-item">
 				<input placeholder="验证码" name="captcha" id="captcha"  hover  lay-verify="required" class="code layui-input layui-input-inline"  />
 				<img src="" id="codeImage" class="codeImage" />
-				<input type="hidden" value="" name="codekey" id="codekey">
 			</div>
 			<div class="layui-form-item">
 				<input type="checkbox" name="remberpwd" title="记住密码" lay-skin="primary" checked>
@@ -61,13 +60,13 @@
 					$ = layui.$,
 					layer = layui.layer;
 					changeImg = () => {
-						let url = apiUrl + 'login/captcha';
+						//let url = apiUrl + 'login/captcha';
 
-						$.get(url, res => {
+						_get(layui, 'login/captcha', res => {
+
 							// 通过window.btoa() 方法用于创建一个 base-64 编码的字符串
-							const img = `data:image/svg+xml;base64,${window.btoa(res.data.svg)}`;
+							const img = `data:image/svg+xml;base64,${window.btoa(res.svg)}`;
 							$('#codeImage').attr('src',img);
-							$('#codekey').val(res.data.key)
 						})
 						//$('#codeImage').attr('src',apiUrl + 'login/captcha?t='+ Math.random());
 					}
@@ -107,8 +106,7 @@
 					let postData = {
 						password: data.password,
 						username: data.username,
-						captcha: data.captcha,
-						codekey : data.codekey
+						captcha: data.captcha
 					};
 					_post(layui, 'login/loginIn', postData, res => {
 						layer.close(index);

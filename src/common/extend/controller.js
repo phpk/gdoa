@@ -1,4 +1,4 @@
-const svgCaptcha = require("svg-captcha");
+
 /**
  * 获取当前时间撮
  */
@@ -67,29 +67,7 @@ async function err(name, msg) {
 // function mg(tabname) {
 //     return think.mongo(tabname, 'mongo');
 // }
-async function getCaptcha() {
-    let option = {
-        mathMin: 1,
-        mathMax: 30,
-        mathOperator: "+",
-        noise: 1, // 干扰线条的数量
-        color: true, // 验证码的字符是否有颜色，默认没有，如果设定了背景，则默认有
-        background: '#eeeeee' // 验证码图片背景颜色
-    };
-    const captcha = svgCaptcha.createMathExpr(option);
-    const key = randomStr()
-    await this.cache(key, captcha.text);
-    return {svg : captcha.data, key};
-}
-async function chkCapcha(key, code) {
-    let verify = await this.cache(key);
-    if (verify != code) {
-        return false;
-    }
-    //验证成功清空
-    await this.cache(key, null);
-    return true;
-}
+
 async function getDingToken(id) {
     let conf = await this.cache(id + '_ding_setting');
     if (think.isEmpty(conf) || !conf.appKey) {
@@ -115,7 +93,5 @@ module.exports = {
     parseSearch,
     err,
     randomStr,
-    getCaptcha,
-    chkCapcha,
     getDingToken
 }

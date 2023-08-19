@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const svgCaptcha = require("svg-captcha");
 const Utils = require('./utils')
 /**
  * @class 
@@ -123,18 +124,7 @@ module.exports = class extends Utils {
 
 		return this.success(token);
 	}
-	/**
-	 * 
-	 * @api {get} login/captcha 获取验证码
-	 * @apiGroup login
-	 * @apiDescription 返回base64位图片
-	 * 
-	 */
-
-	async captchaAction() {
-		let captchaData = await this.getCaptcha();
-		return this.success(captchaData)
-	}
+	
 	/**
 	 * @api {post} login/do  用户登录
 	 * @apiGroup login
@@ -190,6 +180,37 @@ module.exports = class extends Utils {
 		let userId = await this.model('user').add(save);
 		
 		return this.success(userId);
+	}
+	/**
+	 * 
+	 * @api {get} login/captcha 获取验证码
+	 * @apiGroup login
+	 * @apiDescription 返回base64位图片
+	 * 
+	 */
+
+	async captchaAction() {
+		
+		let option = {
+			mathMin: 1,
+			mathMax: 30,
+			mathOperator: "+",
+			noise: 1, // 干扰线条的数量
+			color: true, // 验证码的字符是否有颜色，默认没有，如果设定了背景，则默认有
+			background: '#eeeeee' // 验证码图片背景颜色
+		};
+		const captcha = svgCaptcha.createMathExpr(option);
+		await this.ses('captchaId', captcha.text);
+		return this.success({svg : captcha.data});
+	}
+	async chkCapcha(key, code) {
+		let verify = await this.ses('captchaId');
+		if (verify != code) {
+			return false;
+		}
+		//验证成功清空
+		await this.ses(key, null);
+		return true;
 	}
 
 };
