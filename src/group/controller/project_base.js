@@ -16,10 +16,11 @@ module.exports = class extends Base {
         super(ctx);
         this.catesData = catesData;
     }
-    async __before() {
+    //async __before() {
         //this.userId = await this.session('userId')
         //this.groupId = await this.session('groupId')
-    }
+        
+    //}
     async getCate(sid = 1) {
         let cates = await this.cache(this.groupId + '_projects_cate');
         if(think.isEmpty(cates)) {

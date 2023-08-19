@@ -1,21 +1,23 @@
 const jwt = require('jsonwebtoken');
+const Utils = require('./utils')
 /**
  * @class 基础类
  */
-module.exports = class extends think.Controller {
+module.exports = class extends Utils {
   constructor(ctx) {
     super(ctx);
-    this.userId = 0;
-    this.groupId = 1;
+    
+    //this.groupId = 1;
     //this.userId = 0;
   }
   async __before() {
-
+    this.groupId = 1;
+    this.userId = await this.ses("userId");
     //token校验
     if (!await this.checkToken()) return false;
     //权限验证
     if (!await this.checkAuth()) return false;
-    this.groupId = 1;
+    
 
     //console.log(this.groupId);
     //console.log(this.userId)
@@ -44,7 +46,7 @@ module.exports = class extends think.Controller {
       this.rt404();
       return false;
     }
-    if(this.ctx.controller != 'index' && !perms.perms.includes(url)) {
+    if (this.ctx.controller != 'index' && !perms.perms.includes(url)) {
       this.rt404();
       return false;
     }
@@ -91,29 +93,35 @@ module.exports = class extends think.Controller {
       };
     }
     //校验
-    try {
-      let rt = jwt.verify(token, salt);
-      console.log(rt)
-      //过期
-      if (!rt.userId) {
-        //await this.clearSatus();
-        return {
-          code: 403,
-          message: '认证过期'
-        };
-      }
-      this.userId = rt.userId;
-
+    //try {
+    let rt = jwt.verify(token, salt);
+    console.log('jwt==',rt)
+    //过期
+    if (!rt.userId) {
+      //await this.clearSatus();
       return {
-        code: 0
-      };
-    } catch (e) {
-
-      return {
-        code: 409,
-        message: e.message
+        code: 403,
+        message: '认证过期'
       };
     }
+    //this.userId = rt.userId;
+    console.log('uid==',this.userId)
+    if (this.userId != rt.userId) {
+      return {
+        code: 404,
+        message: '认证失败'
+      };
+    }
+    return {
+      code: 0
+    };
+    // } catch (e) {
+
+    //   return {
+    //     code: 409,
+    //     message: e.message
+    //   };
+    // }
 
   }
   /**
@@ -195,7 +203,7 @@ module.exports = class extends think.Controller {
     }
     return false;
   }
-
+  
   __after() {
 
   }

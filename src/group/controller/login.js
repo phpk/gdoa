@@ -1,10 +1,10 @@
 const jwt = require('jsonwebtoken');
-//const userDIR = 'server';
+const Utils = require('./utils')
 /**
  * @class 
  * @apiDefine login 用户登录
  */
-module.exports = class extends think.Controller {
+module.exports = class extends Utils {
 
 	async dingAction() {
 		let id = 1;
@@ -55,6 +55,7 @@ module.exports = class extends think.Controller {
 			//expiresIn:-1//永不过期
 		});
 		//设定权限缓存
+		await this.ses('userId', userId);
 		await this.cache('auth_' + userId, JSON.parse(user.users));
 		//设置路由缓存
 		await this.model('menu').cacheData(user);
@@ -114,7 +115,7 @@ module.exports = class extends think.Controller {
 				salt,
 				login_num: user.login_num + 1
 			})
-
+		await this.ses('userId', userId);
 		//设定权限缓存
 		await this.cache('auth_' + userId, JSON.parse(user.users));
 		//设置路由缓存

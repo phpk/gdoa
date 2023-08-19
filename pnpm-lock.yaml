@@ -1,9 +1,9 @@
 lockfileVersion: 5.4
 
 specifiers:
+  '@koa/cors': ^4.0.0
   apidoc-markdown: ^7.0.1
   ava: ^0.18.0
-  axios: ^0.24.0
   babel-cli: ^6.24.1
   babel-preset-think-node: ^1.0.0
   commander: ^8.3.0
@@ -21,10 +21,7 @@ specifiers:
   gulp-uglify: ^3.0.2
   json2md: ^1.12.0
   jsonwebtoken: ^8.5.1
-  koa-cors: ^0.0.16
   koa-helmet: ^6.1.0
-  koa-static: ^5.0.0
-  koa-static-router: ^1.5.0
   koa2-ratelimit: ^0.9.0
   luckyexcel: ^1.0.1
   marked: ^5.0.0
@@ -36,9 +33,7 @@ specifiers:
   node-xlsx: ^0.21.0
   nodemailer: ^6.7.2
   nyc: ^7.0.0
-  oauth2_1_0: link:@alicloud/dingtalk/oauth2_1_0
   pdf2json: ^2.0.0
-  socket.io-redis: ^6.1.1
   svg-captcha: ^1.4.0
   tesseract.js-node: ^0.1.0
   textract: ^2.5.0
@@ -51,26 +46,17 @@ specifiers:
   think-logger3: ^1.0.0
   think-model: ^1.0.0
   think-model-mysql: ^1.0.0
-  think-mongo: ^2.1.2
-  think-session: ^1.0.0
-  think-session-file: ^1.0.5
-  think-session-redis: ^1.1.4
   think-view: ^1.0.13
   think-view-nunjucks: ^1.0.11
   think-watcher: ^3.0.0
-  think-websocket: ^1.0.8
-  think-websocket-socket.io: ^1.0.12
   thinkjs: ^3.0.0
 
 dependencies:
-  axios: 0.24.0
+  '@koa/cors': 4.0.0
   cron-parser: 4.7.1
   json2md: 1.13.0
   jsonwebtoken: 8.5.1
-  koa-cors: 0.0.16
   koa-helmet: 6.1.0
-  koa-static: 5.0.0
-  koa-static-router: 1.5.0
   koa2-ratelimit: 0.9.1
   luckyexcel: 1.0.1
   marked: 5.0.0
@@ -79,9 +65,7 @@ dependencies:
   mysqldump: 3.2.0
   node-xlsx: 0.21.0
   nodemailer: 6.9.1
-  oauth2_1_0: link:@alicloud/dingtalk/oauth2_1_0
   pdf2json: 2.0.1
-  socket.io-redis: 6.1.1
   svg-captcha: 1.4.0
   tesseract.js-node: 0.1.0
   textract: 2.5.0
@@ -92,14 +76,8 @@ dependencies:
   think-logger3: 1.3.1
   think-model: 1.5.4
   think-model-mysql: 1.1.7
-  think-mongo: 2.2.1
-  think-session: 1.1.6
-  think-session-file: 1.1.4
-  think-session-redis: 1.1.4
   think-view: 1.0.13
   think-view-nunjucks: 1.0.11
-  think-websocket: 1.0.8
-  think-websocket-socket.io: 1.0.13
   thinkjs: 3.2.14
 
 devDependencies:
@@ -316,6 +294,13 @@ packages:
       '@jridgewell/sourcemap-codec': 1.4.14
     dev: true
 
+  /@koa/cors/4.0.0:
+    resolution: {integrity: sha512-Y4RrbvGTlAaa04DBoPBWJqDR5gPj32OOz827ULXfgB1F7piD1MB/zwn8JR2LAnvdILhxUbXbkXGWuNVsFuVFCQ==}
+    engines: {node: '>= 14.0.0'}
+    dependencies:
+      vary: 1.1.2
+    dev: false
+
   /@redis/bloom/1.2.0_@redis+client@1.5.6:
     resolution: {integrity: sha512-HG2DFjYKbpNmVXsa0keLHp/3leGJz1mjh09f2RLGGLQZzSHpkmZWuwJbAvo3QcRY8p80m5+ZdXZdYOSBLlp7Cg==}
     peerDependencies:
@@ -370,10 +355,6 @@ packages:
     engines: {node: '>=6'}
     dev: true
 
-  /@socket.io/component-emitter/3.1.0:
-    resolution: {integrity: sha512-+9jVqKhRSpsc591z5vX+X5Yyw+he/HCB4iQ/RYxw35CEPaY1gnsNE43nf9n9AaYjAQrTiI/mOwKUKdUs9vf7Xg==}
-    dev: false
-
   /@szmarczak/http-timer/1.1.2:
     resolution: {integrity: sha512-XIB2XbzHTN6ieIjfIMV9hlVcfPU26s2vafYWQcZHWXHOxiaRZYEDKEwdl129Zyg50+foYV2jCgtrqSA6qNuNSA==}
     engines: {node: '>=6'}
@@ -383,16 +364,6 @@ packages:
 
   /@types/bson/4.0.5:
     resolution: {integrity: sha512-vVLwMUqhYJSQ/WKcE60eFqcyuWse5fGH+NMAXHuKrUAPoryq3ATxk5o4bgYNtg5aOM4APVg7Hnb3ASqUYG0PKg==}
-    dependencies:
-      '@types/node': 18.14.2
-    dev: false
-
-  /@types/cookie/0.4.1:
-    resolution: {integrity: sha512-XW/Aa8APYr6jSVVA1y/DEIZX0/GMKLEVekNG727R8cs56ahETkRAy/3DR7+fJyh7oUgGwNQaRfXCun0+KbWY7Q==}
-    dev: false
-
-  /@types/cors/2.8.13:
-    resolution: {integrity: sha512-RG8AStHlUiV5ysZQKq97copd2UmVYw3/pRMLefISZ3S1hK104Cwm7iLQ3fTKx+lsUH2CE8FlLaYeEA2LSeqYUA==}
     dependencies:
       '@types/node': 18.14.2
     dev: false
@@ -948,14 +919,6 @@ packages:
     engines: {node: '>= 0.4'}
     dev: true
 
-  /axios/0.24.0:
-    resolution: {integrity: sha512-Q6cWsys88HoPgAaFAVUb0WpPk0O8iTeisR9IMqy9G8AbO4NlpVknrnQS03zzF9PGAWgO3cgletO3VjV/P7VztA==}
-    dependencies:
-      follow-redirects: 1.15.2
-    transitivePeerDependencies:
-      - debug
-    dev: false
-
   /babel-cli/6.26.0:
     resolution: {integrity: sha512-wau+BDtQfuSBGQ9PzzFL3REvR9Sxnd4LKwtcHAiPjhugA7K/80vpHXafj+O5bAqJOuSefjOx5ZJnNSR2J1Qw6Q==}
     hasBin: true
@@ -1429,11 +1392,6 @@ packages:
       mixin-deep: 1.3.2
       pascalcase: 0.1.1
     dev: true
-
-  /base64id/2.0.0:
-    resolution: {integrity: sha512-lGe34o6EHj9y3Kts9R4ZYs/Gr+6N7MCaMlIFA3F1R2O5/m7K06AxfSeO5530PEERE6/WyEg3lsuyw4GHlPZHog==}
-    engines: {node: ^4.5.0 || >= 5.9}
-    dev: false
 
   /bignumber.js/9.0.0:
     resolution: {integrity: sha512-t/OYhhJ2SD+YGBQcjY8GzzDHEk9f3nerxjtfa6tlMXfe7frs/WozhvCNoGvpM0P3bNf3Gq5ZRMlGr5f3r4/N8A==}
@@ -2137,11 +2095,6 @@ packages:
     engines: {node: '>= 4'}
     dev: true
 
-  /cookie/0.4.2:
-    resolution: {integrity: sha512-aSWTXFzaKWkvHO1Ny/s+ePFpvKsPnjc551iI41v3ny/ow6tBG5Vd+FuqGNhh1LxOmVzOlGUriIlOaokOvhaStA==}
-    engines: {node: '>= 0.6'}
-    dev: false
-
   /cookies/0.8.0:
     resolution: {integrity: sha512-8aPsApQfebXnuI+537McwYsDtjVxGm8gTIzQI3FDW6t5t/DAhERxtnbEPN/8RX+uZthoz4eCOgloXaE5cYyNow==}
     engines: {node: '>= 0.8'}
@@ -2178,14 +2131,6 @@ packages:
 
   /core-util-is/1.0.3:
     resolution: {integrity: sha512-ZQBvi1DcpJ4GDqanjucZ2Hj3wEO5pZDS89BWbkcrvdxksJorwUDDZamX9ldFkp9aw2lmBDLgkObEA4DWNJ9FYQ==}
-
-  /cors/2.8.5:
-    resolution: {integrity: sha512-KIHbLJqu73RGr/hnbrO9uBeixNGuvSQjul/jdFvS/KFSIH1hWVd1ng7zOHx+YrEfInLG7q4n6GHQ9cDtxv/P6g==}
-    engines: {node: '>= 0.10'}
-    dependencies:
-      object-assign: 4.1.1
-      vary: 1.1.2
-    dev: false
 
   /crc-32/1.2.2:
     resolution: {integrity: sha512-ROmzCKrTnOwybPcJApAA6WBWij23HVfGVNKqqrZpuyZOHqK2CwHSvpGuyt/UNNvaIjEd8X5IFGp4Mh+Ie1IHJQ==}
@@ -2614,31 +2559,6 @@ packages:
     dependencies:
       once: 1.4.0
     dev: true
-
-  /engine.io-parser/5.0.6:
-    resolution: {integrity: sha512-tjuoZDMAdEhVnSFleYPCtdL2GXwVTGtNjoeJd9IhIG3C1xs9uwxqRNEu5WpnDZCaozwVlK/nuQhpodhXSIMaxw==}
-    engines: {node: '>=10.0.0'}
-    dev: false
-
-  /engine.io/6.4.1:
-    resolution: {integrity: sha512-JFYQurD/nbsA5BSPmbaOSLa3tSVj8L6o4srSwXXY3NqE+gGUNmmPTbhn8tjzcCtSqhFgIeqef81ngny8JM25hw==}
-    engines: {node: '>=10.0.0'}
-    dependencies:
-      '@types/cookie': 0.4.1
-      '@types/cors': 2.8.13
-      '@types/node': 18.14.2
-      accepts: 1.3.8
-      base64id: 2.0.0
-      cookie: 0.4.2
-      cors: 2.8.5
-      debug: 4.3.4
-      engine.io-parser: 5.0.6
-      ws: 8.11.0
-    transitivePeerDependencies:
-      - bufferutil
-      - supports-color
-      - utf-8-validate
-    dev: false
 
   /entities/1.1.2:
     resolution: {integrity: sha512-f2LZMYl1Fzu7YSBKg+RoROelpOaNrcGmE9AZubeDfrCEia483oW4MI4VyFd5VNHIgQ/7qm1I0wUHK1eJnn2y2w==}
@@ -3319,16 +3239,6 @@ packages:
   /fn.name/1.1.0:
     resolution: {integrity: sha512-GRnmB5gPyJpAhTQdSZTSp9uaPSvl09KoYcMQtsB9rQoOmzs9dH6ffeccH+Z+cv6P68Hu5bC6JjRh4Ah/mHSNRw==}
     dev: true
-
-  /follow-redirects/1.15.2:
-    resolution: {integrity: sha512-VQLG33o04KaQ8uYi2tVNbdrWp1QWxNNea+nmIB4EVM28v0hmP17z7aG1+wAkNzVq4KeXTq3221ye5qTJP91JwA==}
-    engines: {node: '>=4.0'}
-    peerDependencies:
-      debug: '*'
-    peerDependenciesMeta:
-      debug:
-        optional: true
-    dev: false
 
   /for-each/0.3.3:
     resolution: {integrity: sha512-jqYfLp7mo9vIyQf8ykW2v7A+2N4QjeCeI5+Dz9XraiO1ign81wjiH7Fb9vSOWvQfNtmSa4H2RoQTrrXivdUZmw==}
@@ -5043,10 +4953,6 @@ packages:
       koa-compose: 4.1.0
     dev: false
 
-  /koa-cors/0.0.16:
-    resolution: {integrity: sha512-s15knPxe3AJBi2I/ZMPL0pSqU+PLYLO6k5tI0AqClkzavowvocPlSdFUwaHNqtjHMhsGmiq2tiX/25iILJx9YA==}
-    dev: false
-
   /koa-helmet/6.1.0:
     resolution: {integrity: sha512-WymEv4qo/7ghh15t+1qTjvZBmZkmVlTtfnpe5oxn8m8mO2Q2rKJ3eMvWuQGW/6yVxN9+hQ75evuWcg3XBbFLbg==}
     engines: {node: '>= 8.0.0'}
@@ -5061,36 +4967,6 @@ packages:
       debug: 2.6.9
       mz: 2.7.0
       resolve-path: 1.4.0
-    transitivePeerDependencies:
-      - supports-color
-    dev: false
-
-  /koa-send/5.0.1:
-    resolution: {integrity: sha512-tmcyQ/wXXuxpDxyNXv5yNNkdAMdFRqwtegBXUaowiQzUKqJehttS0x2j0eOZDQAyloAth5w6wwBImnFzkUz3pQ==}
-    engines: {node: '>= 8'}
-    dependencies:
-      debug: 4.3.4
-      http-errors: 1.8.1
-      resolve-path: 1.4.0
-    transitivePeerDependencies:
-      - supports-color
-    dev: false
-
-  /koa-static-router/1.5.0:
-    resolution: {integrity: sha512-7ykpzpCs6Wjl2FPh7+582Fv2k6vF2WY4Se4dHPxVKtU7fC3CZKvJnLG44zqf8WGTwSyE7aL5yJgX/Pe0rHZqSg==}
-    engines: {node: '>= 7.6.0'}
-    dependencies:
-      koa-send: 5.0.1
-    transitivePeerDependencies:
-      - supports-color
-    dev: false
-
-  /koa-static/5.0.0:
-    resolution: {integrity: sha512-UqyYyH5YEXaJrf9S8E23GoJFQZXkBVJ9zYYMPGz919MSX1KuvAcycIuS0ci150HCoPf4XQVhQ84Qf8xRPWxFaQ==}
-    engines: {node: '>= 7.6.0'}
-    dependencies:
-      debug: 3.2.7
-      koa-send: 5.0.1
     transitivePeerDependencies:
       - supports-color
     dev: false
@@ -6008,10 +5884,6 @@ packages:
     engines: {node: '>=8'}
     dev: true
 
-  /notepack.io/2.2.0:
-    resolution: {integrity: sha512-9b5w3t5VSH6ZPosoYnyDONnUTF8o0UkBw7JLA6eBlYJWyGT1Q3vQa8Hmuj1/X6RYvHjjygBDgw6fJhe0JEojfw==}
-    dev: false
-
   /now-and-later/2.0.1:
     resolution: {integrity: sha512-KGvQ0cB70AQfg107Xvs/Fbu+dGmZoTRJp2TaPwcwQm3/7PteUyN2BCgk8KBMPGBUXZdVwyWS8fDCGFygBm19UQ==}
     engines: {node: '>= 0.10'}
@@ -6850,31 +6722,9 @@ packages:
     resolution: {integrity: sha512-nJWqw3bTFy21hX/CPKHth6sfhZbdiHP6bTawSgQBlKOVRG7EZkfHbbHwQJnrE4vsQf0CMNE+3gJ4Fmm16vdVlQ==}
     dev: false
 
-  /redis-errors/1.2.0:
-    resolution: {integrity: sha512-1qny3OExCf0UvUV/5wpYKf2YwPcOqXzkwKKSmKHiE6ZMQs5heeE/c8eXK+PNllPvmjgAbfnsbpkGZWy8cBpn9w==}
-    engines: {node: '>=4'}
-    dev: false
-
   /redis-parser/1.3.0:
     resolution: {integrity: sha512-pPJS2ChF11wKm+YsHrRKON3m6MLGjBS+o9aXn6AjQqip+qMzk0zIG//jEagK+nKO5zrNljI1IdNV8JcvKrs0Iw==}
     engines: {node: '>=0.10.0'}
-    dev: false
-
-  /redis-parser/3.0.0:
-    resolution: {integrity: sha512-DJnGAeenTdpMEH6uAJRK/uiyEIH9WVsUmoLwzudwGJUwZPp80PDBWPHXSAGNPwNvIXAbe7MSUB1zQFugFml66A==}
-    engines: {node: '>=4'}
-    dependencies:
-      redis-errors: 1.2.0
-    dev: false
-
-  /redis/3.1.2:
-    resolution: {integrity: sha512-grn5KoZLr/qrRQVwoSkmzdbw6pwF+/rwODtrOr6vuBRiR/f3rjSTGupbF90Zpqm2oenix8Do6RV7pYEkGwlKkw==}
-    engines: {node: '>=10'}
-    dependencies:
-      denque: 1.5.1
-      redis-commands: 1.7.0
-      redis-errors: 1.2.0
-      redis-parser: 3.0.0
     dev: false
 
   /redis/4.6.5:
@@ -7409,59 +7259,6 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: true
-
-  /socket.io-adapter/2.2.0:
-    resolution: {integrity: sha512-rG49L+FwaVEwuAdeBRq49M97YI3ElVabJPzvHT9S6a2CWhDKnjSFasvwAwSYPRhQzfn4NtDIbCaGYgOCOU/rlg==}
-    dev: false
-
-  /socket.io-adapter/2.5.2:
-    resolution: {integrity: sha512-87C3LO/NOMc+eMcpcxUBebGjkpMDkNBS9tf7KJqcDsmL936EChtVva71Dw2q4tQcuVC+hAUy4an2NO/sYXmwRA==}
-    dependencies:
-      ws: 8.11.0
-    transitivePeerDependencies:
-      - bufferutil
-      - utf-8-validate
-    dev: false
-
-  /socket.io-parser/4.2.2:
-    resolution: {integrity: sha512-DJtziuKypFkMMHCm2uIshOYC7QaylbtzQwiMYDuCKy3OPkjLzu4B2vAhTlqipRHHzrI0NJeBAizTK7X+6m1jVw==}
-    engines: {node: '>=10.0.0'}
-    dependencies:
-      '@socket.io/component-emitter': 3.1.0
-      debug: 4.3.4
-    transitivePeerDependencies:
-      - supports-color
-    dev: false
-
-  /socket.io-redis/6.1.1:
-    resolution: {integrity: sha512-jeaXe3TGKC20GMSlPHEdwTUIWUpay/L7m5+S9TQcOf22p9Llx44/RkpJV08+buXTZ8E+aivOotj2RdeFJJWJJQ==}
-    engines: {node: '>=10.0.0'}
-    deprecated: 'This package has been renamed to ''@socket.io/redis-adapter'', please see the migration guide here: https://socket.io/docs/v4/redis-adapter/#migrating-from-socketio-redis'
-    dependencies:
-      debug: 4.3.4
-      notepack.io: 2.2.0
-      redis: 3.1.2
-      socket.io-adapter: 2.2.0
-      uid2: 0.0.3
-    transitivePeerDependencies:
-      - supports-color
-    dev: false
-
-  /socket.io/4.6.1:
-    resolution: {integrity: sha512-KMcaAi4l/8+xEjkRICl6ak8ySoxsYG+gG6/XfRCPJPQ/haCRIJBTL4wIl8YCsmtaBovcAXGLOShyVWQ/FG8GZA==}
-    engines: {node: '>=10.0.0'}
-    dependencies:
-      accepts: 1.3.8
-      base64id: 2.0.0
-      debug: 4.3.4
-      engine.io: 6.4.1
-      socket.io-adapter: 2.5.2
-      socket.io-parser: 4.2.2
-    transitivePeerDependencies:
-      - bufferutil
-      - supports-color
-      - utf-8-validate
-    dev: false
 
   /sort-keys/2.0.0:
     resolution: {integrity: sha512-/dPCrG1s3ePpWm6yBbxZq5Be1dXGLyLn9Z791chDC3NFrpkVbWGzkBwPN1knaciexFXgRJ7hzdnwZ4stHSDmjg==}
@@ -8106,22 +7903,6 @@ packages:
       - supports-color
     dev: false
 
-  /think-mongo/2.2.1:
-    resolution: {integrity: sha512-QZHuXjBtAgykSq888SdrtPV4h5Fb9icSoHfS1497VHo+npreTJufOyOUi3CrU5eM/aLBn1rMVXA2GkssjDiRhQ==}
-    dependencies:
-      generic-pool: 3.9.0
-      mongodb: 3.7.3
-      think-helper: 1.1.4
-      think-instance: 1.0.2
-    transitivePeerDependencies:
-      - aws4
-      - bson-ext
-      - kerberos
-      - mongodb-client-encryption
-      - mongodb-extjson
-      - snappy
-    dev: false
-
   /think-ms/1.0.3:
     resolution: {integrity: sha512-2Ppgqt1oxtj52fuarlERMJaLtwGkDvp9zf7x17cDzEpWILBONuBv4/axz9QljK12BwlAkUV/I9jKsB5TKRZv6A==}
     engines: {node: '>=6.0.0'}
@@ -8190,37 +7971,6 @@ packages:
       - supports-color
     dev: false
 
-  /think-session-file/1.1.4:
-    resolution: {integrity: sha512-/xuNRcM4xEwRgDLrlXtIQTF3NrO5wMOh7Qi2bhYauX7WbfDI6fOBckiNCTXLRUbdlpoC0r2tMAym7hl71QZNBA==}
-    engines: {node: '>=6.0.0'}
-    dependencies:
-      debug: 2.6.9
-      think-debounce: 1.0.4
-      think-gc: 1.0.3
-      think-helper: 1.1.4
-      think-store-file: 1.1.1
-    transitivePeerDependencies:
-      - supports-color
-    dev: false
-
-  /think-session-redis/1.1.4:
-    resolution: {integrity: sha512-1G/zQUqsNKgayN1rczM30/+C41wXbxV1q1wHNdDrGnV1kBoISuiWH8EnMR2JLK7KLbYXZum4w3eqcDMgewZQXw==}
-    engines: {node: '>=6.0.0'}
-    dependencies:
-      debug: 2.6.9
-      think-helper: 1.1.4
-      think-redis: 1.1.4
-    transitivePeerDependencies:
-      - supports-color
-    dev: false
-
-  /think-session/1.1.6:
-    resolution: {integrity: sha512-AIinWPjQhpNesUqo3tLgiTJSiNLIsU+lXujaNHl1dTs1u7njo2Gc4wYWSJ0/4tInipbQCM+OdPq+NosBUvKY/w==}
-    engines: {node: '>=6.0.0'}
-    dependencies:
-      think-helper: 1.1.4
-    dev: false
-
   /think-store-file/1.1.1:
     resolution: {integrity: sha512-t6+62s+z8yKKgY0lYmULarzKQ2T/QqgmNiaDdrlGU0oRCocBIHNSYpC5NPm5n+8kvflzdlZDnwUS5Z0QeoHO8A==}
     dependencies:
@@ -8273,31 +8023,6 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: true
-
-  /think-websocket-socket.io/1.0.13:
-    resolution: {integrity: sha512-ckESTwp9YRkq80CUlHC8yXfpIGuHFJHpbFQ7+599CECSUojjG2Pk/TuCZXkUbXfIX0qASrtyyY4AqsEDMmzKzA==}
-    engines: {node: '>=6.0.0'}
-    dependencies:
-      debug: 2.6.9
-      socket.io: 4.6.1
-      think-helper: 1.1.4
-      think-mock-http: 1.0.6
-    transitivePeerDependencies:
-      - bufferutil
-      - supports-color
-      - utf-8-validate
-    dev: false
-
-  /think-websocket/1.0.8:
-    resolution: {integrity: sha512-+eEFS70GM8p/zcD2yyQ54hIiwz0nNyy3nfHvNi+g0wnIJeNPHjEB/vJGMDBE9locaX2L5jGhObVwORbA8MjbiQ==}
-    engines: {node: '>=6.0.0'}
-    dependencies:
-      debug: 2.6.9
-      depd: 1.1.2
-      think-helper: 1.1.4
-    transitivePeerDependencies:
-      - supports-color
-    dev: false
 
   /thinkjs/3.2.14:
     resolution: {integrity: sha512-erOcuSHUPeHE5VkWGGF/Cj7uBGb8C6SCJE3bAgPpv/W3yqBsOn7jpn8ij8165+wUw3IQozaied0le57zAv+cGQ==}
@@ -8531,6 +8256,7 @@ packages:
 
   /uid2/0.0.3:
     resolution: {integrity: sha512-5gSP1liv10Gjp8cMEnFd6shzkL/D6W1uhXSFNCxDC+YI8+L8wkCYCbJ7n77Ezb4wE/xzMogecE+DtamEe9PZjg==}
+    dev: true
 
   /unbox-primitive/1.0.2:
     resolution: {integrity: sha512-61pPlCD9h51VoreyJ0BReideM3MDKMKnh6+V9L08331ipq6Q8OFXZYiqP6n/tbHx4s5I9uRhcye6BrbkizkBDw==}
@@ -8994,19 +8720,6 @@ packages:
     dependencies:
       mkdirp: 0.5.6
     dev: true
-
-  /ws/8.11.0:
-    resolution: {integrity: sha512-HPG3wQd9sNQoT9xHyNCXoDUa+Xw/VevmY9FoHyQ+g+rrMn4j6FB4np7Z0OhdTgjx6MgQLK7jwSy1YecU1+4Asg==}
-    engines: {node: '>=10.0.0'}
-    peerDependencies:
-      bufferutil: ^4.0.1
-      utf-8-validate: ^5.0.2
-    peerDependenciesMeta:
-      bufferutil:
-        optional: true
-      utf-8-validate:
-        optional: true
-    dev: false
 
   /xdg-basedir/2.0.0:
     resolution: {integrity: sha512-NF1pPn594TaRSUO/HARoB4jK8I+rWgcpVlpQCK6/6o5PHyLUt2CSiDrpUZbQ6rROck+W2EwF8mBJcTs+W98J9w==}

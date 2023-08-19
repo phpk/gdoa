@@ -6,7 +6,37 @@ const notLoginUrl = '/res/group/login.html';
 const setToken = (res) => {
     localStorage.setItem(TOKEN_NAME, res);
 }
-
+function bin2hex(s) {
+    s = encodeURI(s);//只会有0-127的ascii不转化
+    let m = s.match(/%[\dA-F]{2}/g), a = s.split(/%[\dA-F]{2}/), i, j, n, t;
+    m.push("")
+    for (i in a) {
+      if (a[i] === "") { a[i] = m[i]; continue }
+      n = ""
+      for (j in a[i]) {
+        t = a[i][j].charCodeAt().toString(16).toUpperCase()
+        if (t.length === 1) t = "0" + t
+        n += "%" + t
+      }
+      a[i] = n + m[i]
+    }
+    return a.join("").split("%").join("")
+  }
+  const getUUid = () => {
+    let uuid = localStorage.getItem('userUUid');
+    if(!uuid) {
+      let canvas = document.createElement('canvas');
+      let ctx = canvas.getContext('2d');
+      ctx.fillStyle = '#FF0000';
+      ctx.fillRect(0, 0, 8, 10);
+      let b64 = canvas.toDataURL().replace("data:image/png;base64,", "");
+      let bin = window.atob(b64);
+      uuid = bin2hex(bin.slice(-16, -12));
+      localStorage.setItem('userUUid', uuid);
+    }
+    
+    return uuid;
+  }
 const loginOutToken = () => {
     localStorage.removeItem(TOKEN_NAME);
 }
@@ -15,12 +45,24 @@ const getToken = () => {
 }
 const getHeader = () => {
     let token = getToken(),
-        grouptoken = {};
-    if (token) {
-        grouptoken[TOKEN_NAME] = token;
+      grouptoken = {},
+      uuid = getUUid();
+    //console.log(token)
+    if (token && typeof(token)=='string') {
+      grouptoken[TOKEN_NAME] = token;
     }
+    grouptoken['uuid'] = uuid;
+    //console.log(grouptoken)
     //grouptoken['Content-Type'] = 'application/x-www-form-urlencoded';
     return grouptoken;
+
+    // let token = getToken(),
+    //     grouptoken = {};
+    // if (token) {
+    //     grouptoken[TOKEN_NAME] = token;
+    // }
+    // //grouptoken['Content-Type'] = 'application/x-www-form-urlencoded';
+    // return grouptoken;
 }
 const errorStatus = (xhr, layui) => {
     //console.log(xhr)

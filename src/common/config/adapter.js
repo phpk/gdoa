@@ -1,17 +1,10 @@
 const fileCache = require('think-cache-file');
-//const nunjucks = require('think-view-nunjucks');
-const fileSession = require('think-session-file');
 const mysql = require('think-model-mysql');
-//const mongo = require('think-mongo');
 const { Console, File, DateFile } = require('think-logger3');
 const path = require('path');
 const isDev = think.env === 'development';
-const redisSession = require('think-session-redis');
-const redisCache = require('think-cache-redis');
-//const sqlite = require('think-model-sqlite');
-//const socketio = require('think-websocket-socket.io');
-//const socketRedis = require('socket.io-redis');
 const nunjucks = require('think-view-nunjucks');
+const redisCache = require('think-cache-redis');
 const conf = require('./config.js');
 /**
  * cache adapter config
@@ -59,61 +52,9 @@ exports.model = {
     dateStrings: conf.mysql.dateStrings,
 	  reuseDB: true
   },
-  //mongod --dbpath 
-  // mongo: {
-  //   handle: mongo,
-  //   host: conf.mongo.host,
-  //   port: conf.mongo.port,
-  //   user: conf.mongo.user,
-  //   password: conf.mongo.password,
-  //   database: conf.mongo.database, // 数据库名称
-  //   useCollectionPlural: false,
-  //   options: {
-  //     // 身份验证相关
-  //     // replicaSet: 'mgset-3074013',
-  //     // authSource: 'admin'
-  //   }
-  //}
-  // sqlite: {
-  //   handle: sqlite, // Adapter handle
-  //   path: path.join(think.ROOT_PATH, 'data/db/sqlite'), // sqlite 保存的目录
-  //   database: 'godocms', // 数据库名
-  //   connectionLimit: 1, // 连接池的连接个数，默认为 1
-  //   prefix: 'rt_', // 数据表前缀，如果一个数据库里有多个项目，那项目之间的数据表可以通过前缀来区分
-  // }
+  
 };
-/**
- * session adapter config
- * @type {Object}
- */
 
-exports.session = {
-  type: conf.session.type,
-  common: {
-    cookie: {
-      name: conf.cookie.name,
-      maxAge: conf.session.maxAge,
-      //expires: '',
-      path: '/',  //a string indicating the path of the cookie
-      //domain: '*',
-      //secure: false,
-      //keys: [],
-      httpOnly: true,
-      sameSite: false,
-      signed: false,
-      overwrite: false
-    }
-  },
-  redis: {
-    handle: redisSession,
-    maxAge: conf.session.maxAge, //session timeout, if not set, session will be persistent.
-    autoUpdate: true, //update expired time when get session, default is false
-  },
-  file: {
-    handle: fileSession,
-    sessionPath: path.join(think.ROOT_PATH, 'runtime/session')
-  }
-}
 
 /**
  * logger adapter config
@@ -140,28 +81,7 @@ exports.logger = {
     filename: path.join(think.ROOT_PATH, 'logs/app.log')
   }
 };
-/*
-exports.websocket = {
-  type: 'socketio',
-  common: {
-    // common config
-    pingInterval: 5000,
-    pingTimeout: 2000
-  },
-  socketio: {
-    handle: socketio,
-    allowOrigin: null, // any origin is allowed by default
-    path: '/socket.io', // `/socket.io` by default.
-    //adapter: null,
-    adapter: socketRedis({ host: 'localhost', port: 6379 }),
-    messages: [{
-      open: '/server/chat/open', // websocket action when connected
-      close: '/server/chat/close', // websocket action when close
-      online : '/server/chat/online',
-      addUser: '/server/chat/addUser', //websocket addUser action when event is addUser
-    }]
-  }
-}*/
+
 
 // 视图的 adapter 名称为 view
 exports.view = {

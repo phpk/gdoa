@@ -2,7 +2,7 @@ const path = require('path');
 const isDev = think.env === 'development';
 //const csrf = require('think-csrf');
 const conf = require('./config.js')
-const cors = require('koa-cors');
+const cors = require('@koa/cors');
 module.exports = [
   {
     handle: 'csrf',
@@ -28,13 +28,6 @@ module.exports = [
   {
     handle: cors,
     options: {origin: '*'}
-  },
-  {
-    handle: 'plugins',
-    enable: true,
-    options: {
-      enable: true//插件是否开启
-    }
   },
   {
     handle: 'meta',

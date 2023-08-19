@@ -5,10 +5,14 @@ const TIMEOUT = 24 * 3600 * 1000 * 36500 //100年不过期
  * @apiDefine user_base 用户管理基类
  */
 module.exports = class extends Base {
-    async __before() {
+    // constructor(ctx) {
+    //     super(ctx);
+    //   }
+    //async __before() {
+    //    console.log(this.userId)
         //this.userId = await this.session('userId')
         //this.groupId = await this.session('groupId')
-    }
+    //}
     //地区
     async getSysArea() {
         let data = await this.cache("system_area");
@@ -96,7 +100,7 @@ module.exports = class extends Base {
         return data;
     }
     async getAuthData() {
-        return await think.cache('group_perms_' + this.userId);
+        return await this.cache('group_perms_' + this.userId);
     }
     async getAuthMenu() {
         let authData = await this.getAuthData()
