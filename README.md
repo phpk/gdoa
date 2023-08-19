@@ -14,10 +14,17 @@ mysql >=5.7
 
 
 1. 下载后进程序根目录，运行
+
+- 如未安装pnpm，需事先安装pnpm
+```
+npm i pnpm -g
+
+```
+- 安装依赖
 ```
 pnpm i
-```
 
+```
 
 2. 修改src/common/config.js数据库配置，并用数据库管理软件导入data/godocms.sql文件
 
