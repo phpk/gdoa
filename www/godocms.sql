@@ -3772,7 +3772,7 @@ CREATE TABLE `rt_article` (
   `content` text CHARACTER SET utf8 NOT NULL COMMENT '内容',
   `author` varchar(32) CHARACTER SET utf8 DEFAULT NULL COMMENT '作者:id:name',
   `show_switch` tinyint(1) DEFAULT '1' COMMENT '展示:1=展示,0=隐藏',
-  `show_time` timestamp NULL DEFAULT '0000-00-00 00:00:00',
+  `show_time` timestamp NULL,
   `user_id` int(10) unsigned DEFAULT '0',
   `group_id` int(10) unsigned DEFAULT NULL,
   `add_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '添加时间',
