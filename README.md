@@ -26,7 +26,15 @@ pnpm i
 
 ```
 
-2. 修改src/common/config.js数据库配置，并用数据库管理软件导入data/godocms.sql文件
+2. 修改src/common/config.js数据库配置，并用数据库管理软件导入www/godocms.sql文件
+
+- src/common/config.js第39行到42行
+```
+database: 'godocms',
+port: '8889',
+user: 'root',
+password: 'root',
+```
 
 3. 测试环境运行
 ```

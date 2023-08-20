@@ -40,10 +40,6 @@ module.exports = {
         port: '8889',
         user: 'root',
         password: 'root',
-        // database: 'godo',
-        // password: 'Hnaqw2021!@#Rt',
-        // port: '3306',
-        // user: 'root',
 
         dateStrings: true
     },
