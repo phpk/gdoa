@@ -20,6 +20,7 @@ module.exports = class extends userBase {
     }
     async addAction() {
         let post = this.getPost();
+        post.old_id = await this.model('user_role').max('id')
         let id = await this.model('user_role').add(post);
         await this.upCacheRole();
         return this.success(id);

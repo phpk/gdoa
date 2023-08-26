@@ -24,6 +24,7 @@ module.exports = class extends userBase {
 
     async addAction() {
         let post = this.getPost();
+        post.old_id = await this.model('user_dept').max('id')
         let id = await this.model('user_dept').add(post);
         if(post.pid > 0) {
             await this.model('user_dept').update({id : post.pid, have_child : 1})
