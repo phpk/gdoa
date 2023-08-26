@@ -46,10 +46,31 @@ http://localhost:8200/res/group/login.html
 ```
 
 4. 正式环境运行
+- 参考根目录nginx.conf配置文件配置nginx
+- 修改nginx.conf下的
+
+```
+# 你的域名
+server_name www.gdoa.top;
+#证书地址改下面两行 如不配置可删除
+ssl_certificate /data/key/gdoa.top_chain.crt;
+ssl_certificate_key /data/key/gdoa.top_key.key;
+```
+- 以及
+
+```
+ #当前程序的绝对路径
+root /data/www;
+```
+
+- 修改pm2.json下第5 行
+```
+ "cwd": "/data/godo", //当前程序的绝对路径
+```
+- 然后运行
 ```
 pm2 start pm2.json
 ```
-参考根目录nginx.conf配置文件配置nginx
 
 5. 后台登录
 ```
