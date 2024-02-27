@@ -147,7 +147,7 @@ body{background: #FFF;}
 .main-about ul.aboutab li:first-child{margin-left: 0;}
 .main-about ul.aboutab li.layui-this
 ,.main-about ul.aboutab li:hover{color: #2ab5a3; border-color: #afddd7; transition: 0.3s;}
-.main-about .tabJob, .main-about .tabCour{display: none;}
+.main-about .tabJob, .main-about .tabIntro{display: none;}
 /*公司简介*/
 .main-about .tabIntro{padding-bottom: 15px;}
 .main-about .tabIntro .content{vertical-align: middle;}
