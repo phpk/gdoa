@@ -89,6 +89,9 @@ layui.define(['jquery', 'element', 'carousel', 'laypage'], function(exports){
   $(".reg").click(e => {
     window.open("/res/group/login.html")
   })
+  $(".linkos").click(e => {
+    window.open("http://os.gdoa.top/")
+  })
   $(".todbcode").click(e => {
     window.open("https://gitee.com/ruitao_admin/gododb")
   })
