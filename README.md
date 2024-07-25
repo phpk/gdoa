@@ -1,8 +1,21 @@
-## 关于Godo OA
+<p align="center">
+    <img src="./www/static/logo.png" width="120" height="120">
+</p>
 
-Godo OA是西电科技开发的一套开源办公套件，遵从Apache License 2.0开源协议，非常适合二次开发，内含word/excel/ppt/pdf/svg/思维导图/流程图/日程管理/库存管理等多个办公系统解决方案。
+<h1 align="center">GodoOA</h1>
+<div align="center">
 
-Godo OA开发原则是“**易上手，容易改**”。前端工程师和后端工程师都可以上手，没有复杂的包，学习成本低，简单的做一下二次开发，可以实现大型的复杂项目。
+[![license][license-image]][license-url]
+
+[FAQ](./Faq.md)
+
+[license-image]: ./docs/license_%20MIT.svg
+[license-url]: https://spdx.org/licenses/MIT.html
+</div>
+
+GodoOA是一套开源办公套件，遵从Apache License 2.0开源协议，非常适合二次开发，内含word/excel/ppt/pdf/svg/思维导图/流程图/日程管理等多个办公系统解决方案。godoOA对接了钉钉办公，数据互通，有效解决企业零碎化办公问题。
+
+GodoOA开发原则是“**易上手，容易改**”。前端工程师和后端工程师都可以上手，没有复杂的包，学习成本低，简单的做一下二次开发，可以实现大型的复杂项目。
 
 ## 版本要求
 
@@ -214,6 +227,11 @@ pm2 start pm2.json
 ![输入图片说明](docs/8.jpg)
 ![输入图片说明](docs/9.jpg)
 ![输入图片说明](docs/10.jpg)
+
+
+## 关联项目
+- [godoos](https://gitee.com/ruitao_admin/godoos)
+- [gododb](https://gitee.com/ruitao_admin/gododb)
 
 ## 微信群
 ![微信群](docs/wx.png)
